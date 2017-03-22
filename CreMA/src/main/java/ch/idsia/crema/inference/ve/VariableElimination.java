@@ -1,23 +1,25 @@
 package ch.idsia.crema.inference.ve;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import ch.idsia.crema.factor.FactorUtil;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.factor.symbolic.serialize.NLSerializer;
+import ch.idsia.crema.inference.JoinInference;
 import ch.idsia.crema.inference.ve.order.OrderingStrategy;
+import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operation;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
-public class VariableElimination<F extends GenericFactor> {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+public class VariableElimination<F extends GenericFactor> implements JoinInference<F, F> {
 	private int[] sequence;
 
 	private List<F> factors;
@@ -142,6 +144,13 @@ public class VariableElimination<F extends GenericFactor> {
 
 		return last;
 
+	}
+
+	@Override
+	public F apply(GraphicalModel<F> model, int[] query, TIntIntMap observations) throws InterruptedException {
+		setEvidence(observations);
+		setFactors(model.getFactors());
+		return run(query);
 	}
 
 	public static void main(String[] a) {

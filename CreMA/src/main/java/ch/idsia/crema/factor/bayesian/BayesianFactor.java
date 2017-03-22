@@ -1,19 +1,14 @@
 package ch.idsia.crema.factor.bayesian;
 
-import java.util.Arrays;
-
-import org.apache.commons.math3.util.FastMath;
-
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.model.Domain;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.vertex.Collector;
-import ch.idsia.crema.model.vertex.Filter;
-import ch.idsia.crema.model.vertex.LogMarginal;
-import ch.idsia.crema.model.vertex.Marginal;
-import ch.idsia.crema.model.vertex.VertexOperation;
+import ch.idsia.crema.model.vertex.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import org.apache.commons.math3.util.FastMath;
+
+import java.util.Arrays;
 
 /**
  * Conversion of values to Log is hardcoded. 
@@ -171,8 +166,10 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 			return BayesianFactor.this.getValue(states);
 		}
 
-
-	}
+		public void set(double v) {
+			BayesianFactor.this.setValue(v, states);
+		}
+    }
 	
 	public Helper p(int var, int state) {
 		return new Helper(var, state);
@@ -205,6 +202,16 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	public void setValue(double value, int... states) {
 		data[domain.getOffset(states)] = log ? FastMath.log(value) : value;
 	}
+
+	/*
+	public void setValue(double value, int[] states, int[] variables) {
+		int[] orderedStates = new int[states.length];
+
+		//TODO
+
+		setValue(value, orderedStates);
+	}
+	*/
 
 	/**
 	 * Reduce the domain by removing a variable and selecting the specified

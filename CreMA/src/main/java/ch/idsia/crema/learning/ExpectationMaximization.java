@@ -1,72 +1,51 @@
 package ch.idsia.crema.learning;
 
-import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.ve.FactorVariableElimination;
-import ch.idsia.crema.inference.ve.order.MinFillOrdering;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.preprocess.RemoveBarren;
-import gnu.trove.map.TIntIntMap;
-
-import java.util.function.Function;
+import ch.idsia.crema.inference.SingleInference;
+import ch.idsia.crema.model.GraphicalModel;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    22.03.2017 14:24
  */
-public class ExpectationMaximization<F extends Factor> {
+public class ExpectationMaximization {
 
-    private SparseModel<F> model;
+    private final SingleInference<BayesianFactor, BayesianFactor> inferenceEngine;
+    private GraphicalModel<BayesianFactor> model;
 
-    public ExpectationMaximization(SparseModel<F> model) {
+    public ExpectationMaximization(GraphicalModel<BayesianFactor> model,
+                                   SingleInference<BayesianFactor, BayesianFactor> inferenceEngine) {
         this.model = model;
+        this.inferenceEngine = inferenceEngine;
     }
 
     public void execute() {
 
-        Function<Integer, Integer> f;
-
         // expectation stage
         int[] variables = model.getVariables();
+
+        BayesianFactor[] counts = new BayesianFactor[variables.length];
+
         for (int variable : variables) {
             int[] parents = model.getParents(variable);
 
-            Strides domain = model.getDomain(parents);
+            counts[variable].p(0, 0).and(0, 1).set(0.1);
 
 
-            System.out.print(variable + ": " + domain);
 
             for (int parent : parents) {
-                System.out.print(parent + " ");
+
+
+
             }
-            System.out.println();
+
+
         }
 
-
+        System.out.println();
 
         // maximization stage
 
-    }
-
-    private double[] inference(int[] query, TIntIntMap evidence){
-        RemoveBarren rb = new RemoveBarren();
-        // P(query|evidences)
-        SparseModel<F> infModel = rb.execute(model, query, evidence);
-
-        // elimination sequence
-        MinFillOrdering mfo = new MinFillOrdering();
-        int[] elimSeq = mfo.apply(infModel);
-
-        FactorVariableElimination<BayesianFactor> fve = new FactorVariableElimination<>(elimSeq);
-//        fve.setFactors(infModel.getFactors());
-
-        // normalize
-        fve.setNormalize(true);
-        fve.setEvidence(evidence);
-
-        BayesianFactor posterior = fve.run(query);
-        return posterior.getData();
     }
 }

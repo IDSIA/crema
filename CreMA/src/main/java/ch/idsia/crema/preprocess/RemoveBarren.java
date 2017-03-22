@@ -55,11 +55,17 @@ public class RemoveBarren {
 		deleted = todelete.toArray();
 		// deleted is already sorted (as model.getVariables is sorted)
 	}
-	
-	
+
 	public void filter(TIntIntMap evidence) {
 		for (int var : deleted) evidence.remove(var);
 	}
+
+	public int[] filter(int[] variables) {
+		TIntArrayList x = new TIntArrayList(variables);
+		x.removeAll(deleted);
+		return x.toArray();
+	}
+
 
 	/** 
 	 * Get all the valid nodes

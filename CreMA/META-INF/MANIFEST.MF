@@ -31,4 +31,5 @@ Export-Package: ch.idsia.credo.entropy,
  ch.idsia.crema.solver.ipopt,
  ch.idsia.crema.solver.lpsolve,
  ch.idsia.crema.utility
-Import-Package: org.apache.commons.math3
+Import-Package: org.apache.commons.math3,
+ javax.xml.bind.annotation

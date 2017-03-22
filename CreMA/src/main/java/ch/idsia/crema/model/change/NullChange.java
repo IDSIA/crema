@@ -11,7 +11,7 @@ import ch.idsia.crema.factor.GenericFactor;
  * @param <F>
  */
 public class NullChange<F extends GenericFactor> implements DomainChange<F>, CardinalityChange<F> {
-	
+
 	public static final <F extends GenericFactor> NullChange<F> getInstance() {
 		return new NullChange<F>();
 	}
