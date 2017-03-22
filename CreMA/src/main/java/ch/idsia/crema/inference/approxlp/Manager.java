@@ -1,18 +1,17 @@
 package ch.idsia.crema.inference.approxlp;
 
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.preprocess.DupModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.search.ObjectiveFunction;
 import gnu.trove.map.TIntIntMap;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 abstract class Manager implements ObjectiveFunction<Move, Solution> {
 
@@ -22,7 +21,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	protected SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
 	// the underlying model
-	protected SparseModel<? extends GenericFactor> model;
+	protected GraphicalModel<? extends GenericFactor> model;
 	protected GoalType goal;
 
 	protected int x0;
@@ -32,7 +31,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 
 	private BayesianFactor x0factor;
 
-	public Manager(SparseModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state) {
+	public Manager(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state) {
 		this.model = model;
 		this.goal = dir;
 		this.x0 = x0;
@@ -75,7 +74,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	}
 
 	protected BayesianFactor calcMarginal(Solution sol, int[] query) {
-		SparseModel<? extends GenericFactor> model = this.model.copy();
+		GraphicalModel<? extends GenericFactor> model = this.model.copy();
 		RemoveBarren barren = new RemoveBarren();
 		barren.execute(model, query);
 
@@ -86,7 +85,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	}
 
 	protected BayesianFactor calcPosterior(Solution sol, int[] query, TIntIntMap ev) {
-		SparseModel<? extends GenericFactor> model = new DupModel().execute(this.model);
+		GraphicalModel<? extends GenericFactor> model = new DupModel().execute(this.model);
 		RemoveBarren barren = new RemoveBarren();
 		barren.execute(model, query, ev);
 

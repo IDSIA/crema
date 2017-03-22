@@ -1,27 +1,27 @@
 package ch.idsia.crema.inference.approxlp;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.search.NeighbourhoodFunction;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 
 	private int[] freeable;
-	private SparseModel<? extends GenericFactor> model;
+	private GraphicalModel<? extends GenericFactor> model;
 	
-	public Neighbourhood(SparseModel<? extends GenericFactor> model, int... locked) {
+	public Neighbourhood(GraphicalModel<? extends GenericFactor> model, int... locked) {
 		this.model = model;
 		
 		initialize(new TIntHashSet(locked));
