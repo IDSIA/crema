@@ -1,0 +1,8 @@
+Benchmark-large1.xml,0,1=0;2=0;5=0;7=0;9=0;12=0;18=0;26=0;27=0;28=0;30=0;31=0;32=0;42=0;43=0,SePolyVE,Error org.apache.commons.math3.optim.linear.NoFeasibleSolutionException: no feasible solution
+Benchmark-large1.xml,0,1=0;2=0;5=0;7=0;9=0;12=0;18=0;26=0;27=0;28=0;30=0;31=0;32=0;42=0;43=0,ApproxLP,org.apache.commons.math3.optim.linear.NoFeasibleSolutionException: no feasible solution
+Benchmark-large1.xml,1,,SePolyVE,0.302953750358366;0.341120535810586;0.239934095331048,0.401804726148366;0.395550480920586;0.347274156121048
+Benchmark-large1.xml,1,,ApproxLP,org.apache.commons.math3.optim.linear.NoFeasibleSolutionException: no feasible solution
+Benchmark-large1.xml,2,,SePolyVE,0.2115699882;0.36138814199999997;0.2989568698,0.3310959882;0.463031142;0.4180438698
+Benchmark-large1.xml,2,,ApproxLP,org.apache.commons.math3.optim.linear.NoFeasibleSolutionException: no feasible solution
+Benchmark-large1.xml,5,,SePolyVE,0.32654878199037246;0.3074461005297708;0.25827716526758704,0.4089642124656825;0.39089850514768476;0.30921264230483575
+Benchmark-large1.xml,5,,ApproxLP,org.apache.commons.math3.optim.linear.NoFeasibleSolutionException: no feasible solution

@@ -1,0 +1,33 @@
+// Sample Credal network specification
+0.1 0.3 0.3 0.1 // lP(S0)
+0.2 0.4 0.4 0.2  // uP(S0)
+// K(Si|Si-1)
+0.3 0.2 0.1 0.01  // lP(S1|S0=0)
+0.4 0.3 0.2 0.1  // uP(S1|S0=0)
+0.2 0.3 0.2 0.1 // lP(S1|S0=1)
+0.3 0.4 0.3 0.2  // uP(S1|S0=1)
+0.1 0.2 0.3 0.2 // lP(S1|S0=2)
+0.2 0.3 0.4 0.3  // uP(S1|S0=2)
+0.01 0.1 0.2 0.3  // lP(S1|S0=3)
+0.1 0.2 0.3 0.4  // uP(S1|S0=3)
+// K(Q|S) easy
+0.6 0.625 // lP(Q=right|S=0),uP(Q=right|S=0)
+0.80 0.825 // lP(Q=right|S=1),uP(Q=right|S=1)
+0.90 0.925 // lP(Q=right|S=2),uP(Q=right|S=2)
+0.95 0.975 // lP(Q=right|S=3),uP(Q=right|S=3)
+// K(Q|S) medium-easy
+0.325 0.35 // lP(Q=right|S=0),uP(Q=right|S=0)
+0.6 0.625 // lP(Q=right|S=1),uP(Q=right|S=1)
+0.80 0.825 // lP(Q=right|S=2),uP(Q=right|S=2)
+0.90 0.925 // lP(Q=right|S=3),uP(Q=right|S=3)
+// K(Q|S) medium-hard
+0.25 0.25 // lP(Q=right|S=0),uP(Q=right|S=0)
+0.325 0.35 // lP(Q=right|S=1),uP(Q=right|S=1)
+0.6 0.625 // lP(Q=right|S=2),uP(Q=right|S=2)
+0.80 0.825 // lP(Q=right|S=3),uP(Q=right|S=3)
+// K(Q|S) hard
+0.25 0.25 // lP(Q=right|S=0),uP(Q=right|S=0)
+0.25 0.25 // lP(Q=right|S=1),uP(Q=right|S=1)
+0.325 0.35 // lP(Q=right|S=2),uP(Q=right|S=2)
+0.6 0.625 // lP(Q=right|S=3),uP(Q=right|S=3)
+

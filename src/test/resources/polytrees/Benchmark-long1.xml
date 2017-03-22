@@ -1,0 +1,1317 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+
+
+<!--
+	Bayesian network in XMLBIF v0.3 (BayesNet Interchange Format)
+	Produced by JavaBayes (http://www.cs.cmu.edu/~javabayes/
+	Number of nodes:100
+	Output created Thu Mar 02 17:45:00 CET 2017
+-->
+
+
+
+<BIF VERSION="0.3">
+<NETWORK>
+<NAME>InternalNetwork</NAME>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node0</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (15, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node1</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (135, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node2</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (255, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node3</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (45, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node4</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (165, 44)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node5</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (285, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node6</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (405, 15)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node7</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (44, 270)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node8</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (15, 390)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node9</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (375, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node10</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (164, 284)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node11</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (525, 29)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node12</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (284, 270)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node13</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (404, 255)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node14</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (495, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node15</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (524, 269)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node16</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (644, 284)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node17</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (615, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node18</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (735, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node19</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (645, 44)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node20</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (855, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node21</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (765, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node22</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (975, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node23</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1095, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node24</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (764, 270)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node25</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1215, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node26</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (885, 15)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node27</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1005, 29)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node28</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1335, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node29</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (135, 404)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node30</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1125, 44)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node31</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1455, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node32</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1575, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node33</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1695, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node34</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1245, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node35</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1815, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node36</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (884, 255)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node37</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1004, 269)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node38</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1935, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node39</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (255, 390)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node40</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1124, 284)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node41</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2055, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node42</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1244, 270)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node43</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1364, 255)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node44</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2175, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node45</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2295, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node46</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1484, 269)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node47</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1365, 15)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node48</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1485, 29)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node49</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2415, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node50</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1605, 44)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node51</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2535, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node52</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1725, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node53</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (375, 375)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node54</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1845, 15)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node55</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1604, 284)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node56</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1965, 29)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node57</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2085, 44)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node58</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2205, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node59</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2655, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node60</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2775, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node61</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2895, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node62</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3015, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node63</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3135, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node64</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1724, 270)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node65</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3255, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node66</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3375, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node67</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3495, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node68</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (495, 389)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node69</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (615, 404)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node70</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3615, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node71</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3735, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node72</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3855, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node73</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3975, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node74</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (4095, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node75</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (735, 390)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node76</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (4215, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node77</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1844, 255)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node78</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2325, 15)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node79</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2445, 29)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node80</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2565, 44)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node81</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2685, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node82</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (4335, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node83</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (1964, 269)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node84</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2805, 15)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node85</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (4455, 164)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node86</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (2925, 29)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node87</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3045, 44)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node88</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3165, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node89</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (4575, 150)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node90</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (4695, 135)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node91</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3285, 15)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node92</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (4815, 149)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node93</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3405, 29)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node94</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3525, 44)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node95</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3645, 30)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node96</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3765, 15)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node97</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (3885, 29)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node98</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (855, 375)</PROPERTY>
+</VARIABLE>
+<!-- Variables -->
+<VARIABLE TYPE="nature">
+    <NAME>node99</NAME>
+    <OUTCOME>state0</OUTCOME>
+    <OUTCOME>state1</OUTCOME>
+    <OUTCOME>state2</OUTCOME>
+    <PROPERTY>position = (4005, 44)</PROPERTY>
+</VARIABLE>
+<!-- Probability Distributions -->
+ <DEFINITION>
+      <FOR>node0</FOR>
+      <GIVEN>node61</GIVEN>
+     <TABLE>0.3616 0.3484 0.29 0.4883 0.3418 0.1699 0.6861 0.0799 0.234 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node1</FOR>
+      <GIVEN>node85</GIVEN>
+     <TABLE>0.0588 0.1848 0.7564 0.1239 0.1795 0.6966 0.201 0.5083 0.2907 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node2</FOR>
+      <GIVEN>node33</GIVEN>
+     <TABLE>0.2135 0.4756 0.3109 0.4291 0.3262 0.2447 0.4033 0.1054 0.4913 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node3</FOR>
+     <TABLE>0.3042 0.4199 0.2759 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node4</FOR>
+     <TABLE>0.3045 0.6449 0.0506 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node5</FOR>
+     <TABLE>0.1778 0.3708 0.4514 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node6</FOR>
+     <TABLE>0.0168 0.4689 0.5143 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node7</FOR>
+      <GIVEN>node97</GIVEN>
+      <GIVEN>node68</GIVEN>
+     <TABLE>0.6557 0.274 0.0703 0.0878 0.4673 0.4449 0.1308 0.2429 0.6263 0.01 0.2815 0.7085 0.2151 0.7636 0.0213 0.4471 0.1605 0.3924 0.2945 0.6238 0.0817 0.4419 0.4956 0.0625 0.3039 0.695 0.0011 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node8</FOR>
+      <GIVEN>node18</GIVEN>
+      <GIVEN>node23</GIVEN>
+      <GIVEN>node17</GIVEN>
+     <TABLE>0.4111 0.3297 0.2592 0.7437 0.0577 0.1986 0.4209 0.344 0.2351 0.4846 0.2809 0.2345 0.0239 0.9373 0.0388 0.1436 0.4815 0.3749 0.3383 0.4211 0.2406 0.6959 0.0744 0.2297 0.006 0.7167 0.2773 0.4335 0.4084 0.1581 0.3393 0.4939 0.1668 0.0814 0.2427 0.6759 0.3592 0.0501 0.5907 0.6724 0.313 0.0146 0.2766 0.6247 0.0987 0.0341 0.3931 0.5728 0.2964 0.1437 0.5599 0.5176 0.4782 0.0042 0.1754 0.0695 0.7551 0.2657 0.0085 0.7258 0.0145 0.7406 0.2449 0.1642 0.036 0.7998 0.3973 0.2516 0.3511 0.5484 0.2348 0.2168 0.1511 0.5707 0.2782 0.0781 0.9174 0.0045 0.2381 0.7528 0.0091 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node9</FOR>
+      <GIVEN>node63</GIVEN>
+     <TABLE>0.2105 0.0508 0.7387 0.1417 0.7042 0.1541 0.1557 0.549 0.2953 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node10</FOR>
+      <GIVEN>node46</GIVEN>
+      <GIVEN>node57</GIVEN>
+     <TABLE>0.3233 0.3752 0.3015 0.1387 0.488 0.3733 0.5707 0.2494 0.1799 0.3502 0.0274 0.6224 0.1758 0.171 0.6532 0.0333 0.3349 0.6318 0.634 0.3043 0.0617 0.4172 0.4516 0.1312 0.0656 0.2816 0.6528 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node11</FOR>
+     <TABLE>0.207 0.3689 0.4241 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node12</FOR>
+      <GIVEN>node21</GIVEN>
+      <GIVEN>node38</GIVEN>
+     <TABLE>0.1457 0.3072 0.5471 0.6385 0.1035 0.258 0.1913 0.7108 0.0979 0.1557 0.5937 0.2506 0.1042 0.3205 0.5753 0.2032 0.4849 0.3119 0.0307 0.2892 0.6801 0.4611 0.4443 0.0946 0.0509 0.759 0.1901 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node13</FOR>
+      <GIVEN>node74</GIVEN>
+      <GIVEN>node0</GIVEN>
+     <TABLE>0.3035 0.3897 0.3068 0.6877 0.1381 0.1742 0.7677 0.204 0.0283 0.7273 0.2306 0.0421 0.5537 0.272 0.1743 0.0992 0.6746 0.2262 0.1437 0.7417 0.1146 0.5939 0.1227 0.2834 0.0958 0.1457 0.7585 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node14</FOR>
+      <GIVEN>node37</GIVEN>
+     <TABLE>0.5285 0.4434 0.0281 0.2556 0.6525 0.0919 0.3152 0.4936 0.1912 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node15</FOR>
+      <GIVEN>node7</GIVEN>
+      <GIVEN>node41</GIVEN>
+     <TABLE>0.5009 0.24 0.2591 0.2631 0.1218 0.6151 0.3275 0.5525 0.12 0.1059 0.0496 0.8445 0.2023 0.02 0.7777 0.1995 0.0818 0.7187 0.0179 0.6903 0.2918 0.4667 0.3673 0.166 0.0714 0.034 0.8946 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node16</FOR>
+      <GIVEN>node15</GIVEN>
+      <GIVEN>node73</GIVEN>
+     <TABLE>0.5326 0.3549 0.1125 0.0821 0.1677 0.7502 0.2086 0.6163 0.1751 0.0124 0.5696 0.418 0.157 0.4649 0.3781 0.0623 0.3932 0.5445 0.2033 0.0816 0.7151 0.0648 0.7378 0.1974 0.0896 0.7223 0.1881 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node17</FOR>
+      <GIVEN>node69</GIVEN>
+     <TABLE>0.1105 0.4443 0.4452 0.1529 0.3568 0.4903 0.7197 0.0619 0.2184 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node18</FOR>
+      <GIVEN>node12</GIVEN>
+     <TABLE>0.7711 0.2236 0.0053 0.2406 0.1499 0.6095 0.2878 0.1085 0.6037 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node19</FOR>
+     <TABLE>0.6885 0.2925 0.019 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node20</FOR>
+      <GIVEN>node36</GIVEN>
+     <TABLE>0.0983 0.5061 0.3956 0.7494 0.1198 0.1308 0.1484 0.6844 0.1672 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node21</FOR>
+     <TABLE>0.0272 0.009 0.9638 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node22</FOR>
+      <GIVEN>node93</GIVEN>
+     <TABLE>0.3154 0.5696 0.115 0.485 0.1097 0.4053 0.6233 0.345 0.0317 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node23</FOR>
+      <GIVEN>node66</GIVEN>
+     <TABLE>0.6445 0.1377 0.2178 0.498 0.2288 0.2732 0.4489 0.0141 0.537 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node24</FOR>
+      <GIVEN>node25</GIVEN>
+      <GIVEN>node72</GIVEN>
+     <TABLE>0.197 0.0221 0.7809 0.8573 0.1321 0.0106 0.169 0.1159 0.7151 0.014 0.1217 0.8643 0.0754 0.17 0.7546 0.4937 0.111 0.3953 0.5486 0.266 0.1854 0.174 0.3563 0.4697 0.0059 0.7501 0.244 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node25</FOR>
+      <GIVEN>node8</GIVEN>
+     <TABLE>0.4882 0.1016 0.4102 0.4173 0.1063 0.4764 0.798 0.0431 0.1589 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node26</FOR>
+     <TABLE>0.147 0.7984 0.0546 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node27</FOR>
+     <TABLE>0.0387 0.0133 0.948 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node28</FOR>
+      <GIVEN>node90</GIVEN>
+     <TABLE>0.4509 0.1056 0.4435 0.6476 0.3313 0.0211 0.0863 0.7693 0.1444 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node29</FOR>
+      <GIVEN>node11</GIVEN>
+      <GIVEN>node45</GIVEN>
+      <GIVEN>node49</GIVEN>
+     <TABLE>0.0983 0.8063 0.0954 0.0809 0.7565 0.1626 0.5465 0.3826 0.0709 0.3733 0.3686 0.2581 0.8427 0.0627 0.0946 0.3889 0.322 0.2891 0.3199 0.539 0.1411 0.8222 0.0547 0.1231 0.0851 0.1686 0.7463 0.2653 0.7289 0.0058 0.5942 0.0042 0.4016 0.195 0.2824 0.5226 0.2588 0.2209 0.5203 0.5695 0.1549 0.2756 0.3348 0.3455 0.3197 0.0162 0.2314 0.7524 0.6741 0.0784 0.2475 0.4498 0.4385 0.1117 8.0E-4 0.2452 0.754 0.0948 0.333 0.5722 0.1401 0.1812 0.6787 0.0643 0.1095 0.8262 0.3507 0.6175 0.0318 0.6273 0.255 0.1177 0.1734 0.5574 0.2692 0.5415 0.096 0.3625 0.3215 0.3219 0.3566 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node30</FOR>
+     <TABLE>0.3595 0.0247 0.6158 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node31</FOR>
+      <GIVEN>node1</GIVEN>
+     <TABLE>0.1303 0.6765 0.1932 0.3259 0.6397 0.0344 0.4131 0.0962 0.4907 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node32</FOR>
+      <GIVEN>node56</GIVEN>
+     <TABLE>0.2636 0.3351 0.4013 0.1122 0.823 0.0648 0.8293 0.0058 0.1649 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node33</FOR>
+      <GIVEN>node51</GIVEN>
+     <TABLE>0.0745 0.7758 0.1497 0.4246 0.4557 0.1197 0.781 0.0784 0.1406 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node34</FOR>
+     <TABLE>0.0503 0.3694 0.5803 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node35</FOR>
+      <GIVEN>node39</GIVEN>
+     <TABLE>0.1597 0.6725 0.1678 0.3247 0.664 0.0113 0.1344 0.2016 0.664 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node36</FOR>
+      <GIVEN>node91</GIVEN>
+      <GIVEN>node9</GIVEN>
+     <TABLE>0.2141 0.6715 0.1144 0.7251 0.2039 0.071 0.1084 0.4222 0.4694 0.1991 0.5504 0.2505 0.4468 0.4866 0.0666 0.1157 0.0278 0.8565 0.3108 0.6719 0.0173 0.0014 0.7118 0.2868 0.4052 0.4189 0.1759 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node37</FOR>
+      <GIVEN>node34</GIVEN>
+      <GIVEN>node94</GIVEN>
+     <TABLE>0.3087 0.4109 0.2804 0.1008 0.4037 0.4955 0.066 0.719 0.215 0.1626 0.0355 0.8019 0.4203 0.0339 0.5458 0.4556 0.1897 0.3547 0.288 0.37 0.342 0.1278 0.6386 0.2336 0.5813 0.3323 0.0864 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node38</FOR>
+      <GIVEN>node64</GIVEN>
+     <TABLE>0.0295 0.4873 0.4832 0.9126 0.0804 0.007 0.0458 0.325 0.6292 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node39</FOR>
+      <GIVEN>node84</GIVEN>
+      <GIVEN>node95</GIVEN>
+      <GIVEN>node20</GIVEN>
+     <TABLE>0.8091 0.1261 0.0648 0.1088 0.6604 0.2308 0.0799 0.2411 0.679 0.0141 0.185 0.8009 0.0949 0.4711 0.434 0.9211 0.0034 0.0755 0.0794 0.7008 0.2198 0.8685 0.1151 0.0164 0.6666 0.2907 0.0427 0.1598 0.0942 0.746 0.2756 0.2211 0.5033 0.2825 0.2935 0.424 0.8957 0.0874 0.0169 0.1388 0.1597 0.7015 7.0E-4 0.6822 0.3171 0.3434 0.285 0.3716 0.7439 0.1117 0.1444 0.163 0.4566 0.3804 0.0837 0.8639 0.0524 0.2495 0.2651 0.4854 0.6518 0.0872 0.261 0.0639 0.5779 0.3582 0.0514 0.8433 0.1053 0.3921 0.2255 0.3824 0.5161 0.0219 0.462 0.0621 0.659 0.2789 0.3546 0.1283 0.5171 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node40</FOR>
+      <GIVEN>node24</GIVEN>
+      <GIVEN>node35</GIVEN>
+     <TABLE>0.2585 0.1416 0.5999 0.469 0.0514 0.4796 0.0184 0.2223 0.7593 0.0413 0.8693 0.0894 0.0672 0.8782 0.0546 0.3168 0.2638 0.4194 0.6728 0.2024 0.1248 0.2699 0.6108 0.1193 0.4629 0.4535 0.0836 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node41</FOR>
+      <GIVEN>node78</GIVEN>
+     <TABLE>0.845 0.1184 0.0366 0.0214 0.5509 0.4277 0.225 0.3461 0.4289 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node42</FOR>
+      <GIVEN>node65</GIVEN>
+      <GIVEN>node32</GIVEN>
+     <TABLE>0.1308 0.657 0.2122 0.139 0.3004 0.5606 0.2693 0.7111 0.0196 0.022 0.1402 0.8378 0.3698 0.4767 0.1535 0.1981 0.0372 0.7647 0.1366 0.0581 0.8053 0.8875 0.0377 0.0748 0.1982 0.2454 0.5564 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node43</FOR>
+      <GIVEN>node62</GIVEN>
+      <GIVEN>node82</GIVEN>
+     <TABLE>0.25 0.3347 0.4153 0.5316 0.3414 0.127 0.1339 0.1916 0.6745 0.2639 0.1745 0.5616 0.2061 0.4459 0.348 0.4346 0.5463 0.0191 0.2459 0.3727 0.3814 0.3656 0.2424 0.392 0.3957 0.0236 0.5807 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node44</FOR>
+      <GIVEN>node55</GIVEN>
+     <TABLE>0.23 0.6412 0.1288 0.7023 0.039 0.2587 0.1283 0.5535 0.3182 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node45</FOR>
+      <GIVEN>node58</GIVEN>
+     <TABLE>0.1974 0.5393 0.2633 0.0058 0.5038 0.4904 0.7941 0.1439 0.062 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node46</FOR>
+      <GIVEN>node42</GIVEN>
+      <GIVEN>node86</GIVEN>
+     <TABLE>0.38 0.1663 0.4537 0.4277 0.2677 0.3046 0.0497 0.091 0.8593 0.2865 0.1644 0.5491 0.8156 0.1061 0.0783 0.5551 0.151 0.2939 0.4622 0.4696 0.0682 0.6224 0.2856 0.092 0.5837 0.1292 0.2871 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node47</FOR>
+     <TABLE>0.2551 0.5909 0.154 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node48</FOR>
+     <TABLE>0.5576 0.0242 0.4182 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node49</FOR>
+      <GIVEN>node53</GIVEN>
+     <TABLE>0.182 0.7735 0.0445 0.9109 0.0271 0.062 0.3597 0.6036 0.0367 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node50</FOR>
+     <TABLE>0.782 0.0626 0.1554 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node51</FOR>
+      <GIVEN>node77</GIVEN>
+     <TABLE>0.2016 0.6815 0.1169 0.0366 0.952 0.0114 0.6566 0.2046 0.1388 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node52</FOR>
+     <TABLE>0.6729 0.0295 0.2976 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node53</FOR>
+      <GIVEN>node31</GIVEN>
+      <GIVEN>node92</GIVEN>
+      <GIVEN>node60</GIVEN>
+     <TABLE>0.647 0.0645 0.2885 0.3647 0.5173 0.118 0.1157 0.299 0.5853 0.6393 0.2963 0.0644 0.7402 0.0597 0.2001 0.0738 0.5087 0.4175 0.7305 0.256 0.0135 0.5815 0.0564 0.3621 0.3447 0.4426 0.2127 0.7818 0.1507 0.0675 0.4593 0.4916 0.0491 0.3114 0.6527 0.0359 0.0403 0.6982 0.2615 0.3502 0.2216 0.4282 0.2173 0.0229 0.7598 0.0455 0.2999 0.6546 0.5233 0.0389 0.4378 0.3339 0.303 0.3631 0.5755 0.1237 0.3008 0.501 0.2715 0.2275 0.379 0.4691 0.1519 0.6487 0.0107 0.3406 0.4528 0.3944 0.1528 0.4342 0.4878 0.078 0.2379 0.2895 0.4726 0.5597 0.1876 0.2527 0.2432 0.3557 0.4011 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node54</FOR>
+     <TABLE>0.0551 0.9307 0.0142 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node55</FOR>
+      <GIVEN>node48</GIVEN>
+      <GIVEN>node16</GIVEN>
+     <TABLE>0.6178 0.0112 0.371 0.8596 0.1379 0.0025 0.2889 0.6706 0.0405 0.0733 0.6053 0.3214 0.078 0.7231 0.1989 0.1148 0.4171 0.4681 0.0445 0.5029 0.4526 0.3636 0.1637 0.4727 0.3585 0.1901 0.4514 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node56</FOR>
+     <TABLE>0.2238 0.1701 0.6061 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node57</FOR>
+     <TABLE>0.0828 0.7977 0.1195 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node58</FOR>
+     <TABLE>0.2498 0.2764 0.4738 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node59</FOR>
+      <GIVEN>node83</GIVEN>
+     <TABLE>0.2504 0.4551 0.2945 0.119 0.8138 0.0672 0.2045 0.2618 0.5337 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node60</FOR>
+      <GIVEN>node75</GIVEN>
+     <TABLE>0.1516 0.3274 0.521 0.586 0.344 0.07 0.1168 0.8174 0.0658 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node61</FOR>
+      <GIVEN>node52</GIVEN>
+     <TABLE>0.7183 0.1692 0.1125 0.3444 0.6265 0.0291 0.1422 0.0528 0.805 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node62</FOR>
+      <GIVEN>node98</GIVEN>
+     <TABLE>0.2593 0.4038 0.3369 0.1527 0.8093 0.038 0.0114 0.735 0.2536 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node63</FOR>
+      <GIVEN>node50</GIVEN>
+     <TABLE>0.4455 0.3768 0.1777 0.022 0.8204 0.1576 0.0892 0.7251 0.1857 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node64</FOR>
+      <GIVEN>node28</GIVEN>
+      <GIVEN>node4</GIVEN>
+     <TABLE>0.2285 0.5147 0.2568 0.6947 0.2986 0.0067 0.8797 0.0543 0.066 0.8748 0.0084 0.1168 0.1234 0.4916 0.385 0.0042 0.9271 0.0687 0.6994 0.0379 0.2627 0.7372 0.2157 0.0471 0.6197 0.2917 0.0886 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node65</FOR>
+      <GIVEN>node26</GIVEN>
+     <TABLE>0.7732 0.0371 0.1897 0.0769 0.1322 0.7909 0.1588 0.3871 0.4541 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node66</FOR>
+      <GIVEN>node80</GIVEN>
+     <TABLE>0.0888 0.2367 0.6745 0.3147 0.434 0.2513 0.0221 0.977 9.0E-4 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node67</FOR>
+      <GIVEN>node87</GIVEN>
+     <TABLE>0.4999 0.06 0.4401 0.1879 0.3021 0.51 0.0147 0.6002 0.3851 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node68</FOR>
+      <GIVEN>node88</GIVEN>
+      <GIVEN>node47</GIVEN>
+      <GIVEN>node67</GIVEN>
+     <TABLE>0.2779 0.3966 0.3255 0.1829 0.5798 0.2373 0.093 0.3377 0.5693 0.121 0.6451 0.2339 0.7569 0.0171 0.226 0.3203 0.0493 0.6304 0.1119 0.1043 0.7838 0.3631 0.4525 0.1844 0.4095 0.1235 0.467 0.6084 0.0874 0.3042 0.1824 0.5166 0.301 0.1923 0.7009 0.1068 0.152 0.3284 0.5196 0.2961 0.4547 0.2492 0.0042 0.4449 0.5509 0.4289 0.4593 0.1118 0.4875 0.0909 0.4216 0.2836 0.2285 0.4879 0.8008 0.1056 0.0936 0.1602 0.8047 0.0351 0.0893 0.1687 0.742 0.4073 0.3066 0.2861 0.5333 0.4019 0.0648 0.1973 0.0322 0.7705 0.7309 0.0968 0.1723 0.6594 0.1509 0.1897 0.4542 0.3835 0.1623 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node69</FOR>
+      <GIVEN>node3</GIVEN>
+      <GIVEN>node14</GIVEN>
+      <GIVEN>node43</GIVEN>
+     <TABLE>0.3171 0.408 0.2749 0.1296 0.8702 2.0E-4 0.3878 0.2899 0.3223 0.2987 0.396 0.3053 0.5429 0.101 0.3561 0.5619 0.1117 0.3264 0.5569 0.1819 0.2612 0.1699 0.767 0.0631 0.2531 0.6251 0.1218 0.3773 0.5501 0.0726 0.4403 0.2855 0.2742 0.3166 0.1566 0.5268 0.0054 0.5532 0.4414 0.3117 0.2015 0.4868 0.0625 0.744 0.1935 0.6271 0.0056 0.3673 0.4346 0.5393 0.0261 0.3345 0.4169 0.2486 0.2741 0.5423 0.1836 0.0108 4.0E-4 0.9888 0.3902 0.0816 0.5282 0.0339 0.3408 0.6253 0.3777 0.1744 0.4479 0.4702 0.3169 0.2129 0.3653 0.3812 0.2535 0.0975 0.3823 0.5202 0.0681 0.5596 0.3723 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node70</FOR>
+      <GIVEN>node59</GIVEN>
+     <TABLE>0.9355 0.0031 0.0614 0.2123 0.5577 0.23 0.1714 0.7228 0.1058 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node71</FOR>
+      <GIVEN>node13</GIVEN>
+     <TABLE>0.0364 0.7235 0.2401 0.2174 0.3048 0.4778 0.2253 0.4102 0.3645 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node72</FOR>
+      <GIVEN>node71</GIVEN>
+     <TABLE>0.0268 0.1959 0.7773 0.4798 0.0938 0.4264 0.4181 0.5673 0.0146 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node73</FOR>
+      <GIVEN>node96</GIVEN>
+     <TABLE>0.271 0.2351 0.4939 0.3031 0.1445 0.5524 0.3942 0.4795 0.1263 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node74</FOR>
+      <GIVEN>node81</GIVEN>
+     <TABLE>0.1311 0.6267 0.2422 0.1534 0.2606 0.586 0.1769 0.096 0.7271 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node75</FOR>
+      <GIVEN>node79</GIVEN>
+      <GIVEN>node70</GIVEN>
+      <GIVEN>node27</GIVEN>
+     <TABLE>0.0037 0.0483 0.948 0.122 0.2382 0.6398 0.1679 0.4509 0.3812 0.038 0.1564 0.8056 0.3055 0.0494 0.6451 0.482 0.0577 0.4603 0.027 0.4005 0.5725 0.0474 0.3026 0.65 0.2933 0.5231 0.1836 0.2625 0.2679 0.4696 0.8827 0.0236 0.0937 0.039 0.1942 0.7668 0.3737 0.0026 0.6237 0.3206 0.6769 0.0025 0.1615 0.678 0.1605 0.0505 0.6817 0.2678 0.0241 0.9656 0.0103 0.0508 0.7336 0.2156 0.3514 0.4435 0.2051 0.0887 0.1274 0.7839 0.2659 0.5162 0.2179 0.0561 0.663 0.2809 0.8427 0.013 0.1443 0.58 0.3572 0.0628 0.8874 0.023 0.0896 0.0836 0.6367 0.2797 0.7008 0.0453 0.2539 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node76</FOR>
+      <GIVEN>node10</GIVEN>
+     <TABLE>0.1605 0.1594 0.6801 0.304 0.1143 0.5817 0.0357 0.4854 0.4789 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node77</FOR>
+      <GIVEN>node22</GIVEN>
+      <GIVEN>node76</GIVEN>
+     <TABLE>0.1302 0.7026 0.1672 0.4308 0.0672 0.502 0.3048 0.6056 0.0896 0.428 0.0059 0.5661 0.2143 0.5763 0.2094 0.0658 0.7012 0.233 0.3516 0.2288 0.4196 0.7518 0.1719 0.0763 0.7703 0.0498 0.1799 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node78</FOR>
+     <TABLE>0.4893 0.3185 0.1922 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node79</FOR>
+     <TABLE>0.1973 0.645 0.1577 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node80</FOR>
+     <TABLE>0.7041 0.2849 0.011 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node81</FOR>
+     <TABLE>0.7524 0.1362 0.1114 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node82</FOR>
+      <GIVEN>node99</GIVEN>
+     <TABLE>0.1584 0.5893 0.2523 0.1385 0.4295 0.432 0.2283 0.3563 0.4154 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node83</FOR>
+      <GIVEN>node6</GIVEN>
+      <GIVEN>node89</GIVEN>
+     <TABLE>0.5495 0.2993 0.1512 0.5031 0.2072 0.2897 0.1133 0.8645 0.0222 0.3092 0.6703 0.0205 0.2204 0.2941 0.4855 0.4955 0.395 0.1095 0.7571 0.2188 0.0241 0.3643 0.5767 0.059 0.3366 0.5292 0.1342 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node84</FOR>
+     <TABLE>0.1089 0.1484 0.7427 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node85</FOR>
+      <GIVEN>node54</GIVEN>
+     <TABLE>0.4405 0.4221 0.1374 0.6881 0.0118 0.3001 0.5721 0.1345 0.2934 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node86</FOR>
+     <TABLE>0.0654 0.9161 0.0185 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node87</FOR>
+     <TABLE>0.4693 0.135 0.3957 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node88</FOR>
+     <TABLE>0.4144 0.3882 0.1974 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node89</FOR>
+      <GIVEN>node30</GIVEN>
+     <TABLE>0.1371 0.1021 0.7608 0.801 0.0716 0.1274 0.6931 0.1074 0.1995 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node90</FOR>
+      <GIVEN>node19</GIVEN>
+     <TABLE>0.7097 0.101 0.1893 0.3193 0.3147 0.366 0.3221 0.2427 0.4352 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node91</FOR>
+     <TABLE>0.3633 0.4631 0.1736 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node92</FOR>
+      <GIVEN>node5</GIVEN>
+     <TABLE>0.0056 0.7298 0.2646 0.0764 0.5782 0.3454 0.2529 0.3398 0.4073 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node93</FOR>
+     <TABLE>0.1994 0.4522 0.3484 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node94</FOR>
+     <TABLE>0.2552 0.3369 0.4079 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node95</FOR>
+     <TABLE>0.6577 0.175 0.1673 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node96</FOR>
+     <TABLE>0.1402 0.0484 0.8114 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node97</FOR>
+     <TABLE>0.3982 0.4233 0.1785 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node98</FOR>
+      <GIVEN>node44</GIVEN>
+      <GIVEN>node2</GIVEN>
+      <GIVEN>node29</GIVEN>
+     <TABLE>0.6314 0.2302 0.1384 0.5786 0.0175 0.4039 0.4842 0.227 0.2888 0.298 0.3453 0.3567 0.1132 0.0935 0.7933 0.1701 0.4918 0.3381 0.387 0.5351 0.0779 0.1195 0.6943 0.1862 0.3144 0.0414 0.6442 0.6118 0.1183 0.2699 0.545 0.117 0.338 0.5331 0.3435 0.1234 0.917 0.0546 0.0284 0.1563 0.2619 0.5818 0.3749 0.3813 0.2438 0.0963 0.5629 0.3408 0.206 0.3074 0.4866 0.3266 0.3816 0.2918 0.6422 0.1314 0.2264 0.0506 0.699 0.2504 0.3883 0.4997 0.112 0.0996 0.6982 0.2022 0.415 0.4109 0.1741 0.4217 0.3621 0.2162 0.8891 0.0375 0.0734 0.5869 0.1028 0.3103 0.2765 0.0704 0.6531 </TABLE>
+ </DEFINITION>
+ <DEFINITION>
+      <FOR>node99</FOR>
+     <TABLE>0.1627 0.8143 0.023 </TABLE>
+ </DEFINITION>
+</NETWORK>
+</BIF>
