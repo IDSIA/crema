@@ -1,8 +1,13 @@
 package ch.idsia.crema.learning;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.SingleInference;
+import ch.idsia.crema.inference.JoinInference;
 import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
+import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -11,36 +16,46 @@ import ch.idsia.crema.model.GraphicalModel;
  */
 public class ExpectationMaximization {
 
-    private final SingleInference<BayesianFactor, BayesianFactor> inferenceEngine;
+    private final JoinInference<BayesianFactor, BayesianFactor> inferenceEngine;
     private GraphicalModel<BayesianFactor> model;
 
+    private TIntIntMap[] observations;
+
     public ExpectationMaximization(GraphicalModel<BayesianFactor> model,
-                                   SingleInference<BayesianFactor, BayesianFactor> inferenceEngine) {
+                                   JoinInference<BayesianFactor, BayesianFactor> inferenceEngine,
+                                   TIntIntMap[] observations) {
         this.model = model;
         this.inferenceEngine = inferenceEngine;
+        this.observations = observations;
     }
 
-    public void execute() {
+    public void execute() throws InterruptedException {
 
         // expectation stage
         int[] variables = model.getVariables();
-
-        BayesianFactor[] counts = new BayesianFactor[variables.length];
-
+        TIntObjectMap<BayesianFactor> counts = new TIntObjectHashMap<>();
         for (int variable : variables) {
-            int[] parents = model.getParents(variable);
+            counts.put(variable, new BayesianFactor(model.getFactor(variable).getDomain(), false));
+        }
 
-            counts[variable].p(0, 0).and(0, 1).set(0.1);
+        for (TIntIntMap observation : observations) {
 
+            for (int variable : variables) {
+                int[] parents = model.getParents(variable);
+                int[] unobservedParents = ArraysUtil.removeAllFromSortedArray(parents, observation.keys());
+                int[] query = ArraysUtil.addToSortedArray(unobservedParents, variable);
 
+                BayesianFactor bf1 = inferenceEngine.apply(model, query, observation);
+                BayesianFactor bf2 = bf1.divide(bf1.marginalize(variable));
 
-            for (int parent : parents) {
+                IndexIterator it = counts.get(variable).getDomain().getIterator(bf2.getDomain(), observation);
 
-
-
+                for (double d : bf2.getData()) {
+                    int index = it.next();
+                    double x = counts.get(variable).getValueAt(index) + d;
+                    counts.get(variable).setValueAt(x, index);
+                }
             }
-
-
         }
 
         System.out.println();

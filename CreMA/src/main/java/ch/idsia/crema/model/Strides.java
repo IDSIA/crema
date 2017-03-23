@@ -1,30 +1,31 @@
 package ch.idsia.crema.model;
 
-import java.util.Arrays;
-import java.util.stream.IntStream;
-
+import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
+import gnu.trove.map.TIntIntMap;
 import org.apache.commons.math3.util.FastMath;
 
-import ch.idsia.crema.utility.IndexIterator;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * An implementation of the domain that stores also the strides of the
  * variables. As in every other place we assume a global ordering of the
  * variables.
- * 
+ *
  * <p>
  * Methods are provided to get an index iterator that traverses the domain in a
  * non sorted way. This is mostly used for user interfaces where the user might
  * want a specific ordering (for instance the conditioning order: var |
  * conditioning)
  * </p>
- * 
+ *
  * <p>
  * While the class should be considered unmutable, when the factor is part of a
  * model and we delete a variable from it, the indices of the variables will be
  * updated accordingly.
  * </p>
- * 
+ *
  * @author davidhuber
  */
 public final class Strides implements Domain {
@@ -45,7 +46,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * create the domain based on the list of variables and their cardinality
-	 * 
+	 *
 	 * @param variables
 	 * @param sizes
 	 */
@@ -65,7 +66,7 @@ public final class Strides implements Domain {
 	/**
 	 * Creates a stride with a single variable excluded. Note that the variable
 	 * must not be missing in the provided domain.
-	 * 
+	 *
 	 * @deprecated please use {@link Strides#removeAt(Strides, int...)
 	 * @param domain
 	 * @param var
@@ -163,7 +164,7 @@ public final class Strides implements Domain {
 	/**
 	 * Get the offset of the specified variable states using the strides of this
 	 * object.
-	 * 
+	 *
 	 * @param states
 	 * @return
 	 */
@@ -177,7 +178,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * get the offset for the var/state pairs specified in the params
-	 * 
+	 *
 	 * @param vars
 	 * @param states
 	 * @return
@@ -198,7 +199,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * Get the stride of the specified variable in the domain.
-	 * 
+	 *
 	 * @param variable
 	 * @return
 	 */
@@ -209,7 +210,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * Get the stride of the variable of the domain at the specified offset.
-	 * 
+	 *
 	 * @param index
 	 * @return
 	 */
@@ -224,7 +225,7 @@ public final class Strides implements Domain {
 	/**
 	 * Create an iterator over an enlarged domain but with same strides and
 	 * sizes.
-	 * 
+	 *
 	 * @param over
 	 * @return
 	 */
@@ -258,12 +259,12 @@ public final class Strides implements Domain {
 	/**
 	 * Create an iterator over an smaller domain with same strides and sizes and
 	 * 1 (one) variable set to a specific state.
-	 * 
+	 *
 	 * @param variable
 	 *            the variable
 	 * @param state
 	 *            the desired state
-	 * 
+	 *
 	 * @return an iterator
 	 */
 	@Deprecated
@@ -287,13 +288,13 @@ public final class Strides implements Domain {
 	/**
 	 * Create an iterator over an smaller domain with same strides and sizes and
 	 * some variables set to specific states.
-	 * 
+	 *
 	 * @param vars
 	 *            ordered list of variables that the states are for (MUST EXIST
 	 *            IN DOMAIN).
 	 * @param states
 	 *            list of states for the variable in variables
-	 * 
+	 *
 	 * @return an iterator
 	 */
 	public IndexIterator getFiteredIndexIterator(final int[] vars, final int[] states) {
@@ -323,7 +324,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * A helper method that will reuse a domain if it is of some specific type
-	 * 
+	 *
 	 * @param domain
 	 * @return
 	 */
@@ -343,7 +344,7 @@ public final class Strides implements Domain {
 	/**
 	 * Get an IndexIterator for this stride object with a different order for
 	 * the variables.
-	 * 
+	 *
 	 * @param unsorted_vars
 	 *            - int[] the new order for the variables
 	 * @return an iterator
@@ -380,7 +381,7 @@ public final class Strides implements Domain {
 	 * Remove some variable from this domain. The returned domain will have his
 	 * own strides. Variables do not necessarily have to be part of this domain.
 	 * Convenience method that calls the {@link Strides#remove(int...)}
-	 * 
+	 *
 	 * @param toremove
 	 *            Strides - the domain to be removed from the first domain
 	 * @return the new, possibly smaller, domain
@@ -392,7 +393,7 @@ public final class Strides implements Domain {
 	/**
 	 * Remove some variable from this domain. The returned domain will have his
 	 * own strides. Variables do not necessarily have to be part of "domain".
-	 * 
+	 *
 	 * @param domain
 	 * @param toremove
 	 * @return
@@ -446,7 +447,7 @@ public final class Strides implements Domain {
 	/**
 	 * Create a new Strides object result of the intersection of this domain
 	 * with the given one.
-	 * 
+	 *
 	 * @param domain2
 	 *            another domain
 	 * @return the intersection of domain1 and domain2
@@ -504,18 +505,18 @@ public final class Strides implements Domain {
 
 	/**
 	 * Create a new Strides result of the union of domain1 and domain2.
-	 * 
+	 *
 	 * <p>
 	 * The implementation requires ordering but allows overlaps
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * As we can assume ordering we will traverse the domains in parallel (pt1
 	 * in the code) and copy to a target domain the values. When one of the
 	 * domains reached it's end the remaing variable of the other domain can be
 	 * added to the union in bulk (pt2 in code).
 	 * </p>
-	 * 
+	 *
 	 * @param domain1
 	 * @param domain2
 	 * @return
@@ -579,7 +580,7 @@ public final class Strides implements Domain {
 	/**
 	 * Creates a stride with one or more variables excluded. Note that the
 	 * variable must not be missing in the provided domain.
-	 * 
+	 *
 	 * @param offsets
 	 */
 	public Strides removeAt(int... offset) {
@@ -591,7 +592,7 @@ public final class Strides implements Domain {
 		for (int i = 0; i < this.size; ++i) {
 			while (o < offset.length && offset[o] < i)
 				++o;
-			
+
 			if (o < offset.length && offset[o] == i)
 				continue;
 
@@ -605,10 +606,10 @@ public final class Strides implements Domain {
 	/**
 	 * Get an iterator of this domain with the specified variables lock in state
 	 * 0.
-	 * 
+	 *
 	 * Convenience method when the target domain is this domain. same as calling
 	 * getIterator(this, locked);
-	 * 
+	 *
 	 * @param locked
 	 * @return
 	 */
@@ -624,7 +625,7 @@ public final class Strides implements Domain {
 	 * also present in str, variable in the locked array will be counted but
 	 * fixed at zero. This allows us to keep them in the target domain while not
 	 * moving.
-	 * 
+	 *
 	 * @param str
 	 *            the target domain
 	 * @param locked
@@ -671,7 +672,7 @@ public final class Strides implements Domain {
 	 * <p>
 	 * Note that the variables must be ordered!
 	 * </p>
-	 * 
+	 *
 	 * @param data
 	 * @return
 	 */
@@ -690,15 +691,15 @@ public final class Strides implements Domain {
 		return new Strides(variables, sizes);
 	}
 
-	
-	
+
+
 	/**
 	 * Define a stride as a sequence of variable/size pairs
 	 */
 	public static Strides var(int var, int size) {
 		return new Strides(new int[]{var}, new int[]{size});
 	}
-	
+
 	/**
 	 * Helper to allow concatenation of var().add().add()
 	 * @param var
@@ -719,28 +720,28 @@ public final class Strides implements Domain {
 		System.arraycopy(sizes, 0, newsize, 0, pos);
 		newsize[pos] = size;
 		System.arraycopy(sizes, pos, newsize, pos + 1, sizes.length - pos);
-		
+
 		return new Strides(newvar, newsize);
 	}
-	
+
 	/**
 	 * The empty stride
 	 */
 	public static Strides EMPTY = Strides.as();
-	
+
 	/**
-	 * Return an empty Stride with no variables and a single entry in the strides array. This 
+	 * Return an empty Stride with no variables and a single entry in the strides array. This
 	 * only stride value is set to 1.
-	 *  
+	 *
 	 * @return {@link Strides} - the empty stride
 	 */
 	public static Strides empty() {
 		return EMPTY;
 	}
 
-	
+
 	/**
-	 * Return a new Stride sorted by the variables. 
+	 * Return a new Stride sorted by the variables.
 	 * @return
 	 */
 	public Strides sort() {
@@ -750,4 +751,20 @@ public final class Strides implements Domain {
 		return new Strides(variables, sizes);
 	}
 
+	public IndexIterator getIterator(Strides domain, TIntIntMap observation) {
+		int[] states = new int[size];
+
+		for (int var : observation.keys()) {
+			int index = indexOf(var);
+			if (index >= 0) {
+			    states[index] = observation.get(var);
+            }
+		}
+
+        int offset = getOffset(states);
+        IndexIterator it = getIterator(domain, ArraysUtil.sort(observation.keys()));
+        it.offset(offset);
+
+        return it;
+	}
 }

@@ -7,6 +7,8 @@ import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
+import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Test;
 
 /**
@@ -19,38 +21,67 @@ public class ExpectationMaximizationTest {
     GraphicalModel<BayesianFactor> model;
 
     @Test
-    public void testModelLoading() {
+    public void testModelLoading() throws InterruptedException {
 
         model = new SparseModel<>();
 
-        int hA = model.addVariable(2);
-        int hB = model.addVariable(2);
-        int hC = model.addVariable(2);
+        int Pr = model.addVariable(2);
+        int Bt = model.addVariable(2);
+        int Ut = model.addVariable(2);
 
-        BayesianFactor bfA = new BayesianFactor(model.getDomain(hA), false);
-        BayesianFactor bfB = new BayesianFactor(model.getDomain(hA, hB), false);
-        BayesianFactor bfC = new BayesianFactor(model.getDomain(hA, hB, hC), false);
+        BayesianFactor bfPr = new BayesianFactor(model.getDomain(Pr), false);
+        BayesianFactor bfBt = new BayesianFactor(model.getDomain(Pr, Bt), false);
+        BayesianFactor bfUt = new BayesianFactor(model.getDomain(Pr, Ut), false);
 
-        model.setFactor(hA, bfA);
-        model.setFactor(hB, bfB);
-        model.setFactor(hC, bfC);
+        bfPr.setData(new double[]{0.5, 0.5});
+        bfBt.setData(new double[]{0.5, 0.5, 0.5, 0.5});
+        bfUt.setData(new double[]{0.5, 0.5, 0.5, 0.5});
+
+        model.setFactor(Pr, bfPr);
+        model.setFactor(Bt, bfBt);
+        model.setFactor(Ut, bfUt);
 
         MinFillOrdering mfo = new MinFillOrdering();
         int[] elimSeq = mfo.apply(model);
 
-        ExpectationMaximization em = new ExpectationMaximization(model, (model, query, observations) -> {
+        int yes = 0, no = 1, pos = 0, neg = 1;
+        TIntIntMap[] observations = new TIntIntMap[]{
+                new TIntIntHashMap() {{
+                    put(Bt, pos);
+                    put(Ut, pos);
+                }},
+                new TIntIntHashMap() {{
+                    put(Pr, yes);
+                    put(Bt, neg);
+                    put(Ut, pos);
+                }},
+                new TIntIntHashMap() {{
+                    put(Pr, yes);
+                    put(Bt, pos);
+                }},
+                new TIntIntHashMap() {{
+                    put(Pr, yes);
+                    put(Bt, pos);
+                    put(Ut, neg);
+                }},
+                new TIntIntHashMap() {{
+                    put(Bt, neg);
+                }},
+        };
+
+        ExpectationMaximization em = new ExpectationMaximization(model, (model, query, obs) -> {
             CutObserved co = new CutObserved();
-            GraphicalModel<BayesianFactor> coModel = co.execute(model, observations);
+            GraphicalModel<BayesianFactor> coModel = co.execute(model, obs);
 
             RemoveBarren rb = new RemoveBarren();
-            GraphicalModel<BayesianFactor> infModel = rb.execute(coModel, query, observations);
+            GraphicalModel<BayesianFactor> infModel = rb.execute(coModel, query, obs);
             rb.filter(elimSeq);
 
             FactorVariableElimination<BayesianFactor> fve = new FactorVariableElimination<>(elimSeq);
             fve.setNormalize(true);
 
-            return fve.apply(infModel, query, observations);
-        });
+            return fve.apply(infModel, query, obs);
+        }, observations);
 
         em.execute();
     }

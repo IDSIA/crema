@@ -127,7 +127,15 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	}
 
 	public double getValue(int... states) {
-		double value = data[domain.getOffset(states)];
+		return getValueAt(domain.getOffset(states));
+	}
+
+	public void setValueAt(double d, int index) {
+		data[index] = log ? FastMath.log(d) : d;
+	}
+
+	public double getValueAt(int index) {
+		double value = data[index];
 		return log ? FastMath.exp(value) : value;
 	}
 
@@ -168,6 +176,11 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 		public void set(double v) {
 			BayesianFactor.this.setValue(v, states);
+		}
+
+		public void add(double v) {
+			double x = BayesianFactor.this.getValue(states);
+			BayesianFactor.this.setValue(x + v, states);
 		}
     }
 	

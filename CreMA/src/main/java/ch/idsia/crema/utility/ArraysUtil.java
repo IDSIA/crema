@@ -1,14 +1,13 @@
 package ch.idsia.crema.utility;
 
+import gnu.trove.list.array.TIntArrayList;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.math3.util.FastMath;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.math3.util.FastMath;
-
-import gnu.trove.list.array.TIntArrayList;
 
 public class ArraysUtil {
 
@@ -110,7 +109,13 @@ public class ArraysUtil {
 		return result;
 	}
 
-	private static class X {
+	public static int[] sort(int[] base) {
+		int[] copy = base.clone();
+		Arrays.sort(copy);
+		return copy;
+	}
+
+    private static class X {
 		public final int pos;
 		public final int val;
 
