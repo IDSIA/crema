@@ -1,9 +1,9 @@
 package ch.idsia.crema.factor.credal.vertex.algebra;
 
-import java.util.Arrays;
-
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.math.Operation;
+
+import java.util.Arrays;
 
 public class DefaultSeparateAlgebra implements Operation<VertexFactor> {
 

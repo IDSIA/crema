@@ -1,11 +1,5 @@
 package ch.idsia.crema.alessandro;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.Test;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -17,6 +11,11 @@ import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.search.ISearch;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class AlexsTests {
 

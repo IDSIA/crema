@@ -1,15 +1,14 @@
 package ch.idsia.crema.model.io;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
-import org.junit.Test;
-
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.user.credal.VertexSet;
+import org.junit.Test;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 public class XMLTest {
 	@Test

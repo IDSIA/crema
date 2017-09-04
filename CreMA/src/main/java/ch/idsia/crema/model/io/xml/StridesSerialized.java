@@ -1,8 +1,8 @@
 package ch.idsia.crema.model.io.xml;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import ch.idsia.crema.model.Strides;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class StridesSerialized extends XmlAdapter<Strides, String> {
 

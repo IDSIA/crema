@@ -1,9 +1,9 @@
 package ch.idsia.crema.model.generator;
 
-import java.util.Random;
-
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
+
+import java.util.Random;
 //import MersenneTwister;
 
 public class DFGenerator {

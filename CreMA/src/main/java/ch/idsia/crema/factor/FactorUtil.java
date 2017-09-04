@@ -1,10 +1,10 @@
 package ch.idsia.crema.factor;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import ch.idsia.crema.model.math.Operation;
 import ch.idsia.crema.utility.ArraysUtil;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * A utility class with function to help with factors. This methods are not part

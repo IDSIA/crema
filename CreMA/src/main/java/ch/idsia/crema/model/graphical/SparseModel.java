@@ -1,13 +1,5 @@
 package ch.idsia.crema.model.graphical;
 
-import java.util.Arrays;
-import java.util.function.BiFunction;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.NoSuchVariableException;
@@ -21,6 +13,13 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import java.util.Arrays;
+import java.util.function.BiFunction;
 
 /**
  * A graphical model that will not update indices when a variable is deleted.

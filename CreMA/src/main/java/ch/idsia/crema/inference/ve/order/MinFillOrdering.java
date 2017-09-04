@@ -1,19 +1,12 @@
 package ch.idsia.crema.inference.ve.order;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-
+import ch.idsia.crema.model.GraphicalModel;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.util.VertexPair;
 
-import ch.idsia.crema.model.GraphicalModel;
+import java.util.*;
 
 /**
  * Clique creation and ordering strategy generator based in the Minimum Fill In Algorithm.

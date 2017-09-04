@@ -1,24 +1,19 @@
 package ch.idsia.crema.factor.bayesian;
 
-import java.util.Arrays;
-
-import org.apache.commons.math3.util.FastMath;
-
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.model.Domain;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.vertex.Collector;
-import ch.idsia.crema.model.vertex.Filter;
-import ch.idsia.crema.model.vertex.LogMarginal;
-import ch.idsia.crema.model.vertex.Marginal;
-import ch.idsia.crema.model.vertex.VertexOperation;
+import ch.idsia.crema.model.vertex.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import org.apache.commons.math3.util.FastMath;
+
+import java.util.Arrays;
 
 /**
  * Conversion of values to Log is hardcoded. 
- * In the {@link ExplicitBayesianFactor} class
- * the conversion can be specified with an instance of {@link VertexOperation}.
+ * In the  ExplicitBayesianFactor class we used
+ * the conversion to be specifiable with an instance of {@link VertexOperation}.
  *
  * @author david
  */

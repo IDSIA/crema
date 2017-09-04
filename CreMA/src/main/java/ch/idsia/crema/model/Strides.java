@@ -1,11 +1,10 @@
 package ch.idsia.crema.model;
 
-import java.util.Arrays;
-import java.util.stream.IntStream;
-
+import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.util.FastMath;
 
-import ch.idsia.crema.utility.IndexIterator;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * An implementation of the domain that stores also the strides of the

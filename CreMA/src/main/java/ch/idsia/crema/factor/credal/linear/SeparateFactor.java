@@ -1,10 +1,11 @@
 package ch.idsia.crema.factor.credal.linear;
 
-import javax.xml.bind.annotation.XmlAttribute;
-
+import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.model.Strides;
+
+import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * An abstract implementation of the {@link SeparateFactor} interface.
@@ -13,7 +14,7 @@ import ch.idsia.crema.model.Strides;
  * @param <F>
  *            the managed type. This is usually the type itself.
  */
-public abstract class SeparateFactor<F extends SeparateFactor<F>> implements GenericFactor, SeparatelySpecified<F> {
+public abstract class SeparateFactor<F extends SeparateFactor<F>> implements FilterableFactor<F>, GenericFactor, SeparatelySpecified<F> {
 
 	protected Strides dataDomain;
 

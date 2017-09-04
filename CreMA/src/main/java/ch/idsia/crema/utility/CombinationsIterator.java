@@ -1,11 +1,6 @@
 package ch.idsia.crema.utility;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Iterator over the possible combinations of the elements of the arrays given at construction time.

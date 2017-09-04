@@ -1,8 +1,8 @@
 package ch.idsia.crema.factor.credal.set;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import ch.idsia.crema.model.Strides;
+
+import javax.xml.bind.annotation.XmlTransient;
 
 public class IntervalSet extends AbstractSet {
 	private double[] lowers;

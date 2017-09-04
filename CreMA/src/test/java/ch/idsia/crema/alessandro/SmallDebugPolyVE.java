@@ -1,7 +1,5 @@
 package ch.idsia.crema.alessandro;
 
-import java.util.Arrays;
-
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.sepolyve.SePolyVE;
 import ch.idsia.crema.model.Strides;
@@ -9,6 +7,8 @@ import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+
+import java.util.Arrays;
 
 public class SmallDebugPolyVE {
 

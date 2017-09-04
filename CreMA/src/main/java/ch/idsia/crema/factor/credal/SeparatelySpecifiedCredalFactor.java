@@ -1,10 +1,10 @@
 package ch.idsia.crema.factor.credal;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.set.CredalSet;
 import ch.idsia.crema.model.Strides;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * A separately specified credal set where there is a set of something for each instantiation

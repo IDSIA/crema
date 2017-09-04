@@ -1,13 +1,13 @@
 package ch.idsia.crema.factor.credal.vertex.generator;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.logging.Level;
-
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.javasoft.polco.adapter.Options;
 import ch.javasoft.polco.adapter.PolcoAdapter;
 import ch.javasoft.xml.config.XmlConfigException;
+
+import java.util.Arrays;
+import java.util.Random;
+import java.util.logging.Level;
 
 public class CNGenerator {
 	static Random random = new Random(0);

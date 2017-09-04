@@ -1,9 +1,8 @@
 package ch.idsia.crema.solver;
 
+import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
-import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 
 public interface LinearFractionalSolver {
 	public void loadProblem(ExtensiveLinearFactor factor, GoalType type);

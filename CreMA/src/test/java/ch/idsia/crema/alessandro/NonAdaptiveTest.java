@@ -1,10 +1,8 @@
 package ch.idsia.crema.alessandro;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
 
 /**
  * Author:  Claudio "Dna" Bonesana

@@ -1,10 +1,5 @@
 package ch.idsia.crema.alessandro;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -19,6 +14,11 @@ import ch.idsia.crema.search.ISearch;
 import ch.idsia.crema.search.impl.GreedyWithRandomRestart;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class AdaptiveTestsFastRevised2 {
 

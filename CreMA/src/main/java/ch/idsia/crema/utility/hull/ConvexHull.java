@@ -1,15 +1,14 @@
 package ch.idsia.crema.utility.hull;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
+import com.github.quickhull3d.Point3d;
+import com.github.quickhull3d.QuickHull3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;
 import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
 
-import com.github.quickhull3d.Point3d;
-import com.github.quickhull3d.QuickHull3D;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class ConvexHull {
 	/**

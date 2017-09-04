@@ -1,8 +1,8 @@
 package ch.idsia.crema.inference.approxlp2;
 
-import java.util.Arrays;
-
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+
+import java.util.Arrays;
 
 public class Move {
 	private double scorecache;

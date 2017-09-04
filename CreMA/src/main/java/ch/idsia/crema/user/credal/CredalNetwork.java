@@ -1,13 +1,12 @@
 package ch.idsia.crema.user.credal;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import ch.idsia.crema.user.core.Variable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import ch.idsia.crema.user.core.Variable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @XmlRootElement(name="cn")
 @XmlAccessorType(XmlAccessType.FIELD)

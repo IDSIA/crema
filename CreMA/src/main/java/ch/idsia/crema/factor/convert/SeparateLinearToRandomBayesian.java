@@ -1,9 +1,5 @@
 package ch.idsia.crema.factor.convert;
 
-import java.util.Random;
-
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
 import ch.idsia.crema.model.Converter;
@@ -11,6 +7,9 @@ import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.SolverFactory;
 import ch.idsia.crema.utility.ArraysUtil;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+
+import java.util.Random;
 
 /**
  * <p>Converts a Separately Specified Linear Credal Factor ({@link SeparateLinearFactor})

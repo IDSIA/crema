@@ -1,14 +1,10 @@
 package ch.idsia.crema.alessandro;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.*;
 
 /**
  * Author:  Claudio "Dna" Bonesana

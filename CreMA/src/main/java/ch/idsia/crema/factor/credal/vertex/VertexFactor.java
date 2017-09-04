@@ -1,16 +1,16 @@
 package ch.idsia.crema.factor.credal.vertex;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.credal.CredalFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.SeparateIndexIterator;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * A Separately specified Vertex based credal factor. TODO: Data is currenlty

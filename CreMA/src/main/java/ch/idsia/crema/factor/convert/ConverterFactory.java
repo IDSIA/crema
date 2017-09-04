@@ -1,15 +1,10 @@
 package ch.idsia.crema.factor.convert;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ServiceLoader;
-
-import org.apache.commons.math3.util.Pair;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.Converter;
+import org.apache.commons.math3.util.Pair;
+
+import java.util.*;
 
 /**
  * TODO should we use dependency injection?

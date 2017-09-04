@@ -1,12 +1,5 @@
 package ch.idsia.crema.alessandro;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -17,6 +10,13 @@ import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.search.ISearch;
 import ch.idsia.crema.search.impl.GreedyWithRandomRestart;
 import ch.idsia.crema.utility.ArraysUtil;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class AdaptiveTestsForDavid {
 

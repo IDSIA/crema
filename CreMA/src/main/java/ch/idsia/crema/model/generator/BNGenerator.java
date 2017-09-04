@@ -19,7 +19,14 @@ package ch.idsia.crema.model.generator;
 //         jaime.ide@poli.usp.br or jaime.ide@gmail.com
 //===============================================================
 
+import org.apache.commons.math3.random.MersenneTwister;
+
 import java.io.DataInputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Date;
+import java.util.Random;
+import java.util.StringTokenizer;
 
 /* The BNGenerator distribution is free software; you can
 * redistribute it and/or modify it under the terms of the GNU General
@@ -36,40 +43,37 @@ import java.io.DataInputStream;
 * along with the BNGenerator distribution. If not, write to the Free
 * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-
 //This class generate a random and uniform Bayesian network.
 //For that, we have 2 steps:
 //1) Generate the structure of the BN
 //2) Generate the distribution function of each node.
-
 //The remark "// testUnif" at the end of a line signify that this comand line
 //is for testing uniformity of the generator. It is a experimental test and just for
 //developers.
-
-/** Version 0.3 notes **********************************
-* 1) Little bug fixed: int seed= (int)(100000*random.nextFloat());
-* 2) Two new constraints were added
-*/
+/**
+ * Version 0.3 notes **********************************
+ * 1) Little bug fixed: int seed= (int)(100000*random.nextFloat());
+ * 2) Two new constraints were added
+ * Version 0.4 notes **********************************
+ * 1) You can fix the number of states (values) with option >> -fixed_maxVal
+ * 2) It is possible to generate sample of random networks from a fixed structure. >> -generateFrom graph.xml
+ * Because of this, you need the BNJ package to load the network.
+ * 3) Now, BNGenerator generates Credal Networks!!! It is also a CNGenerator.
+ * It is possible to generate credal networks in "CIF"(Credal Interchange Format) format.
+ * A structure is randomly generated and a set of vertex is generated for each node.
+ */
 /** Version 0.4 notes **********************************
-* 1) You can fix the number of states (values) with option >> -fixed_maxVal      
-* 2) It is possible to generate sample of random networks from a fixed structure. >> -generateFrom graph.xml
-*       Because of this, you need the BNJ package to load the network.
-* 3) Now, BNGenerator generates Credal Networks!!! It is also a CNGenerator.
-*       It is possible to generate credal networks in "CIF"(Credal Interchange Format) format.
-*       A structure is randomly generated and a set of vertex is generated for each node.       
-*/
-
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.util.Date;
-import java.util.Random;
-import java.util.StringTokenizer;
+ * 1) You can fix the number of states (values) with option >> -fixed_maxVal
+ * 2) It is possible to generate sample of random networks from a fixed structure. >> -generateFrom graph.xml
+ *       Because of this, you need the BNJ package to load the network.
+ * 3) Now, BNGenerator generates Credal Networks!!! It is also a CNGenerator.
+ *       It is possible to generate credal networks in "CIF"(Credal Interchange Format) format.
+ *       A structure is randomly generated and a set of vertex is generated for each node.
+ */
 //import embayes.data.*;
 //import embayes.data.impl.*;
 //import embayes.infer.*;
 //import embayes.learn.*;
-
-import org.apache.commons.math3.random.MersenneTwister;
 
 //to generate from xml file
 //import BNJ.impl.*;

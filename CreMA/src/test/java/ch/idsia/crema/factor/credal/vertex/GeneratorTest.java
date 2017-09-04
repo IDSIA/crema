@@ -1,8 +1,7 @@
 package ch.idsia.crema.factor.credal.vertex;
 
-import org.junit.Test;
-
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
+import org.junit.Test;
 
 public class GeneratorTest {
 

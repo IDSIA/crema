@@ -1,20 +1,14 @@
 package ch.idsia.crema.factor.credal.symbolic.serialize;
 
-import java.util.HashMap;
-import java.util.StringJoiner;
-
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.factor.symbolic.CombinedFactor;
-import ch.idsia.crema.factor.symbolic.FilteredFactor;
-import ch.idsia.crema.factor.symbolic.MarginalizedFactor;
-import ch.idsia.crema.factor.symbolic.PriorFactor;
-import ch.idsia.crema.factor.symbolic.Serializer;
-import ch.idsia.crema.factor.symbolic.SymbolicFactor;
+import ch.idsia.crema.factor.symbolic.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+
+import java.util.HashMap;
+import java.util.StringJoiner;
 
 public class NLSerializer implements Serializer {
 	

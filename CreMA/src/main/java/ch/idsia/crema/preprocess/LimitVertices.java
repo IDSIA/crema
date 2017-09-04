@@ -1,12 +1,12 @@
 package ch.idsia.crema.preprocess;
 
-import java.util.Random;
-
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.hull.LPConvexHull;
+
+import java.util.Random;
 
 public class LimitVertices {
 	public SparseModel<VertexFactor> apply(SparseModel<VertexFactor> model, int max) {

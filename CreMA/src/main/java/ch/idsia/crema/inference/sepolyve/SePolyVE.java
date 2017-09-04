@@ -1,8 +1,5 @@
 package ch.idsia.crema.inference.sepolyve;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
 import ch.idsia.crema.model.GraphicalModel;
@@ -10,6 +7,9 @@ import ch.idsia.crema.model.precondition.NetworkReduction;
 import ch.idsia.crema.search.impl.DepthFirst;
 import ch.idsia.crema.search.impl.Utils;
 import gnu.trove.map.TIntIntMap;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Precise Separately specified polytree inference algorithm.

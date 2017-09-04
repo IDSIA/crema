@@ -1,14 +1,13 @@
 package ch.idsia.crema.factor.convert;
 
-import java.util.Arrays;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.DomainBuilder;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Arrays;
 
 public class SeparateToExtensive {
 	@Test

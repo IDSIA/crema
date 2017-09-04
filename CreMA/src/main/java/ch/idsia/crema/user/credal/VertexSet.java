@@ -1,8 +1,7 @@
 package ch.idsia.crema.user.credal;
 
-import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 
 @XmlRootElement(name="set")
 public class VertexSet  {

@@ -1,13 +1,5 @@
 package ch.idsia.crema.alessandro;
 
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.stream.Collectors;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.VertexToInterval;
@@ -28,6 +20,14 @@ import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.search.ISearch;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class RandomNetworks {
 	private static final String FIELD_SEP = ",";

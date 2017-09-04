@@ -1,16 +1,15 @@
 package ch.idsia.crema.inference.approxlp2;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.search.impl.GreedyWithRandomRestart;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ApproxLP2 {
 

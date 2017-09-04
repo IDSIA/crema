@@ -1,13 +1,12 @@
 package ch.idsia.crema.solver.lpsolve;
 
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.LinearConstraintSet;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.solver.LinearSolver;
 import lpsolve.LpSolve;
 import lpsolve.LpSolveException;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.LinearConstraintSet;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 public class Simplex implements LinearSolver {
 	private LpSolve lp;

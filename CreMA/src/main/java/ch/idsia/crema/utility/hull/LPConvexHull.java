@@ -1,14 +1,13 @@
 package ch.idsia.crema.utility.hull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import ch.idsia.crema.solver.commons.Simplex;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.linear.Relationship;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
-import ch.idsia.crema.solver.commons.Simplex;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LPConvexHull {
 	public static double[][] add(double[][] current, double[] newpoint) {

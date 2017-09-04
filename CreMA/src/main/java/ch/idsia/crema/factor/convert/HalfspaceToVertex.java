@@ -1,14 +1,5 @@
 package ch.idsia.crema.factor.convert;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Level;
-
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.Relationship;
-
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.set.HCredalSet;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
@@ -16,6 +7,14 @@ import ch.idsia.crema.model.Converter;
 import ch.javasoft.polco.adapter.Options;
 import ch.javasoft.polco.adapter.PolcoAdapter;
 import ch.javasoft.xml.config.XmlConfigException;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.Relationship;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
 
 public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, VertexFactor> {
 

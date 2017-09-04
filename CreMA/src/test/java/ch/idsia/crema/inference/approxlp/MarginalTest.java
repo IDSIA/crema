@@ -1,15 +1,14 @@
 package ch.idsia.crema.inference.approxlp;
 
-import static org.junit.Assert.assertArrayEquals;
-
-import org.junit.Test;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
 
 public class MarginalTest {
 

@@ -1,10 +1,5 @@
 package ch.idsia.crema.inference.ve;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import ch.idsia.crema.factor.FactorUtil;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -16,6 +11,11 @@ import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operation;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class VariableElimination<F extends GenericFactor> {
 	private int[] sequence;

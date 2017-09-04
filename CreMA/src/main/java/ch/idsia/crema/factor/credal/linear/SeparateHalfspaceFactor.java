@@ -1,16 +1,11 @@
 package ch.idsia.crema.factor.credal.linear;
 
+import ch.idsia.crema.model.Strides;
+import org.apache.commons.math3.optim.PointValuePair;
+import org.apache.commons.math3.optim.linear.*;
+
 import java.util.ArrayList;
 import java.util.Random;
-
-import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.LinearConstraintSet;
-import org.apache.commons.math3.optim.linear.LinearObjectiveFunction;
-import org.apache.commons.math3.optim.linear.Relationship;
-import org.apache.commons.math3.optim.linear.SimplexSolver;
-
-import ch.idsia.crema.model.Strides;
 
 /**
  * A separately specified Credal factor that has a list of linear constrains for each 

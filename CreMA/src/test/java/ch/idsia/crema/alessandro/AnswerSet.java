@@ -1,11 +1,11 @@
 package ch.idsia.crema.alessandro;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Author:  Claudio "Dna" Bonesana

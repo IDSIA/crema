@@ -1,7 +1,5 @@
 package ch.idsia.crema.inference.approxlp2;
 
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
@@ -11,6 +9,7 @@ import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.search.ObjectiveFunction;
 import gnu.trove.map.TIntIntMap;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 
 abstract class Manager implements ObjectiveFunction<Move, Solution> {

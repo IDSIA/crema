@@ -1,17 +1,13 @@
 package ch.idsia.crema.factor.credal.vertex;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.vertex.Collector;
-import ch.idsia.crema.model.vertex.Filter;
-import ch.idsia.crema.model.vertex.LogMarginal;
-import ch.idsia.crema.model.vertex.LogVertexOperation;
-import ch.idsia.crema.model.vertex.Marginal;
+import ch.idsia.crema.model.vertex.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVertexFactor> {
 

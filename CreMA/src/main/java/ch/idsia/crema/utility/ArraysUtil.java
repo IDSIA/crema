@@ -1,14 +1,13 @@
 package ch.idsia.crema.utility;
 
+import gnu.trove.list.array.TIntArrayList;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.math3.util.FastMath;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.math3.util.FastMath;
-
-import gnu.trove.list.array.TIntArrayList;
 
 public class ArraysUtil {
 

@@ -1,10 +1,5 @@
 package ch.idsia.crema.inference.approxlp;
 
-import java.util.Arrays;
-
-import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
@@ -16,6 +11,10 @@ import ch.idsia.crema.solver.LinearFractionalSolver;
 import ch.idsia.crema.solver.commons.FractionalSolver;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+
+import java.util.Arrays;
 
 public class Posterior extends Manager {
 

@@ -1,13 +1,9 @@
 package ch.idsia.crema.inference.ve;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
 import ch.idsia.crema.factor.GenericFactor;
 import gnu.trove.map.hash.TIntObjectHashMap;
+
+import java.util.*;
 
 public class FactorQueue<F extends GenericFactor> implements Iterator<ArrayList<F>> {
 	

@@ -1,15 +1,10 @@
 package ch.idsia.crema.alessandro;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintStream;
+import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
+
+import java.io.*;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
 
 public class AdaptiveFileTools {
 

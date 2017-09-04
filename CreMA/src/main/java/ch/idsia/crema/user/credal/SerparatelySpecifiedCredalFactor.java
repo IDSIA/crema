@@ -1,8 +1,8 @@
 package ch.idsia.crema.user.credal;
 
-import java.util.ArrayList;
-
 import ch.idsia.crema.user.core.Variable;
+
+import java.util.ArrayList;
 
 public class SerparatelySpecifiedCredalFactor<CS extends CredalSet> {
 	private Variable variable;

@@ -1,15 +1,14 @@
 package ch.idsia.crema.factor.credal.linear;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import ch.idsia.crema.model.Strides;
 import org.apache.commons.math3.linear.OpenMapRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.linear.Relationship;
 
-import ch.idsia.crema.model.Strides;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class IntervalFactor extends SeparateFactor<IntervalFactor> implements SeparateLinearFactor<IntervalFactor> {
 	private double[][] lower;
@@ -137,9 +136,12 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 		double[][] new_lower = new double[new_size][];
 		double[][] new_upper = new double[new_size][];
 
-		for (int i = 0; i < block_count; ++i) {
+		int i = 0;
+		while(i * next_stride < lower.length) {
+		//for (int i = 0; i < block_count; ++i) {
 			System.arraycopy(lower, i * next_stride + state_offset, new_lower, i * var_stride , var_stride);
 			System.arraycopy(upper, i * next_stride + state_offset, new_upper, i * var_stride , var_stride);
+			i++;
 		}
 		
 		return new IntervalFactor(dataDomain, new_domain, new_lower, new_upper);

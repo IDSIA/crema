@@ -1,20 +1,19 @@
 package ch.idsia.crema.solver.commons;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-
+import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.model.graphical.SparseModel;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.linear.Relationship;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.junit.Test;
 
-import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class FractionalSolverTest {
 
