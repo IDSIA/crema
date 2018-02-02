@@ -19,6 +19,8 @@ public class StochasticSampling {
 	private BayesianFactor[] factors;
 	private SparseModel<BayesianFactor> model;
 
+	private TIntIntMap evidence;
+
 	private Random random;
 	private long seed = 42L;
 
@@ -45,6 +47,15 @@ public class StochasticSampling {
 	}
 
 	/**
+	 * Fix some evidence. The provided argument is a map of variable - state associations.
+	 *
+	 * @param evidence the map of observations
+	 */
+	public void setEvidence(TIntIntMap evidence) {
+		this.evidence = evidence;
+	}
+
+	/**
 	 * Algorithm 44 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 *
 	 * @return a map with the computed sampled states over all the variables.
@@ -58,7 +69,14 @@ public class StochasticSampling {
 
 		// sample root nodes
 		for (int root : roots) {
-			int state = sample(factors[root]);
+			// check if the state has evidence, else sample it
+			int state;
+			if (evidence == null || !evidence.containsKey(root)) {
+				state = sample(factors[root]);
+			} else {
+				state = evidence.get(root);
+			}
+
 			map.put(root, state);
 
 			int[] children = model.getChildren(root);
@@ -70,15 +88,21 @@ public class StochasticSampling {
 			TIntSet slack = new TIntHashSet();
 
 			for (int node : nodes.toArray()) {
-				int[] parents = model.getParents(node);
+				int state;
+				// check for evidence in this child node
+				if (evidence == null || !evidence.containsKey(node)) {
+					int[] parents = model.getParents(node);
 
-				// filter out parents state
-				BayesianFactor factor = factors[node];
-				for (int parent : parents) {
-					factor = factor.filter(parent, map.get(parent));
+					// filter out parents state
+					BayesianFactor factor = factors[node];
+					for (int parent : parents) {
+						factor = factor.filter(parent, map.get(parent));
+					}
+
+					state = sample(factor);
+				} else {
+					state = evidence.get(node);
 				}
-
-				int state = sample(factor);
 				map.put(node, state);
 
 				int[] children = model.getChildren(node);

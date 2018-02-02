@@ -3,6 +3,7 @@ package ch.idsia.crema.inference.sampling;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
 import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,15 +14,14 @@ import org.junit.Test;
  */
 public class StochasticSamplingTest {
 
-	SparseModel<BayesianFactor> model;
-	BayesianFactor[] f;
+	private StochasticSampling ss;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 
 		// This model is based on "Modeling and Reasoning with BN", Dawiche, p.378 and following
-		model = new SparseModel<>();
-		f = new BayesianFactor[5];
+		SparseModel<BayesianFactor> model = new SparseModel<>();
+		BayesianFactor[] f = new BayesianFactor[5];
 
 		// Winter?
 		int A = model.addVariable(2);
@@ -51,17 +51,32 @@ public class StochasticSamplingTest {
 		model.addParent(E, C);
 		f[E] = new BayesianFactor(model.getDomain(C, E), false);
 		f[E].setData(new int[]{E, C}, new double[]{.7, .3, 0, 1});
+
+		ss = new StochasticSampling(model, f);
+		ss.setSeed(42);
 	}
 
 	@Test
 	public void stochasticSample() {
-		StochasticSampling ss = new StochasticSampling(model, f);
-		ss.setSeed(42);
+		for (int i = 0; i < 10; i++) {
+			TIntIntMap x = ss.simulateBN();
+			System.out.println(x);
+		}
+
+		// TODO: complete with assertion
+	}
+
+	@Test
+	public void stochasticSampleWithEvidence() {
+		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{1}));
 
 		for (int i = 0; i < 10; i++) {
 			TIntIntMap x = ss.simulateBN();
-
 			System.out.println(x);
+
+			assert (x.get(0) == 1);
 		}
+
+		// TODO: complete with assertion
 	}
 }
