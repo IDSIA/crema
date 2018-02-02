@@ -20,7 +20,11 @@ public interface GraphicalModel<F extends GenericFactor> extends Model<F> {
 	int[] getParents(int variable);
 
 	int[] getChildren(int variable);
-	
+
+	int[] getRoots();
+
+	int[] getLeaves();
+
 	F getFactor(int variable);
 	
 	void setFactor(int variable, F factor);

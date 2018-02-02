@@ -9,6 +9,7 @@ import ch.idsia.crema.model.change.DomainChange;
 import ch.idsia.crema.model.change.NullChange;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.iterator.TIntObjectIterator;
+import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -25,7 +26,7 @@ import java.util.function.BiFunction;
 /**
  * A graphical model that will not update indices when a variable is deleted.
  * This is the way to go!!!!
- * 
+ *
  * @author david
  */
 @XmlRootElement(name = "model")
@@ -63,7 +64,7 @@ public class SparseModel<F extends GenericFactor> implements GraphicalModel<F> {
 
 	/**
 	 * Create the directed model using the specified network implementation.
-	 * 
+	 *
 	 * @param method
 	 */
 	public SparseModel(Graph method) {
@@ -95,18 +96,17 @@ public class SparseModel<F extends GenericFactor> implements GraphicalModel<F> {
 //			new_model.factors.put(iterator.key(), (F) iterator.value().copy());
 //		}
 //		return new_model;
-		
+
 		// lets use convert to make the copy
-		return this.convert((f,v)->(F) f.copy());
+		return this.convert((f, v) -> (F) f.copy());
 	}
 
 	/**
 	 * Make a copy of the network while transforming the factors. All variable
 	 * labels/ID will remain the same.
-	 * 
-	 * @param converter
-	 *            a BiFunction that will take the source factor, the variable
-	 *            and return a new factor
+	 *
+	 * @param converter a BiFunction that will take the source factor, the variable
+	 *                  and return a new factor
 	 * @return the new model
 	 */
 	public <R extends GenericFactor> SparseModel<R> convert(BiFunction<F, Integer, R> converter) {
@@ -240,6 +240,38 @@ public class SparseModel<F extends GenericFactor> implements GraphicalModel<F> {
 	@Override
 	public int[] getChildren(int variable) {
 		return network.getChildren(variable);
+	}
+
+	@Override
+	public int[] getRoots() {
+		int[] variables = getVariables();
+
+		// TODO: stream or TIntArray?
+		// Arrays.stream(variables).filter(v -> getParents(v).length == 0).toArray()
+
+		TIntArrayList list = new TIntArrayList();
+		for (int variable : variables) {
+			if (getParents(variable).length == 0)
+				list.add(variable);
+		}
+
+		return list.toArray();
+	}
+
+	@Override
+	public int[] getLeaves() {
+		int[] variables = getVariables();
+
+		// TODO: see TODO in method getRoots()
+		// Arrays.stream(variables).filter(v -> getChildren(v).length == 0).toArray()
+
+		TIntArrayList list = new TIntArrayList();
+		for (int variable : variables) {
+			if (getChildren(variable).length == 0)
+				list.add(variable);
+		}
+
+		return list.toArray();
 	}
 
 	@Override
