@@ -3,7 +3,9 @@ package ch.idsia.crema.inference.sampling;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
 import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 
@@ -23,6 +25,8 @@ public class StochasticSampling {
 
 	private Random random;
 	private long seed = 42L;
+
+	private long iterations = 1000;
 
 	/**
 	 * Creates a new object based on the given model and array of {@link BayesianFactor}s.
@@ -53,6 +57,15 @@ public class StochasticSampling {
 	 */
 	public void setEvidence(TIntIntMap evidence) {
 		this.evidence = evidence;
+	}
+
+	/**
+	 * Default value is 1000.
+	 *
+	 * @param iterations number of iterations to do during the sampling
+	 */
+	public void setIterations(long iterations) {
+		this.iterations = iterations;
 	}
 
 	/**
@@ -113,6 +126,29 @@ public class StochasticSampling {
 		} while (!nodes.isEmpty());
 
 		return map;
+	}
+
+	public double[] distribution(int query) {
+
+		// TODO: extends to multiple query variables
+
+		TIntObjectMap<double[]> distributions = new TIntObjectHashMap<>();
+
+		for (int variable : model.getVariables()) {
+			int states = model.getDomain(variable).getCombinations();
+
+			distributions.put(variable, new double[states]);
+		}
+
+		for (int i = 0; i < iterations; i++) {
+			TIntIntMap x = simulateBN();
+
+			for (int variable : x.keys()) {
+				distributions.get(variable)[x.get(variable)] += 1.0 / iterations;
+			}
+		}
+
+		return distributions.get(query);
 	}
 
 	/**

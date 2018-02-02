@@ -7,6 +7,8 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
@@ -57,7 +59,7 @@ public class StochasticSamplingTest {
 	}
 
 	@Test
-	public void stochasticSample() {
+	public void sample() {
 		for (int i = 0; i < 10; i++) {
 			TIntIntMap x = ss.simulateBN();
 			System.out.println(x);
@@ -67,7 +69,7 @@ public class StochasticSamplingTest {
 	}
 
 	@Test
-	public void stochasticSampleWithEvidence() {
+	public void sampleWithEvidence() {
 		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{1}));
 
 		for (int i = 0; i < 10; i++) {
@@ -78,5 +80,22 @@ public class StochasticSamplingTest {
 		}
 
 		// TODO: complete with assertion
+	}
+
+	@Test
+	public void sampleDistribution() {
+		System.out.println("P(Rain) =                                     " + Arrays.toString(ss.distribution(2)));
+
+		ss.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1}));
+		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Arrays.toString(ss.distribution(2)));
+
+		ss.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0}));
+		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Arrays.toString(ss.distribution(2)));
+
+		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{1}));
+		System.out.println("P(Rain|Winter = true) =                       " + Arrays.toString(ss.distribution(2)));
+
+		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
+		System.out.println("P(Rain|Winter = false) =                      " + Arrays.toString(ss.distribution(2)));
 	}
 }
