@@ -128,7 +128,15 @@ public class StochasticSampling {
 		return map;
 	}
 
-	public double[] distribution(int query) {
+	/**
+	 * Algorithm 45 from "Modeling and Reasoning with BN", Dawiche, p.385
+	 * <p>
+	 * Use Monte Carlo simulation to estimate the expectation of the direct sampling function.
+	 *
+	 * @param query variable to query
+	 * @return the distribution of probability on the query
+	 */
+	public double[] directSampling(int query) {
 
 		// TODO: extends to multiple query variables
 
@@ -144,7 +152,7 @@ public class StochasticSampling {
 			TIntIntMap x = simulateBN();
 
 			for (int variable : x.keys()) {
-				distributions.get(variable)[x.get(variable)] += 1.0 / iterations;
+				distributions.get(variable)[x.get(variable)] += 1. / iterations;
 			}
 		}
 
@@ -171,5 +179,30 @@ public class StochasticSampling {
 		}
 
 		return i;
+	}
+
+	/**
+	 * Algorithm 46 from "Modeling and Reasoning with BN", Dawiche, p.380
+	 */
+	public void likelihoodWeighting(int query) {
+		if (evidence == null)
+			throw new IllegalArgumentException("Setting the evidence is mandatory!");
+
+		SparseModel<BayesianFactor> N = model.copy();
+
+		// remove connections between node with evidence and parents
+		for (int node : evidence.keys()) {
+			int[] parents = N.getParents(node);
+			for (int parent : parents) {
+				N.removeParent(node, parent);
+			}
+		}
+
+		for (int i = 0; i < iterations; i++) {
+
+			TIntIntMap x = simulateBN();
+			// TODO
+
+		}
 	}
 }
