@@ -98,4 +98,22 @@ public class StochasticSamplingTest {
 		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
 		System.out.println("P(Rain|Winter = false) =                      " + Arrays.toString(ss.directSampling(2)));
 	}
+
+	@Test
+	public void likelihoodWeighting() {
+		ss.setEvidence(new TIntIntHashMap());
+		System.out.println("P(Rain) =                                     " + Arrays.toString(ss.likelihoodWeighting(2)));
+
+		ss.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1}));
+		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Arrays.toString(ss.likelihoodWeighting(2)));
+
+		ss.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0}));
+		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Arrays.toString(ss.likelihoodWeighting(2)));
+
+		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{1}));
+		System.out.println("P(Rain|Winter = true) =                       " + Arrays.toString(ss.likelihoodWeighting(2)));
+
+		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
+		System.out.println("P(Rain|Winter = false) =                      " + Arrays.toString(ss.likelihoodWeighting(2)));
+	}
 }

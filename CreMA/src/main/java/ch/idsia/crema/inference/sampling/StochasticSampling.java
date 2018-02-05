@@ -184,9 +184,11 @@ public class StochasticSampling {
 	/**
 	 * Algorithm 46 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 */
-	public void likelihoodWeighting(int query) {
+	public double[] likelihoodWeighting(int query) {
 		if (evidence == null)
 			throw new IllegalArgumentException("Setting the evidence is mandatory!");
+
+		long n = iterations;
 
 		SparseModel<BayesianFactor> N = model.copy();
 
@@ -198,11 +200,53 @@ public class StochasticSampling {
 			}
 		}
 
-		for (int i = 0; i < iterations; i++) {
+		double P = 0; // P <- 0 {estimate for Pr(e)}
 
-			TIntIntMap x = simulateBN();
-			// TODO
+		// P[x] <- 0 for each value x of variable X in network N {estimate for Pr(x,e)}}
+		TIntObjectMap<double[]> Px = new TIntObjectHashMap<>();
 
+		for (int variable : model.getVariables()) {
+			int states = model.getDomain(variable).getCombinations();
+			Px.put(variable, new double[states]);
 		}
+
+
+		for (int i = 0; i < n; i++) {
+			TIntIntMap x = simulateBN();
+
+			// product of all network parameters theta_e|u where E in _E_ and eu ~ x
+			double W = 1;
+
+			for (int key : evidence.keys()) {
+				BayesianFactor factor = factors[key];
+				for (int parent : model.getParents(key)) {
+					factor = factor.filter(parent, x.get(parent));
+				}
+
+				W *= factor.getValue(evidence.get(key));
+			}
+
+			P += W;
+
+			for (int key : x.keys()) {
+				int state = x.get(key);
+
+				BayesianFactor factor = factors[key];
+				for (int parent : model.getParents(key)) {
+					factor = factor.filter(parent, x.get(parent));
+				}
+
+				Px.get(key)[state] += W;
+			}
+		}
+
+		for (int var : Px.keys()) {
+			double[] d = Px.get(var);
+			for (int i = 0; i < d.length; i++) {
+				d[i] /= P;
+			}
+		}
+
+		return Px.get(query);
 	}
 }
