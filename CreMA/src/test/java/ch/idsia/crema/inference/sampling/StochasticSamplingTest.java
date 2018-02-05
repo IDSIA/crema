@@ -2,12 +2,10 @@ package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -16,13 +14,12 @@ import java.util.Arrays;
  */
 public class StochasticSamplingTest {
 
-	private StochasticSampling ss;
+	SparseModel<BayesianFactor> model;
 
 	@Before
 	public void setUp() {
-
 		// This model is based on "Modeling and Reasoning with BN", Dawiche, p.378 and following
-		SparseModel<BayesianFactor> model = new SparseModel<>();
+		model = new SparseModel<>();
 		BayesianFactor[] f = new BayesianFactor[5];
 
 		// Winter?
@@ -48,72 +45,21 @@ public class StochasticSamplingTest {
 		f[D] = new BayesianFactor(model.getDomain(B, C, D), false);
 		f[D].setData(new int[]{D, B, C}, new double[]{.95, .05, .9, .1, .8, .2, 0, 1});
 
-		// Slipepry Road?
+		// Slippery Road?
 		int E = model.addVariable(2);
 		model.addParent(E, C);
 		f[E] = new BayesianFactor(model.getDomain(C, E), false);
 		f[E].setData(new int[]{E, C}, new double[]{.7, .3, 0, 1});
 
-		ss = new StochasticSampling(model, f);
-		ss.setSeed(42);
+		model.setFactors(f);
 	}
 
-	@Test
-	public void sample() {
-		for (int i = 0; i < 10; i++) {
-			TIntIntMap x = ss.simulateBN();
-			System.out.println(x);
+	public String factorsToString(Collection<BayesianFactor> factors) {
+		StringBuilder sb = new StringBuilder();
+		for (BayesianFactor factor : factors) {
+			sb.append(Arrays.toString(factor.getData()));
 		}
 
-		// TODO: complete with assertion
-	}
-
-	@Test
-	public void sampleWithEvidence() {
-		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{1}));
-
-		for (int i = 0; i < 10; i++) {
-			TIntIntMap x = ss.simulateBN();
-			System.out.println(x);
-
-			assert (x.get(0) == 1);
-		}
-
-		// TODO: complete with assertion
-	}
-
-	@Test
-	public void sampleDistribution() {
-		System.out.println("P(Rain) =                                     " + Arrays.toString(ss.directSampling(2)));
-
-		ss.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1}));
-		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Arrays.toString(ss.directSampling(2)));
-
-		ss.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0}));
-		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Arrays.toString(ss.directSampling(2)));
-
-		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{1}));
-		System.out.println("P(Rain|Winter = true) =                       " + Arrays.toString(ss.directSampling(2)));
-
-		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
-		System.out.println("P(Rain|Winter = false) =                      " + Arrays.toString(ss.directSampling(2)));
-	}
-
-	@Test
-	public void likelihoodWeighting() {
-		ss.setEvidence(new TIntIntHashMap());
-		System.out.println("P(Rain) =                                     " + Arrays.toString(ss.likelihoodWeighting(2)));
-
-		ss.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1}));
-		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Arrays.toString(ss.likelihoodWeighting(2)));
-
-		ss.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0}));
-		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Arrays.toString(ss.likelihoodWeighting(2)));
-
-		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{1}));
-		System.out.println("P(Rain|Winter = true) =                       " + Arrays.toString(ss.likelihoodWeighting(2)));
-
-		ss.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
-		System.out.println("P(Rain|Winter = false) =                      " + Arrays.toString(ss.likelihoodWeighting(2)));
+		return sb.toString();
 	}
 }
