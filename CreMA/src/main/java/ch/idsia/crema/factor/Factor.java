@@ -24,7 +24,7 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * Combine this factor with the provided one and return the 
 	 * result as a new factor.
 	 * 
-	 * @param type
+	 * @param other
 	 * @return
 	 */
 	@Override

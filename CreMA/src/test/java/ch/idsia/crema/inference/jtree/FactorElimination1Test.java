@@ -10,7 +10,7 @@ import org.junit.Test;
  * Project: CreMA
  * Date:    06.02.2018 09:57
  */
-public class FactorEliminationTest {
+public class FactorElimination1Test {
 
 	private SparseModel<BayesianFactor> model;
 
@@ -44,7 +44,7 @@ public class FactorEliminationTest {
 
 	@Test
 	public void FE1() {
-		FactorElimination fe = new FactorElimination();
+		FactorElimination1 fe = new FactorElimination1();
 		fe.setModel(model);
 
 		BayesianFactor q = fe.FE1(C);

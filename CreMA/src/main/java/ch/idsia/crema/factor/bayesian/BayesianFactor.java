@@ -9,6 +9,7 @@ import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Conversion of values to Log is hardcoded. 
@@ -489,4 +490,8 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(domain);
+	}
 }

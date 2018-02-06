@@ -15,7 +15,7 @@ import java.util.List;
  * Project: CreMA
  * Date:    06.02.2018 09:37
  */
-public class FactorElimination implements SingleInference<BayesianFactor, BayesianFactor> {
+public class FactorElimination1 implements SingleInference<BayesianFactor, BayesianFactor> {
 	private GraphicalModel<BayesianFactor> model;
 
 	public void setModel(GraphicalModel<BayesianFactor> model) {
@@ -52,7 +52,6 @@ public class FactorElimination implements SingleInference<BayesianFactor, Bayesi
 
 		return project(fr, query);
 	}
-
 
 	/**
 	 * Finds a {@link BayesianFactor} in S that contains the query variable Q.

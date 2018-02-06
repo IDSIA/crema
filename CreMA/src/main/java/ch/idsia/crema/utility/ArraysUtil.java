@@ -29,7 +29,7 @@ public class ArraysUtil {
 
 	/**
 	 * Append element of second to the end of base and return the new array.
-	 * 
+	 *
 	 * @param base
 	 *            original items (Not Null)
 	 * @param second
@@ -45,7 +45,7 @@ public class ArraysUtil {
 
 	/**
 	 * Append element of second to the end of base and return the new array.
-	 * 
+	 *
 	 * @param base
 	 *            original items (Not Null)
 	 * @param second
@@ -61,7 +61,7 @@ public class ArraysUtil {
 
 	/**
 	 * Remove the element at the specified index from the base array.
-	 * 
+	 *
 	 * @param base
 	 *            original items (Not Null)
 	 * @param index
@@ -78,7 +78,7 @@ public class ArraysUtil {
 
 	/**
 	 * Remove the element at the specified index from the base array.
-	 * 
+	 *
 	 * @param base
 	 *            original items (Not Null)
 	 * @param index
@@ -95,7 +95,7 @@ public class ArraysUtil {
 
 	/**
 	 * Remove the element at the specified index from the base array.
-	 * 
+	 *
 	 * @param base
 	 *            original items (Not Null)
 	 * @param index
@@ -190,7 +190,7 @@ public class ArraysUtil {
 	/**
 	 * Compare two float arrays for almost equality. To be equal, each pair of
 	 * items of the arrays can differ at most by eps.
-	 * 
+	 *
 	 * @param one
 	 *            the first array
 	 * @param two
@@ -217,13 +217,13 @@ public class ArraysUtil {
 	/**
 	 * Compare two double arrays for almost equality. To be equal, each pair of
 	 * items of the arrays can differ at most by eps.
-	 * 
+	 *
 	 * @param one
 	 *            the first array (null is ok, NaN not!)
 	 * @param two
 	 *            the second array (null is ok, NaN not!)
 	 * @param eps
-	 *            the tollerance (0 is ok)
+	 *            the tolerance (0 is ok)
 	 * @return true when the arrays are almost equal
 	 */
 	public static boolean almostEquals(double[] one, double[] two, double eps) {
@@ -249,10 +249,10 @@ public class ArraysUtil {
 	/**
 	 * remove the element from the array assuming the array is sorted. The
 	 * removal is done keeping the ordering. The method returns the new array.
-	 * 
+	 *
 	 * @param array
 	 *            a sorted array (read-only)
-	 * @param other
+	 * @param element
 	 *            the element to be removed
 	 * @return the new array or the original array if the element was not found
 	 */
@@ -290,7 +290,7 @@ public class ArraysUtil {
 	 * Add the element to a sorted array. The method return a new sorted array
 	 * containing the specified element. The original array is returned if the
 	 * element was already part of the array.
-	 * 
+	 *
 	 * @param array
 	 *            the sorted array
 	 * @param element
@@ -307,7 +307,7 @@ public class ArraysUtil {
 
 		// look for existing links
 		int pos = Arrays.binarySearch(array, element);
-		if (pos < 0) { 
+		if (pos < 0) {
 			// convert to the index where the item should be inserted
 			pos = -(pos + 1);
 
@@ -327,7 +327,7 @@ public class ArraysUtil {
 	/**
 	 * Remove the elements from the array assuming both arrays are sorted and
 	 * not null
-	 * 
+	 *
 	 * @param array
 	 * @param elements
 	 * @return
@@ -360,7 +360,7 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Union of two sorted arrays. 
+	 * Union of two sorted arrays.
 	 * @param arr1
 	 * @param arr2
 	 * @return
@@ -374,7 +374,7 @@ public class ArraysUtil {
 		int[] arr_union = new int[max];
 
 		// (pt1) c1 and c2 are the positions in the two domains
-		int c1 = 0; 
+		int c1 = 0;
 		int c2 = 0;
 
 		int t = 0;
@@ -401,7 +401,7 @@ public class ArraysUtil {
 		if (c1 < s1) {
 			System.arraycopy(arr1, c1, arr_union, t, s1 - c1);
 			t += s1 - c1;
-		} else if (c2 < s2) { 
+		} else if (c2 < s2) {
 			System.arraycopy(arr2, c2, arr_union, t, s2 - c2);
 			t += s2 - c2;
 		}
@@ -414,8 +414,8 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Find the sorted intersection of two sorted integer arrays. 
-	 * 
+	 * Find the sorted intersection of two sorted integer arrays.
+	 *
 	 * @param arr1 the first sorted array
 	 * @param arr2 the second sorted array
 	 * @return a sorted array intersection of the first two
@@ -429,7 +429,7 @@ public class ArraysUtil {
 		int[] arr_union = new int[max];
 
 		// (pt1) c1 and c2 are the positions in the two arrays
-		int c1 = 0; 
+		int c1 = 0;
 		int c2 = 0;
 
 		int t = 0;
@@ -463,10 +463,26 @@ public class ArraysUtil {
 	 */
 	public static void roundArrayToTarget(double[] arr, double target, double eps) {
 		double sum = Arrays.stream(arr).sum();
-		if(sum!=target)	
+		if(sum!=target)
 			if (Math.abs(sum-target)<eps)
 				if(sum>target)
 					arr[arr.length-1] -= (sum-target);
 				else
-					arr[arr.length-1] += (target-sum);}}
+					arr[arr.length-1] += (target-sum);
+	}
+
+	/**
+	 * Check if the needle value is contained inside the haystack array.
+	 * @param needle what to search
+	 * @param haystack where to search
+	 * @return true if the array contains the element, otherwise false
+	 */
+	public static boolean contains(int needle, int[] haystack) {
+		for (int hay : haystack) {
+			if (hay == needle)
+				return true;
+		}
+		return false;
+	}
+}
 
