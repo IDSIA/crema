@@ -2,8 +2,8 @@ package ch.idsia.crema.inference.jtree.tree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -11,38 +11,39 @@ import java.util.List;
  * Date:    06.02.2018 14:29
  */
 public class Node {
-	int i;
+	private int index;
 
-	BayesianFactor factors;
+	private BayesianFactor factor;
 
-	List<Node> neighbour = new ArrayList<>();
+	private Set<Integer> neighbour = new HashSet<>();
 
 
-	public Node(int i) {
-		this.i = i;
+	public Node(int index) {
+		this.index = index;
+	}
+
+	public int getIndex() {
+		return index;
 	}
 
 	public void setFactor(BayesianFactor factor) {
-		this.factors = factor;
+		this.factor = factor;
 	}
 
-	public void addNeighbour(Node n) {
-		neighbour.add(n);
+	public Set<Integer> getNeighbour() {
+		return neighbour;
 	}
 
 	public BayesianFactor phi() {
-		return factors;
+		return factor;
 	}
 
 	public int[] vars() {
 		return phi().getDomain().getVariables();
 	}
 
-	public List<Node> neighbours() {
-		return neighbour;
-	}
-
-	public int index() {
-		return i;
+	@Override
+	public String toString() {
+		return "#" + index + " (" + factor + ')';
 	}
 }

@@ -34,16 +34,18 @@ public class FactorElimination2 {
 			Node i = T.remove(root);
 			BayesianFactor phi = i.phi();
 
-			int[] Vi = phi.getDomain().getVariables();
+			int[] Vi = i.vars();
 			int[] V = T.missingVariables(Vi);
 
+			// variables appearing in phi_i but not in remaining tree T
 			for (int v : V) {
 				phi = phi.marginalize(v);
 			}
 
-			Node j = T.get(i.neighbours().get(0).index());
+			// update phi_j by combining with phi_i marginalized over V
+			Node j = T.get(i.getNeighbour().iterator().next());
 			BayesianFactor phiJ = j.phi().combine(phi);
-			j.setFactor(phiJ);
+			T.addNode(j.getIndex(), phiJ);
 		}
 
 		BayesianFactor phiR = T.get(root).phi();

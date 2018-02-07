@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
@@ -14,14 +16,13 @@ import org.junit.Test;
  */
 public class EliminationTreeTest {
 
-	private SparseModel<BayesianFactor> model;
 	private EliminationTree T;
 	private int A, B, C, D, E;
 
 	@Before
 	public void setUp() {
 		// This model is based on "Modeling and Reasoning with BN", Dawiche, p.155
-		model = new SparseModel<>();
+		SparseModel<BayesianFactor> model = new SparseModel<>();
 
 		// Winter?
 		A = model.addVariable(2);
@@ -63,33 +64,35 @@ public class EliminationTreeTest {
 
 		// tree
 		T = new EliminationTree();
-		T.add(A, f[A]);
-		T.add(B, f[B]);
-		T.add(C, f[C]);
-		T.add(D, f[D]);
-		T.add(E, f[E]);
+		T.addNode(A, f[A]);
+		T.addNode(B, f[B]);
+		T.addNode(C, f[C]);
+		T.addNode(D, f[D]);
+		T.addNode(E, f[E]);
 	}
 
 	@Test
 	public void buildEliminationTreeA() {
-		T.add(B, A); // 2-1
-		T.add(A, D); // 1-4
-		T.add(D, C); // 4-3
-		T.add(C, E); // 3-5
+		T.addEdge(B, A); // 2-1
+		T.addEdge(A, D); // 1-4
+		T.addEdge(D, C); // 4-3
+		T.addEdge(C, E); // 3-5
 	}
 
 	@Test
 	public void buildEliminationTreeB() {
-		T.add(B, A); // 2-1
-		T.add(A, C); // 1-3
-		T.add(C, D); // 3-4
-		T.add(C, E); // 3-5
+		T.addEdge(B, A); // 2-1
+		T.addEdge(A, C); // 1-3
+		T.addEdge(C, D); // 3-4
+		T.addEdge(C, E); // 3-5
 	}
 
 	@After
 	public void tearDown() {
 		FactorElimination2 fe2 = new FactorElimination2();
 		fe2.setEliminationTree(T, C);
-		fe2.FE2(C);
+		BayesianFactor f = fe2.FE2(C);
+
+		System.out.println(f + " " + Arrays.toString(f.getData()));
 	}
 }

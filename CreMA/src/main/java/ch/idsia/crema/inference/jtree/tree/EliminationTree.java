@@ -4,12 +4,12 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -19,44 +19,74 @@ import java.util.Set;
  */
 public class EliminationTree {
 
-	private TIntObjectMap<Node> nodes = new TIntObjectHashMap<>();
-	private Set<Edge> edges = new HashSet<>();
+	private Map<Integer, Set<Integer>> neighbour = new HashMap<>();
+	private Map<Integer, BayesianFactor> factors = new HashMap<>();
 
-	private TIntObjectMap<TIntArrayList> neighbour = new TIntObjectHashMap<>();
-
-	public void add(int i, BayesianFactor factor) {
-		Node node = new Node(i);
-		node.setFactor(factor);
-		nodes.put(i, node);
+	/**
+	 * Add a new node to this tree or overwrite an existing one with a new factor.
+	 *
+	 * @param i      the index of the node
+	 * @param factor the factor of this node
+	 */
+	public void addNode(int i, BayesianFactor factor) {
+		factors.put(i, factor);
 	}
 
-	public void add(int i, int j) {
-		Node nj = nodes.get(j);
-		Node ni = nodes.get(i);
+	/**
+	 * Add a new edge between two nodes in this tree. If the nodes does not exist, an {@link IllegalArgumentException}
+	 * will be raised.
+	 *
+	 * @param i the index of the first node
+	 * @param j the index of the second node
+	 */
+	public void addEdge(int i, int j) {
+		if (!factors.containsKey(i)) throw new IllegalArgumentException("Node " + i + " does not exist in this tree");
+		if (!factors.containsKey(j)) throw new IllegalArgumentException("Node " + j + " does not exist in this tree");
 
-		ni.addNeighbour(nj);
-		nj.addNeighbour(ni);
-
-		if (!neighbour.containsKey(i)) neighbour.put(i, new TIntArrayList());
-		if (!neighbour.containsKey(j)) neighbour.put(j, new TIntArrayList());
-
-		neighbour.get(i).add(j);
-		neighbour.get(j).add(i);
-
-		edges.add(new Edge(ni, nj));
+		neighbour.computeIfAbsent(i, x -> new HashSet<>()).add(j);
+		neighbour.computeIfAbsent(j, x -> new HashSet<>()).add(i);
 	}
 
+	/**
+	 * Return a new {@link Node} associated with the given index.
+	 *
+	 * @param i the index of the node
+	 * @return a new object
+	 */
 	public Node get(int i) {
-		return nodes.get(i);
+		Node n = new Node(i);
+		n.setFactor(factors.get(i));
+		n.getNeighbour().addAll(neighbour.get(i));
+
+		return n;
 	}
 
+	/**
+	 * Remove a node from this tree, eliminates its factor and remove from the neighbours the given index.
+	 *
+	 * @param i the index of the node to remove
+	 * @return the removed node
+	 */
 	private Node removeNode(int i) {
+		Node n = get(i);
+
+		factors.remove(i);
 		neighbour.remove(i);
-		return nodes.remove(i);
+		for (Set<Integer> set : neighbour.values()) {
+			set.remove(i);
+		}
+		return n;
 	}
 
+	/**
+	 * Search and remove the first occurrences of a {@link Node} that have a single neighbour and its index is not the
+	 * given root index.
+	 *
+	 * @param r node root to avoid
+	 * @return the first occurrence of a node that has only one neighbour, null if nothing found
+	 */
 	public Node remove(int r) {
-		for (int key : neighbour.keys()) {
+		for (int key : neighbour.keySet()) {
 			if (key == r) continue;
 			if (neighbour.get(key).size() == 1)
 				return removeNode(key);
@@ -65,19 +95,32 @@ public class EliminationTree {
 		return null;
 	}
 
+	/**
+	 * @return current number of node in this tree
+	 */
 	public int size() {
-		return nodes.size();
+		return factors.size();
 	}
 
+	/**
+	 * @return the currents variables covered by this tree
+	 */
 	public int[] vars() {
 		TIntSet vars = new TIntHashSet();
-		for (Node node : nodes.valueCollection()) {
-			vars.addAll(node.vars());
+		for (BayesianFactor factor : factors.values()) {
+			vars.addAll(factor.getDomain().getVariables());
 		}
 
 		return vars.toArray();
 	}
 
+	/**
+	 * Given a set of variables, check if these variables are covered by this tree. Returns an array with the input
+	 * variables that are not covered by this tree.
+	 *
+	 * @param variables variables to search
+	 * @return an array with the variables that are NOT covered by this tree.
+	 */
 	public int[] missingVariables(int[] variables) {
 		TIntList vs = new TIntArrayList();
 		int[] t = vars();
@@ -90,11 +133,13 @@ public class EliminationTree {
 		return vs.toArray();
 	}
 
+	/**
+	 * @return a copy of this tree
+	 */
 	public EliminationTree copy() {
 		EliminationTree copy = new EliminationTree();
-		copy.nodes.putAll(nodes);
-		copy.edges.addAll(edges);
 		copy.neighbour.putAll(neighbour);
+		copy.factors.putAll(factors);
 
 		return copy;
 	}
