@@ -9,10 +9,7 @@ import gnu.trove.set.hash.TIntHashSet;
 import gnu.trove.stack.TIntStack;
 import gnu.trove.stack.array.TIntArrayStack;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -21,10 +18,21 @@ import java.util.Set;
  */
 public class EliminationTree {
 
+	// i -> nodes connected to i
 	private Map<Integer, Set<Integer>> neighbour = new HashMap<>();
+	// i -> factor for i
 	private Map<Integer, BayesianFactor> factors = new HashMap<>();
+	// i -> phi for i
+	private Map<Integer, BayesianFactor> phis = new HashMap<>();
+	// [i, j] -> message from i to j
+	private Map<int[], BayesianFactor> M = new HashMap<>();
+
+	// in and out are referred to the current root node
+	private Map<Integer, List<Integer>> edgesOut = new HashMap<>();
 
 	private TIntSet vars = new TIntHashSet();
+
+	private int root;
 
 	/**
 	 * Add a new node to this tree or overwrite an existing one with a new factor.
@@ -34,6 +42,7 @@ public class EliminationTree {
 	 */
 	public void addNode(int i, BayesianFactor factor) {
 		factors.put(i, factor);
+		phis.put(i, factor);
 		vars.addAll(vars(i));
 	}
 
@@ -53,17 +62,61 @@ public class EliminationTree {
 	}
 
 	/**
+	 * Update the message mechanism by changing the root node. This changes the direction of the edges towards the given node.
+	 *
+	 * @param root the index of the new root node
+	 */
+	public void setRoot(int root) {
+		if (!factors.containsKey(root))
+			throw new IllegalArgumentException("Node " + root + " not found");
+
+		this.root = root;
+
+		// update edges direction for collect/distribute steps
+		edgesOut = new HashMap<>();
+
+		TIntStack stack = new TIntArrayStack();
+		TIntSet visited = new TIntHashSet();
+
+		stack.push(root);
+
+		do {
+			int n = stack.pop();
+			visited.add(n);
+
+			// update edges direction
+			for (Integer i : neighbour.get(n)) {
+				if (visited.contains(i))
+					continue;
+
+				edgesOut.computeIfAbsent(n, x -> new ArrayList<>()).add(i);
+
+				stack.push(i);
+			}
+		} while (stack.size() > 0);
+	}
+
+	/**
 	 * Return a new {@link Node} associated with the given index.
 	 *
 	 * @param i the index of the node
 	 * @return a new object
 	 */
-	public Node get(int i) {
+	public Node getNode(int i) {
 		Node n = new Node(i);
 		n.setFactor(factors.get(i));
 		n.getNeighbour().addAll(neighbour.get(i));
 
 		return n;
+	}
+
+	/**
+	 * @return an array with all the indices of the nodes
+	 */
+	public int[] getNodes() {
+		TIntSet ids = new TIntHashSet();
+		ids.addAll(neighbour.keySet());
+		return ids.toArray();
 	}
 
 	/**
@@ -73,7 +126,7 @@ public class EliminationTree {
 	 * @return the removed node
 	 */
 	private Node removeNode(int i) {
-		Node n = get(i);
+		Node n = getNode(i);
 
 		factors.remove(i);
 		neighbour.remove(i);
@@ -212,5 +265,119 @@ public class EliminationTree {
 		copy.factors.putAll(factors);
 
 		return copy;
+	}
+
+	public BayesianFactor collect() {
+		// collect phi(root)
+		BayesianFactor phi = phis.get(root);
+
+		System.out.println("collecting phi(" + root + ")");
+
+		// for each edge that ends in root
+		for (Integer i : edgesOut.get(root)) {
+			// collect the message from neighbour i to root
+			BayesianFactor M = collect(i, root);
+
+			System.out.println("combine phi(" + root + ") with + M(" + i + ", " + root + ")");
+
+			// combine phi(root) with M(i, root)
+			phi = phi.combine(M);
+		}
+
+		phis.put(root, phi);
+
+		System.out.println("returning phi(" + root + "): " + Arrays.toString(phi.getData()));
+
+		return phi;
+	}
+
+	/**
+	 * The edge for collect is in the form (i -> j)
+	 *
+	 * @param i the current node
+	 * @param j the previous node
+	 * @return the message from i to j
+	 */
+	private BayesianFactor collect(int i, int j) {
+		// collect phi(i)
+		BayesianFactor phi = phis.get(i);
+
+		System.out.println("collecting phi(" + i + ")");
+
+		// if we have outbound edges from this node we need to compute the messages
+		if (edgesOut.containsKey(i)) {
+			// we need the message from the outs nodes
+			List<Integer> outs = edgesOut.get(i);
+
+			System.out.println("edges: " + outs);
+
+			// for each edge that ends in this node
+			for (Integer o : outs) {
+				// collect the message from o to j
+				BayesianFactor M = collect(o, i);
+
+				System.out.println("combine phi(" + i + ") with + M(" + o + ", " + i + ")");
+
+				// combine the message with the current phi
+				phi = phi.combine(M);
+			}
+		}
+
+		phis.put(i, phi);
+
+		// compute the message by projecting phi over the separator(i, j)
+		BayesianFactor Mij = project(phi, separator(i, j));
+		M.put(new int[]{i, j}, Mij);
+
+		System.out.println("returning M(" + i + ", " + j + "): " + Arrays.toString(Mij.getData()));
+
+		return Mij;
+	}
+
+	public void distribute() {
+
+		// j is the destination node for the edge (root -> j)
+		for (Integer j : edgesOut.get(root)) {
+			// compute the message by projecting phi(root) over the separator (root, j)
+			BayesianFactor Mij = project(phis.get(root), separator(root, j));
+			// distribute the message M(root,j) to node j
+			distribute(root, j, Mij);
+		}
+	}
+
+	/**
+	 * @param i   source node
+	 * @param j   destination node (current node)
+	 * @param Mij the message from i to j
+	 */
+	private void distribute(int i, int j, BayesianFactor Mij) {
+		System.out.println("distributing M(" + i + ", " + j + "): " + Arrays.toString(Mij.getData()));
+
+		M.put(new int[]{i, j}, Mij);
+
+		// if we have nodes that need the message from this node j
+		if (edgesOut.containsKey(j)) {
+			List<Integer> outs = edgesOut.get(j);
+			BayesianFactor phi = phis.get(j);
+
+			for (Integer o : outs) {
+				// compute the message from j to o
+				BayesianFactor Mjo = project(phi.combine(Mij), separator(j, o));
+				distribute(j, o, Mjo);
+			}
+		}
+	}
+
+	private BayesianFactor project(BayesianFactor phi, int... Q) {
+
+		TIntSet variables = new TIntHashSet(phi.getDomain().getVariables());
+		for (int q : Q) {
+			variables.remove(q);
+		}
+
+		for (int v : variables.toArray())
+			phi = phi.marginalize(v);
+
+		return phi;
 	}
 }

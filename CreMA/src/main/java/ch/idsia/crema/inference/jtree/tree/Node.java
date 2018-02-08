@@ -16,7 +16,7 @@ public class Node {
 	private BayesianFactor factor;
 
 	private Set<Integer> neighbour = new HashSet<>();
-
+	private Set<Node> incoming = new HashSet<>();
 
 	public Node(int index) {
 		this.index = index;
@@ -40,6 +40,16 @@ public class Node {
 
 	public int[] vars() {
 		return phi().getDomain().getVariables();
+	}
+
+	public BayesianFactor getMessage() {
+		BayesianFactor phi = phi();
+
+		for (Node n : incoming) {
+			phi = phi.combine(n.getMessage());
+		}
+
+		return phi;
 	}
 
 	@Override

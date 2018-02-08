@@ -43,12 +43,12 @@ public class FactorElimination2 {
 			}
 
 			// update phi_j by combining with phi_i marginalized over V
-			Node j = T.get(i.getNeighbour().iterator().next());
+			Node j = T.getNode(i.getNeighbour().iterator().next());
 			BayesianFactor phiJ = j.phi().combine(phi);
 			T.addNode(j.getIndex(), phiJ);
 		}
 
-		BayesianFactor phiR = T.get(root).phi();
+		BayesianFactor phiR = T.getNode(root).phi();
 		return project(phiR, query);
 	}
 

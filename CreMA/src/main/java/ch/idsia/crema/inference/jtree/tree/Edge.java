@@ -1,5 +1,7 @@
 package ch.idsia.crema.inference.jtree.tree;
 
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
@@ -7,10 +9,13 @@ package ch.idsia.crema.inference.jtree.tree;
  */
 public class Edge {
 
-	Node start;
-	Node end;
+	int start;
+	int end;
 
-	public Edge(Node start, Node end) {
+	BayesianFactor messageIn;
+	BayesianFactor messageOut;
+
+	public Edge(int start, int end) {
 		this.start = start;
 		this.end = end;
 	}
