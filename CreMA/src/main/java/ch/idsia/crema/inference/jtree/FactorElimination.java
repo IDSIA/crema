@@ -28,12 +28,10 @@ public class FactorElimination {
 		this.root = root;
 	}
 
-	public BayesianFactor FE(int... query) {
+	public BayesianFactor[] FE(int... query) {
 
 		// for each variable E in evidence
-		for (int e : evidence.keys()) {
-			// TODO: update the evidence on the nodes
-		}
+		tree.setEvidence(evidence);
 
 		// choose a root node r in the tree T
 		tree.setRoot(this.root);
@@ -45,8 +43,10 @@ public class FactorElimination {
 		tree.distribute();
 
 		// foreach node i compute joint marginal Pr(Ci, e)
+
 		for (int i : tree.getNodes()) {
-			// TODO: get the joint marginal for each node
+			// TODO
+			BayesianFactor Pr = tree.compute(i);
 		}
 
 		return null;
