@@ -48,23 +48,23 @@ public class FactorEliminationTest {
 
 		BayesianFactor[] f = new BayesianFactor[11];
 
-		f[A] = new BayesianFactor(model.getDomain(A), new double[]{.6, .4}, false);
-		f[B] = new BayesianFactor(model.getDomain(B), new double[]{.6, .4}, false);
-		f[C] = new BayesianFactor(model.getDomain(A, C), false);
+		f[A] = new BayesianFactor(model.getDomain(A), new double[]{.6, .4});
+		f[B] = new BayesianFactor(model.getDomain(B), new double[]{.6, .4});
+		f[C] = new BayesianFactor(model.getDomain(A, C));
 		f[C].setData(new int[]{C, A}, new double[]{.1, .9, .2, .8});
-		f[D] = new BayesianFactor(model.getDomain(A, B, D), false);
+		f[D] = new BayesianFactor(model.getDomain(A, B, D));
 		f[D].setData(new int[]{D, A, B}, new double[]{.3, .7, .4, .6, .5, .5, .8, .2});
-		f[E] = new BayesianFactor(model.getDomain(E), new double[]{.6, .4}, false);
-		f[F] = new BayesianFactor(model.getDomain(C, D, F), false);
+		f[E] = new BayesianFactor(model.getDomain(E), new double[]{.6, .4});
+		f[F] = new BayesianFactor(model.getDomain(C, D, F));
 		f[F].setData(new int[]{F, C, D}, new double[]{.5, .5, .7, .3, .2, .8, .6, .4});
-		f[G] = new BayesianFactor(model.getDomain(E, G), false);
+		f[G] = new BayesianFactor(model.getDomain(E, G));
 		f[G].setData(new int[]{G, E}, new double[]{.6, .4, .5, .5});
-		f[H] = new BayesianFactor(model.getDomain(H), new double[]{.6, .4}, false);
-		f[I] = new BayesianFactor(model.getDomain(C, I), false);
+		f[H] = new BayesianFactor(model.getDomain(H), new double[]{.6, .4});
+		f[I] = new BayesianFactor(model.getDomain(C, I));
 		f[I].setData(new int[]{I, C}, new double[]{.1, .9, .8, .2});
-		f[J] = new BayesianFactor(model.getDomain(F, G, J), false);
+		f[J] = new BayesianFactor(model.getDomain(F, G, J));
 		f[J].setData(new int[]{J, F, G}, new double[]{.2, .8, .3, .7, .6, .4, .5, .5});
-		f[K] = new BayesianFactor(model.getDomain(G, H, K), false);
+		f[K] = new BayesianFactor(model.getDomain(G, H, K));
 		f[K].setData(new int[]{K, G, H}, new double[]{.4, .6, .8, .2, .5, .5, .7, .3});
 
 		model.setFactors(f);
@@ -98,7 +98,7 @@ public class FactorEliminationTest {
 	@Test
 	public void testMessagePassing() {
 		FactorElimination fe = new FactorElimination();
-		fe.setEvidence(new TIntIntHashMap());
+		fe.setEvidence(new TIntIntHashMap(new int[]{A, B}, new int[]{1, 0}));
 		fe.setTree(T);
 		fe.setRoot(G);
 		fe.FE(G);

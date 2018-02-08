@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Conversion of values to Log is hardcoded. 
+ * Conversion of values to Log is hardcoded.
  * In the {@link ExplicitBayesianFactor} class
  * the conversion can be specified with an instance of {@link VertexOperation}.
  *
@@ -42,6 +42,18 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		this.log = log;
 	}
 
+	public BayesianFactor(Domain domain) {
+		this(domain, false);
+	}
+
+	public BayesianFactor(int[] domain, int[] sizes) {
+		this(domain, sizes, false);
+	}
+
+	public BayesianFactor(Strides stride, double[] data) {
+		this(stride, data, false);
+	}
+
 	/**
 	 * Factors are only mutable in their data. The domain should not change in
 	 * time. We can therefore use the original domain.
@@ -57,7 +69,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 	/**
 	 * Set the CPT's data specifying a custom ordering used in the data
-	 * 
+	 *
 	 * @see ch.idsia.credo.model.bayesian.CPT#setData(int[], double[])
 	 */
 	public void setData(final int[] domain, double[] data) {
@@ -142,12 +154,12 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 	public class Helper extends Number {
 		private int[] states ;
-		
+
 		public Helper(int left_var, int state) {
-			
+
 			and(left_var, state);
 		}
-		
+
 		public Helper given(int var, int state) {
 			// store the info
 			return and(var, state);
@@ -184,25 +196,25 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 			BayesianFactor.this.setValue(x + v, states);
 		}
     }
-	
+
 	public Helper p(int var, int state) {
 		return new Helper(var, state);
 	}
-	
+
 	/**
 	 * Get the value of a single parameter in the bayesian factor identified by the instantiation
 	 * provided as a string. Ex: p("0=1 | 1=3, 2=4")
-	 * 
-	 * @param def the instantiation string 
-	 * @return the parameter's values 
+	 *
+	 * @param def the instantiation string
+	 * @return the parameter's values
 	 */
 	public double p(String def) {
 		def = def.replaceAll("\\s", "");
 		String[] steps = def.split("[\\|\\,]");
 		if (steps.length != getDomain().getSize()) throw new IllegalArgumentException("need spec of a single probability");
-		
+
 		int[] states = new int[getDomain().getSize()];
-		
+
 		for (String step : steps) {
 			String[] parts = step.split("=");
 			int var = Integer.parseInt(parts[0]);
@@ -230,7 +242,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	/**
 	 * Reduce the domain by removing a variable and selecting the specified
 	 * state.
-	 * 
+	 *
 	 * @param variable
 	 *            the variable to be filtered out
 	 * @param state
@@ -247,13 +259,13 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 * Marginalize a variable out of the factor. This corresponds to sum all
 	 * parameters that differ only in the state of the marginalized variable.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * If this factor represent a Conditional Probability Table you should only
 	 * marginalize variables on the right side of the conditioning bar. If so,
 	 * there is no need for further normalization.
 	 * </p>
-	 * 
+	 *
 	 * @param variable
 	 *            the variable to be summed out of the CPT
 	 * @return the new CPT with the variable marginalized out.
@@ -262,7 +274,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	public BayesianFactor marginalize(int variable) {
 		int offset = domain.indexOf(variable);
 		if (offset == -1) return this;
-		
+
 		if (log)
 			return collect(offset, new LogMarginal(domain.getSizeAt(offset), domain.getStrideAt(offset)));
 		else
@@ -331,7 +343,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 	/**
 	 * The specialized method that avoids the cast of the input variable.
-	 * 
+	 *
 	 * <p>
 	 * This implementation uses long values for strides, sizes and indices,
 	 * allowing for combined operations. Increasing the index is, for instance,
@@ -340,7 +352,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 * most architectures are 64 bit, this should give a tiny performance
 	 * improvement.
 	 * </p>
-	 * 
+	 *
 	 * @param factor
 	 * @return
 	 */
@@ -401,7 +413,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	/**
 	 * divide this factor by the provided one. This assumes that the domain of
 	 * the given factor is a subset of this one's.
-	 * 
+	 *
 	 * @param factor
 	 * @return
 	 */
@@ -453,20 +465,19 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return new BayesianFactor(domain, result, log);
 	}
 
-	
 	/**
 	 * Factor normalization
-	 * 
+	 *
 	 */
 	public BayesianFactor normalize(int... given) {
 		BayesianFactor div = this;
 		for (int m : ArraysUtil.removeAllFromSortedArray(domain.getVariables(), given)) {
 			div = div.marginalize(m);
 		}
-		
+
 		return divide(div);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "P(" + Arrays.toString(domain.getVariables()) + ")";
@@ -475,14 +486,14 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	public final double log(double val) {
 		return FastMath.log(val);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof BayesianFactor)) return false;
-		
+
 		BayesianFactor other = (BayesianFactor) obj;
 		if (!Arrays.equals(domain.getVariables(), other.getDomain().getVariables())) return false;
-		
+
 		if (isLog() == other.isLog()) {
 			return ArraysUtil.almostEquals(data, other.data, 0.00000001);
 		} else {
