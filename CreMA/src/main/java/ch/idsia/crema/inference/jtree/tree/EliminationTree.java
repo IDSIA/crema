@@ -6,6 +6,8 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
+import gnu.trove.stack.TIntStack;
+import gnu.trove.stack.array.TIntArrayStack;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +24,8 @@ public class EliminationTree {
 	private Map<Integer, Set<Integer>> neighbour = new HashMap<>();
 	private Map<Integer, BayesianFactor> factors = new HashMap<>();
 
+	private TIntSet vars = new TIntHashSet();
+
 	/**
 	 * Add a new node to this tree or overwrite an existing one with a new factor.
 	 *
@@ -30,6 +34,7 @@ public class EliminationTree {
 	 */
 	public void addNode(int i, BayesianFactor factor) {
 		factors.put(i, factor);
+		vars.addAll(vars(i));
 	}
 
 	/**
@@ -131,6 +136,71 @@ public class EliminationTree {
 		}
 
 		return vs.toArray();
+	}
+
+	/**
+	 * @param i node to visit
+	 * @return the variables covered by node i
+	 */
+	public int[] vars(int i) {
+		return factors.get(i).getDomain().getVariables();
+	}
+
+	/**
+	 * A separator defines a set of variables for each edge in an elimination tree.
+	 *
+	 * @param i first node
+	 * @param j second node
+	 * @return the separator between two nodes
+	 */
+	public int[] separator(int i, int j) {
+		int[] SIJ = exploreSeparator(i, j);
+		int[] SJI = exploreSeparator(j, i);
+
+		// TODO: cache the results?
+
+		return ArraysUtil.intersection(SIJ, SJI);
+	}
+
+	private int[] exploreSeparator(int i, int j) {
+		TIntSet separator = new TIntHashSet();
+
+		TIntStack nodeToVisit = new TIntArrayStack();
+		TIntSet nodeVisited = new TIntHashSet();
+
+		nodeToVisit.push(i);
+
+		while (nodeToVisit.size() > 0) {
+			int n = nodeToVisit.pop();
+
+			separator.addAll(vars(n));
+			nodeVisited.add(n);
+
+			for (Integer x : neighbour.get(n)) {
+				if (!nodeVisited.contains(x) && x != j)
+					nodeToVisit.push(x);
+			}
+		}
+
+		return ArraysUtil.sort(separator.toArray());
+	}
+
+	/**
+	 * A cluster defines a set of variables for each node in the tree.
+	 *
+	 * @param i node in the tree
+	 * @return the cluster associated with the node
+	 */
+	public int[] cluster(int i) {
+
+		TIntSet cluster = new TIntHashSet();
+
+		cluster.addAll(vars(i));
+		for (Integer j : neighbour.get(i)) {
+			cluster.addAll(separator(i, j));
+		}
+
+		return ArraysUtil.sort(cluster.toArray());
 	}
 
 	/**

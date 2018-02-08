@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.jtree.tree;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.jtree.FactorElimination2;
 import ch.idsia.crema.model.graphical.SparseModel;
-import org.junit.After;
+import ch.idsia.crema.utility.ArraysUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,28 +71,75 @@ public class EliminationTreeTest {
 		T.addNode(E, f[E]);
 	}
 
-	@Test
-	public void buildEliminationTreeA() {
+	private void buildEliminationTreeA(EliminationTree T) {
 		T.addEdge(B, A); // 2-1
 		T.addEdge(A, D); // 1-4
 		T.addEdge(D, C); // 4-3
 		T.addEdge(C, E); // 3-5
 	}
 
-	@Test
-	public void buildEliminationTreeB() {
+	private void buildEliminationTreeB(EliminationTree T) {
 		T.addEdge(B, A); // 2-1
 		T.addEdge(A, C); // 1-3
 		T.addEdge(C, D); // 3-4
 		T.addEdge(C, E); // 3-5
 	}
 
-	@After
-	public void tearDown() {
-		FactorElimination2 fe2 = new FactorElimination2();
-		fe2.setEliminationTree(T, C);
-		BayesianFactor f = fe2.FE2(C);
+	private BayesianFactor factorElimination(EliminationTree TA, int Q) {
+		FactorElimination2 fe2A = new FactorElimination2();
+		fe2A.setEliminationTree(TA, Q);
+		return fe2A.FE2(Q);
+	}
 
-		System.out.println(f + " " + Arrays.toString(f.getData()));
+	@Test
+	public void testFE2() {
+		EliminationTree TA = T.copy();
+		EliminationTree TB = T.copy();
+
+		buildEliminationTreeA(TA);
+		buildEliminationTreeB(TB);
+
+		BayesianFactor fA = factorElimination(TA, C);
+		BayesianFactor fB = factorElimination(TB, C);
+
+		System.out.println(fA + " " + Arrays.toString(fA.getData()));
+		System.out.println(fB + " " + Arrays.toString(fB.getData()));
+
+		assert (ArraysUtil.almostEquals(fA.getData(), fB.getData(), 0.00000001));
+	}
+
+	@Test
+	public void testSeparator() {
+		buildEliminationTreeA(T);
+
+		int[] S14 = T.separator(A, D);
+
+		System.out.println(Arrays.toString(S14));
+
+		assert (S14.length == 2);
+		assert (ArraysUtil.contains(A, S14));
+		assert (ArraysUtil.contains(B, S14));
+	}
+
+	@Test
+	public void testClusterA() {
+		buildEliminationTreeA(T);
+
+		assert (Arrays.equals(T.cluster(A), new int[]{A, B}));
+		assert (Arrays.equals(T.cluster(B), new int[]{A, B}));
+		assert (Arrays.equals(T.cluster(C), new int[]{A, C}));
+		assert (Arrays.equals(T.cluster(D), new int[]{A, B, C, D}));
+		assert (Arrays.equals(T.cluster(E), new int[]{C, E,}));
+	}
+
+	@Test
+	public void testClusterB() {
+		buildEliminationTreeB(T);
+
+		assert (Arrays.equals(T.cluster(A), new int[]{A, B}));
+		assert (Arrays.equals(T.cluster(B), new int[]{A, B}));
+		assert (Arrays.equals(T.cluster(C), new int[]{A, B, C}));
+		assert (Arrays.equals(T.cluster(D), new int[]{B, C, D}));
+		assert (Arrays.equals(T.cluster(E), new int[]{C, E,}));
 	}
 }
