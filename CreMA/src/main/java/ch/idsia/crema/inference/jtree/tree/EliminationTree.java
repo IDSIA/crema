@@ -1,6 +1,8 @@
 package ch.idsia.crema.inference.jtree.tree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.model.DomainBuilder;
+import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
@@ -41,6 +43,11 @@ public class EliminationTree {
 		public int hashCode() {
 
 			return Objects.hash(i, j);
+		}
+
+		@Override
+		public String toString() {
+			return "(" + i + ", " + j + ")";
 		}
 	}
 
@@ -289,9 +296,15 @@ public class EliminationTree {
 		BayesianFactor factor = factors.get(i);
 
 		if (evidence.containsKey(i)) {
-			BayesianFactor e = new BayesianFactor(factor.getDomain());
+			Strides domain = factor.getDomain();
 
-			factor = factor.filter(i, evidence.get(i));
+			int size = domain.getCardinality(i);
+			double[] data = new double[size]; // initialized to 0
+			data[evidence.get(i)] = 1.;
+
+			BayesianFactor e = new BayesianFactor(DomainBuilder.var(i).size(size).strides(), data);
+
+			factor = factor.combine(e);
 		}
 
 		return factor;
@@ -378,33 +391,45 @@ public class EliminationTree {
 	public void distribute() {
 
 		// j is the destination node for the edge (root -> j)
-		for (Integer j : edgesOut.get(root)) {
+		for (Integer j : neighbour.get(root)) {
+
 			// compute the message by projecting phi(root) over the separator (root, j)
-			BayesianFactor Mij = project(phi(root), separator(root, j));
+			BayesianFactor phi = phi(root);
+
+			for (Integer i : neighbour.get(root)) {
+				if (!i.equals(j))
+					phi = phi.combine(M.get(new DKey(i, root)));
+			}
+
+			BayesianFactor Mij = project(phi, separator(root, j));
 			// distribute the message M(root,j) to node j
 			distribute(root, j, Mij);
 		}
 	}
 
 	/**
-	 * @param i   source node
-	 * @param j   destination node (current node)
-	 * @param Mij the message from i to j
+	 * @param k   source node
+	 * @param i   current node
+	 * @param Mki the message from k to i
 	 */
-	private void distribute(int i, int j, BayesianFactor Mij) {
-		System.out.println("distributing M(" + i + ", " + j + "): " + Arrays.toString(Mij.getData()));
+	private void distribute(int k, int i, BayesianFactor Mki) {
 
-		M.put(new DKey(i, j), Mij);
+		System.out.println("distributing M(" + k + ", " + i + "): " + Arrays.toString(Mki.getData()));
+		M.put(new DKey(k, i), Mki);
 
-		// if we have nodes that need the message from this node j
-		if (edgesOut.containsKey(j)) {
-			List<Integer> outs = edgesOut.get(j);
-			BayesianFactor phi = phi(j);
+		// if we have nodes that need the message from this node i
+		for (Integer j : neighbour.get(i)) {
+			if (j != k) {
+				BayesianFactor phi = phi(i);
 
-			for (Integer o : outs) {
-				// compute the message from j to o
-				BayesianFactor Mjo = project(phi.combine(Mij), separator(j, o));
-				distribute(j, o, Mjo);
+				for (Integer m : neighbour.get(i)) {
+					if (!m.equals(j))
+						phi = phi.combine(M.get(new DKey(m, i)));
+				}
+
+				BayesianFactor Mij = project(phi, separator(i, j));
+
+				distribute(i, j, Mij);
 			}
 		}
 	}

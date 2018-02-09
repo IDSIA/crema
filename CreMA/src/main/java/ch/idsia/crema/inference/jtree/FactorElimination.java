@@ -4,6 +4,8 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.jtree.tree.EliminationTree;
 import gnu.trove.map.TIntIntMap;
 
+import java.util.Arrays;
+
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
@@ -47,6 +49,7 @@ public class FactorElimination {
 		for (int i : tree.getNodes()) {
 			// TODO
 			BayesianFactor Pr = tree.compute(i);
+			System.out.println(i + " " + Arrays.toString(Pr.getData()));
 		}
 
 		return null;

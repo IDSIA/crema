@@ -1,14 +1,11 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.jtree.BayesianNetworks;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.SparseModel;
-import gnu.trove.list.TDoubleList;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TDoubleArrayList;
-import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
@@ -37,45 +34,9 @@ public class LWSvsVE {
 
 	@Before
 	public void setUp() {
-		model = new SparseModel<>();
-		BayesianFactor[] f = new BayesianFactor[n];
+		BayesianNetworks BN = BayesianNetworks.random(42, n, p);
 
-		double d = random.nextDouble();
-
-		int root = model.addVariable(2);
-		f[root] = new BayesianFactor(model.getDomain(root), new double[]{d, 1 - d}, false);
-
-		System.out.println(root + " " + f[root] + ": " + Arrays.toString(f[root].getData()));
-
-		for (int i = 1; i < n; i++) {
-			int v = model.addVariable(2);
-
-			TDoubleList doubles = new TDoubleArrayList();
-			TIntList ints = new TIntArrayList();
-			ints.add(v);
-			for (int j = 0, a = 0; j < i - 1 && a < p; j++) {
-				if (random.nextDouble() < 0.5) {
-					model.addParent(v, j);
-					ints.add(j);
-					a++;
-				}
-			}
-
-			for (; doubles.size() < Math.pow(2, ints.size()); ) {
-				double y = random.nextDouble();
-				doubles.add(y);
-				doubles.add(1 - y);
-			}
-
-			int[] parents = ints.toArray();
-			ints.sort();
-			f[v] = new BayesianFactor(model.getDomain(ints.toArray()), false);
-			f[v].setData(parents, doubles.toArray());
-
-			System.out.println(v + " " + f[v] + ": " + Arrays.toString(f[v].getData()));
-		}
-
-		model.setFactors(f);
+		model = BN.model;
 	}
 
 	@Test

@@ -473,16 +473,34 @@ public class ArraysUtil {
 
 	/**
 	 * Check if the needle value is contained inside the haystack array.
-	 * @param needle what to search
+	 *
+	 * @param needle   what to search
 	 * @param haystack where to search
 	 * @return true if the array contains the element, otherwise false
 	 */
 	public static boolean contains(int needle, int[] haystack) {
+		// TODO: use binary search?
 		for (int hay : haystack) {
 			if (hay == needle)
 				return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Search one element inside an array and returns the index of its position.
+	 *
+	 * @param needle   what to search
+	 * @param haystack where to search
+	 * @return the index in the array of the element, or -1
+	 */
+	public static int indexOf(int needle, int[] haystack) {
+		// TODO: use binary search?
+		for (int i = 0; i < haystack.length; i++) {
+			if (haystack[i] == needle)
+				return i;
+		}
+		return -1;
 	}
 }
 
