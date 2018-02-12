@@ -1,17 +1,22 @@
 package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.Updating;
 import ch.idsia.crema.inference.jtree.tree.EliminationTree;
+import ch.idsia.crema.model.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    07.02.2018 15:50
  */
-public class FactorElimination {
+public class FactorElimination implements Updating<BayesianFactor, BayesianFactor> {
 
 	private TIntIntMap evidence;
 	private EliminationTree tree;
@@ -30,7 +35,7 @@ public class FactorElimination {
 		this.root = root;
 	}
 
-	public BayesianFactor[] FE(int... query) {
+	public Collection<BayesianFactor> FE(int... query) {
 
 		// for each variable E in evidence
 		tree.setEvidence(evidence);
@@ -46,12 +51,26 @@ public class FactorElimination {
 
 		// foreach node i compute joint marginal Pr(Ci, e)
 
-		for (int i : tree.getNodes()) {
+		List<BayesianFactor> factors = new ArrayList<>();
+
+		for (int i : query) {
 			// TODO
 			BayesianFactor Pr = tree.compute(i);
+			factors.add(Pr);
 			System.out.println(i + " " + Arrays.toString(Pr.getData()));
 		}
 
-		return null;
+		return factors;
+	}
+
+	@Override
+	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query) {
+		return FE(query);
+	}
+
+	@Override
+	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query, TIntIntMap observations) {
+		setEvidence(observations);
+		return FE(query);
 	}
 }
