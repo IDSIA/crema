@@ -188,4 +188,29 @@ public class BayesianNetworks {
 
 		return new BayesianNetworks(model, f, vars.toArray());
 	}
+
+	public static BayesianNetworks junctionTreeTheoryExample() {
+
+		BayesianNetwork model = new BayesianNetwork();
+		int A = model.addVariable(2); // 1
+		int B = model.addVariable(2); // 2
+		int C = model.addVariable(2); // 3
+		model.addParent(C, A);
+		model.addParent(C, B);
+		int D = model.addVariable(2); // 4
+		model.addParent(D, B);
+		int E = model.addVariable(2); // 5
+		int F = model.addVariable(2); // 6
+		model.addParent(F, C);
+		int G = model.addVariable(2); // 7
+		model.addParent(G, D);
+		int H = model.addVariable(2); // 8
+		model.addParent(H, E);
+		model.addParent(H, F);
+		model.addParent(H, G);
+
+		BayesianFactor[] f = new BayesianFactor[8];
+
+		return new BayesianNetworks(model, f, A, B, C, D, E, F, G, H);
+	}
 }

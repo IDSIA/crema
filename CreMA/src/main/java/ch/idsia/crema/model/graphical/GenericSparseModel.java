@@ -29,25 +29,25 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 
 
 	@XmlTransient
-	private DomainChange<F> domainChanger;
+	protected DomainChange<F> domainChanger;
 
 	@XmlTransient
-	private CardinalityChange<F> cardinalityChanger;
+	protected CardinalityChange<F> cardinalityChanger;
 
 	@XmlTransient
-	private int max = 0;
+	protected int max = 0;
 
-	private G network;
+	protected G network;
 
 	/**
 	 * The number of states/cardinalities of a variable
 	 */
-	private TIntIntMap cardinalities;
+	protected TIntIntMap cardinalities;
 
 	/**
 	 * The factor associated to a variable
 	 */
-	private TIntObjectMap<F> factors;
+	protected TIntObjectMap<F> factors;
 
 	/**
 	 * Create the directed model using the specified network implementation.
@@ -63,6 +63,10 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 
 		domainChanger = changer;
 		cardinalityChanger = changer;
+	}
+
+	public G getNetwork() {
+		return network;
 	}
 
 	@SuppressWarnings("unchecked")
