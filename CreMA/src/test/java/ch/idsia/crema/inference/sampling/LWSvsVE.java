@@ -5,7 +5,7 @@ import ch.idsia.crema.inference.jtree.BayesianNetworks;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
@@ -23,7 +23,7 @@ import java.util.Random;
  */
 public class LWSvsVE {
 
-	private SparseModel<BayesianFactor> model;
+	private BayesianNetwork model;
 
 	private Random random = new Random(42);
 
@@ -36,7 +36,7 @@ public class LWSvsVE {
 	public void setUp() {
 		BayesianNetworks BN = BayesianNetworks.random(42, n, p);
 
-		model = BN.model;
+		model = BN.network;
 	}
 
 	@Test

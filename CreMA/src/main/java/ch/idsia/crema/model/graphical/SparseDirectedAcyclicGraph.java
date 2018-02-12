@@ -1,7 +1,7 @@
 package ch.idsia.crema.model.graphical;
 
-import org.jgrapht.experimental.dag.DirectedAcyclicGraph;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 
 import java.util.Set;
 
@@ -33,11 +33,7 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 
 	@Override
 	public void addLink(int from, int to) {
-		try {
-			super.addDagEdge(from, to);
-		} catch (CycleFoundException e) {
-			throw new IllegalArgumentException(e);
-		}
+		super.addEdge(from, to);
 	}
 
 	@Override

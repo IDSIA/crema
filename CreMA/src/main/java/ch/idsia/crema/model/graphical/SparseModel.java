@@ -25,4 +25,11 @@ public class SparseModel<F extends GenericFactor> extends GenericSparseModel<F, 
 	public SparseModel(SparseList method) {
 		super(method);
 	}
+
+	/**
+	 * Creates the directed model using a {@link SparseList} as implementation of the network.
+	 */
+	public SparseModel() {
+		super(new SparseList());
+	}
 }

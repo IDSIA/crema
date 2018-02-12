@@ -1,16 +1,16 @@
 package ch.idsia.crema.preprocess;
 
-import java.util.Random;
-
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.hull.LPConvexHull;
 
+import java.util.Random;
+
 public class LimitVertices {
 	public SparseModel<VertexFactor> apply(SparseModel<VertexFactor> model, int max) {
-		SparseModel<VertexFactor> m2 = model.copy();
+		SparseModel<VertexFactor> m2 = (SparseModel<VertexFactor>) model.copy();
 		for (int variable : m2.getVariables()) {
 			VertexFactor factor = reduce(m2.getFactor(variable), max);
 			System.out.println("factor over " + factor.getDomain()+ " has " + factor.getVertices().length +" vertices");

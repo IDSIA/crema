@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TDoubleArrayList;

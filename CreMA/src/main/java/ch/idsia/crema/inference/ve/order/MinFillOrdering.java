@@ -1,19 +1,12 @@
 package ch.idsia.crema.inference.ve.order;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-
+import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.utility.VertexPair;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.VertexPair;
 
-import ch.idsia.crema.model.GraphicalModel;
+import java.util.*;
 
 /**
  * Clique creation and ordering strategy generator based in the Minimum Fill In Algorithm.
@@ -62,10 +55,9 @@ public class MinFillOrdering implements OrderingStrategy {
 	 * @return
 	 */
 	private Collection<Set<Integer>> triangulate(SimpleGraph<Integer, DefaultEdge> graph) {
-		// make a copy of the verices set
+		// make a copy of the vertices set
 		ArrayList<Integer> todo = new ArrayList<>(graph.vertexSet());
-		Set<Integer> removed = new LinkedHashSet<>();
-		
+
 		SimpleGraph<Integer, DefaultEdge> triag = graph;
 		ArrayList<Set<Integer>> cliques = new ArrayList<>();
 
@@ -87,7 +79,7 @@ public class MinFillOrdering implements OrderingStrategy {
 					Integer node = todoIterator.next();
 					
 					// if they are all connected the node can be removed
-					List<VertexPair<Integer>> test = getMissingLinks(removed, triag, node);
+					List<VertexPair<Integer>> test = getMissingLinks(triag, node);
 
 					// node is fully connected
 					if (test.isEmpty()) {
@@ -144,12 +136,12 @@ public class MinFillOrdering implements OrderingStrategy {
 	/**
 	 * Return a list of ILinks that will be needed to make the node simplical
 	 */
-	private List<VertexPair<Integer>> getMissingLinks(Collection<Integer> removed, SimpleGraph<Integer, DefaultEdge> graph, Integer node) {
+	private List<VertexPair<Integer>> getMissingLinks(SimpleGraph<Integer, DefaultEdge> graph, Integer node) {
 		ArrayList<VertexPair<Integer>> missing = new ArrayList<>();
 
-		ArrayList<DefaultEdge> neightbours = new ArrayList<>(graph.edgesOf(node));
-		for (int firstIndex = 0; firstIndex < neightbours.size() - 1; ++firstIndex) {
-			DefaultEdge firstEdge = neightbours.get(firstIndex);
+		ArrayList<DefaultEdge> neighbours = new ArrayList<>(graph.edgesOf(node));
+		for (int firstIndex = 0; firstIndex < neighbours.size() - 1; ++firstIndex) {
+			DefaultEdge firstEdge = neighbours.get(firstIndex);
 			Integer source = graph.getEdgeSource(firstEdge);
 			Integer target = graph.getEdgeTarget(firstEdge);
 
@@ -159,8 +151,8 @@ public class MinFillOrdering implements OrderingStrategy {
 //			if (removed.contains(first))
 //				continue;
 
-			for (int secondIndex = firstIndex + 1; secondIndex < neightbours.size(); ++secondIndex) {
-				DefaultEdge secondEdge = neightbours.get(secondIndex);
+			for (int secondIndex = firstIndex + 1; secondIndex < neighbours.size(); ++secondIndex) {
+				DefaultEdge secondEdge = neighbours.get(secondIndex);
 				Integer source2 = graph.getEdgeSource(secondEdge);
 				Integer target2 = graph.getEdgeTarget(secondEdge);
 
