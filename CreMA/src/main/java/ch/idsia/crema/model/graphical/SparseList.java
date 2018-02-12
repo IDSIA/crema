@@ -1,25 +1,24 @@
 package ch.idsia.crema.model.graphical;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
-import org.apache.commons.lang3.ArrayUtils;
-
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import org.apache.commons.lang3.ArrayUtils;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SparseList implements Graph {
 
-	private TIntObjectMap<int[]> parents = new TIntObjectHashMap<int[]>();
-	private TIntObjectMap<int[]> children = new TIntObjectHashMap<int[]>();
+	private TIntObjectMap<int[]> parents = new TIntObjectHashMap<>();
+	private TIntObjectMap<int[]> children = new TIntObjectHashMap<>();
 
 	@Override
 	public SparseList copy() {
 		SparseList result = new SparseList();
-		result.children = new TIntObjectHashMap<int[]>(children);
-		result.parents = new TIntObjectHashMap<int[]>(parents);
+		result.children = new TIntObjectHashMap<>(children);
+		result.parents = new TIntObjectHashMap<>(parents);
 		return result;
 	}
 
@@ -55,8 +54,8 @@ public class SparseList implements Graph {
 	}
 
 	/**
-	 * @param parents
-	 *            list of parents for the variable. Will be used directly.
+	 * @param from source variable
+	 * @param to   target variable
 	 */
 	@Override
 	public void addLink(int from, int to) {

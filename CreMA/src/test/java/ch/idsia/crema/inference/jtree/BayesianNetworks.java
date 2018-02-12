@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TDoubleArrayList;
@@ -19,12 +19,12 @@ import java.util.Random;
  */
 public class BayesianNetworks {
 
-	public SparseModel<BayesianFactor> model;
+	public BayesianNetwork network;
 	public BayesianFactor[] factors;
 	public int[] variables;
 
-	private BayesianNetworks(SparseModel<BayesianFactor> model, BayesianFactor[] factors, int... variables) {
-		this.model = model;
+	private BayesianNetworks(BayesianNetwork network, BayesianFactor[] factors, int... variables) {
+		this.network = network;
 		this.factors = factors;
 		this.variables = variables;
 	}
@@ -35,7 +35,7 @@ public class BayesianNetworks {
 	 * @return a BN
 	 */
 	public static BayesianNetworks binary11Variables() {
-		SparseModel<BayesianFactor> model = new SparseModel<>();
+		BayesianNetwork model = new BayesianNetwork();
 
 		int A, B, C, D, E, F, G, H, I, J, K;
 
@@ -93,7 +93,7 @@ public class BayesianNetworks {
 	 * @return a BN
 	 */
 	public static BayesianNetworks mix5Variables() {
-		SparseModel<BayesianFactor> model = new SparseModel<>();
+		BayesianNetwork model = new BayesianNetwork();
 		BayesianFactor[] f = new BayesianFactor[5];
 
 		// Winter?
@@ -141,7 +141,7 @@ public class BayesianNetworks {
 	public static BayesianNetworks random(long seed, int n, int p) {
 		Random random = new Random(seed);
 
-		SparseModel<BayesianFactor> model = new SparseModel<>();
+		BayesianNetwork model = new BayesianNetwork();
 		BayesianFactor[] f = new BayesianFactor[n];
 
 		TIntList vars = new TIntArrayList();
