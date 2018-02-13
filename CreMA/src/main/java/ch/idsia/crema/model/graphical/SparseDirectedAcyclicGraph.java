@@ -49,7 +49,7 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 	}
 
 	@Override
-	public Graph copy() {
+	public SparseDirectedAcyclicGraph copy() {
 		final SparseDirectedAcyclicGraph copy = new SparseDirectedAcyclicGraph();
 
 		super.vertexSet().forEach(v -> copy.addVariable(v, 0));

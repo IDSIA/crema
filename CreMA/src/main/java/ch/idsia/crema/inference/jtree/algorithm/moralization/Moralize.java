@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.jtree.algorithm;
+package ch.idsia.crema.inference.jtree.algorithm.moralization;
 
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
@@ -16,7 +16,7 @@ public class Moralize {
 		this.model = model;
 	}
 
-	public SparseUndirectedGraph run() {
+	public SparseUndirectedGraph exec() {
 
 		SparseUndirectedGraph moralized = new SparseUndirectedGraph();
 

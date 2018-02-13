@@ -14,4 +14,12 @@ public class SparseUndirectedGraph extends SimpleGraph<Integer, DefaultEdge> {
 		super(DefaultEdge.class);
 	}
 
+	public SparseUndirectedGraph copy() {
+		SparseUndirectedGraph copy = new SparseUndirectedGraph();
+
+		this.vertexSet().forEach(copy::addVertex);
+		this.edgeSet().forEach(edge -> copy.addEdge(this.getEdgeSource(edge), this.getEdgeTarget(edge)));
+
+		return copy;
+	}
 }

@@ -1,8 +1,7 @@
-package ch.idsia.crema.inference.jtree.algorithm;
+package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
 import ch.idsia.crema.utility.VertexPair;
-import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.util.*;
@@ -11,27 +10,14 @@ import java.util.stream.Collectors;
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
- * Date:    12.02.2018 11:34
+ * Date:    13.02.2018 14:30
  */
-public class Triangulate {
+public class MinDegreeOrdering extends Triangulate {
 
-	private Graph<Integer, DefaultEdge> model;
-
-	// elimination sequence
-	private List<Integer> sequence;
-
-	public void setModel(Graph<Integer, DefaultEdge> model) {
-		this.model = model;
-	}
-
-	public int[] getSequence() {
-		return sequence.stream().mapToInt(x -> x).toArray();
-	}
-
-	public SparseUndirectedGraph run() {
-
+	@Override
+	public SparseUndirectedGraph exec() {
 		/*
-		 * Min-Fill (or something similar...)
+		 * MinDegreeOrdering
 		 *
 		 * => keep track of the removed nodes
 		 *
@@ -42,14 +28,10 @@ public class Triangulate {
 		 * 5) repeat from (1)
 		 */
 
-		sequence = new ArrayList<>();
-
 		// we are working with a "destructive" algorithm, so we make a copy of the current graph
-		final SparseUndirectedGraph copy = new SparseUndirectedGraph();
-		model.vertexSet().forEach(copy::addVertex);
-		model.edgeSet().forEach(edge -> copy.addEdge(model.getEdgeSource(edge), model.getEdgeTarget(edge)));
-
-		final SparseUndirectedGraph triangulated = new SparseUndirectedGraph();
+		final SparseUndirectedGraph copy = model.copy();
+		triangulated = new SparseUndirectedGraph();
+		sequence = new ArrayList<>();
 
 		// loop until we remove all the nodes from the graph
 		while (!copy.vertexSet().isEmpty()) {
