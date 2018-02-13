@@ -11,14 +11,32 @@ import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
 public class Moralize {
 
 	private SparseDirectedAcyclicGraph model;
+	private SparseUndirectedGraph moralized;
 
+	/**
+	 * @param model the model to moralize
+	 */
 	public void setModel(SparseDirectedAcyclicGraph model) {
 		this.model = model;
 	}
 
-	public SparseUndirectedGraph exec() {
+	/**
+	 * @return the last moralized graph found
+	 */
+	public SparseUndirectedGraph getMoralized() {
+		return moralized;
+	}
 
-		SparseUndirectedGraph moralized = new SparseUndirectedGraph();
+	/**
+	 * Convert a {@link SparseDirectedAcyclicGraph} into a {@link SparseUndirectedGraph} using the moralization
+	 * algorithm over the given model.
+	 *
+	 * @return a moralized {@link SparseUndirectedGraph}
+	 */
+	public SparseUndirectedGraph exec() {
+		if (model == null) throw new IllegalArgumentException("No model available");
+
+		moralized = new SparseUndirectedGraph();
 
 		// add all the vertices to the new graph
 		model.vertexSet().forEach(moralized::addVertex);

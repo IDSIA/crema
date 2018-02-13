@@ -14,8 +14,16 @@ import java.util.stream.Collectors;
  */
 public class MinDegreeOrdering extends Triangulate {
 
+	/**
+	 * Apply the Min-Degree-Ordering algorithm to a moralized {@link SparseUndirectedGraph} in order to find an
+	 * elimination sequence and triangulate the input model.
+	 *
+	 * @return a triangulated {@link SparseUndirectedGraph}
+	 */
 	@Override
 	public SparseUndirectedGraph exec() {
+		if (model == null) throw new IllegalArgumentException("No model available");
+
 		/*
 		 * MinDegreeOrdering
 		 *

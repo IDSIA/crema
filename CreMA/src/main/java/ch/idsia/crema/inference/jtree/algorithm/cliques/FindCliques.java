@@ -22,19 +22,37 @@ public class FindCliques {
 
 	private Set<Clique> cliques;
 
+	/**
+	 * @param model a triangulated graph produced by the
+	 *              {@link ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate} algorithm.
+	 */
 	public void setModel(SparseUndirectedGraph model) {
 		this.model = model;
 	}
 
+	/**
+	 * @param sequence a new elimination sequence to use
+	 */
 	public void setSequence(int[] sequence) {
 		this.sequence = sequence;
 	}
 
+	/**
+	 * @return the last computed cliques
+	 */
 	public Set<Clique> getCliques() {
 		return cliques;
 	}
 
+	/**
+	 * Explore the given triangulated graph searching for all the {@link Clique}s found using the given elimination
+	 * sequence.
+	 *
+	 * @return a set of {@link Clique}s found by the algorithm
+	 */
 	public Set<Clique> exec() {
+		if (sequence == null) throw new IllegalArgumentException("No elimination sequence available.");
+		if (model == null) throw new IllegalArgumentException("No model is available");
 
 		SparseUndirectedGraph copy = model.copy();
 		cliques = new HashSet<>();
@@ -66,6 +84,11 @@ public class FindCliques {
 		return cliques;
 	}
 
+	/**
+	 * @param cliques set to search in to
+	 * @param clique  clique to check
+	 * @return true if a clique in the set contains the given clique, otherwise false
+	 */
 	private boolean checkIfContains(Set<Clique> cliques, Clique clique) {
 		for (Clique c : cliques) {
 			if (c.contains(clique))

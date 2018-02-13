@@ -18,15 +18,27 @@ public class JoinGraphBuilder {
 
 	private Set<Clique> cliques;
 
+	/**
+	 * @param cliques the cliques to work on
+	 */
 	public void setCliques(Set<Clique> cliques) {
 		this.cliques = cliques;
 	}
 
+	/**
+	 * @return the last computed join graph
+	 */
 	public Graph<Clique, DefaultWeightedEdge> getModel() {
 		return model;
 	}
 
+	/**
+	 * Builds a join graph over the cliques given in input using the {@link #setCliques(Set)} method.
+	 *
+	 * @return a join graph where the weights of the edges are the number of element in commons between two cliques
+	 */
 	public Graph<Clique, DefaultWeightedEdge> exec() {
+		if (cliques == null) throw new IllegalArgumentException("No cliques available");
 
 		model = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 

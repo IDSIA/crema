@@ -26,11 +26,17 @@ public class Clique {
 		return variables;
 	}
 
-	public boolean contains(Clique clique) {
-		if (variables.length < clique.variables.length)
+	/**
+	 * Checks if this clique contains all the elements of the other clique
+	 *
+	 * @param other another clique
+	 * @return true if other clique is contained by this, otherwise false
+	 */
+	public boolean contains(Clique other) {
+		if (variables.length < other.variables.length)
 			return false;
 
-		for (int v : clique.variables) {
+		for (int v : other.variables) {
 			int b = Arrays.binarySearch(variables, v);
 			if (b < 0)
 				return false;
@@ -39,8 +45,14 @@ public class Clique {
 		return true;
 	}
 
-	public int[] intersection(Clique clique) {
-		return ArraysUtil.intersection(this.variables, clique.variables);
+	/**
+	 * Computes the intersection between the variables of this clique and another one.
+	 *
+	 * @param other another clique
+	 * @return an array with the index of the elements in the intersection
+	 */
+	public int[] intersection(Clique other) {
+		return ArraysUtil.intersection(this.variables, other.variables);
 	}
 
 	@Override
