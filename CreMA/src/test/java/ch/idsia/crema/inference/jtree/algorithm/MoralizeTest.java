@@ -27,5 +27,8 @@ public class MoralizeTest {
 		Triangulate t = new Triangulate();
 		t.setModel(moralized);
 		SparseUndirectedGraph triangulated = t.run();
+
+		assert (triangulated.edgeSet().size() == moralized.edgeSet().size() + 2);
+		assert (triangulated.vertexSet().size() == moralized.vertexSet().size());
 	}
 }
