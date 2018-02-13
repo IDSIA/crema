@@ -20,6 +20,8 @@ public class FindCliques {
 
 	private int[] sequence;
 
+	private Set<Clique> cliques;
+
 	public void setModel(SparseUndirectedGraph model) {
 		this.model = model;
 	}
@@ -28,16 +30,21 @@ public class FindCliques {
 		this.sequence = sequence;
 	}
 
+	public Set<Clique> getCliques() {
+		return cliques;
+	}
+
 	public Set<Clique> exec() {
 
 		SparseUndirectedGraph copy = model.copy();
+		cliques = new HashSet<>();
 
-		Set<Clique> cliques = new HashSet<>();
-
+		// follow the elimination sequence
 		for (int v : sequence) {
 			TIntSet c = new TIntHashSet();
 			c.add(v);
 
+			// creates a clique composed by the current node and all the nodes in the neighbourhood
 			for (DefaultEdge edge : copy.edgesOf(v)) {
 				Integer source = copy.getEdgeSource(edge);
 				Integer target = copy.getEdgeTarget(edge);
@@ -47,6 +54,8 @@ public class FindCliques {
 			}
 
 			copy.removeVertex(v);
+
+			// build the new clique and check if we already have a clique that contains this one
 			Clique clique = new Clique(ArraysUtil.sort(c.toArray()));
 
 			if (!checkIfContains(cliques, clique)) {

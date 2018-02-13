@@ -3,12 +3,16 @@ package ch.idsia.crema.inference.jtree.algorithm;
 import ch.idsia.crema.inference.jtree.BayesianNetworks;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.FindCliques;
+import ch.idsia.crema.inference.jtree.algorithm.join.JoinGraphBuilder;
 import ch.idsia.crema.inference.jtree.algorithm.moralization.Moralize;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.MinDegreeOrdering;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.Set;
 
 /**
@@ -42,5 +46,13 @@ public class AlgorithmTest {
 		c.setModel(triangulated);
 		c.setSequence(t.getSequence());
 		Set<Clique> cliques = c.exec();
+
+		assert (cliques.size() == 5);
+		assert (cliques.stream().max(Comparator.comparingInt(x -> x.getVariables().length)).get().getVariables().length == 4);
+		assert (cliques.stream().min(Comparator.comparingInt(x -> x.getVariables().length)).get().getVariables().length == 3);
+
+		JoinGraphBuilder jgb = new JoinGraphBuilder();
+		jgb.setCliques(cliques);
+		Graph<Clique, DefaultWeightedEdge> joinGraph = jgb.exec();
 	}
 }

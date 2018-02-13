@@ -1,5 +1,7 @@
 package ch.idsia.crema.inference.jtree.algorithm.cliques;
 
+import ch.idsia.crema.utility.ArraysUtil;
+
 import java.util.Arrays;
 
 /**
@@ -20,6 +22,10 @@ public class Clique {
 		this.variables = variables;
 	}
 
+	public int[] getVariables() {
+		return variables;
+	}
+
 	public boolean contains(Clique clique) {
 		if (variables.length < clique.variables.length)
 			return false;
@@ -31,6 +37,10 @@ public class Clique {
 		}
 
 		return true;
+	}
+
+	public int[] intersection(Clique clique) {
+		return ArraysUtil.intersection(this.variables, clique.variables);
 	}
 
 	@Override
