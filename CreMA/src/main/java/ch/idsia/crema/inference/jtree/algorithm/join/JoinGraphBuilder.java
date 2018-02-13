@@ -58,7 +58,7 @@ public class JoinGraphBuilder {
 					DefaultWeightedEdge edge = model.addEdge(clique, other);
 					// ...and a new edge, add it to the model with the size of intersection as weight
 					if (edge != null)
-						model.setEdgeWeight(edge, intersection.length);
+						model.setEdgeWeight(edge, -intersection.length);
 				}
 			}
 		}
