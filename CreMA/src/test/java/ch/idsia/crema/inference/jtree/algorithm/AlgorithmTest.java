@@ -4,13 +4,13 @@ import ch.idsia.crema.inference.jtree.BayesianNetworks;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.FindCliques;
 import ch.idsia.crema.inference.jtree.algorithm.join.JoinGraphBuilder;
+import ch.idsia.crema.inference.jtree.algorithm.join.JoinTreeBuilder;
+import ch.idsia.crema.inference.jtree.algorithm.join.JoinTreeBuilderPrim;
 import ch.idsia.crema.inference.jtree.algorithm.moralization.Moralize;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.MinDegreeOrdering;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
 import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm;
-import org.jgrapht.alg.spanning.PrimMinimumSpanningTree;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.Test;
 
@@ -65,12 +65,9 @@ public class AlgorithmTest {
 		Graph<Clique, DefaultWeightedEdge> joinGraph = jgb.exec();
 
 		// Find maximal spanning tree
-		PrimMinimumSpanningTree<Clique, DefaultWeightedEdge> pst = new PrimMinimumSpanningTree<>(joinGraph);
-		SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> joinTree = pst.getSpanningTree();
-
-		for (DefaultWeightedEdge edge : joinTree) {
-			System.out.println(edge);
-		}
+		JoinTreeBuilder jtb = new JoinTreeBuilderPrim();
+		jtb.setModel(joinGraph);
+		Graph<Clique, DefaultWeightedEdge> joinTree = jtb.exec();
 
 		// now we are ready to perform a belief updating by message passing
 
