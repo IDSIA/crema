@@ -213,4 +213,38 @@ public class BayesianNetworks {
 
 		return new BayesianNetworks(model, f, A, B, C, D, E, F, G, H);
 	}
+
+	public static BayesianNetworks junctionTreePropagationTheoryExample() {
+
+		BayesianNetwork model = new BayesianNetwork();
+		int A1 = model.addVariable(2); // A1
+		int A2 = model.addVariable(2); // A2
+		model.addParent(A2, A1);
+		int A3 = model.addVariable(2); // A3
+		model.addParent(A3, A1);
+		int A4 = model.addVariable(2); // A4
+		model.addParent(A4, A2);
+		int A5 = model.addVariable(2); // A5
+		model.addParent(A5, A2);
+		model.addParent(A5, A3);
+		int A6 = model.addVariable(2); // A6
+		model.addParent(A6, A3);
+
+		BayesianFactor[] f = new BayesianFactor[6];
+
+		f[A1] = new BayesianFactor(model.getDomain(A1));
+		f[A1].setData(new int[]{A1}, new double[]{.7, .3});
+		f[A2] = new BayesianFactor(model.getDomain(A1, A2));
+		f[A2].setData(new int[]{A2, A1}, new double[]{.4, .6, .3, .7});
+		f[A3] = new BayesianFactor(model.getDomain(A1, A3));
+		f[A3].setData(new int[]{A3, A1}, new double[]{.5, .5, .8, .2});
+		f[A4] = new BayesianFactor(model.getDomain(A2, A4));
+		f[A4].setData(new int[]{A4, A2}, new double[]{.6, .4, .1, .9});
+		f[A5] = new BayesianFactor(model.getDomain(A2, A3, A5));
+		f[A5].setData(new int[]{A5, A2, A3}, new double[]{.1, .9, .8, .2, .4, .6, .6, .4});
+		f[A6] = new BayesianFactor(model.getDomain(A6, A3));
+		f[A6].setData(new int[]{A3, A6}, new double[]{.4, .6, .5, .5});
+
+		return new BayesianNetworks(model, f, A1, A2, A3, A4, A5, A6);
+	}
 }

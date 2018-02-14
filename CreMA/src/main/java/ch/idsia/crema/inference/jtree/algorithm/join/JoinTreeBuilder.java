@@ -37,6 +37,8 @@ public abstract class JoinTreeBuilder {
 	 * @return a graph containing the maximal spanning tree over the cliques of the original model
 	 */
 	public Graph<Clique, DefaultWeightedEdge> exec() {
+		if (model == null) throw new IllegalArgumentException("No model available");
+
 		joinTree = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
 		// apply the maximal spanning tree algorithm
