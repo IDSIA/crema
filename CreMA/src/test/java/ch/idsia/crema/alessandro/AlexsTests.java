@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.junit.Test;
 
 import ch.idsia.crema.factor.GenericFactor;
@@ -75,40 +76,40 @@ public class AlexsTests {
 		SparseModel<GenericFactor> model = new SparseModel<>();
 		int varA = model.addVariable(3); // Variables
 		int varB = model.addVariable(3); // Variables
-		Strides dA = Strides.as(varA,3);
-		Strides dB = Strides.as(varB,3);
-		IntervalFactor ffA,ffB;
-		ffA = new IntervalFactor(dA,Strides.EMPTY);
-		ffA.setLower(new double[] {0.2,0.2,0.2});
-		ffA.setUpper(new double[] {0.4,0.4,0.4});
-		ffB = new IntervalFactor(dB,dA);
-		ffB.setLower(new double[] {0.2,0.2,0.2}, 0);
-		ffB.setUpper(new double[] {0.4,0.4,0.4}, 0);
-		ffB.setLower(new double[] {0.2,0.2,0.2}, 1);
-		ffB.setUpper(new double[] {0.4,0.4,0.4}, 1);
-		ffB.setLower(new double[] {0.2,0.2,0.2}, 2);
-		ffB.setUpper(new double[] {0.4,0.4,0.4}, 2);		
-		model.setFactor(varA,ffA);
-		model.setFactor(varB,ffB);
-		VertexFactor fA,fB;
+		Strides dA = Strides.as(varA, 3);
+		Strides dB = Strides.as(varB, 3);
+		IntervalFactor ffA, ffB;
+		ffA = new IntervalFactor(dA, Strides.EMPTY);
+		ffA.setLower(new double[]{0.2, 0.2, 0.2});
+		ffA.setUpper(new double[]{0.4, 0.4, 0.4});
+		ffB = new IntervalFactor(dB, dA);
+		ffB.setLower(new double[]{0.2, 0.2, 0.2}, 0);
+		ffB.setUpper(new double[]{0.4, 0.4, 0.4}, 0);
+		ffB.setLower(new double[]{0.2, 0.2, 0.2}, 1);
+		ffB.setUpper(new double[]{0.4, 0.4, 0.4}, 1);
+		ffB.setLower(new double[]{0.2, 0.2, 0.2}, 2);
+		ffB.setUpper(new double[]{0.4, 0.4, 0.4}, 2);
+		model.setFactor(varA, ffA);
+		model.setFactor(varB, ffB);
+		VertexFactor fA, fB;
 		fA = new VertexFactor(dA, Strides.EMPTY);
-		fA.addVertex(new double[] {.2,.4,.4});
-		fA.addVertex(new double[] {.4,.2,.4});
-		fA.addVertex(new double[] {.4,.4,.2});
+		fA.addVertex(new double[]{.2, .4, .4});
+		fA.addVertex(new double[]{.4, .2, .4});
+		fA.addVertex(new double[]{.4, .4, .2});
 		fB = new VertexFactor(dB, dA);
-		fB.addVertex(new double[] {.4,.4,.2},0);
-		fB.addVertex(new double[] {.4,.2,.4},0);
-		fB.addVertex(new double[] {.2,.4,.4},0);
-		fB.addVertex(new double[] {.4,.4,.2},1);
-		fB.addVertex(new double[] {.4,.2,.4},1);
-		fB.addVertex(new double[] {.2,.4,.4},1);
-		fB.addVertex(new double[] {.4,.4,.2},2);
-		fB.addVertex(new double[] {.4,.2,.4},2);
-		fB.addVertex(new double[] {.2,.4,.4},2);
-			
+		fB.addVertex(new double[]{.4, .4, .2}, 0);
+		fB.addVertex(new double[]{.4, .2, .4}, 0);
+		fB.addVertex(new double[]{.2, .4, .4}, 0);
+		fB.addVertex(new double[]{.4, .4, .2}, 1);
+		fB.addVertex(new double[]{.4, .2, .4}, 1);
+		fB.addVertex(new double[]{.2, .4, .4}, 1);
+		fB.addVertex(new double[]{.4, .4, .2}, 2);
+		fB.addVertex(new double[]{.4, .2, .4}, 2);
+		fB.addVertex(new double[]{.2, .4, .4}, 2);
+
 		int dummy = model.addVariable(2);
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(1,dummy), false);
-		fDummy.setValue(1.0, 1, 0);	
+		BayesianFactor fDummy = new BayesianFactor(model.getDomain(1, dummy), false);
+		fDummy.setValue(1.0, 1, 0);
 		fDummy.setValue(1.0, 0, 1);
 		model.setFactor(dummy, fDummy);
 
@@ -126,7 +127,7 @@ public class AlexsTests {
 		//		//Backward
 		int s = 0;
 		fB = fB.reseparate(Strides.EMPTY);
-		fB = fB.filter(varB,s);//
+		fB = fB.filter(varB, s);//
 		VertexFactor bottom = convex_alge.fullConvex(fB);
 		VertexFactor parent = fA.reseparate(Strides.EMPTY);
 		VertexFactor tmp = alge.combine(bottom, parent);
@@ -139,13 +140,15 @@ public class AlexsTests {
 		System.out.println("========");
 
 
-
 		Inference approx = new Inference();
 		IntervalFactor resultsALP = null;
 		try {
-			resultsALP = approx.query(model,0,dummy);
+			resultsALP = approx.query(model, 0, dummy);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		} catch (NoFeasibleSolutionException e){
+			e.printStackTrace();
+			return;
 		}
 		//		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
