@@ -275,6 +275,11 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
 	@Override
 	public VertexFactor combine(VertexFactor other) {
+
+		if(!this.getDomain().isConsistentWith(other.getDomain())){
+			throw new IllegalArgumentException("Factors domains are not consistent: "+this+", "+other);
+		}
+
 		// union
 		Strides left = getDataDomain().union(other.getDataDomain());
 		Strides runion = getSeparatingDomain().union(other.getSeparatingDomain());

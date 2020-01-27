@@ -767,4 +767,21 @@ public final class Strides implements Domain {
 
         return it;
 	}
+
+
+	/**
+	 * Determines if this Strides object is consistent other. Two Strides objects are
+	 * consistent if all the common variables have the same cardinality.
+	 *
+	 * @param other {@link Strides} - other Strides object to compare with.
+	 * @return boolean variable indicating the compatibility.
+	 */
+	public boolean isConsistentWith(Strides other) {
+		for( int v : this.intersection(other).getVariables())
+			if(this.getCardinality(v) != other.getCardinality(v))
+				return false;
+		return true;
+	}
+
+
 }
