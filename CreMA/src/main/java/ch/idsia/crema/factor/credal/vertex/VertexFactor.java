@@ -6,11 +6,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.CredalFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.user.credal.Vertex;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.SeparateIndexIterator;
+import org.apache.commons.math3.optim.linear.Relationship;
 
 /**
  * A Separately specified Vertex based credal factor. TODO: Data is currenlty
@@ -38,6 +42,67 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		this.vertexDomain = left;
 		this.data = data;
 	}
+
+
+	public VertexFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
+		this.separatedDomain = Strides.empty();
+		this.vertexDomain = left;
+		data = new double[1][][];
+
+		// check the coefficient sizes
+		for(double[] c : coefficients){
+			if (c.length != left.getCombinations())
+				throw new IllegalArgumentException("ERROR: wrong constraint size: "+c.length+" instead of "+left.getCombinations());
+		}
+
+		// check the relationship vector length
+		if(rel.length == 0) rel = new Relationship[] {Relationship.EQ};
+		if(rel.length == 1) {
+			Relationship[] rel_aux = new Relationship[coefficients.length];
+			for(int i = 0; i< coefficients.length; i++)
+				rel_aux[i] = rel[0];
+			rel = rel_aux;
+		}else if(rel.length != coefficients.length) {
+			throw new IllegalArgumentException("ERROR: wrong relationship vector length: "+rel.length);
+		}
+
+
+		SeparateHalfspaceFactor k_const = new SeparateHalfspaceFactor(left, Strides.empty());
+		for(int i=0; i< coefficients.length; i++){
+			k_const.addConstraint(coefficients[i], rel[i], values[i]);
+
+		}
+
+		// normalization constraint
+		double [] ones =  new double[left.getCombinations()];
+		for(int i=0; i<ones.length; i++)
+			ones[i] = 1.;
+		k_const.addConstraint(ones, Relationship.EQ, 1);
+
+		// non-negative constraints
+		double [] zeros =  new double[left.getCombinations()];
+		for(int i=0; i<zeros.length; i++)
+			ones[i] = 0.;
+
+		for(int i=0; i<left.getCombinations(); i++) {
+			double[] c = zeros.clone();
+			c[i] = 1.;
+			k_const.addConstraint(c,Relationship.GEQ, 0);
+
+		}
+
+		HalfspaceToVertex conversor = new HalfspaceToVertex();
+		double[][] vertices = conversor.apply(k_const,0).getData()[0];
+
+
+		//add extreme points
+		for(double[] v : vertices){
+			this.addVertex(v);
+		}
+
+	}
+
+
 
 	@Override
 	public VertexFactor copy() {
@@ -398,4 +463,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	public double[][] getVerticesAt(int i) {
 		return data[i];
 	}
+
+
+
 }

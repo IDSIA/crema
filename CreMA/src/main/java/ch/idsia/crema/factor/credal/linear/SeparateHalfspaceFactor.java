@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.credal.linear;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import org.apache.commons.math3.optim.PointValuePair;
@@ -110,6 +111,16 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	public LinearConstraintSet getLinearProblem(int... states) {
 		int offset = groupDomain.getOffset(states);
 		return new LinearConstraintSet(data.get(offset));
+	}
+
+	public void printLinearProblem(int... states){
+
+		Iterator it = this.getLinearProblem(states).getConstraints().iterator();
+		while(it.hasNext()){
+			LinearConstraint c = (LinearConstraint)it.next();
+			System.out.println(c.getCoefficients()+"\t"+c.getRelationship()+"\t"+c.getValue());
+		}
+
 	}
 	
 	@Override

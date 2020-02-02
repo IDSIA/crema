@@ -29,11 +29,11 @@ public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, Ver
 			double[][] inequalities = toDoubleArrays(set, s.getDataDomain().getCombinations());
 			double[][] vertices = polcoToVertices(inequalities);
 
-			System.out.println(vertices);
-			// VCredalSet vCredalSet = toVCredalSet(vertices, input);
+			for (double[] v: vertices)
+				vfactor.addVertex(v, comb);
 		}
 
-		return null;
+		return vfactor;
 	}
 
 	@Override
