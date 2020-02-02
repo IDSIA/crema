@@ -502,5 +502,25 @@ public class ArraysUtil {
 		}
 		return -1;
 	}
+
+	public static int[] getShape(double[][] matrix){
+		if(Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
+			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
+		return new int[] {matrix.length, matrix[0].length};
+	}
+
+
+	public static double[][] transpose(double[][] original){
+
+		int[] shape = getShape(original);
+
+		double[][] transposed = new double[shape[1]][shape[0]];
+		for(int i=0; i<shape[0]; i++)
+			for(int j=0; j<shape[1]; j++)
+				transposed[j][i] = original[i][j];
+
+		return  transposed;
+
+	}
 }
 
