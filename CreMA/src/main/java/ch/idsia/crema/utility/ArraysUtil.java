@@ -1,13 +1,11 @@
 package ch.idsia.crema.utility;
 
+import com.google.common.primitives.Doubles;
 import gnu.trove.list.array.TIntArrayList;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 public class ArraysUtil {
 
@@ -520,6 +518,27 @@ public class ArraysUtil {
 				transposed[j][i] = original[i][j];
 
 		return  transposed;
+
+	}
+
+	public static double[][] reshape2d(double[] vector, int... shape) {
+
+		if(shape.length==1)
+			shape = new int[]{shape[0], vector.length/shape[0]};
+
+		if(shape[0]*shape[1] != vector.length)
+			throw new IllegalArgumentException("ERROR: incompatible shapes");
+
+
+		List data = Doubles.asList(vector);
+		double[][] out = new double[shape[0]][shape[1]];
+
+		for(int i=0; i<shape[0]; i++){
+			double[] v = Doubles.toArray(data.subList(i*shape[1], (i+1)*shape[1]));
+			out[i] = v;
+		}
+
+		return out;
 
 	}
 }

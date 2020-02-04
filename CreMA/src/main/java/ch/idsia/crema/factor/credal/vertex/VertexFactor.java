@@ -11,9 +11,10 @@ import ch.idsia.crema.factor.credal.CredalFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.user.credal.Vertex;
+import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.SeparateIndexIterator;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 /**
@@ -94,11 +95,15 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		HalfspaceToVertex conversor = new HalfspaceToVertex();
 		double[][] vertices = conversor.apply(k_const,0).getData()[0];
 
+		if(vertices == null || vertices.length == 0){
+			throw new NoFeasibleSolutionException();
+		}
 
 		//add extreme points
 		for(double[] v : vertices){
 			this.addVertex(v);
 		}
+
 
 	}
 
@@ -106,7 +111,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
 	@Override
 	public VertexFactor copy() {
-		double[][][] copy = ch.idsia.crema.utility.ArraysUtil.deepClone(data);
+		double[][][] copy = ArraysUtil.deepClone(data);
 		return new VertexFactor(vertexDomain, separatedDomain, copy);
 	}
 

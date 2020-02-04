@@ -73,7 +73,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 * @see ch.idsia.credo.model.bayesian.CPT#setData(int[], double[])
 	 */
 	public void setData(final int[] domain, double[] data) {
-		int[] sequence = ch.idsia.crema.utility.ArraysUtil.order(domain);
+		int[] sequence = ArraysUtil.order(domain);
 
 		// this are strides for the iterator so we do not need them one item
 		// longer

@@ -20,4 +20,18 @@ public class BayesianNetwork extends GenericSparseModel<BayesianFactor, SparseDi
 	public BayesianNetwork() {
 		super(new SparseDirectedAcyclicGraph());
 	}
+	
+	public BayesianNetwork copy(){
+
+		BayesianNetwork copy = new BayesianNetwork();
+		copy.addVariables(this.getSizes(this.getVariables()));
+		for (int v : copy.getVariables()){
+			copy.addParents(v, this.getParents(v));
+			copy.setFactor(v, this.getFactor(v).copy());
+		}
+
+		return copy;
+	}
+
+
 }

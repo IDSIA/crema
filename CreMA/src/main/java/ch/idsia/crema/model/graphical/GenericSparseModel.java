@@ -14,6 +14,7 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Arrays;
@@ -291,7 +292,7 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	@Override
 	public void setFactor(int variable, F factor) {
 		int[] vars = factor.getDomain().getVariables();
-		int index = Arrays.binarySearch(vars, variable);
+		int index = ArrayUtils.indexOf(vars, variable);
 
 		int[] parents = ArraysUtil.remove(vars, index);
 		addParents(variable, parents);

@@ -3,6 +3,7 @@ package ch.idsia.crema.model;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import gnu.trove.map.TIntIntMap;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
@@ -122,7 +123,7 @@ public final class Strides implements Domain {
 
 	@Override
 	public int getCardinality(int variable) {
-		int offset = indexOf(variable);
+		int offset = ArrayUtils.indexOf(variables, variable);
 		return sizes[offset];
 	}
 

@@ -26,12 +26,12 @@ public class SimpleSCM {
                 {0.0, 1.0},
                 {0.0, 1.0}};
 
-        // Get the credal set of the endogenous variable X
+        // Get the credal set of the exogenous variable X
         BayesianFactor cpt_x = new BayesianFactor(model.getDomain(x,u), Doubles.concat(fx));
         VertexFactor kx = new BayesianToVertex().apply(cpt_x,0);
         model.setFactor(x, kx);
 
-        // Get the credal set of the exogenous variable U
+        // Get the credal set of the endogenous variable U
         double[][] coeff = ArraysUtil.transpose(fx);
         double[] vals = {p, 1-p};
         VertexFactor ku = new VertexFactor(model.getDomain(u), coeff, vals);
