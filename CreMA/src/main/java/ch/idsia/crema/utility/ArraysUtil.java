@@ -1,11 +1,17 @@
 package ch.idsia.crema.utility;
 
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.model.Strides;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Ints;
 import gnu.trove.list.array.TIntArrayList;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 public class ArraysUtil {
 
@@ -453,6 +459,13 @@ public class ArraysUtil {
 		return arr_union;
 	}
 
+	public static int[] unionSet(int[] arr1, int[] arr2){
+		return  Ints.toArray(ImmutableSet.copyOf(
+				Ints.asList(Ints.concat(arr1,arr2))
+		));
+	}
+
+
 	/**
 	 * Normalize an array by fixing the last value of the array so that it sums up to the target value.
 	 * @param arr array to normalize
@@ -541,5 +554,50 @@ public class ArraysUtil {
 		return out;
 
 	}
+
+
+	public static double[] swapVectorStrides(double[] data, int[] sizes, int[] newOrder ){
+
+		int[] oldOrder = IntStream.range(0,sizes.length).toArray();
+		int[] newSizes = IntStream.range(0,sizes.length).map(i -> sizes[newOrder[i]]).toArray();
+
+		Strides oldStrides = new Strides(oldOrder, sizes);
+		Strides newStrides = new Strides(newOrder, newSizes);
+
+		double[] newdata = new double[oldStrides.getCombinations()];
+
+
+		for(int offset=0; offset<newdata.length; offset++) {
+			int[] newStates_aux = newStrides.statesOf(offset);
+			int[] newStates = IntStream.range(0,sizes.length).map(i -> newStates_aux[newOrder[i]]).toArray();
+			int old_offset = oldStrides.getOffset(newStates);
+			newdata[offset] = data[old_offset];
+		}
+
+		return newdata;
+	}
+
+	public static double[][] enumerate(double[] vect, int start){
+		return IntStream.range(0+start, vect.length+start)
+				.mapToObj(i -> new double[]{i, vect[i-start]})
+				.toArray(double[][]:: new);
+	}
+	public static double[][] enumerate(double[] vect){ return enumerate(vect,0);}
+
+
+	public static int[] set(int[] arr){
+		return  Ints.toArray(ImmutableSet.copyOf(
+				Ints.asList(arr)
+		));
+	}
+
+
+	public static double[] set(double[] arr){
+		return  Doubles.toArray(ImmutableSet.copyOf(
+				Doubles.asList(arr)
+		));
+	}
+
+
 }
 

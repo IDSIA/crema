@@ -1,5 +1,6 @@
 package ch.idsia.crema.model.graphical;
 
+import com.google.common.primitives.Ints;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 
@@ -56,5 +57,10 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 		super.edgeSet().forEach(e -> copy.addLink(super.getEdgeSource(e), super.getEdgeTarget(e)));
 
 		return copy;
+	}
+
+
+	public int[] getVariables(){
+		return Ints.toArray(this.vertexSet());
 	}
 }

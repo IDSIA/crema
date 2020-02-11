@@ -28,7 +28,7 @@ public class SC2CNSimpleCase {
 
         // define the SM
 
-        StructuralCausalModel smodel = StructuralCausalModel.getSimpleSCMfromBN(emodel, 5);
+        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromBN(emodel, 5);
 
         double[][] fx = {  {1.0, 0.0},
                 {1.0, 0.0},

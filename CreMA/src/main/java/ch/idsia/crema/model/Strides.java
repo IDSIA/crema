@@ -2,6 +2,7 @@ package ch.idsia.crema.model;
 
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
@@ -169,7 +170,7 @@ public final class Strides implements Domain {
 	 * @param states
 	 * @return
 	 */
-	public int getOffset(int[] states) {
+	public int getOffset(int... states) {
 		int offset = 0;
 		for (int index = 0; index < states.length; ++index) {
 			offset += this.strides[index] * states[index];
@@ -577,6 +578,38 @@ public final class Strides implements Domain {
 		}
 		return new Strides(union_vars, union_sizes);
 	}
+
+	/**
+	 * Concatenate 2 strides
+	 * @param left
+	 * @param right
+	 * @return
+	 */
+	public Strides concat(Strides right){
+		Strides left = this;
+
+		int[] strides_left = new int[left.getSize()*2];
+		int[] strides_right = new int[right.getSize()*2];
+
+		for(int i=0; i<left.getSize(); i++){
+			int v = left.getVariables()[i];
+			strides_left[i*2] = v;
+			strides_left[i*2+1] = left.getCardinality(v);
+		}
+
+		for(int i=0; i<right.getSize(); i++){
+			int v = right.getVariables()[i];
+			strides_right[i*2] = v;
+			strides_right[i*2+1] = right.getCardinality(v);
+
+		}
+
+		return Strides.as(Ints.concat(strides_left,strides_right));
+
+	}
+
+
+
 
 	/**
 	 * Creates a stride with one or more variables excluded. Note that the

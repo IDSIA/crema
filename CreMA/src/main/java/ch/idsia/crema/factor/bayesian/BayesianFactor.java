@@ -6,6 +6,9 @@ import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.vertex.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import ch.idsia.crema.utility.RandomUtil;
+import com.google.common.primitives.Doubles;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
@@ -357,7 +360,13 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 * @return
 	 */
 	@Override
-	public BayesianFactor combine(final BayesianFactor factor) {
+	public BayesianFactor combine(BayesianFactor factor) {
+
+		// domains should be sorted
+		this.sortDomain();
+		factor = factor.copy();
+		factor.sortDomain();
+
 		final Strides target = domain.union(factor.domain);
 		final int length = target.getSize();
 
@@ -375,7 +384,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		}
 
 		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), factor.domain.getVariables()[vindex]);
+			int offset = ArraysUtil.indexOf(factor.domain.getVariables()[vindex], target.getVariables());
 			// if (offset >= 0) {
 			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32l);
 			// }
@@ -505,4 +514,79 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	public int hashCode() {
 		return Objects.hash(domain);
 	}
+
+
+	/**
+	 * Static method that builds a deterministic factor (values can only be ones or zeros).
+	 * Thus, children variables are determined by the values of the parents
+	 * @param left	Strides - children variables.
+	 * @param right	Strides - parent variables
+	 * @param assignments assignments of each combination of the parent
+	 * @return
+	 */
+	public static BayesianFactor deterministic(Strides left, Strides right, int... assignments){
+
+
+		if (assignments.length != right.getCombinations())
+			throw new IllegalArgumentException("ERROR: length of assignments should be equal to the number of combinations of the parents");
+
+		double[] values = new double[right.union(left).getCombinations()];
+		for(int i=0; i< right.getCombinations(); i++){
+			values[i * left.getCombinations() + assignments[i]] = 1.0;
+		}
+		return new BayesianFactor(left.concat(right), values, false);
+	}
+	/**
+	 * Static method that builds a deterministic factor (values can only be ones or zeros)
+	 * without parent variables.
+	 * @param left	Strides - children variables.
+	 * @param assignment int - single value to assign
+	 * @return
+	 */
+
+	public static BayesianFactor deterministic(Strides left, int assignment){
+		return BayesianFactor.deterministic(left, Strides.empty(), assignment);
+	}
+
+
+	public boolean isMarginalNormalized(){
+		if(this.getDomain().getVariables().length>1)
+			return false;
+		return this.marginalize(this.getDomain().getVariables()[0]).getValue() == 1;
+	}
+
+
+	public static BayesianFactor random(Strides left, Strides right, int num_decimals, boolean zero_allowed){
+		double[][] data = new double[right.getCombinations()][];
+		for(int i=0; i<data.length; i++){
+			data[i] = RandomUtil.sampleNormalized(left.getCombinations(), num_decimals, zero_allowed);
+		}
+		return new BayesianFactor(left.concat(right), Doubles.concat(data), false);
+	}
+
+	public BayesianFactor reorderDomain(Strides newStrides){
+
+		if( !(this.getDomain().isConsistentWith(newStrides) &&
+				this.getDomain().getSize() == newStrides.getSize())){
+			throw new IllegalArgumentException("ERROR: wrong input Strides");
+		}
+
+		int[] varMap = new int[newStrides.getSize()];
+
+		for(int i=0; i<newStrides.getSize(); i++)
+			varMap[i] = ArraysUtil.indexOf(this.getDomain().getVariables()[i], newStrides.getVariables());
+
+		return new BayesianFactor(newStrides,
+				ArraysUtil.swapVectorStrides(this.getData(), this.getDomain().getSizes(), varMap),false);
+
+	}
+
+	public void sortDomain() {
+		if(!ArrayUtils.isSorted(this.getDomain().getVariables())) {
+			BayesianFactor sorted = this.reorderDomain(this.getDomain().sort());
+			this.domain = sorted.domain;
+			this.data = sorted.getData();
+		}
+	}
+
 }

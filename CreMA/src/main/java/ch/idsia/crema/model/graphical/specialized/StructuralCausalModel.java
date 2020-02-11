@@ -3,10 +3,13 @@ package ch.idsia.crema.model.graphical.specialized;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.GenericSparseModel;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.RandomUtil;
+import com.google.common.primitives.Ints;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -58,8 +61,8 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 	}
 
-	public Set<Integer> getExogenousVars() {
-		return exogenousVars;
+	public int[] getExogenousVars() {
+		return Ints.toArray(exogenousVars);
 	}
 
 	public boolean isExogenous(int variable){
@@ -70,17 +73,17 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 		return !isExogenous(variable);
 	}
 
-	public Set<Integer> getEndogenousVars() {
+	public int[] getEndogenousVars() {
 		Set<Integer> endogenousVars = new HashSet<Integer>();
 
 		for(int v : this.getVariables())
 			if(!this.exogenousVars.contains(v))
 				endogenousVars.add(v)	;
-		return endogenousVars;
+		return Ints.toArray(endogenousVars);
 	}
 
 
-	public static StructuralCausalModel getSimpleSCMfromBN(BayesianNetwork bnet, int... exoVarSizes){
+	public static StructuralCausalModel getCausalStructFromBN(BayesianNetwork bnet, int... exoVarSizes){
 
 		if(exoVarSizes.length!= 1 && exoVarSizes.length != bnet.getVariables().length)
 			throw new IllegalArgumentException("exoVarSizes vector should be a vector of lenght 1 or as long as the number of variables");
@@ -138,5 +141,64 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 		return cmodel;
 	}
 
+
+	public int[] getExogenousParents(int v){
+		return ArraysUtil.intersection(
+				this.getExogenousVars(),
+				this.getParents(v)
+		);
+	}
+
+	public void fillWithRandomFactors(int prob_decimals){
+
+		for(int u : this.getExogenousVars()){
+			this.setFactor(u,
+					BayesianFactor.random(this.getDomain(u),
+							this.getDomain(this.getParents(u)),
+							prob_decimals, false)
+			);
+		}
+
+
+		for(int x : this.getEndogenousVars()){
+			Strides pa_x = this.getDomain(this.getParents(x));
+			int[] assignments = RandomUtil.sampleUniform(pa_x.getCombinations(),this.getSize(x), true);
+
+			this.setFactor(x,
+					BayesianFactor.deterministic(
+							this.getDomain(x),
+							pa_x,
+							assignments)
+			);
+		}
+
+
+	}
+
+
+	public BayesianFactor getProb(int var) {
+		BayesianFactor pvar = this.getFactor(var);
+		for (int v : this.getExogenousParents(var)) {
+			pvar = pvar.combine(this.getFactor(v));
+		}
+		for (int v : this.getExogenousParents(var)) {
+			pvar = pvar.marginalize(v);
+		}
+		return pvar;
+	}
+
+
+	public StructuralCausalModel intervention(int var, int state){
+		StructuralCausalModel do_model = this.copy();
+		// remove the parents
+		for(int v: do_model.getParents(var)){
+			do_model.removeParent(var, v);
+		}
+		// fix the value
+		do_model.setFactor(var, BayesianFactor.deterministic(do_model.getDomain(var), state));
+
+		return do_model;
+
+	}
 
 }
