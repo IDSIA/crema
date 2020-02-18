@@ -71,5 +71,7 @@ public class CredalInference {
 
         Inference inference = new Inference();
         inference.query(model, x).getUpper();
+
+
     }
 }

@@ -1,12 +1,15 @@
 package ch.idsia.crema.model.graphical;
 
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.NoSuchVariableException;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.change.CardinalityChange;
 import ch.idsia.crema.model.change.DomainChange;
 import ch.idsia.crema.model.change.NullChange;
+import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.list.array.TIntArrayList;
@@ -327,6 +330,20 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 
 			this.factors.put(var, factor);
 		}
+	}
+
+
+
+	public GenericSparseModel intervention(int var, int state){
+		GenericSparseModel do_model = this.copy();
+		// remove the parents
+		for(int v: do_model.getParents(var)){
+			do_model.removeParent(var, v);
+		}
+		// Fix the value of the intervened variable
+		do_model.setFactor(var, this.getFactor(var).get_deterministic(var, state));
+		return do_model;
+
 	}
 
 

@@ -6,10 +6,12 @@ import com.google.common.primitives.Ints;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 public class RandomUtil {
+
+    private static Random random = new Random(1234);
+
     /**
      * Sample of vector where the sum of all its elements is 1
      * @param size
@@ -24,12 +26,11 @@ public class RandomUtil {
         if(!zero_allowed)
             upper -= size;
 
-        Random r = ThreadLocalRandom.current();
         double data[] = new double[size];
         int sum = 0;
         for(int i=0; i<size-1; i++){
             if(sum<upper){
-                int x = r.nextInt(upper-sum);
+                int x = random.nextInt(upper-sum);
                 sum += x;
                 data[i] = x;
             }
@@ -46,7 +47,7 @@ public class RandomUtil {
             }
         }
         List dataList =  Doubles.asList(data);
-        Collections.shuffle(dataList);
+        Collections.shuffle(dataList, random);
         return Doubles.toArray(dataList);
     }
 
@@ -65,7 +66,6 @@ public class RandomUtil {
         }
 
         int[] data = new int[size];
-        Random r = ThreadLocalRandom.current();
 
         int current_i = 0;
 
@@ -75,12 +75,20 @@ public class RandomUtil {
             current_i = upper_bound;
         }
         for(int i = current_i; i<size; i++){
-            data[i] = r.nextInt(upper_bound);
+            data[i] = random.nextInt(upper_bound);
         }
 
         List dataList =  Ints.asList(data);
-        Collections.shuffle(dataList);
+        Collections.shuffle(dataList, random);
         return Ints.toArray(dataList);
     }
 
+
+    public static void setRandom(Random random) {
+        RandomUtil.random = random;
+    }
+
+    public static Random getRandom() {
+        return random;
+    }
 }

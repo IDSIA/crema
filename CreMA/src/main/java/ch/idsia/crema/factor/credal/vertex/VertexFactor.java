@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.CredalFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
@@ -13,7 +14,10 @@ import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import ch.idsia.crema.utility.RandomUtil;
 import ch.idsia.crema.utility.SeparateIndexIterator;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Ints;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
 
@@ -70,7 +74,13 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
 		SeparateHalfspaceFactor k_const = new SeparateHalfspaceFactor(left, Strides.empty());
 		for(int i=0; i< coefficients.length; i++){
-			k_const.addConstraint(coefficients[i], rel[i], values[i]);
+//			if(rel[i]!=Relationship.EQ)
+				k_const.addConstraint(coefficients[i], rel[i], values[i]);
+/*			else{
+				k_const.addConstraint(coefficients[i], Relationship.GEQ, values[i]-0.00001);
+				k_const.addConstraint(coefficients[i], Relationship.LEQ, values[i]+0.00001);
+			}
+*/
 
 		}
 
@@ -78,7 +88,11 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		double [] ones =  new double[left.getCombinations()];
 		for(int i=0; i<ones.length; i++)
 			ones[i] = 1.;
-		k_const.addConstraint(ones, Relationship.EQ, 1);
+		k_const.addConstraint(ones, Relationship.EQ, 1.0);
+
+//		k_const.addConstraint(ones, Relationship.GEQ, 1.0-0.00001);
+//		k_const.addConstraint(ones, Relationship.LEQ, 1.0+0.00001);
+
 
 		// non-negative constraints
 		double [] zeros =  new double[left.getCombinations()];
@@ -470,5 +484,95 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	}
 
 
+	/**
+	 * Static method that builds a deterministic factor (values can only be ones or zeros).
+	 * Thus, children variables are determined by the values of the parents
+	 * @param left	Strides - children variables.
+	 * @param right	Strides - parent variables
+	 * @param assignments assignments of each combination of the parent
+	 * @return
+	 */
+	public static VertexFactor deterministic(Strides left, Strides right, int... assignments){
+
+		if (assignments.length != right.getCombinations())
+			throw new IllegalArgumentException("ERROR: length of assignments should be equal to the number of combinations of the parents");
+
+		if (Ints.min(assignments)<0 || Ints.max(assignments)>= left.getCombinations())
+			throw new IllegalArgumentException("ERROR: assignments of deterministic function should be in the inteval [0,"+left.getCombinations()+")");
+
+
+		VertexFactor f = new VertexFactor(left,right);
+
+		for(int i=0; i< right.getCombinations(); i++){
+			double[] values = new double[left.getCombinations()];
+			values[assignments[i]] = 1.0;
+			f.addVertex(values, i);
+		}
+		return f;
+	}
+	/**
+	 * Static method that builds a deterministic factor (values can only be ones or zeros)
+	 * without parent variables.
+	 * @param left	Strides - children variables.
+	 * @param assignment int - single value to assign
+	 * @return
+	 */
+
+	public static VertexFactor deterministic(Strides left, int assignment){
+		return VertexFactor.deterministic(left, Strides.empty(), assignment);
+	}
+
+
+
+	public VertexFactor get_deterministic(int var, int assignment){
+		return VertexFactor.deterministic(this.getDomain().intersection(var), assignment);
+	}
+
+
+	public VertexFactor getSingleVertexFactor(int... idx){
+
+		int[] idx_arr;
+
+		if(idx.length == 1) {
+			idx_arr = IntStream.range(0,this.getSeparatingDomain().getCombinations())
+					.map(i -> idx[0])
+					.toArray();
+		}else{
+			idx_arr = Arrays.copyOf(idx, idx.length);
+		}
+
+
+		if(idx_arr.length != this.getSeparatingDomain().getCombinations()){
+			throw new IllegalArgumentException("idx length should be equal to the number combinations of the parents.");
+		}
+
+		double[][][] data =
+				IntStream.range(0, this.getSeparatingDomain().getCombinations())
+						.mapToObj(i -> new double[][]{this.getVerticesAt(i)[idx_arr[i]]})
+						.toArray(double[][][]::new);
+
+		return new VertexFactor(this.getDataDomain(), this.getSeparatingDomain(), data);
+	}
+
+
+	public BayesianFactor sampleVertex(){
+
+		int left_comb = this.getSeparatingDomain().getCombinations();
+
+		int idx[] = IntStream.range(0,left_comb)
+				.map(i-> RandomUtil.getRandom().nextInt(this.getVerticesAt(i).length))
+				.toArray();
+
+		double[] data =
+				Doubles.concat(
+						IntStream.range(0,left_comb)
+								.mapToObj(i -> this.getVerticesAt(i)[RandomUtil.getRandom().nextInt(this.getVerticesAt(i).length)])
+								.toArray(double[][]::new)
+				);
+
+
+		Strides newDomain = this.getDataDomain().concat(this.getSeparatingDomain());
+		return new BayesianFactor(newDomain, data);
+	}
 
 }

@@ -14,21 +14,12 @@ public class BayesianToVertex implements Converter<BayesianFactor, VertexFactor>
 	
 	@Override
 	public VertexFactor apply(BayesianFactor cpt, Integer var) {
-		//ExtensiveVertexFactor factor = new ExtensiveVertexFactor(cpt.getDomain(), cpt.isLog());
 
-
-		// Asumes a single variable on the left
-		int left_var = cpt.getDomain().getVariables()[0];
-		Strides left = Strides.as(left_var, cpt.getDomain().getCardinality(left_var));
-		Strides right = cpt.getDomain().remove(left_var);
+		Strides left = Strides.as(var, cpt.getDomain().getCardinality(var));
+		Strides right = cpt.getDomain().remove(var);
 		VertexFactor factor = new VertexFactor(left, right);
-
-
-		int left_var_size = cpt.getDomain().getCardinality(left_var);
-
-
+		int left_var_size = cpt.getDomain().getCardinality(var);
 		List cpt_data = Doubles.asList(cpt.getData());
-
 
 		for(int i=0; i<right.getCombinations(); i++){
 			double[] v = Doubles.toArray(cpt_data.subList(i*left_var_size, (i+1)*left_var_size));

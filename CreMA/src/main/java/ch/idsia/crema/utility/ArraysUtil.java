@@ -8,7 +8,9 @@ import com.google.common.primitives.Ints;
 import gnu.trove.list.array.TIntArrayList;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
+import org.apache.commons.math3.util.Precision;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
@@ -567,11 +569,11 @@ public class ArraysUtil {
 		double[] newdata = new double[oldStrides.getCombinations()];
 
 
-		for(int offset=0; offset<newdata.length; offset++) {
-			int[] newStates_aux = newStrides.statesOf(offset);
-			int[] newStates = IntStream.range(0,sizes.length).map(i -> newStates_aux[newOrder[i]]).toArray();
-			int old_offset = oldStrides.getOffset(newStates);
-			newdata[offset] = data[old_offset];
+		for(int offset=0; offset<newdata.length; offset++){
+			int[] oldStates = oldStrides.statesOf(offset);
+			int[] newStates = IntStream.range(0,sizes.length).map(i -> oldStates[newOrder[i]]).toArray();
+			int newOffset = newStrides.getOffset(newStates);
+			newdata[newOffset] = data[offset];
 		}
 
 		return newdata;
@@ -596,6 +598,56 @@ public class ArraysUtil {
 		return  Doubles.toArray(ImmutableSet.copyOf(
 				Doubles.asList(arr)
 		));
+	}
+
+
+	public static double[] round(double arr[], int num_decimals){
+
+		double[] data = Arrays.copyOf(arr, arr.length);
+
+		for(int i=0; i<data.length; i++){
+			data[i] = Precision.round(data[i], num_decimals);
+		}
+
+		return data;
+	}
+
+
+	public static double[] roundNonZerosToTarget(double[] arr, double target, int num_decimals){
+
+		double[] data = Arrays.copyOf(arr, arr.length);
+
+		data = ArraysUtil.round(data,3);
+		BigDecimal sum = BigDecimal.valueOf(0.0);
+		for(int i=0; i<data.length; i++){
+			sum = sum.add(BigDecimal.valueOf(data[i]));
+		}
+		for(int i=data.length-1; i>=0; i--){
+			if(data[i]!=0){
+				sum = sum.subtract(BigDecimal.valueOf(data[i]));
+				data[i] = BigDecimal.valueOf(target).subtract(sum).doubleValue();
+				break;
+			}
+		}
+		return data;
+	}
+
+	public static String toLatex(double[][] matrix){
+
+		String str = "";
+
+		for(int i=0; i<matrix.length; i++){
+
+			for(int j=0; j<matrix[i].length; j++){
+				str+=matrix[i][j];
+				if(j==matrix[i].length-1)
+					str+=" \\\\\n";
+				else
+					str+=" &";
+
+			}
+		}
+		return str;
 	}
 
 

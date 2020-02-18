@@ -8,11 +8,13 @@ import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Ints;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 /**
  * Conversion of values to Log is hardcoded.
@@ -487,6 +489,24 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return divide(div);
 	}
 
+
+	public BayesianFactor fixPrecission(int num_decimals, int... left_vars){
+
+		Strides left = this.getDomain().intersection(left_vars);
+		Strides right = this.getDomain().remove(left);
+		BayesianFactor newFactor = this.reorderDomain(left.concat(right));
+		double[][] newData = new double[right.getCombinations()][left.getCombinations()];
+		double[][] oldData = ArraysUtil.reshape2d(newFactor.getData(), right.getCombinations());
+
+		for(int i=0; i<right.getCombinations(); i++){
+			newData[i] = ArraysUtil.roundNonZerosToTarget(oldData[i], 1.0, num_decimals);
+		}
+
+		newFactor.setData(Doubles.concat(newData));
+		return newFactor.reorderDomain(this.getDomain());
+
+	}
+
 	@Override
 	public String toString() {
 		return "P(" + Arrays.toString(domain.getVariables()) + ")";
@@ -526,9 +546,12 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 */
 	public static BayesianFactor deterministic(Strides left, Strides right, int... assignments){
 
-
 		if (assignments.length != right.getCombinations())
 			throw new IllegalArgumentException("ERROR: length of assignments should be equal to the number of combinations of the parents");
+
+		if (Ints.min(assignments)<0 || Ints.max(assignments)>= left.getCombinations())
+			throw new IllegalArgumentException("ERROR: assignments of deterministic function should be in the inteval [0,"+left.getCombinations()+")");
+
 
 		double[] values = new double[right.union(left).getCombinations()];
 		for(int i=0; i< right.getCombinations(); i++){
@@ -546,6 +569,10 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 	public static BayesianFactor deterministic(Strides left, int assignment){
 		return BayesianFactor.deterministic(left, Strides.empty(), assignment);
+	}
+
+	public BayesianFactor get_deterministic(int var, int assignment){
+		return BayesianFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
 
 
@@ -571,13 +598,28 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 			throw new IllegalArgumentException("ERROR: wrong input Strides");
 		}
 
-		int[] varMap = new int[newStrides.getSize()];
-
-		for(int i=0; i<newStrides.getSize(); i++)
-			varMap[i] = ArraysUtil.indexOf(this.getDomain().getVariables()[i], newStrides.getVariables());
+		// at position i, now we put the axis that were at varMap[i]
+		int[] varMap = IntStream.of(newStrides.getVariables())
+				.map(v-> ArraysUtil.indexOf(v, this.getDomain().getVariables()))
+				.toArray();
 
 		return new BayesianFactor(newStrides,
 				ArraysUtil.swapVectorStrides(this.getData(), this.getDomain().getSizes(), varMap),false);
+
+	}
+
+
+	public BayesianFactor reorderDomain(int... vars){
+
+		int[] all_vars = Ints.concat(vars,
+				IntStream.of(this.getDomain().getVariables())
+						.filter(v -> !ArrayUtils.contains(vars,v)).toArray()
+		);
+
+		return this.reorderDomain(
+					new Strides(
+						all_vars,
+						IntStream.of(all_vars).map(v -> this.getDomain().getCardinality(v)).toArray()));
 
 	}
 

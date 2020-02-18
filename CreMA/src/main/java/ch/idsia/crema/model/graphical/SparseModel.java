@@ -1,8 +1,11 @@
 package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.change.NullChange;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -11,6 +14,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
 /**
  * A graphical model that will not update indices when a variable is deleted.
@@ -59,4 +63,25 @@ public class SparseModel<F extends GenericFactor> extends GenericSparseModel<F, 
 
 		return new_model;
 	}
+
+	@Override
+	public SparseModel intervention(int var, int state){
+		return (SparseModel)super.intervention(var, state);
+	}
+
+	public BayesianNetwork sampleVertex(){
+		BayesianNetwork bnet = new BayesianNetwork();
+		bnet.addVariables(this.getVariables());
+		for(int v: this.getVariables()){
+			bnet.addParents(v,this.getParents(v));
+			bnet.setFactor(v,((VertexFactor)this.getFactor(v)).sampleVertex());
+		}
+		return bnet;
+	}
+
+	public BayesianNetwork[] sampleVertex(int num){
+		return IntStream.range(0,num).mapToObj(i->this.sampleVertex()).toArray(BayesianNetwork[]::new);
+	}
+
+
 }

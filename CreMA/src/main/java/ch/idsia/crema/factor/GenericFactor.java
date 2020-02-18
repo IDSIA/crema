@@ -19,4 +19,9 @@ public interface GenericFactor {
 	 * @return
 	 */
 	public Strides getDomain();
+
+
+	default GenericFactor get_deterministic(int var, int state){
+		throw new UnsupportedOperationException();
+	}
 }

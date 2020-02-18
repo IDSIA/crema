@@ -22,13 +22,15 @@ public class SC2CNSimpleCase {
         emodel.setFactor(z, new BayesianFactor(emodel.getDomain(z), new double[] {0.4, 0.6}));
 
         emodel.setFactor(y, new BayesianFactor(
-                emodel.getDomain(y),
+                emodel.getDomain(x,y,z),
                 new double[] {0.5, 0.5, 0.6, 0.4, 0.9, 0.1, 0.3, 0.7}
         ));
 
         // define the SM
 
-        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromBN(emodel, 5);
+        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromDAG(emodel.getNetwork(), new int[]{2,2,2}, 5);
+
+
 
         double[][] fx = {  {1.0, 0.0},
                 {1.0, 0.0},
@@ -65,7 +67,10 @@ public class SC2CNSimpleCase {
 
         // Inputs: emodel + smodel
 
-        SparseModel cmodel = smodel.toVertexSimple(emodel);
+        //BayesianFactor[] factors = emodel.getFactors().toArray(new BayesianFactor[3]);
+        BayesianFactor[] factors = {emodel.getFactor(x), emodel.getFactor(y), emodel.getFactor(z)};
+
+        SparseModel cmodel = smodel.toVertexSimple(factors);
 
         //////// Heap space problems
     /* Run exact inference inference

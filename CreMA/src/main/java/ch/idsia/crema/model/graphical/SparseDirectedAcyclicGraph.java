@@ -22,6 +22,10 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 		super.addVertex(variable);
 	}
 
+	public void addVariable(int variable) {
+		super.addVertex(variable);
+	}
+
 	@Override
 	public void removeVariable(int variable) {
 		super.removeVertex(variable);

@@ -1,27 +1,33 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
+import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class DoCalculus {
     public static void main(String[] args) {
 
     // x <- z -> y ;  x -> y
 
-        BayesianNetwork emodel = new BayesianNetwork();
+        int x=0, y=1, z=2;
+        int[] endoVarSizes = {2,2,2};
 
-        int x = emodel.addVariable(2);
-        int y = emodel.addVariable(2);
-        int z = emodel.addVariable(2);
+        SparseDirectedAcyclicGraph dag = new SparseDirectedAcyclicGraph();
 
-        emodel.addParents(y,x,z);
-        emodel.addParent(x,z);
+        dag.addVariable(x);
+        dag.addVariable(y);
+        dag.addVariable(z);
 
-        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromBN(emodel, 5);
+        dag.addLink(x,y);
+        dag.addLink(z,x);
+        dag.addLink(z,y);
+
+        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromDAG(dag, endoVarSizes);
         smodel.fillWithRandomFactors(2);
 
         // Conditioning P( Y | x=0)
@@ -45,6 +51,15 @@ public class DoCalculus {
 
 
         // P(Y|do(x=0)) by operating in the original network
-        smodel.getProb(y).combine(smodel.getProb(z)).marginalize(z).filter(x,1).getData();
+        System.out.println(Arrays.toString(
+                smodel.getProb(y).combine(smodel.getProb(z)).marginalize(z).filter(x,0).getData()
+        ));
+
+
+        BayesianFactor[] factors  = IntStream.of(smodel.getEndogenousVars())
+                .mapToObj(v -> smodel.getProb(v).fixPrecission(5,v))
+                .toArray(BayesianFactor[]::new);
+
+        smodel.toVertexSimple(factors);
     }
 }
