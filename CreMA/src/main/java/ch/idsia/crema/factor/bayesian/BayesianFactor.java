@@ -490,23 +490,6 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	}
 
 
-	public BayesianFactor fixPrecission(int num_decimals, int... left_vars){
-
-		Strides left = this.getDomain().intersection(left_vars);
-		Strides right = this.getDomain().remove(left);
-		BayesianFactor newFactor = this.reorderDomain(left.concat(right));
-		double[][] newData = new double[right.getCombinations()][left.getCombinations()];
-		double[][] oldData = ArraysUtil.reshape2d(newFactor.getData(), right.getCombinations());
-
-		for(int i=0; i<right.getCombinations(); i++){
-			newData[i] = ArraysUtil.roundNonZerosToTarget(oldData[i], 1.0, num_decimals);
-		}
-
-		newFactor.setData(Doubles.concat(newData));
-		return newFactor.reorderDomain(this.getDomain());
-
-	}
-
 	@Override
 	public String toString() {
 		return "P(" + Arrays.toString(domain.getVariables()) + ")";
@@ -535,6 +518,24 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return Objects.hash(domain);
 	}
 
+
+
+	public BayesianFactor fixPrecission(int num_decimals, int... left_vars){
+
+		Strides left = this.getDomain().intersection(left_vars);
+		Strides right = this.getDomain().remove(left);
+		BayesianFactor newFactor = this.reorderDomain(left.concat(right));
+		double[][] newData = new double[right.getCombinations()][left.getCombinations()];
+		double[][] oldData = ArraysUtil.reshape2d(newFactor.getData(), right.getCombinations());
+
+		for(int i=0; i<right.getCombinations(); i++){
+			newData[i] = ArraysUtil.roundNonZerosToTarget(oldData[i], 1.0, num_decimals);
+		}
+
+		newFactor.setData(Doubles.concat(newData));
+		return newFactor.reorderDomain(this.getDomain());
+
+	}
 
 	/**
 	 * Static method that builds a deterministic factor (values can only be ones or zeros).
@@ -630,5 +631,13 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 			this.data = sorted.getData();
 		}
 	}
+
+
+	public BayesianFactor renameDomain(int... new_vars){
+		BayesianFactor out = new BayesianFactor(new Strides(new_vars, this.getDomain().getSizes()));
+		out.setData(this.getData());
+		return out;
+	}
+
 
 }
