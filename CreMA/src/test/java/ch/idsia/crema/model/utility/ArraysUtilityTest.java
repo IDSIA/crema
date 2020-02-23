@@ -1,7 +1,11 @@
 package ch.idsia.crema.model.utility;
 
 import ch.idsia.crema.utility.ArraysUtil;
+import com.google.common.primitives.Doubles;
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Arrays;
 
@@ -268,6 +272,146 @@ public class ArraysUtilityTest {
 		assertEquals(target, sumA, 0.0);
 		assertEquals(target, sumB, 0.0);
 		assertNotEquals(target, sumC, 0.0);
+	}
+
+
+	@ParameterizedTest
+	@CsvSource({"1&2,3&4,1&2&3&4",
+				"3&4, 3&4, 3&4",
+				"4&4, 3&4, 4&3",
+				"3&4, 3&3, 3&4",
+				"1&2, 3&4, 1&2&3&4",
+	})
+	void unionSet(String arr1, String arr2, String res) {
+		int[] v1 = ArraysUtil.latexToIntVector(arr1);
+		int[] v2 = ArraysUtil.latexToIntVector(arr2);
+		int[] expected = ArraysUtil.latexToIntVector(res);
+
+		assertArrayEquals(expected, ArraysUtil.unionSet(v1,v2));
+
+	}
+
+	@ParameterizedTest
+	@CsvSource({"1&2\\3&4, 2&2",
+				"1.0&2\\3&4, 2&2",
+				"1&2\\3&4\\3&4, 3&2",
+				"0&1&2\\3&4&5, 2&3"
+	})
+	void getShape(String matrix, String expected) {
+		double[][] matrix_ = ArraysUtil.latexToDoubleArray(matrix);
+		int[] expected_ = ArraysUtil.latexToIntVector(expected);
+		assertArrayEquals(expected_, ArraysUtil.getShape(matrix_));
+	}
+
+
+	@ParameterizedTest
+	@CsvSource({"1&2\\3&4, 1&3\\2&4",
+			"1&2\\3&4\\5&6, 1&3&5\\2&4&6",
+			"0&1&2\\3&4&5, 0&3\\1&4\\2&5"
+	})
+	void transpose(String original, String expected) {
+		double[][] matrix_ = ArraysUtil.latexToDoubleArray(original);
+		double[][] expected_ = ArraysUtil.latexToDoubleArray(expected);
+
+		assertArrayEquals(Doubles.concat(expected_),
+							Doubles.concat(ArraysUtil.transpose(matrix_)),0);
+	}
+
+
+	@ParameterizedTest
+	@CsvSource({"1&2&3&4, 2, 1&2\\3&4",
+			"1&2&3&4&5&6, 3, 1&2\\3&4\\5&6",
+			"0&1&2&3&4&5, 2, 0&1&2\\3&4&5"
+	})
+	void reshape2d(String vector, int shape, String expected) {
+		double[] vector_ = ArraysUtil.latexToDoubleVector(vector);
+		double[][] expected_ = ArraysUtil.latexToDoubleArray(expected);
+
+		double[][] actual = ArraysUtil.reshape2d(vector_, shape);
+
+		assertArrayEquals(
+				Doubles.concat(expected_),
+				Doubles.concat(actual)
+				,0);
+
+		assertEquals(shape, actual.length);
+	}
+
+
+	@ParameterizedTest
+	@CsvSource({"1&2&3&4, 2&2, 1&0, 1&3&2&4",
+				"1&2&3&4&5&6, 3&2, 1&0, 1&4&2&5&3&6"
+	})
+	public void  swapVectorStrides(String data, String sizes, String newOrder, String expected){
+		double[] data_ = ArraysUtil.latexToDoubleVector(data);
+		int[] sizes_ = ArraysUtil.latexToIntVector(sizes);
+		int[] newOrder_ = ArraysUtil.latexToIntVector(newOrder);
+
+		double[] expected_ = ArraysUtil.latexToDoubleVector(expected);
+		double[] actual = ArraysUtil.swapVectorStrides(data_,sizes_,newOrder_);
+
+		assertArrayEquals(
+				Doubles.concat(expected_),
+				Doubles.concat(actual)
+				,0);
+	}
+
+	@ParameterizedTest
+	@CsvSource({"1&2&3&4, 1, 1&1\\2&2\\3&3\\4&4",
+				"1&2&3&4, 5, 5&1\\6&2\\7&3\\8&4"
+	})
+	public void enumerate(String vect, int start, String expected){
+		double[] vect_ = ArraysUtil.latexToDoubleVector(vect);
+		double[][] expected_ = ArraysUtil.latexToDoubleArray(expected);
+
+		double[][] actual = ArraysUtil.enumerate(vect_,start);
+		assertArrayEquals(
+				Doubles.concat(expected_),
+				Doubles.concat(actual)
+				,0);
+
+	}
+
+
+
+	@ParameterizedTest
+	@CsvSource({"1&2&3&4,1&2&3&4",
+				"1&2&1&3&4,1&2&3&4",
+				"0&10&4&1&4,0&10&4&1"
+	})
+	void unique(String arr, String expected) {
+		int[] arr_ = ArraysUtil.latexToIntVector(arr);
+		int[] expected_= ArraysUtil.latexToIntVector(expected);
+		int[] actual = ArraysUtil.unique(arr_);
+
+		assertArrayEquals(expected_, actual);
+
+	}
+	@ParameterizedTest
+	@CsvSource({"1&2&3&4,1&2&3&4",
+			"1&2&1&3&4,1&2&3&4",
+			"0&10&4&1&4,0&10&4&1"
+	})
+	void uniqueDoubles(String arr, String expected) {
+		double[] arr_ = ArraysUtil.latexToDoubleVector(arr);
+		double[] expected_= ArraysUtil.latexToDoubleVector(expected);
+		double[] actual = ArraysUtil.unique(arr_);
+
+		assertArrayEquals(expected_, actual,0);
+
+	}
+	@ParameterizedTest
+	@CsvSource({"1 & 2.01 & 3.0001 & 4,  1,   1 & 2 & 3 & 4",
+			"1.99 & 2.067 & 3.0001 & 4,  1,   2 & 2.1 & 3 & 4",
+
+	})
+	void round(String arr, int num_decimals, String expected) {
+		double[] arr_ = ArraysUtil.latexToDoubleVector(arr);
+		double[] expected_= ArraysUtil.latexToDoubleVector(expected);
+		double[] actual = ArraysUtil.round(arr_, num_decimals);
+
+		assertArrayEquals(expected_, actual,0);
+
 	}
 
 }

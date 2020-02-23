@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class ArraysUtil {
 
@@ -461,6 +462,13 @@ public class ArraysUtil {
 		return arr_union;
 	}
 
+	/**
+	 * Union of 2 unsorted arrays without repetition
+	 * @param arr1
+	 * @param arr2
+	 * @return
+	 */
+
 	public static int[] unionSet(int[] arr1, int[] arr2){
 		return  Ints.toArray(ImmutableSet.copyOf(
 				Ints.asList(Ints.concat(arr1,arr2))
@@ -516,13 +524,23 @@ public class ArraysUtil {
 		return -1;
 	}
 
+	/**
+	 * Returns the dimensions of 2d matrix
+	 * @param matrix
+	 * @return - tuple of integers
+	 */
+
 	public static int[] getShape(double[][] matrix){
 		if(Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
 			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
 		return new int[] {matrix.length, matrix[0].length};
 	}
 
-
+	/**
+	 * Transpose of a 2d matrix
+	 * @param original
+	 * @return
+	 */
 	public static double[][] transpose(double[][] original){
 
 		int[] shape = getShape(original);
@@ -536,6 +554,12 @@ public class ArraysUtil {
 
 	}
 
+	/**
+	 * Transforms a 1d vector into a 2d matrix
+	 * @param vector - vector to transform
+	 * @param shape - value of the 1st dimension or tuple with both of them.
+	 * @return
+	 */
 	public static double[][] reshape2d(double[] vector, int... shape) {
 
 		if(shape.length==1)
@@ -557,7 +581,13 @@ public class ArraysUtil {
 
 	}
 
-
+	/**
+	 * Given a vector representing a multidimensional array, swaps the axis.
+	 * @param data	- matrix to transform
+	 * @param sizes	- lengths of each axis
+	 * @param newOrder - list of old axis in the new order.
+	 * @return
+	 */
 	public static double[] swapVectorStrides(double[] data, int[] sizes, int[] newOrder ){
 
 		int[] oldOrder = IntStream.range(0,sizes.length).toArray();
@@ -579,28 +609,57 @@ public class ArraysUtil {
 		return newdata;
 	}
 
+	/**
+	 *	Given a 1d vector of doubles, transforms it in a list of
+	 *  tuples where the first element is the sequence number.
+	 * @param vect
+	 * @param start
+	 * @return
+	 */
+
 	public static double[][] enumerate(double[] vect, int start){
 		return IntStream.range(0+start, vect.length+start)
 				.mapToObj(i -> new double[]{i, vect[i-start]})
 				.toArray(double[][]:: new);
 	}
+
+	/**
+	 *	Given a 1d vector of doubles, transforms it in a list of
+	 *  tuples where the first element is the sequence number.
+	 * @param vect
+	 * @return
+	 */
 	public static double[][] enumerate(double[] vect){ return enumerate(vect,0);}
 
-
-	public static int[] set(int[] arr){
+	/**
+	 *	Generates a new vector without repeated values
+	 * @param arr
+	 * @return
+	 */
+	public static int[] unique(int[] arr){
 		return  Ints.toArray(ImmutableSet.copyOf(
 				Ints.asList(arr)
 		));
 	}
 
 
-	public static double[] set(double[] arr){
+	/**
+	 *	Generates a new vector without repeated values
+	 * @param arr
+	 * @return
+	 */
+	public static double[] unique(double[] arr){
 		return  Doubles.toArray(ImmutableSet.copyOf(
 				Doubles.asList(arr)
 		));
 	}
 
-
+	/**
+	 * Round all the values in a vector with a number of decimals.
+	 * @param arr
+	 * @param num_decimals
+	 * @return
+	 */
 	public static double[] round(double arr[], int num_decimals){
 
 		double[] data = Arrays.copyOf(arr, arr.length);
@@ -612,7 +671,13 @@ public class ArraysUtil {
 		return data;
 	}
 
-
+	/**
+	 * Round non zero values such as the sum is equal to the target.
+	 * @param arr
+	 * @param target
+	 * @param num_decimals
+	 * @return
+	 */
 	public static double[] roundNonZerosToTarget(double[] arr, double target, int num_decimals){
 
 		double[] data = Arrays.copyOf(arr, arr.length);
@@ -632,23 +697,86 @@ public class ArraysUtil {
 		return data;
 	}
 
+	/**
+	 * Generates the latex source for representing a 2d array.
+	 * @param matrix
+	 * @return
+	 */
 	public static String toLatex(double[][] matrix){
-
 		String str = "";
-
 		for(int i=0; i<matrix.length; i++){
-
 			for(int j=0; j<matrix[i].length; j++){
 				str+=matrix[i][j];
 				if(j==matrix[i].length-1)
 					str+=" \\\\\n";
 				else
 					str+=" &";
-
 			}
 		}
 		return str;
 	}
+
+	/**
+	 * Given a latex code representing a 1d vector, this function obtains
+	 * the equivalent array of doubles.
+	 * @param latexcode
+	 * @return
+	 */
+	public static double[] latexToDoubleVector(String latexcode) {
+		return  Stream.of(latexcode.split("&")).mapToDouble(s -> Double.valueOf(s)).toArray();
+	}
+
+	/**
+	 * Given a latex code representing a 2d vector, this function obtains
+	 * the equivalent array of doubles.
+	 * @param latexcode
+	 * @return
+	 */
+	public static double[][] latexToDoubleArray(String latexcode) {
+		return  Stream.of(latexcode.split("\\\\"))
+				.map(s -> latexToDoubleVector(s))
+				.toArray(double[][]::new);
+	}
+
+	/**
+	 * Given a latex code representing a 1d vector, this function obtains
+	 * the equivalent array of ints.
+	 * @param latexcode
+	 * @return
+	 */
+	public static int[] latexToIntVector(String latexcode) {
+		return  toIntVector(latexToDoubleVector(latexcode));
+	}
+
+	/**
+	 * Given a latex code representing a 2d vector, this function obtains
+	 * the equivalent array of ints.
+	 * @param latexcode
+	 * @return
+	 */
+	public static int[][] latexToIntArray(String latexcode) {
+		return  toIntArray(latexToDoubleArray(latexcode));
+	}
+
+	/**
+	 * cast a 1d array of doubles into one of ints
+	 * @param arr
+	 * @return
+	 */
+	public static int[] toIntVector(double[] arr){
+		return Arrays.stream(arr).mapToInt(v -> (int)v).toArray();
+	}
+
+
+	/**
+	 * cast a 2d array of doubles into one of ints
+	 * @param arr
+	 * @return
+	 */
+	public static int[][] toIntArray(double[][] arr){
+		return Stream.of(arr).map(v -> toIntVector(v)).toArray(int[][]::new);
+	}
+
 
 
 }

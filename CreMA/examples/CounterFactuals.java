@@ -24,12 +24,11 @@ public class CounterFactuals {
         // Create the counterfactual model by merging
         StructuralCausalModel cfmodel = cmodel.merge(models);
 
-        // get the equivalent variable in world 1
+        // get variable x but in world 1
         cfmodel.getMap().getEquivalentVars(1,x);
 
         System.out.println("Original model:\n====================== "+cmodel);
         System.out.println("Counterfactual model:\n====================== "+cfmodel);
-
 
 
     }
