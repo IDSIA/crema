@@ -70,13 +70,7 @@ public class CounterFactualMappingTest {
 
 	@Test
 	public void testMapDomains(){
-		assertTrue(
-				IntStream.of(merged.getVariables())
-						.allMatch(v -> Arrays.equals(
-								ArraysUtil.sort(merged.getFactor(v).getDomain().getVariables()),
-								ArraysUtil.sort(ArrayUtils.add(merged.getParents(v), v))
-						))
-		);
+		assertTrue(merged.correctFactorDomains());
 	}
 
 

@@ -30,7 +30,7 @@ public class Fig1_alt {
 
         dag.addLink(x1, x2);
 
-        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromDAG(dag, endoVarSizes);
+        StructuralCausalModel smodel = new StructuralCausalModel(dag, endoVarSizes);
         smodel.fillWithRandomFactors(1);
 
         int u1 = smodel.getExogenousParents(x1)[0];

@@ -27,7 +27,7 @@ public class DoCalculus {
         dag.addLink(z,x);
         dag.addLink(z,y);
 
-        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromDAG(dag, endoVarSizes);
+        StructuralCausalModel smodel = new StructuralCausalModel(dag, endoVarSizes);
         smodel.fillWithRandomFactors(2);
 
         // Conditioning P( Y | x=0)

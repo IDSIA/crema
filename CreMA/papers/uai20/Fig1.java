@@ -26,7 +26,7 @@ public class Fig1 {
         dag.addLink(x1, x3);
         dag.addLink(x2,x3);
 
-        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromDAG(dag, endoVarSizes);
+        StructuralCausalModel smodel = new StructuralCausalModel(dag, endoVarSizes);
         smodel.fillWithRandomFactors(1);
 
 

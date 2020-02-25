@@ -1,10 +1,14 @@
 package ch.idsia.crema.model.graphical;
 
+import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Ints;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -12,6 +16,7 @@ import java.util.Set;
  * Date:    12.02.2018 10:08
  */
 public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, DefaultEdge> implements Graph {
+
 
 	public SparseDirectedAcyclicGraph() {
 		super(DefaultEdge.class);
@@ -67,4 +72,9 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 	public int[] getVariables(){
 		return Ints.toArray(this.vertexSet());
 	}
+
+
+
+
+
 }

@@ -28,7 +28,7 @@ public class SC2CNSimpleCase {
 
         // define the SM
 
-        StructuralCausalModel smodel = StructuralCausalModel.getCausalStructFromDAG(emodel.getNetwork(), new int[]{2,2,2}, 5);
+        StructuralCausalModel smodel = new StructuralCausalModel(emodel.getNetwork(), new int[]{2,2,2}, 5);
 
 
 

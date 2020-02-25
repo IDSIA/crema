@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -345,6 +346,28 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		return do_model;
 
 	}
+
+	/**
+	 * Determines if the factor domains match with the structure of the DAG.
+	 * @return
+	 */
+	public boolean correctFactorDomains(){
+		return IntStream.of(this.getVariables())
+					.allMatch(v -> Arrays.equals(
+						ArraysUtil.sort(this.getFactor(v).getDomain().getVariables()),
+						ArraysUtil.sort(ArrayUtils.add(this.getParents(v), v))
+				));
+	}
+
+	/**
+	 * Returns an array with the parents of a variable and the variable itself.
+	 * @param var
+	 * @return
+	 */
+	public int[] getVariableAndParents(int var){
+		return ArrayUtils.add(this.getParents(var), var);
+	}
+
 
 
 }
