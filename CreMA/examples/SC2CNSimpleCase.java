@@ -30,39 +30,23 @@ public class SC2CNSimpleCase {
 
         StructuralCausalModel smodel = new StructuralCausalModel(emodel.getNetwork(), new int[]{2,2,2}, 5);
 
+        BayesianFactor fx = BayesianFactor.deterministic(smodel.getDomain(x),
+                                                         smodel.getDomain(smodel.getParents(x)),
+                                            0,0,1,1,1);
+
+        BayesianFactor fz = BayesianFactor.deterministic(smodel.getDomain(z),
+                                                         smodel.getDomain(smodel.getParents(z)),
+                                            0,1,1,1,0);
 
 
-        double[][] fx = {  {1.0, 0.0},
-                {1.0, 0.0},
-                {0.0, 1.0},
-                {0.0, 1.0},
-                {0.0, 1.0}};
+        BayesianFactor fy = BayesianFactor.deterministic(smodel.getDomain(y),
+                                                        smodel.getDomain(smodel.getParents(y)),
+                                                        0,1,0,0, 1,1,0,1, 1,0,1,0, 1,0,0,1, 0,0,0,1);
 
 
-        double[][] fz = {   {1.0, 0.0},
-                {0.0, 1.0},
-                {0.0, 1.0},
-                {0.0, 1.0},
-                {1.0, 0.0}};
-
-
-        double[][] fy = {   {1.0, 0.0,  0.0, 1.0,   1.0, 0.0,   1.0, 0.0},
-                {0.0, 1.0,  0.0, 1.0,   1.0, 0.0,   0.0, 1.0},
-                {0.0, 1.0,  1.0, 0.0,   0.0, 1.0,   1.0, 0.0},
-                {0.0, 1.0,  1.0, 0.0,   1.0, 0.0,   0.0, 1.0},
-                {1.0, 0.0,  1.0, 0.0,   1.0, 0.0,   0.0, 1.0},
-        };
-
-
-
-        smodel.setFactor(x,new BayesianFactor(
-                smodel.getDomain(ArrayUtils.add(smodel.getParents(x), 0, x)), Doubles.concat(fx)));
-
-        smodel.setFactor(y,new BayesianFactor(
-                smodel.getDomain(ArrayUtils.add(smodel.getParents(y), 0, y)), Doubles.concat(fy)));
-
-        smodel.setFactor(z,new BayesianFactor(
-                smodel.getDomain(ArrayUtils.add(smodel.getParents(z), 0, z)), Doubles.concat(fz)));
+        smodel.setFactor(x,fx);
+        smodel.setFactor(y,fy);
+        smodel.setFactor(z,fz);
 
 
         // Inputs: emodel + smodel
