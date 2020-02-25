@@ -303,7 +303,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	 * with the empirical probabilities (of the endogenous variables).
 	 * This is the simple case where each endogenous variable has a single
 	 * and non-shared exogenous parent.
-	 * @param empiricalProbs
+	 * @param empiricalProbs - for each exogenous variable U, the empirical probability of the children given the endogenous parents.
 	 * @return
 	 */
 	public SparseModel toVertexSimple(BayesianFactor... empiricalProbs){
@@ -354,7 +354,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	 * Converts the current SCM into an equivalent credal network consistent
 	 * with the empirical probabilities (of the endogenous variables).
 	 * In this case exogenous parentes might have more than one endogenous child.
-	 * @param empiricalProbs
+	 * @param empiricalProbs - for each exogenous variable U, the empirical probability of the children given the endogenous parents.
 	 * @return
 	 */
 	public SparseModel toVertexNonMarkov(BayesianFactor... empiricalProbs){
@@ -379,12 +379,13 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 			double [] vector = this.getFactor(this.getChildren(v)[0]).getData();
 			int[] children = this.getChildren(v);
 
-
+			// Get the coefficients by combining all the EQs of the children
 			double[][] coeff = ArraysUtil.transpose(ArraysUtil.reshape2d(
 					IntStream.of(children).mapToObj(i-> this.getFactor(i)).reduce((f1,f2) -> f1.combine(f2)).get()
 							.getData(), this.getSizes(v)
 			));
 
+			// Get the P(ch(U)|endogenous_pa(ch(U)))
 			BayesianFactor pv = (BayesianFactor) Stream.of(empiricalProbs).filter(f ->
 					ImmutableSet.copyOf(Ints.asList(f.getDomain().getVariables()))
 							.equals(ImmutableSet.copyOf(
