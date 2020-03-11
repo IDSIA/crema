@@ -118,6 +118,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 			this.addVertex(v);
 		}
 
+		//k_const.printLinearProblem();
 
 	}
 

@@ -1,4 +1,4 @@
-package uai20;
+package pgm20;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Fig1_alt {
+public class Fig1 {
     public static void main(String[] args) {
 
 
@@ -30,11 +30,12 @@ public class Fig1_alt {
 
         dag.addLink(x1, x2);
 
-        StructuralCausalModel smodel = new StructuralCausalModel(dag, endoVarSizes);
+        StructuralCausalModel smodel = new StructuralCausalModel(dag, endoVarSizes, 3,5);
         smodel.fillWithRandomFactors(1);
 
         int u1 = smodel.getExogenousParents(x1)[0];
         int u2 = smodel.getExogenousParents(x2)[0];
+
 
 
         // set functions as given in the paper

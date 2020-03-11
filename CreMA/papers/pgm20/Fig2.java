@@ -1,7 +1,9 @@
-package uai20;
+package pgm20;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.Strides;
@@ -14,8 +16,8 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class Fig2_alt {
-    public static void main(String[] args) {
+public class Fig2 {
+    public static void main(String[] args) throws InterruptedException {
 
 
         RandomUtil.getRandom().setSeed(236226);
@@ -58,9 +60,13 @@ public class Fig2_alt {
 
         /////
 
+        System.out.println(Arrays.toString(smodel.getProb(x).getData()));
+        System.out.println(Arrays.toString(smodel.getProb(y).getData()));
+
+
         BayesianFactor[] factors = {fx.combine(fy).combine(pu).marginalize(u)};
         System.out.println("Empirical join: "+factors[0]);
-        System.out.println(Arrays.toString(factors[0].getData()));
+        System.out.println(Arrays.toString(factors[0].reorderDomain(x).getData()));
 
         SparseModel csmodel = smodel.toVertexNonMarkov(factors);
 
@@ -165,6 +171,18 @@ k[u].combine(k[x]).combine(k[y]).marginalize(u).divide(
                 bnet -> bnet.getFactor(u).combine(bnet.getFactor(x)).combine(bnet.getFactor(y)).marginalize(u).divide(
                         bnet.getFactor(u).combine(bnet.getFactor(x)).marginalize(u)).filter(x,1).getData()
         ).toArray();
+
+
+
+        // ApproxLP
+
+        Inference approx = new Inference();
+        IntervalFactor resultsALP = null;
+        resultsALP = approx.query(csmodel, y, -1);
+
+        System.out.println(Arrays.toString(resultsALP.getUpper()));
+        System.out.println(Arrays.toString(resultsALP.getLower()));
+
 
 
     }
