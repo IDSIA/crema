@@ -1,5 +1,7 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.inference.approxlp2.ApproxLP2;
@@ -7,6 +9,7 @@ import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
+import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.util.Arrays;
 
@@ -16,8 +19,9 @@ public class CredalInference {
         double p = 0.2;
         double eps = 0.0001;
 
+        /*  CN defined with vertex Factor  */
 
-        // Define the model
+        // Define the model (with vertex factors)
         SparseModel model = new SparseModel();
         int u = model.addVariable(3);
         int x = model.addVariable(2);
@@ -25,7 +29,7 @@ public class CredalInference {
 
         // Define a credal set of the partent node
         VertexFactor fu = new VertexFactor(model.getDomain(u), Strides.empty());
-        fu.addVertex(new double[]{0., 1-p, p-eps});
+        fu.addVertex(new double[]{0., 1-p, p});
         fu.addVertex(new double[]{1-p, 0., p});
         model.setFactor(u,fu);
 
@@ -46,23 +50,19 @@ public class CredalInference {
         ve.setFactors(model.getFactors());
         System.out.println(ve.run(x));
 
+        // AproxLP will not work
 
         Inference inference = new Inference();
         double[] upper = inference.query(model, x).getUpper();
         System.out.println(Arrays.toString(upper));         // [NaN, NaN]
 
         ApproxLP2 approxLP2 = new ApproxLP2();
-        upper = inference.query(model, x).getUpper();
+        upper = approxLP2.query(model, x).getUpper();
         System.out.println(Arrays.toString(upper));         // [NaN, NaN]
 
 
-        /*
-        The same model but with intervals.
-        Notes: VE deos not work with these factors.
-        BayesianFactor can be added.
-        Many problems with numerical stability
-         */
-
+        /* Interval Factors  */
+        // ApproxlP works but with numerical stability problems
 
         model = new SparseModel();
         x = model.addVariable(2);
@@ -84,5 +84,70 @@ public class CredalInference {
         inference = new Inference();
         upper = inference.query(model, x).getUpper();
         System.out.println(Arrays.toString(upper));         // [0.8001, 0.19999999999999996]
+
+
+
+        /* CN with factors specified with constraints  */
+
+        model = new SparseModel();
+        x = model.addVariable(2);
+        u = model.addVariable(3);
+        model.addParent(x,u);
+
+
+        SeparateHalfspaceFactor cfu = new SeparateHalfspaceFactor(model.getDomain(u), Strides.empty());
+
+        cfu.addConstraint(new double[]{0,0,1}, Relationship.EQ, p);
+        cfu.addConstraint(new double[]{1,1,0}, Relationship.EQ, 1-p);
+
+        cfu.addConstraint(new double[]{1,1,1}, Relationship.EQ, 1);
+
+        cfu.addConstraint(new double[]{1,0,0}, Relationship.GEQ, 0);
+        cfu.addConstraint(new double[]{0,1,0}, Relationship.GEQ, 0);
+        cfu.addConstraint(new double[]{0,0,1}, Relationship.GEQ, 0);
+
+
+        HalfspaceToVertex conversor = new HalfspaceToVertex();
+        double[][] vertices = conversor.apply(cfu,0).getData()[0];
+
+        SeparateHalfspaceFactor cfx = new SeparateHalfspaceFactor(model.getDomain(x), model.getDomain(u));
+
+        cfx.addConstraint(new double[]{1,0}, Relationship.EQ, 1, 0);
+        cfx.addConstraint(new double[]{1,0}, Relationship.EQ, 1, 1);
+        cfx.addConstraint(new double[]{0,1}, Relationship.EQ, 1, 2);
+
+        cfx.addConstraint(new double[]{1,0}, Relationship.GEQ, 0, 0);
+        cfx.addConstraint(new double[]{0,1}, Relationship.GEQ, 0, 0);
+
+        cfx.addConstraint(new double[]{1,0}, Relationship.GEQ, 0, 1);
+        cfx.addConstraint(new double[]{0,1}, Relationship.GEQ, 0, 1);
+
+        cfx.addConstraint(new double[]{1,0}, Relationship.GEQ, 0, 2);
+        cfx.addConstraint(new double[]{0,1}, Relationship.GEQ, 0, 2);
+
+
+        cfx.addConstraint(new double[]{1,1}, Relationship.EQ, 1, 0);
+        cfx.addConstraint(new double[]{1,1}, Relationship.EQ, 1, 1);
+        cfx.addConstraint(new double[]{1,1}, Relationship.EQ, 1, 2);
+
+
+
+        model.setFactor(x, cfx);
+        model.setFactor(u, cfu);
+
+        conversor.apply(cfx,0).getData();
+
+        inference = new Inference();
+
+        System.out.println(Arrays.toString(inference.query(model, x).getUpper()));         //
+        System.out.println(Arrays.toString(inference.query(model, x).getLower()));         //
+
+        approxLP2 = new ApproxLP2();
+
+        System.out.println(Arrays.toString(approxLP2.query(model, x).getUpper()));         //
+        System.out.println(Arrays.toString(approxLP2.query(model, x).getLower()));         //
+
+
+
     }
 }
