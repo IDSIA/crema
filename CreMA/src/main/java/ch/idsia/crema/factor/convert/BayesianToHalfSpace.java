@@ -1,38 +1,53 @@
 package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.Converter;
 import ch.idsia.crema.model.Strides;
 import com.google.common.primitives.Doubles;
+import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.util.List;
 
-public class BayesianToVertex implements Converter<BayesianFactor, VertexFactor> {
-	public static final BayesianToVertex INSTANCE = new BayesianToVertex();
+public class BayesianToHalfSpace implements Converter<BayesianFactor, SeparateHalfspaceFactor> {
+	public static final BayesianToHalfSpace INSTANCE = new BayesianToHalfSpace();
 	
 	@Override
-	public VertexFactor apply(BayesianFactor cpt, Integer var) {
+	public SeparateHalfspaceFactor apply(BayesianFactor cpt, Integer var) {
 
 		Strides left = Strides.as(var, cpt.getDomain().getCardinality(var));
 		Strides right = cpt.getDomain().remove(var);
-		VertexFactor factor = new VertexFactor(left, right);
+		SeparateHalfspaceFactor factor = new SeparateHalfspaceFactor(left, right);
 		int left_var_size = cpt.getDomain().getCardinality(var);
 		List cpt_data = Doubles.asList(cpt.getData());
 
 		for(int i=0; i<right.getCombinations(); i++){
 			double[] v = Doubles.toArray(cpt_data.subList(i*left_var_size, (i+1)*left_var_size));
-			factor.addVertex(v, i);
+			for(int j=0; j<left_var_size; j++){
+				// Value constraint
+				double[] data = new double[left_var_size];
+				data[j] = 1.0;
+				factor.addConstraint(data, Relationship.EQ, v[j], i);
+
+				// non-negative constraints
+				factor.addConstraint(data, Relationship.GEQ, 0.0, i);
+			}
+
+			// normalization constraint
+			double [] ones =  new double[left_var_size];
+			for(int j=0; j<ones.length; j++)
+				ones[j] = 1.;
+			factor.addConstraint(ones, Relationship.EQ, 1.0, i);
+
 		}
 
-		//factor.addInternalVertex(cpt.getInteralData());
 		return factor;
 	}
 
 	@Override
-	public Class<VertexFactor> getTargetClass() {
-		return VertexFactor.class;
+	public Class<SeparateHalfspaceFactor> getTargetClass() {
+		return SeparateHalfspaceFactor.class;
 	}
 
 	@Override

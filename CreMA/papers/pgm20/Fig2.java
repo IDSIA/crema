@@ -9,7 +9,6 @@ import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.user.credal.Vertex;
 import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
@@ -68,7 +67,7 @@ public class Fig2 {
         System.out.println("Empirical join: "+factors[0]);
         System.out.println(Arrays.toString(factors[0].reorderDomain(x).getData()));
 
-        SparseModel csmodel = smodel.toVertexNonMarkov(factors);
+        SparseModel csmodel = smodel.toCredalNetwork(factors);
 
 
         smodel.printSummary();
