@@ -26,8 +26,6 @@ public class ToVertexAndConstraints {
         int u2 = smodel.getExogenousParents(x2)[0];
 
 
-        smodel.getProb(x2).fixPrecission(5,x2).getData();
-
         // set functions as given in the paper
         BayesianFactor[] empirical  = IntStream.of(smodel.getEndogenousVars())
                 .mapToObj(v -> smodel.getProb(v).fixPrecission(5,v))
