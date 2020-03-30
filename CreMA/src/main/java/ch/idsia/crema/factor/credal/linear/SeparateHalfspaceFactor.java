@@ -2,13 +2,18 @@ package ch.idsia.crema.factor.credal.linear;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
+import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import com.google.common.primitives.Ints;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 
 import ch.idsia.crema.model.Strides;
+
+import javax.sound.sampled.Line;
 
 /**
  * A separately specified Credal factor that has a list of linear constrains for each 
@@ -39,10 +44,27 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	public SeparateHalfspaceFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
 		this(left, Strides.empty());
 
-		// check the coefficient sizes
+		// Build the constraints (including normalization and non-negative one)
+		LinearConstraint[] C = buildConstraints(true, true, coefficients, values, rel);
+
+		// add constraints to this factor
+		for (LinearConstraint c : C) {
+			this.addConstraint(c);
+		}
+	}
+
+
+
+	public static LinearConstraint[] buildConstraints(boolean normalized, boolean nonnegative, double[][] coefficients, double[] values, Relationship... rel) {
+
+		int left_combinations = coefficients[0].length;
+		List<LinearConstraint> C = new ArrayList<LinearConstraint>();
+
+
+		// check the coefficient shape
 		for(double[] c : coefficients){
-			if (c.length != left.getCombinations())
-				throw new IllegalArgumentException("ERROR: wrong constraint size: "+c.length+" instead of "+left.getCombinations());
+			if (c.length != left_combinations)
+				throw new IllegalArgumentException("ERROR: coefficient matrix shape");
 		}
 
 		// check the relationship vector length
@@ -57,28 +79,31 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		}
 
 		for(int i=0; i< coefficients.length; i++){
-			this.addConstraint(coefficients[i], rel[i], values[i]);
+			C.add(new LinearConstraint(coefficients[i], rel[i], values[i]));
 		}
+
 
 		// normalization constraint
-		double [] ones =  new double[left.getCombinations()];
-		for(int i=0; i<ones.length; i++)
-			ones[i] = 1.;
-		this.addConstraint(ones, Relationship.EQ, 1.0);
+		if(normalized){
+			double [] ones =  new double[left_combinations];
+			for(int i=0; i<ones.length; i++)
+				ones[i] = 1.;
+			C.add(new LinearConstraint(ones, Relationship.EQ, 1.0));
+		}
 
 		// non-negative constraints
-		double [] zeros =  new double[left.getCombinations()];
-		for(int i=0; i<zeros.length; i++)
-			ones[i] = 0.;
+		if(nonnegative) {
+			double [] zeros =  new double[left_combinations];
+			for(int i=0; i<left_combinations; i++) {
+				double[] c = zeros.clone();
+				c[i] = 1.;
+				C.add(new LinearConstraint(c, Relationship.GEQ, 0));
 
-		for(int i=0; i<left.getCombinations(); i++) {
-			double[] c = zeros.clone();
-			c[i] = 1.;
-			this.addConstraint(c,Relationship.GEQ, 0);
-
+			}
 		}
-	}
 
+		return C.toArray(LinearConstraint[]::new);
+	}
 
 
 
@@ -97,9 +122,14 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 	public void addConstraint(double[] data, Relationship rel, double value, int... states) {
-		int offset = groupDomain.getOffset(states);
-		this.data.get(offset).add(new LinearConstraint(data, rel, value));
+		this.addConstraint(new LinearConstraint(data, rel, value));
 	}
+
+	public void addConstraint(LinearConstraint c, int... states) {
+		int offset = groupDomain.getOffset(states);
+		this.data.get(offset).add(c);
+	}
+
 	
 	public double[] getRandomVertex(int... states) {
 		Random random = new Random();
@@ -171,4 +201,74 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	public LinearConstraintSet getLinearProblemAt(int offset) {
 		return new LinearConstraintSet(data.get(offset));
 	}
+
+
+
+	/**
+	 * Static method that builds a deterministic factor (values can only be ones or zeros).
+	 * Thus, children variables are determined by the values of the parents
+	 * @param left	Strides - children variables.
+	 * @param right	Strides - parent variables
+	 * @param assignments assignments of each combination of the parent
+	 * @return
+	 */
+
+	public static SeparateHalfspaceFactor deterministic(Strides left, Strides right, int... assignments){
+
+		if (assignments.length != right.getCombinations())
+			throw new IllegalArgumentException("ERROR: length of assignments should be equal to the number of combinations of the parents");
+
+		if (Ints.min(assignments)<0 || Ints.max(assignments)>= left.getCombinations())
+			throw new IllegalArgumentException("ERROR: assignments of deterministic function should be in the inteval [0,"+left.getCombinations()+")");
+
+
+		SeparateHalfspaceFactor f = new SeparateHalfspaceFactor(left,right);
+
+		int left_combinations = left.getCombinations();
+
+		for(int i=0; i< right.getCombinations(); i++){
+			double[][] coeff = new double[left_combinations][left_combinations];
+			for(int j=0; j<left_combinations; j++){
+				coeff[j][j] = 1.;
+			}
+			double[] values = new double[left_combinations];
+			values[assignments[i]] = 1.;
+
+			// Build the constraints
+			LinearConstraint[] C = SeparateHalfspaceFactor.buildConstraints(true, true, coeff, values, Relationship.EQ);
+
+			// Add the constraints
+			for(LinearConstraint c : C) {
+				f.addConstraint(c, i);
+			}
+		}
+
+		return f;
+	}
+	/**
+	 * Static method that builds a deterministic factor (values can only be ones or zeros)
+	 * without parent variables.
+	 * @param left	Strides - children variables.
+	 * @param assignment int - single value to assign
+	 * @return
+	 */
+
+
+	public static SeparateHalfspaceFactor deterministic(Strides left, int assignment){
+		return SeparateHalfspaceFactor.deterministic(left, Strides.empty(), assignment);
+	}
+
+	/**
+	 * Static method that builds a deterministic factor (values can only be ones or zeros)
+	 * without parent variables.
+	 * @param var	int - id for the single children variable.
+	 * @param assignment int - single value to assign
+	 * @return
+	 */
+
+	public SeparateHalfspaceFactor get_deterministic(int var, int assignment){
+		return SeparateHalfspaceFactor.deterministic(this.getDomain().intersection(var), assignment);
+	}
+
+
 }

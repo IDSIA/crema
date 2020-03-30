@@ -26,7 +26,6 @@ public class BayesianToVertex implements Converter<BayesianFactor, VertexFactor>
 			factor.addVertex(v, i);
 		}
 
-		//factor.addInternalVertex(cpt.getInteralData());
 		return factor;
 	}
 
