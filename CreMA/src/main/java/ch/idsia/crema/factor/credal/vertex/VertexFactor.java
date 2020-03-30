@@ -526,7 +526,13 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return VertexFactor.deterministic(left, Strides.empty(), assignment);
 	}
 
-
+	/**
+	 * Static method that builds a deterministic factor (values can only be ones or zeros)
+	 * without parent variables.
+	 * @param var	int - id for the single children variable.
+	 * @param assignment int - single value to assign
+	 * @return
+	 */
 
 	public VertexFactor get_deterministic(int var, int assignment){
 		return VertexFactor.deterministic(this.getDomain().intersection(var), assignment);
