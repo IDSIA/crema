@@ -344,7 +344,6 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		// Fix the value of the intervened variable
 		do_model.setFactor(var, this.getFactor(var).get_deterministic(var, state));
 		return do_model;
-
 	}
 
 	/**
