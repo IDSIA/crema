@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.LinearConstraintSet;
-import org.apache.commons.math3.optim.linear.LinearObjectiveFunction;
-import org.apache.commons.math3.optim.linear.Relationship;
-import org.apache.commons.math3.optim.linear.SimplexSolver;
+import org.apache.commons.math3.optim.linear.*;
 
 import ch.idsia.crema.model.Strides;
 
@@ -37,7 +34,54 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		super(content, separation);
 		this.data = data;
 	}
-	
+
+
+	public SeparateHalfspaceFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
+		this(left, Strides.empty());
+
+		// check the coefficient sizes
+		for(double[] c : coefficients){
+			if (c.length != left.getCombinations())
+				throw new IllegalArgumentException("ERROR: wrong constraint size: "+c.length+" instead of "+left.getCombinations());
+		}
+
+		// check the relationship vector length
+		if(rel.length == 0) rel = new Relationship[] {Relationship.EQ};
+		if(rel.length == 1) {
+			Relationship[] rel_aux = new Relationship[coefficients.length];
+			for(int i = 0; i< coefficients.length; i++)
+				rel_aux[i] = rel[0];
+			rel = rel_aux;
+		}else if(rel.length != coefficients.length) {
+			throw new IllegalArgumentException("ERROR: wrong relationship vector length: "+rel.length);
+		}
+
+		for(int i=0; i< coefficients.length; i++){
+			this.addConstraint(coefficients[i], rel[i], values[i]);
+		}
+
+		// normalization constraint
+		double [] ones =  new double[left.getCombinations()];
+		for(int i=0; i<ones.length; i++)
+			ones[i] = 1.;
+		this.addConstraint(ones, Relationship.EQ, 1.0);
+
+		// non-negative constraints
+		double [] zeros =  new double[left.getCombinations()];
+		for(int i=0; i<zeros.length; i++)
+			ones[i] = 0.;
+
+		for(int i=0; i<left.getCombinations(); i++) {
+			double[] c = zeros.clone();
+			c[i] = 1.;
+			this.addConstraint(c,Relationship.GEQ, 0);
+
+		}
+	}
+
+
+
+
 	@Override
 	public SeparateHalfspaceFactor copy() {
 		ArrayList<ArrayList<LinearConstraint>> new_data = new ArrayList<>(groupDomain.getCombinations());

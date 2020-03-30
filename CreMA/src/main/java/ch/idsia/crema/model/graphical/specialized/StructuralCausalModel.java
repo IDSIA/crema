@@ -1,7 +1,10 @@
 package ch.idsia.crema.model.graphical.specialized;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.convert.BayesianToHalfSpace;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
+import ch.idsia.crema.factor.convert.HalfspaceToVertex;
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.counterfact.CounterFactMapping;
@@ -306,6 +309,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	 * @param empiricalProbs - for each exogenous variable U, the empirical probability of the children given the endogenous parents.
 	 * @return
 	 */
+	@Deprecated
 	public SparseModel toVertexSimple(BayesianFactor... empiricalProbs){
 
 		// Copy the structure of the this
@@ -341,23 +345,36 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 			double[] vals = pv.getData();
 
-			VertexFactor kv = new VertexFactor(cmodel.getDomain(v), coeff, vals);
-			cmodel.setFactor(v, kv);
+			SeparateHalfspaceFactor constFactor = new SeparateHalfspaceFactor(cmodel.getDomain(v), coeff, vals);
+			VertexFactor vertexFactor = new VertexFactor(constFactor);
+			cmodel.setFactor(v, vertexFactor);
 		}
 
 		return cmodel;
 	}
 
+	/**
+	 * Converts the current SCM into an equivalent credal network consistent
+	 * with the empirical probabilities (of the endogenous variables).
+	 * In this case exogenous parentes might have more than one endogenous child.
+	 * Resulting factors are of class VertexFactor.
+	 * @param empiricalProbs - for each exogenous variable U, the empirical probability of the children given the endogenous parents.
+	 * @return
+	 */
+	public SparseModel toCredalNetwork(BayesianFactor... empiricalProbs){
+		return this.toCredalNetwork(true, empiricalProbs);
+	}
 
 
 	/**
 	 * Converts the current SCM into an equivalent credal network consistent
 	 * with the empirical probabilities (of the endogenous variables).
 	 * In this case exogenous parentes might have more than one endogenous child.
+	 * @param vertex - flag indicating if the resulting factors are of class VertexFactor (true) or SeparateHalfspaceFactor (false)
 	 * @param empiricalProbs - for each exogenous variable U, the empirical probability of the children given the endogenous parents.
 	 * @return
 	 */
-	public SparseModel toVertexNonMarkov(BayesianFactor... empiricalProbs){
+	public SparseModel toCredalNetwork(boolean vertex, BayesianFactor... empiricalProbs){
 
 		// Copy the structure of the this
 		SparseModel cmodel = new SparseModel();
@@ -366,10 +383,16 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 			cmodel.addParents(v, this.getParents(v));
 		}
 
-		// Set the credal sets for the endogenous variables X
+		// Set the credal sets for the endogenous variables X (structural eqs.)
 		for(int v: this.getEndogenousVars()) {
-			VertexFactor kv = new BayesianToVertex().apply(this.getFactor(v), v);
-			cmodel.setFactor(v, kv);
+
+			// Variable on the left should be the first
+			BayesianFactor cpt_v =this.getFactor(v).reorderDomain(v);
+
+			if(vertex)
+				cmodel.setFactor(v, new BayesianToVertex().apply(cpt_v, v));
+			else
+				cmodel.setFactor(v, new BayesianToHalfSpace().apply(cpt_v, v));
 		}
 
 		// Get the credal sets for the exogenous variables U
@@ -386,16 +409,24 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 			));
 
 			// Get the P(ch(U)|endogenous_pa(ch(U)))
+			int x = this.getChildren(v)[0];
 			BayesianFactor pv = (BayesianFactor) Stream.of(empiricalProbs).filter(f ->
 					ImmutableSet.copyOf(Ints.asList(f.getDomain().getVariables()))
 							.equals(ImmutableSet.copyOf(
-									Ints.asList(children))))
+									Ints.asList(Ints.concat(new int[]{x}, this.getEndegenousParents(x))))))
 					.toArray()[0];
 
 			double[] vals = pv.getData();
 
-			VertexFactor kv = new VertexFactor(cmodel.getDomain(v), coeff, vals);
-			cmodel.setFactor(v, kv);
+			SeparateHalfspaceFactor constFactor = new SeparateHalfspaceFactor(cmodel.getDomain(v), coeff, vals);
+
+			if(vertex){
+				cmodel.setFactor(v, new HalfspaceToVertex().apply(constFactor));
+			}else{
+				cmodel.setFactor(v, constFactor);
+			}
+
+
 		}
 
 		return cmodel;

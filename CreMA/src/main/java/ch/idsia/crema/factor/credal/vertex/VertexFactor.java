@@ -74,14 +74,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
 		SeparateHalfspaceFactor k_const = new SeparateHalfspaceFactor(left, Strides.empty());
 		for(int i=0; i< coefficients.length; i++){
-//			if(rel[i]!=Relationship.EQ)
 				k_const.addConstraint(coefficients[i], rel[i], values[i]);
-/*			else{
-				k_const.addConstraint(coefficients[i], Relationship.GEQ, values[i]-0.00001);
-				k_const.addConstraint(coefficients[i], Relationship.LEQ, values[i]+0.00001);
-			}
-*/
-
 		}
 
 		// normalization constraint
@@ -89,10 +82,6 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		for(int i=0; i<ones.length; i++)
 			ones[i] = 1.;
 		k_const.addConstraint(ones, Relationship.EQ, 1.0);
-
-//		k_const.addConstraint(ones, Relationship.GEQ, 1.0-0.00001);
-//		k_const.addConstraint(ones, Relationship.LEQ, 1.0+0.00001);
-
 
 		// non-negative constraints
 		double [] zeros =  new double[left.getCombinations()];
@@ -112,15 +101,29 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		if(vertices == null || vertices.length == 0){
 			throw new NoFeasibleSolutionException();
 		}
-
 		//add extreme points
 		for(double[] v : vertices){
 			this.addVertex(v);
 		}
-
-		//k_const.printLinearProblem();
-
 	}
+
+	public VertexFactor(SeparateHalfspaceFactor constrainsFactor) {
+		this.separatedDomain = constrainsFactor.getSeparatingDomain();
+		this.vertexDomain = constrainsFactor.getDataDomain();
+		data = new double[1][][];
+
+		HalfspaceToVertex conversor = new HalfspaceToVertex();
+		double[][] vertices = conversor.apply(constrainsFactor,0).getData()[0];
+
+		if(vertices == null || vertices.length == 0){
+			throw new NoFeasibleSolutionException();
+		}
+		//add extreme points
+		for(double[] v : vertices){
+			this.addVertex(v);
+		}
+	}
+
 
 
 
