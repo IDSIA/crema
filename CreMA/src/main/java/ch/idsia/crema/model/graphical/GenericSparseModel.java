@@ -11,6 +11,7 @@ import ch.idsia.crema.model.change.DomainChange;
 import ch.idsia.crema.model.change.NullChange;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.utility.ArraysUtil;
+import com.google.common.primitives.Ints;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TIntIntMap;
@@ -338,9 +339,16 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	public GenericSparseModel intervention(int var, int state){
 		GenericSparseModel do_model = this.copy();
 		// remove the parents
-		for(int v: do_model.getParents(var)){
+		for(int v: this.getParents(var)){
 			do_model.removeParent(var, v);
 		}
+
+		// remove any variable that is now disconnected
+		for(int v: do_model.getVariables()) {
+			if(!do_model.areConnected(v,var))
+				do_model.removeVariable(v);
+		}
+
 		// Fix the value of the intervened variable
 		do_model.setFactor(var, this.getFactor(var).get_deterministic(var, state));
 		return do_model;
@@ -367,6 +375,35 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		return ArrayUtils.add(this.getParents(var), var);
 	}
 
+
+	/**
+	 * Retruns an array with the isolated variables (without parents and children)
+	 * @return
+	 */
+	public int[] getDisconnected() {
+		return IntStream.of(this.getVariables())
+				.filter( v -> this.getParents(v).length == 0 && this.getChildren(v).length == 0)
+				.toArray();
+	}
+
+	/**
+	 * Check if there is a path (without considereing the link directions) between 2 nodes
+	 * @param node1
+	 * @param node2
+	 * @return
+	 */
+	public boolean areConnected(int node1, int node2){
+		int[] neighbours = Ints.concat(this.getChildren(node1), this.getParents(node1));
+
+		if(Ints.asList(neighbours).contains(node2))
+			return true;
+
+		for(int v : neighbours)
+			if (this.areConnected(v, node2))
+				return true;
+
+		return false;
+	}
 
 
 }

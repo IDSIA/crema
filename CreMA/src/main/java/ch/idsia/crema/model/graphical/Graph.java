@@ -15,4 +15,5 @@ public interface Graph {
 	public int[] getChildren(int variable);
 
 	public Graph copy();
+
 }

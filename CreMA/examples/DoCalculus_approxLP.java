@@ -53,8 +53,8 @@ public class DoCalculus_approxLP {
         // Intervention do(x=0)
         SparseModel do_csmodel = csmodel.intervention(x, 0);
         // todo: this should be done at intervention
-        int ux = 3;
-        do_csmodel.removeVariable(ux);
+        //int ux = 3;
+        //do_csmodel.removeVariable(ux);
 
         // Run inference
 
