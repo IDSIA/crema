@@ -122,7 +122,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 	public void addConstraint(double[] data, Relationship rel, double value, int... states) {
-		this.addConstraint(new LinearConstraint(data, rel, value));
+		this.addConstraint(new LinearConstraint(data, rel, value), states);
 	}
 
 	public void addConstraint(LinearConstraint c, int... states) {
