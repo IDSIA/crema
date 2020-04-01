@@ -14,12 +14,11 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-public class DoCalculus {
-    public static void main(String[] args) {
+public class DoCalculus_noevidence {
+    public static void main(String[] args) throws InterruptedException {
 
-        // Marcovian case with 3 endogenous variables  P(Y | do(x=0), z=0)
-        // x <- z -> y ;  x -> y
 
+        // Marcovian case with 3 endogenous variables
 
         int x=0, y=1, z=2;
         int[] endoVarSizes = {2,2,2};
@@ -40,9 +39,6 @@ public class DoCalculus {
 
         StructuralCausalModel model = smodel;
 
-        TIntIntMap evidence = new TIntIntHashMap();
-        evidence.put(z, 0);
-
         TIntIntMap intervention = new TIntIntHashMap();
         intervention.put(x, 0);
 
@@ -51,16 +47,21 @@ public class DoCalculus {
         //////////////////
 
 
+        // Case 0: operating with the factors
+
+        BayesianFactor result_0 = model.getProb(y).filter(x,0).combine(model.getProb(z)).marginalize(z);
+        System.out.println(Arrays.toString(result_0.getData()));
+
+
         // Case 1: CausalVariableElimination
 
         StructuralCausalModel do_model = model.intervention(intervention.keys()[0], intervention.values()[0]);
 
         VariableElimination ve = new FactorVariableElimination(do_model.getVariables());
         ve.setFactors(do_model.getFactors());
-        ve.setEvidence(evidence);
-        BayesianFactor result_cve = (BayesianFactor) ve.run(target);
+        BayesianFactor result_1 = (BayesianFactor) ve.run(target);
 
-        System.out.println(Arrays.toString(result_cve.getData()))
+        System.out.println(Arrays.toString(result_1.getData()));
 
 
         // Case 2: CredalCausalVariableElimination
@@ -76,11 +77,10 @@ public class DoCalculus {
 
         ve = new FactorVariableElimination(do_csmodel.getVariables());
         ve.setFactors(do_csmodel.getFactors());
-        ve.setEvidence(evidence);
         ve.setNormalize(false);
-        VertexFactor result_ccve = (VertexFactor) ve.run(target);
+        VertexFactor result_2 = (VertexFactor) ve.run(target);
 
-        System.out.println(result_ccve)
+        System.out.println(result_2);
 
 
         // Case 3: CredalCausalApproxLP
@@ -89,10 +89,9 @@ public class DoCalculus {
         do_csmodel = csmodel.intervention(intervention.keys()[0], intervention.values()[0]);
 
         ApproxLP2 lp = new ApproxLP2();
-        // IntervalFactor result_ccalp = lp.query(do_csmodel, target[0], evidence) NOT WORKING WITH EVIDENCE
-        IntervalFactor result_ccalp = lp.query(do_csmodel, target[0]);
-        System.out.println(Arrays.toString(result_ccalp.getUpper()));
-        System.out.println(Arrays.toString(result_ccalp.getLower()));
+        IntervalFactor result_3 = lp.query(do_csmodel, target[0]);
+        System.out.println(Arrays.toString(result_3.getUpper()));
+        System.out.println(Arrays.toString(result_3.getLower()));
 
 
 
