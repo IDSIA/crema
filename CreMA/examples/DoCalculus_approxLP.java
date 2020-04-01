@@ -49,6 +49,11 @@ public class DoCalculus_approxLP {
         // Get the equivalent model with CS are defined with constraints
         //SparseModel csmodel = smodel.toCredalNetwork(false, factors);
 
+        Inference inference = new Inference();
+        IntervalFactor res = inference.query(csmodel, y);
+
+        System.out.println(Arrays.toString(res.getUpper()));
+        System.out.println(Arrays.toString(res.getLower()));
 
         // Intervention do(x=0)
         SparseModel do_csmodel = csmodel.intervention(x, 0);
@@ -58,11 +63,6 @@ public class DoCalculus_approxLP {
 
         // Run inference
 
-        Inference inference = new Inference();
-        IntervalFactor res = inference.query(do_csmodel, y);
-
-        System.out.println(Arrays.toString(res.getUpper()));
-        System.out.println(Arrays.toString(res.getLower()));
 
 
 

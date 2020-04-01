@@ -1,3 +1,4 @@
+import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -7,11 +8,18 @@ import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
+import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.preprocess.BinarizeEvidence;
+import ch.idsia.crema.preprocess.RemoveBarren;
+import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.util.Arrays;
+
+import static org.junit.Assert.assertArrayEquals;
 
 public class CredalInference_Alessandro {
 
@@ -25,8 +33,16 @@ public class CredalInference_Alessandro {
         return v;}
 
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void logger(IntervalFactor f){
+        double[] upper = f.getUpper();
+        double[] lower = f.getLower();
+        for(int k=0; k<upper.length; k++)
+            System.out.format("P(X=%d) = %2.4f - %2.4f\n",k,lower[k],upper[k]);
+    }
 
+
+    public static void main(String[] args) throws InterruptedException {
+/*
         double p = 0.3;
 
         System.out.println("Experiment #0 (U->X)");
@@ -101,75 +117,6 @@ public class CredalInference_Alessandro {
 
         // ------------------------------------------------------- //
 
-        System.out.println("Experiment #1 (U1->X1->X2<-U2)");
-
-        SparseModel sm = new SparseModel();
-
-        int u1 = sm.addVariable(3);
-        int x1 = sm.addVariable(2);
-        int u2 = sm.addVariable(5);
-        int x2 = sm.addVariable(2);
-
-        sm.addParent(x1,u1);
-        sm.addParents(x2,x1,u2);
-        //sm.addParent(x2,x1);
-
-        int[] sem1 = new int[] {0,0,1};
-        int[][] sem2 = new int[][] {{1,1,0,0,0},{1,0,0,1,0}};
-        double[][] sem22 = new double[][] {{1,1,0,0,0},{1,0,0,1,0}};
-
-        SeparateHalfspaceFactor px1 = new SeparateHalfspaceFactor(sm.getDomain(x1), sm.getDomain(u1));
-        SeparateHalfspaceFactor ku1 = new SeparateHalfspaceFactor(sm.getDomain(u1), Strides.empty());
-        SeparateHalfspaceFactor px2 = new SeparateHalfspaceFactor(sm.getDomain(x2), sm.getDomain(x1,u2));
-        SeparateHalfspaceFactor ku2 = new SeparateHalfspaceFactor(sm.getDomain(u2), Strides.empty());
-
-        // Positivity and normalization
-        for(int k=0; k<3; k++){
-            for(int j=0; j<2; j++){
-                px1.addConstraint(indicator(j,2), Relationship.GEQ, 0, k);}
-            px1.addConstraint(indicator(-1,2), Relationship.EQ, 1, k);}
-        for(int k=0; k<3; k++){
-            px1.addConstraint(indicator(sem1[k],3), Relationship.EQ, 1, k);
-        }
-
-        // Positivity
-        for(int k=0; k<3; k++){
-            ku1.addConstraint(indicator(k,3), Relationship.GEQ, 0);}
-        ku1.addConstraint(indicator(-1,3), Relationship.EQ, 1);
-        ku1.addConstraint(new double[]{1,1,0}, Relationship.EQ, p);
-        ku1.addConstraint(new double[]{0,0,1}, Relationship.EQ, 1-p);
-
-        // Normalization and constraints
-        for(int k=0;k<5;k++){ // U
-            for(int j=0; j<2; j++){ // X
-                for(int i=0; i<2; i++){
-                    px2.addConstraint(indicator(i,2), Relationship.GEQ, 0, j,k);}
-                px2.addConstraint(indicator(-1,2), Relationship.EQ, 1, j,k); }}
-        for(int i=0;i<2;i++){
-            for(int j=0;j<5; j++) {
-                px2.addConstraint(indicator(sem2[i][j],2), Relationship.EQ, 1, i,j);}}
-
-        for(int k=0; k<5; k++){
-            ku2.addConstraint(indicator(k,5), Relationship.GEQ, 0);}
-        ku2.addConstraint(indicator(-1,5), Relationship.EQ, 1);
-        ku2.addConstraint(sem22[0], Relationship.EQ, 0.4);
-        ku2.addConstraint(sem22[1], Relationship.EQ, 0.3);
-
-        sm.setFactor(x1, px1);
-        sm.setFactor(x2, px2);
-        sm.setFactor(u1, ku1);
-        sm.setFactor(u2, ku2);
-
-        //Run inference
-        upperVE = inference.query(sm, x2).getUpper();
-        lowerVE = inference.query(sm, x2).getLower();
-        upperLP = approxLP2.query(sm, x2).getUpper();
-        lowerLP = approxLP2.query(sm, x2).getLower();
-
-        System.out.println(Arrays.toString(upperVE));
-        System.out.println(Arrays.toString(lowerVE));
-        System.out.println(Arrays.toString(upperLP));
-        System.out.println(Arrays.toString(lowerLP));
 
 
         int n = 10;
@@ -243,6 +190,18 @@ public class CredalInference_Alessandro {
             credalset[rr].addConstraint(equation2bis[1], Relationship.EQ, 0.3);
             chain.setFactor(exogenous[rr], credalset[rr]);}
 
+        TIntIntHashMap observation = ObservationBuilder.observe(endogenous[n-1], 1);
+        BinarizeEvidence be = new BinarizeEvidence();
+        int evidence = be.executeInline(chain, observation, 2, true);
+        Inference infx = new Inference();
+        IntervalFactor ifact = infx.query(chain, endogenous[0], evidence);
+        double[] lowerC = ifact.getLower();
+        double[] upperC = ifact.getUpper();
+        System.out.println(lowerC[0]);
+        System.out.println(lowerC[1]);
+        System.out.println(upperC[0]);
+        System.out.println(upperC[1]);
+
         Inference ve = new Inference();
         long start = System.nanoTime();
         double[] lower = ve.query(chain, endogenous[n-1]).getLower();
@@ -260,4 +219,237 @@ public class CredalInference_Alessandro {
         timeElapsed = (finish - start)/1000000000;
         for(int k=0; k<lower.length; k++)
             System.out.format("P(query=%d|LP)=[%2.4f,%2.4f]\t(T=%d sec)\n",k,lower[k],upper[k],timeElapsed);
+
+
+
+
+        //TIntIntHashMap observation = ObservationBuilder.observe(exogenous[1], 0);
+        //BinarizeEvidence be = new BinarizeEvidence();
+        //SparseModel<GenericFactor> bmodel = be.execute(chain, observation, 2, false);
+        //int evidence = be.getLeafDummy();
+
+        //Inference inf = new Inference();
+        //IntervalFactor ifact = inf.query(bmodel, exogenous[n-1], evidence);
+
+        //ApproxLP2 a2 = new ApproxLP2();
+        //a2.initialize(null);
+        //IntervalFactor i2 = a2.query(chain, endogenous[n-1], observation);
+        //System.out.println(Arrays.toString(i2.getLower()));
+        //System.out.println(Arrays.toString(i2.getUpper()));
+*/
+
+
+        SparseModel sm = new SparseModel();
+        double p = 0.3;
+        int u1 = sm.addVariable(3);
+        int x1 = sm.addVariable(2);
+        int u2 = sm.addVariable(5);
+        int x2 = sm.addVariable(2);
+        sm.addParent(x1,u1);
+        sm.addParents(x2,x1,u2);
+        int[] sem1 = new int[] {0,0,1};
+        // P(X2|U2,X1)
+        int[][] sem2 = new int[][] {{1,1,0,0,0},{1,0,0,1,0}};
+        double[][] sem22 = new double[][] {{1,1,0,0,0},{1,0,0,1,0}};
+
+        SeparateHalfspaceFactor px1 = new SeparateHalfspaceFactor(sm.getDomain(x1), sm.getDomain(u1));
+        SeparateHalfspaceFactor ku1 = new SeparateHalfspaceFactor(sm.getDomain(u1), Strides.empty());
+        SeparateHalfspaceFactor px2 = new SeparateHalfspaceFactor(sm.getDomain(x2), sm.getDomain(x1,u2));
+        SeparateHalfspaceFactor ku2 = new SeparateHalfspaceFactor(sm.getDomain(u2), Strides.empty());
+
+        // Positivity and normalization
+        for(int k=0; k<3; k++){
+            for(int j=0; j<2; j++){
+                px1.addConstraint(indicator(j,2), Relationship.GEQ, 0, k);}
+            px1.addConstraint(indicator(-1,2), Relationship.EQ, 1, k);}
+        for(int k=0; k<3; k++){
+            px1.addConstraint(indicator(sem1[k],3), Relationship.EQ, 1, k);
+        }
+
+        // Positivity
+        for(int k=0; k<3; k++){
+            ku1.addConstraint(indicator(k,3), Relationship.GEQ, 0);}
+        ku1.addConstraint(indicator(-1,3), Relationship.EQ, 1);
+        ku1.addConstraint(new double[]{1,1,0}, Relationship.EQ, p);
+        ku1.addConstraint(new double[]{0,0,1}, Relationship.EQ, 1-p);
+
+        // Normalization and constraints
+        for(int k=0;k<5;k++){ // U
+            for(int j=0; j<2; j++){ // X
+                for(int i=0; i<2; i++){
+                    px2.addConstraint(indicator(i,2), Relationship.GEQ, 0, j,k);}
+                px2.addConstraint(indicator(-1,2), Relationship.EQ, 1, j,k); }}
+        for(int i=0;i<2;i++){
+            for(int j=0;j<5; j++) {
+                px2.addConstraint(indicator(sem2[i][j],2), Relationship.EQ, 1, i,j);}}
+
+        for(int k=0; k<5; k++){
+            ku2.addConstraint(indicator(k,5), Relationship.GEQ, 0);}
+        ku2.addConstraint(indicator(-1,5), Relationship.EQ, 1);
+        ku2.addConstraint(sem22[0], Relationship.EQ, 0.4);
+        ku2.addConstraint(sem22[1], Relationship.EQ, 0.3);
+
+        sm.setFactor(x1, px1);
+        sm.setFactor(x2, px2);
+        sm.setFactor(u1, ku1);
+        sm.setFactor(u2, ku2);
+
+        //TIntIntMap evidence = new TIntIntHashMap();
+        //evidence.put(x2, 0);
+        //BinarizeEvidence bin = new BinarizeEvidence();
+        //int ev = bin.executeInline(sm, evidence, 2, false);
+        //Inference inference = new Inference();
+        //RemoveBarren barren = new RemoveBarren();
+        //barren.execute(sm, new int[] { x1 }, ObservationBuilder.vars(ev).states(1));
+        //IntervalFactor factor = inference.query(sm, x1, ev);
+        //System.out.println(factor.getLower()[0]);
+
+        //==================================================================
+
+        SparseModel<GenericFactor> model = new SparseModel<>();
+        int a = model.addVariable(2);
+        int b = model.addVariable(2);
+        int c = model.addVariable(2);
+        model.addParent(b,a);
+        model.addParent(c,b);
+
+        // P(A=0) = 0.3
+        SeparateHalfspaceFactor pa = new SeparateHalfspaceFactor(model.getDomain(a), Strides.empty());
+        pa.addConstraint(new double[]{1,0}, Relationship.GEQ, 0);
+        pa.addConstraint(new double[]{0,1}, Relationship.GEQ, 0);
+        pa.addConstraint(new double[]{1,1}, Relationship.EQ, 1);
+        pa.addConstraint(new double[]{1,0}, Relationship.GEQ, 0.3);
+        pa.addConstraint(new double[]{0,1}, Relationship.GEQ, 0.7);
+        model.setFactor(a, pa);
+
+        // P(B=0|A=0) = 0.2
+        // P(B=0|A=1) = 0.1
+        SeparateHalfspaceFactor pb = new SeparateHalfspaceFactor(model.getDomain(b),model.getDomain(a));
+        pb.addConstraint(new double[]{1,0}, Relationship.GEQ, 0, 0);
+        pb.addConstraint(new double[]{0,1}, Relationship.GEQ, 0, 0);
+        pb.addConstraint(new double[]{1,1}, Relationship.EQ, 1, 0);
+        pb.addConstraint(new double[]{1,0}, Relationship.GEQ, 0.2,0);
+        pb.addConstraint(new double[]{0,1}, Relationship.GEQ, 0.8,0);
+        pb.addConstraint(new double[]{1,0}, Relationship.GEQ, 0, 1);
+        pb.addConstraint(new double[]{0,1}, Relationship.GEQ, 0, 1);
+        pb.addConstraint(new double[]{1,1}, Relationship.EQ, 1, 1);
+        pb.addConstraint(new double[]{1,0}, Relationship.GEQ, 0.1,1);
+        pb.addConstraint(new double[]{0,1}, Relationship.GEQ, 0.8,1);
+        model.setFactor(b, pb);
+
+        // P(C=0|B=0) = 0.2
+        // P(C=0|B=1) = 0.1
+        SeparateHalfspaceFactor pc = new SeparateHalfspaceFactor(model.getDomain(c),model.getDomain(b));
+        pc.addConstraint(new double[]{1,0}, Relationship.GEQ, 0, 0);
+        pc.addConstraint(new double[]{0,1}, Relationship.GEQ, 0, 0);
+        pc.addConstraint(new double[]{1,1}, Relationship.EQ, 1, 0);
+        pc.addConstraint(new double[]{1,0}, Relationship.GEQ, 0.2,0);
+        pc.addConstraint(new double[]{0,1}, Relationship.GEQ, 0.8,0);
+        pc.addConstraint(new double[]{1,0}, Relationship.GEQ, 0, 1);
+        pc.addConstraint(new double[]{0,1}, Relationship.GEQ, 0, 1);
+        pc.addConstraint(new double[]{1,1}, Relationship.EQ, 1, 1);
+        pc.addConstraint(new double[]{1,0}, Relationship.EQ, 0.1,1);
+        //pc.addConstraint(new double[]{0,1}, Relationship.GEQ, 0.8,1);
+        model.setFactor(c, pc);
+
+
+
+
+        /*ApproxLP2 approxlp = new ApproxLP2();
+        double[] lower = approxlp.query(model, b).getLower();
+        double[] upper = approxlp.query(model, b).getUpper();
+        for(int k=0; k<upper.length; k++)
+            System.out.format("P(X=%d) = %2.4f - %2.4f\n",k,lower[k],upper[k]);
+        TIntIntMap evidence = new TIntIntHashMap();
+        evidence.put(b, 0);
+        BinarizeEvidence bin = new BinarizeEvidence();
+        int ev = bin.executeInline(model, evidence, 2, false);
+        Inference inference = new Inference();
+        IntervalFactor factor = inference.query(model, a, ev);
+        logger(factor);
+        evidence.put(b, 1);
+        ev = bin.executeInline(model, evidence, 2, false);
+        factor = inference.query(model, a, ev);
+        logger(factor);*/
+
+        //ApproxLP2 approxlp = new ApproxLP2();
+        //double[] lower = approxlp.query(model, b).getLower();
+        //double[] upper = approxlp.query(model, b).getUpper();
+
+        //for(int k=0; k<upper.length; k++)
+        //    System.out.format("P(X=%d) = %2.4f - %2.4f\n",k,lower[k],upper[k]);
+        TIntIntMap evidence = new TIntIntHashMap();
+        evidence.put(b, 0);
+        BinarizeEvidence bin = new BinarizeEvidence();
+        int ev = bin.executeInline(model, evidence, 2, false);
+        Inference inference = new Inference();
+        IntervalFactor factor = inference.query(model, c, ev);
+        logger(factor);
+        evidence.put(b, 1);
+        evidence.put(a, 1);
+        ev = bin.executeInline(model, evidence, 2, false);
+        factor = inference.query(model, c, ev);
+        logger(factor);
+
+        //ApproxLP2 approxlp = new ApproxLP2();
+        //double[] lower = approxlp.query(model, c).getLower();
+        //double[] upper = approxlp.query(model, c).getUpper();
+        //for(int k=0; k<upper.length; k++)
+        //    System.out.format("P(X=%d) = %2.4f - %2.4f\n",k,lower[k],upper[k]);
+
+
+
+
+
+        //assertArrayEquals(new double[] { 0.22050585639124004, 0.6383476227590834 }, factor.getLower(), 0.000000000001);
+        //assertArrayEquals(new double[] { 0.3616523772409166, 0.7794941436087599 }, factor.getUpper(), 0.000000000001);
+
+        //inference = new Inference();
+
+        //RemoveBarren barren = new RemoveBarren();
+        //barren.execute(model, new int[] { n1 }, ObservationBuilder.vars(ev).states(1));
+        // no need to update n1 as we use the sparse model
+        //factor = inference.query(model, n1, ev);
+
+        //assertArrayEquals(new double[] { 0.24827348066293425, 0.20153743315534500, 0.3076654443861050 }, factor.getLower(), 0.000000000001);
+        //assertArrayEquals(new double[] { 0.48011911017679076, 0.36128775834693705, 0.5276243093920449 }, factor.getUpper(), 0.000000000001);
+
+
+
+        //assertArrayEquals(new double[] { 0.24827348066293425, 0.20153743315534500, 0.3076654443861050 }, factor.getLower(), 0.000000000001);
+        //assertArrayEquals(new double[] { 0.48011911017679076, 0.36128775834693705, 0.5276243093920449 }, factor.getUpper(), 0.000000000001);
+        //Inference inference = new Inference();
+        //IntervalFactor factor = inference.query(sm, x1, ev);
+        //assertArrayEquals(new double[] { 0.22050585639124004, 0.6383476227590834 }, factor.getLower(), 0.000000000001);
+        //assertArrayEquals(new double[] { 0.3616523772409166, 0.7794941436087599 }, factor.getUpper(), 0.000000000001);
+
+
+
+        //Run inference
+        //double[] upperVE = inference.query(sm, x2).getUpper();
+        //double[] lowerVE = inference.query(sm, x2).getLower();
+        //ApproxLP2 approxLP2 = new ApproxLP2();
+
+        //double[] upperLP = approxLP2.query(sm, x2).getUpper();
+        //double[] lowerLP = approxLP2.query(sm, x2).getLower();
+
+        //TIntIntHashMap observation = ObservationBuilder.observe(x2, 0);
+        //BinarizeEvidence be = new BinarizeEvidence();
+        //SparseModel<GenericFactor> bmodel = be.execute(sm, observation, 2, false);
+        //int evidence = be.getLeafDummy();
+        //Inference inf = new Inference();
+        //IntervalFactor ifact = inf.query(bmodel, x1, evidence);
+
+        //aa = new RemoveBarren().execute(sm, x1,observation);
+
+
+
+        //System.out.println(Arrays.toString(upperVE));
+        //System.out.println(Arrays.toString(lowerVE));
+        //System.out.println(Arrays.toString(upperLP));
+        //System.out.println(Arrays.toString(lowerLP));
+
+
+
+
     }}
