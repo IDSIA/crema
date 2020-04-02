@@ -7,6 +7,8 @@ import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
+import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
@@ -35,6 +37,12 @@ public class DoCalculus_withevidence {
         // Build the causal model
         StructuralCausalModel smodel = new StructuralCausalModel(dag, endoVarSizes);
         smodel.fillWithRandomFactors(2);
+
+        int ux = smodel.getExogenousParents(x)[0];
+        int uy = smodel.getExogenousParents(y)[0];
+        int uz = smodel.getExogenousParents(z)[0];
+        int uw = smodel.getExogenousParents(w)[0];
+
 
 
         //////// Inputs /////
@@ -81,28 +89,37 @@ public class DoCalculus_withevidence {
         SparseModel do_csmodel = csmodel.intervention(intervention.keys()[0], intervention.values()[0]);
 
 
-        ve = new FactorVariableElimination(do_csmodel.getVariables());
-        ve.setFactors(do_csmodel.getFactors());
-        ve.setEvidence(evidence);
-        ve.setNormalize(false);
-        VertexFactor result_2 = ((VertexFactor) ve.run(target)).normalize();
+        RemoveBarren removeBarren = new RemoveBarren();
+        CutObserved cutObserved = new CutObserved();
+
+        // cut arcs coming from an observed node and remove barren w.r.t the target
+        SparseModel do_csmodel2 = removeBarren.execute(cutObserved.execute(do_csmodel, evidence), target, evidence);
+
+        ve = new FactorVariableElimination(do_csmodel2.getVariables());
+        ve.setFactors(do_csmodel2.getFactors());
+        VertexFactor result_2 = ((VertexFactor) ve.run(target));
 
         System.out.println(result_2);
 
 
         // Case 3: CredalCausalApproxLP
-
+/*
         csmodel = smodel.toCredalNetwork(false, factors);
-        do_csmodel = csmodel.intervention(intervention.keys()[0], intervention.values()[0])
-        // .intervention(evidence.keys()[0], evidence.values()[0])
+        do_csmodel = csmodel.intervention(intervention.keys()[0], intervention.values()[0]);
+
+        do_csmodel2 = removeBarren.execute(cutObserved.execute(do_csmodel, evidence), target, evidence);    // error
+
+        do_csmodel2.getVariables();
+        do_csmodel2.getFactors();
+        for(int v : do_csmodel2.getVariables())
+            System.out.println(v+"|"+Arrays.toString(do_csmodel2.getParents(v)));
+
 
         ApproxLP2 lp = new ApproxLP2();
-        IntervalFactor result_3 = lp.query(do_csmodel, target[0], evidence);    // NOT WORKING !!
+        IntervalFactor result_3 = lp.query(do_csmodel, target[0]);
         System.out.println(Arrays.toString(result_3.getUpper()));
         System.out.println(Arrays.toString(result_3.getLower()));
-
-
-
+*/
 
     }
 }

@@ -69,6 +69,12 @@ public class SparseModel<F extends GenericFactor> extends GenericSparseModel<F, 
 		return (SparseModel)super.intervention(var, state);
 	}
 
+	@Override
+	public SparseModel observe(int var, int state){
+		return (SparseModel)super.observe(var, state);
+	}
+
+
 	public BayesianNetwork sampleVertex(){
 		BayesianNetwork bnet = new BayesianNetwork();
 		bnet.addVariables(this.getVariables());

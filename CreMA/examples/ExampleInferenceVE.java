@@ -69,7 +69,7 @@ public class ExampleInferenceVE {
 		VertexFactor result2 = result.normalize();
 		System.out.println(result2);
 
-		//CutObserved preprocesser = new CutObserved();
+		CutObserved preprocesser = new CutObserved();
 		//SparseModel model2 = preprocesser.execute(model,evidence)
 		//for(int k=0; k<vd.getVertices().length;k++)
 		//	System.out.println(Arrays.toString(vd.getVertices()[k]));
