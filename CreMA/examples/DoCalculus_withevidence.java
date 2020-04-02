@@ -1,6 +1,9 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
@@ -8,6 +11,7 @@ import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.CutObservedSepHalfspace;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -103,11 +107,15 @@ public class DoCalculus_withevidence {
 
 
         // Case 3: CredalCausalApproxLP
-/*
+
         csmodel = smodel.toCredalNetwork(false, factors);
         do_csmodel = csmodel.intervention(intervention.keys()[0], intervention.values()[0]);
 
-        do_csmodel2 = removeBarren.execute(cutObserved.execute(do_csmodel, evidence), target, evidence);    // error
+
+
+        // ...
+
+        do_csmodel2 = removeBarren.execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);    // error
 
         do_csmodel2.getVariables();
         do_csmodel2.getFactors();
@@ -115,11 +123,16 @@ public class DoCalculus_withevidence {
             System.out.println(v+"|"+Arrays.toString(do_csmodel2.getParents(v)));
 
 
-        ApproxLP2 lp = new ApproxLP2();
-        IntervalFactor result_3 = lp.query(do_csmodel, target[0]);
+        // when runing LP the following line will make the method fail
+        // new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) do_csmodel2.getFactor(y), -1);
+
+        Inference lp = new Inference();
+
+        //ApproxLP2 lp = new ApproxLP2();
+        IntervalFactor result_3 = lp.query(do_csmodel2, target[0]);
         System.out.println(Arrays.toString(result_3.getUpper()));
         System.out.println(Arrays.toString(result_3.getLower()));
-*/
+
 
     }
 }
