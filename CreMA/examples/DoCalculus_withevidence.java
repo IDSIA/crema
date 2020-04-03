@@ -51,7 +51,7 @@ public class DoCalculus_withevidence {
 
         //////// Inputs /////
 
-        StructuralCausalModel model = smodel;
+        StructuralCausalModel model = smodel;   // in cases 2 and 3, empirical probabilities could be given as well
 
         TIntIntMap evidence = new TIntIntHashMap();
         evidence.put(w, 0);
