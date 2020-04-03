@@ -7,6 +7,7 @@ import java.util.Random;
 
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Ints;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
@@ -160,7 +161,23 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 * @param state
 	 * @return
 	 */
+
 	@Override
+	public SeparateHalfspaceFactor filter(int variable, int state) {
+		int var_offset = groupDomain.indexOf(variable);
+		Strides new_domain = groupDomain.removeAt(var_offset);
+
+		IndexIterator it = this.getSeparatingDomain().getFiteredIndexIterator(new int[]{variable}, new int[]{state});
+		ArrayList new_constraints = new ArrayList();
+
+		while(it.hasNext())
+			new_constraints.add(data.get(it.next()));
+
+		return new SeparateHalfspaceFactor(dataDomain, new_domain, new_constraints);
+	}
+
+
+/*	@Override
 	public SeparateHalfspaceFactor filter(int variable, int state) {
 		int var_offset = groupDomain.indexOf(variable);
 		int var_stride = groupDomain.getStrideAt(var_offset);
@@ -179,7 +196,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		}
 		
 		return new SeparateHalfspaceFactor(dataDomain, new_domain, new_constraints);
-	}
+	}*/
 
 	@Override
 	public LinearConstraintSet getLinearProblem(int... states) {
@@ -271,4 +288,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 
+	public ArrayList<ArrayList<LinearConstraint>> getData() {
+		return data;
+	}
 }

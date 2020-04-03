@@ -126,13 +126,17 @@ public class DoCalculus_withevidence {
         // when runing LP the following line will make the method fail
         // new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) do_csmodel2.getFactor(y), -1);
 
-        Inference lp = new Inference();
 
-        //ApproxLP2 lp = new ApproxLP2();
+        // Case 3: CredalCausalApproxLP
+
+        csmodel = smodel.toCredalNetwork(false, factors);
+        do_csmodel = csmodel.intervention(intervention.keys()[0], intervention.values()[0]);
+        do_csmodel2 = removeBarren.execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);    // error
+
+        ApproxLP2 lp = new ApproxLP2();
         IntervalFactor result_3 = lp.query(do_csmodel2, target[0]);
         System.out.println(Arrays.toString(result_3.getUpper()));
         System.out.println(Arrays.toString(result_3.getLower()));
-
 
     }
 }
