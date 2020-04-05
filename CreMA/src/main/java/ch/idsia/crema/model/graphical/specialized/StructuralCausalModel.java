@@ -15,6 +15,8 @@ import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.RandomUtil;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Ints;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
@@ -241,6 +243,32 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 
 	}
+
+	/**
+	 * Get valid random SCM specification (i.e., empirical probabilities + equations)
+	 * @param prob_decimals
+	 * @return
+	 */
+	public TIntObjectMap[] getRandomFactors(int prob_decimals){
+
+		StructuralCausalModel model = this.copy();
+
+		model.fillWithRandomFactors(prob_decimals);
+
+
+		TIntObjectMap<BayesianFactor> equations  = new TIntObjectHashMap<>();
+		TIntObjectMap<BayesianFactor> empirical  = new TIntObjectHashMap<>();
+
+		for(int v : model.getEndogenousVars()){
+			equations.put(v, model.getFactor(v));
+			empirical.put(v, model.getProb(v).fixPrecission(5,v));
+		}
+
+		return new TIntObjectMap[] {empirical, equations};
+
+	}
+
+
 
 
 	/**
