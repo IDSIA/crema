@@ -5,7 +5,10 @@ import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 
 
-public class RandomSimpleChain {
+public class SimpleChainRandom {
+
+    public static int PROB_DECIMALS = 2;
+
     public static StructuralCausalModel buildModel(int n, int endoSize, int exoSize) {
 
         SparseDirectedAcyclicGraph graph = new SparseDirectedAcyclicGraph();
@@ -29,7 +32,7 @@ public class RandomSimpleChain {
             new StructuralCausalModel(graph, endo_sizes);
 
 
-        model.fillWithRandomFactors(2);
+        model.fillWithRandomFactors(PROB_DECIMALS);
         return model;
 
     }
