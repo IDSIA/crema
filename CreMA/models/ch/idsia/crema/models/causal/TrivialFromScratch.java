@@ -22,7 +22,6 @@ public class TrivialFromScratch {
         model.setFactor(x,fx);
         model.setFactor(ux, pux);
 
-
         return model;
 
     }
