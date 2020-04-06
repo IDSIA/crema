@@ -4,7 +4,7 @@ import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 
 
-public class Marcovian2VarRandom {
+public class Markovian2VarRandom {
 
     public static int PROB_DECIMALS = 1;
 
