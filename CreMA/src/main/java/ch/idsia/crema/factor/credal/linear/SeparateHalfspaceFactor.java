@@ -9,6 +9,7 @@ import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Ints;
+import jdk.jshell.spi.ExecutionControl;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 
@@ -167,13 +168,20 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		int var_offset = groupDomain.indexOf(variable);
 		Strides new_domain = groupDomain.removeAt(var_offset);
 
-		IndexIterator it = this.getSeparatingDomain().getFiteredIndexIterator(new int[]{variable}, new int[]{state});
 		ArrayList new_constraints = new ArrayList();
 
-		while(it.hasNext())
-			new_constraints.add(data.get(it.next()));
+		// todo: consider case with more than one variable on the left
 
+		if(dataDomain.contains(variable)){
+			for(int i=0; i<groupDomain.getCombinations(); i++)
+				new_constraints.add(SeparateHalfspaceFactor.deterministic(dataDomain, state).getLinearProblem().getConstraints());
+		}else{
+			IndexIterator it = this.getSeparatingDomain().getFiteredIndexIterator(new int[]{variable}, new int[]{state});
+			while(it.hasNext())
+				new_constraints.add(data.get(it.next()));
+		}
 		return new SeparateHalfspaceFactor(dataDomain, new_domain, new_constraints);
+
 	}
 
 

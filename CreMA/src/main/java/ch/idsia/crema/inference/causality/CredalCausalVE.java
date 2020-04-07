@@ -40,9 +40,13 @@ public class CredalCausalVE extends CausalInference<SparseModel, VertexFactor> {
             do_csmodel = new RemoveBarren()
                     .execute(new CutObserved().execute(do_csmodel, evidence), target, evidence);
 
+
         FactorVariableElimination ve = new FactorVariableElimination(do_csmodel.getVariables());
+        if(evidence.size()>0)
+            ve.setEvidence(evidence);
+        ve.setNormalize(false);
         ve.setFactors(do_csmodel.getFactors());
-        return ((VertexFactor) ve.run(target));
+        return ((VertexFactor) ve.run(target)).normalize();
 
     }
 
