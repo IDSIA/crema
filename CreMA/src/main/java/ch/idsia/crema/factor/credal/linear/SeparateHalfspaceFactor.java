@@ -166,21 +166,25 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	@Override
 	public SeparateHalfspaceFactor filter(int variable, int state) {
 		int var_offset = groupDomain.indexOf(variable);
-		Strides new_domain = groupDomain.removeAt(var_offset);
 
 		ArrayList new_constraints = new ArrayList();
+		Strides new_datadomain=dataDomain, new_groupdomain = groupDomain;
 
 		// todo: consider case with more than one variable on the left
 
 		if(dataDomain.contains(variable)){
 			for(int i=0; i<groupDomain.getCombinations(); i++)
 				new_constraints.add(SeparateHalfspaceFactor.deterministic(dataDomain, state).getLinearProblem().getConstraints());
+
 		}else{
 			IndexIterator it = this.getSeparatingDomain().getFiteredIndexIterator(new int[]{variable}, new int[]{state});
 			while(it.hasNext())
 				new_constraints.add(data.get(it.next()));
+
+			new_groupdomain = groupDomain.removeAt(var_offset);
+
 		}
-		return new SeparateHalfspaceFactor(dataDomain, new_domain, new_constraints);
+		return new SeparateHalfspaceFactor(new_datadomain, new_groupdomain, new_constraints);
 
 	}
 

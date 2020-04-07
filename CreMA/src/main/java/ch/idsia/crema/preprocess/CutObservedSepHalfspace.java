@@ -5,6 +5,7 @@ import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.change.NullChange;
 import ch.idsia.crema.model.graphical.SparseModel;
+import com.google.common.primitives.Ints;
 import gnu.trove.iterator.TIntIntIterator;
 import gnu.trove.map.TIntIntMap;
 
@@ -33,13 +34,12 @@ public class CutObservedSepHalfspace {
             final int observed = iterator.key();
             final int state = iterator.value();
 
-            for (int variable : model.getChildren(observed)) {
+            int[] affected = Ints.concat(model.getChildren(observed), new int[]{observed});
 
+            for (int variable : affected) {
                     SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor)model.getFactor(variable)).filter(observed, state);
-                    model.removeParent(variable, observed);
+                    if(variable != observed) model.removeParent(variable, observed);
                     model.setFactor(variable, new_factor);
-
-
             }
         }
     }
