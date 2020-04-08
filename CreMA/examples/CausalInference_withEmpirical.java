@@ -29,6 +29,7 @@ public class CausalInference_withEmpirical {
          Thus, exogenous variables do not have associated any factor. By contrast,
          endogenous variables have their structural equations.
 
+
         */
 
 

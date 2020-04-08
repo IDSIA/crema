@@ -56,6 +56,20 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 
+	public SeparateHalfspaceFactor(Strides left, Strides right, double[][][] coefficients, double[][] values, Relationship rel) {
+		this(left, right);
+
+
+		for(int i=0; i<right.getCombinations(); i++) {
+			// Build the constraints (including normalization and non-negative one)
+			LinearConstraint[] C = buildConstraints(true, true, coefficients[i], values[i], rel);
+			// add constraints to this factor
+			for (LinearConstraint c : C) {
+				this.addConstraint(c, i);
+			}
+		}
+	}
+
 
 	public static LinearConstraint[] buildConstraints(boolean normalized, boolean nonnegative, double[][] coefficients, double[] values, Relationship... rel) {
 
@@ -112,6 +126,21 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	@Override
 	public SeparateHalfspaceFactor copy() {
 		ArrayList<ArrayList<LinearConstraint>> new_data = new ArrayList<>(groupDomain.getCombinations());
+		for(int i=0; i<data.size(); i++) {
+			ArrayList original = new ArrayList<>(data.get(i));
+			ArrayList new_matrix = new ArrayList(original.size());
+			for(int j=0; j<original.size(); j++) {
+				LinearConstraint original_row = (LinearConstraint) original.get(j);
+				LinearConstraint copy = new LinearConstraint(original_row.getCoefficients().copy(), original_row.getRelationship(), original_row.getValue());
+				new_matrix.add(copy);
+			}
+			new_data.add(new_matrix);
+		}
+		return new SeparateHalfspaceFactor(dataDomain, groupDomain, new_data);
+	}
+/*
+	public SeparateHalfspaceFactor copy() {
+		ArrayList<ArrayList<LinearConstraint>> new_data = new ArrayList<>(groupDomain.getCombinations());
 		for (ArrayList<LinearConstraint> original : data) {
 			ArrayList<LinearConstraint> new_matrix = new ArrayList<>(original.size());
 			for (LinearConstraint original_row : original) {
@@ -122,6 +151,9 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		}
 		return new SeparateHalfspaceFactor(dataDomain, groupDomain, new_data);
 	}
+*/
+
+
 
 	public void addConstraint(double[] data, Relationship rel, double value, int... states) {
 		this.addConstraint(new LinearConstraint(data, rel, value), states);
@@ -218,11 +250,23 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 
 	public void printLinearProblem(int... states){
 
-		Iterator it = this.getLinearProblem(states).getConstraints().iterator();
-		while(it.hasNext()){
-			LinearConstraint c = (LinearConstraint)it.next();
-			System.out.println(c.getCoefficients()+"\t"+c.getRelationship()+"\t"+c.getValue());
+		if(states.length>0) {
+			Iterator it = this.getLinearProblem(states).getConstraints().iterator();
+			while (it.hasNext()) {
+				LinearConstraint c = (LinearConstraint) it.next();
+				System.out.println(c.getCoefficients() + "\t" + c.getRelationship() + "\t" + c.getValue());
+			}
+		} else{
+
+			for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++) {
+				this.printLinearProblem(i);
+				System.out.println("-------");
+			}
+
+
 		}
+
+
 
 	}
 	

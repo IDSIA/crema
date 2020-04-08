@@ -492,7 +492,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 	@Override
 	public String toString() {
-		return "P(" + Arrays.toString(domain.getVariables()) + ")";
+		return "P(" + Arrays.toString(domain.getVariables()) + ") "+Arrays.toString(this.getData());
 	}
 
 	public final double log(double val) {
