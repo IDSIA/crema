@@ -401,14 +401,22 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	 * @param node2
 	 * @return
 	 */
-	public boolean areConnected(int node1, int node2){
+
+	public boolean areConnected(int node1, int node2) {
+		return areConnected(node1, node2, new int[]{});
+	}
+
+	private boolean areConnected(int node1, int node2, int[] visited){
 		int[] neighbours = Ints.concat(this.getChildren(node1), this.getParents(node1));
 
 		if(Ints.asList(neighbours).contains(node2))
 			return true;
 
+
+
+
 		for(int v : neighbours)
-			if (this.areConnected(v, node2))
+			if(!Ints.asList(visited).contains(v) && this.areConnected(v, node2, Ints.concat(visited, new int[]{node1})))
 				return true;
 
 		return false;
