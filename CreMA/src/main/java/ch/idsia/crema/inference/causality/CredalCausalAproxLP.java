@@ -16,6 +16,7 @@ import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFactor> {
@@ -49,13 +50,11 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
 
         SparseModel do_csmodel = applyInterventions(intervention);
 
+        // preprocessing
+        RemoveBarren removeBarren = new RemoveBarren();
+        do_csmodel = removeBarren
+                .execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);
 
-        if(evidence.size()>0) {
-            RemoveBarren removeBarren = new RemoveBarren();
-            do_csmodel = removeBarren
-                    .execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);
-
-        }
 
         if(epsilon>0.0){
             for(int v : do_csmodel.getVariables()) {

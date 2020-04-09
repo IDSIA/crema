@@ -10,6 +10,7 @@ import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.stream.IntStream;
 
@@ -38,20 +39,20 @@ public class CredalCausalVE extends CausalInference<SparseModel, VertexFactor> {
 
         SparseModel do_csmodel = applyInterventions(intervention);
 
-        // cut arcs coming from an observed node and remove barren w.r.t the target
-        if(evidence.size()>0) {
-            RemoveBarren removeBarren = new RemoveBarren();
-            do_csmodel = removeBarren
-                    .execute(new CutObserved().execute(do_csmodel, evidence), target, evidence);
+    // cut arcs coming from an observed node and remove barren w.r.t the target
+        RemoveBarren removeBarren = new RemoveBarren();
+        do_csmodel = removeBarren
+                .execute(new CutObserved().execute(do_csmodel, evidence), target, evidence);
 
-            for(int v : removeBarren.getDeleted())
+        // update the evidence
+        for(int v: evidence.keys()){
+            if(!ArrayUtils.contains(do_csmodel.getVariables(), v)){
                 evidence.remove(v);
-
+            }
         }
 
-        int[] infvars = do_csmodel.getVariables();
-        int[] newElimOrder = ArraysUtil.intersection(elimOrder, infvars);
-
+        // Get the new elimination order
+        int[] newElimOrder = ArraysUtil.intersection(elimOrder, do_csmodel.getVariables());
 
 
         FactorVariableElimination ve = new FactorVariableElimination(newElimOrder);
@@ -64,8 +65,9 @@ public class CredalCausalVE extends CausalInference<SparseModel, VertexFactor> {
     }
 
 
-    public void setElimOrder(int[] elimOrder) {
+    public CredalCausalVE setElimOrder(int[] elimOrder) {
         this.elimOrder = elimOrder;
+        return this;
     }
 
     public int[] getElimOrder() {

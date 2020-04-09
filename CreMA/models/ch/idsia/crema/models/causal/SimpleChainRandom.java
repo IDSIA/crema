@@ -53,7 +53,7 @@ public class SimpleChainRandom {
 
 
     public static void main(String[] args) throws InterruptedException {
-        StructuralCausalModel model = buildModel(5, 2, 5);
+        StructuralCausalModel model = buildModel(3, 2, 5);
 
         int[] X = model.getEndogenousVars();
 
@@ -64,13 +64,13 @@ public class SimpleChainRandom {
         TIntIntHashMap intervention = new TIntIntHashMap();
         intervention.put(X[0], 0);
 
-        int target = X[2];
+        int target = X[1];
 
         CausalInference inf = new CausalVE(model);
         BayesianFactor result = (BayesianFactor) inf.query(target, evidence, intervention);
         System.out.println(result);
 
-        // error, this is not working
+        // with n>3, heap space error
         CausalInference inf2 = new CredalCausalVE(model);
         VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
         System.out.println(result2);
