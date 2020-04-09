@@ -1,13 +1,11 @@
 package ch.idsia.crema.factor.credal.linear;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.utility.IndexIterator;
+import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import jdk.jshell.spi.ExecutionControl;
 import org.apache.commons.math3.optim.PointValuePair;
@@ -307,6 +305,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 			double[] values = new double[left_combinations];
 			values[assignments[i]] = 1.;
 
+
 			// Build the constraints
 			LinearConstraint[] C = SeparateHalfspaceFactor.buildConstraints(true, true, coeff, values, Relationship.EQ);
 
@@ -347,4 +346,58 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	public ArrayList<ArrayList<LinearConstraint>> getData() {
 		return data;
 	}
+
+
+	public SeparateHalfspaceFactor getNoised(double eps){
+
+		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+
+		for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++){
+			for(LinearConstraint c : this.getLinearProblem(i).getConstraints()) {
+
+				if(c.getRelationship() == Relationship.EQ && eps>0) {
+					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() - eps, i);
+					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, c.getValue() + eps, i);
+
+				}else if(c.getRelationship() == Relationship.GEQ && eps>0) {
+					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() + eps, i);
+				}else if(c.getRelationship() == Relationship.LEQ && eps>0) {
+					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, c.getValue() - eps, i);
+				}else{
+					newFactor.addConstraint(c, i);
+				}
+
+			}
+		}
+
+		return newFactor;
+
+	}
+
+
+
+	public SeparateHalfspaceFactor getNoisedInequalities(double eps){
+
+		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+
+		for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++){
+			for(LinearConstraint c : this.getLinearProblem(i).getConstraints()) {
+
+				if(c.getRelationship() == Relationship.GEQ && eps>0) {
+					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() + eps, i);
+				}else if(c.getRelationship() == Relationship.LEQ && eps>0) {
+					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, c.getValue() - eps, i);
+				}else{
+					newFactor.addConstraint(c, i);
+				}
+
+			}
+		}
+
+		return newFactor;
+
+	}
+
+
+
 }

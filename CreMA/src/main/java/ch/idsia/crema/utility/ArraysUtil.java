@@ -420,6 +420,19 @@ public class ArraysUtil {
 		return arr_union;
 	}
 
+
+
+	/**
+	 * Find the sorted intersection of two non-sorted integer arrays.
+	 *
+	 * @param arr1 the first  array
+	 * @param arr2 the second  array
+	 * @return an array intersection of the first two
+	 */
+	public static int[] intersection(int[] arr1, int[] arr2) {
+		return  IntStream.of(arr1).filter(y -> IntStream.of(arr2).anyMatch(x -> x == y)).toArray();
+	}
+
 	/**
 	 * Find the sorted intersection of two sorted integer arrays.
 	 *
@@ -427,7 +440,7 @@ public class ArraysUtil {
 	 * @param arr2 the second sorted array
 	 * @return a sorted array intersection of the first two
 	 */
-	public static int[] intersection(int[] arr1, int[] arr2) {
+	public static int[] intersectionSorted(int[] arr1, int[] arr2) {
 		final int s1 = arr1.length;
 		final int s2 = arr2.length;
 

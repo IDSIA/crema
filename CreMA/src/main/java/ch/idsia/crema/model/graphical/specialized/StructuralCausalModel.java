@@ -426,7 +426,6 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 		// Get the credal sets for the exogenous variables U
 		for(int v: this.getExogenousVars()) {
 
-			System.out.println("Calculating credal set for "+v);
 			double [] vector = this.getFactor(this.getChildren(v)[0]).getData();
 			int[] children = this.getChildren(v);
 
@@ -438,6 +437,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 			// Get the P(ch(U)|endogenous_pa(ch(U)))
 			int x = this.getChildren(v)[0];
+
 			BayesianFactor pv = (BayesianFactor) Stream.of(empiricalProbs).filter(f ->
 					ImmutableSet.copyOf(Ints.asList(f.getDomain().getVariables()))
 							.equals(ImmutableSet.copyOf(

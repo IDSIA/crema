@@ -248,7 +248,7 @@ public class EliminationTree {
 
 		// TODO: cache the results?
 
-		return ArraysUtil.intersection(SIJ, SJI);
+		return ArraysUtil.intersectionSorted(SIJ, SJI);
 	}
 
 	private int[] exploreSeparator(int i, int j) {

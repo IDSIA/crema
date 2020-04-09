@@ -1,4 +1,5 @@
 package ch.idsia.crema.models.causal;
+// models/ch.idsia.crema.models.causal/NonMarkovian2VarRandom.java
 
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;

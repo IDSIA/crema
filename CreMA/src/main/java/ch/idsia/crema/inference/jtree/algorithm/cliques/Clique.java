@@ -52,7 +52,7 @@ public class Clique {
 	 * @return an array with the index of the elements in the intersection
 	 */
 	public int[] intersection(Clique other) {
-		return ArraysUtil.intersection(this.variables, other.variables);
+		return ArraysUtil.intersectionSorted(this.variables, other.variables);
 	}
 
 	@Override

@@ -29,6 +29,8 @@ public class CausalInference_withfullSCM {
 
          x <- z -> y ;  x -> y <- w
 
+
+
          Here, the SCM is completely specified, That is, both, endogenous and exogenous
          variables have their factors associated.
 
@@ -107,6 +109,7 @@ public class CausalInference_withfullSCM {
 
         System.out.println(Arrays.toString(result3.getUpper()));
         System.out.println(Arrays.toString(result3.getLower()));
+
 
     }
 }

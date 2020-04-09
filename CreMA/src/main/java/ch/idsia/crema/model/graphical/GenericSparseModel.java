@@ -413,8 +413,6 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 			return true;
 
 
-
-
 		for(int v : neighbours)
 			if(!Ints.asList(visited).contains(v) && this.areConnected(v, node2, Ints.concat(visited, new int[]{node1})))
 				return true;
