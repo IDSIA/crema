@@ -38,6 +38,8 @@ public class QuasiMarkovianChainRandom {
             if(i+1<n) model.addParent(i+1, u);
         }
 
+
+        System.out.println(model.getNetwork());
         model.fillWithRandomFactors(PROB_DECIMALS);
         return model;
 
@@ -65,11 +67,11 @@ public class QuasiMarkovianChainRandom {
         BayesianFactor result = (BayesianFactor) inf.query(target, evidence, intervention);
         System.out.println(result);
 
-      /*  // error, this is not working
+        // error, this is not working
         CausalInference inf2 = new CredalCausalVE(model);
         VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
         System.out.println(result2);
-*/
+
 
         CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(0.001);
         IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);

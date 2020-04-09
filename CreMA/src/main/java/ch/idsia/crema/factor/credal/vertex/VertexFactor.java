@@ -16,6 +16,7 @@ import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import ch.idsia.crema.utility.SeparateIndexIterator;
+import ch.idsia.crema.utility.hull.LPConvexHull;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
@@ -35,6 +36,8 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	private Strides vertexDomain;
 
 	private final double[][][] data;
+
+	public static boolean CONVEX_HULL_MARG = false;
 
 	public VertexFactor(Strides left, Strides right) {
 		this.separatedDomain = right;
@@ -290,7 +293,15 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 			}
 		}
 
-		return new VertexFactor(left, getSeparatingDomain(), target_data);
+		VertexFactor f = new VertexFactor(left, getSeparatingDomain(), target_data);
+
+		if(CONVEX_HULL_MARG)
+			f.applyConvexHull(true);
+
+		return f;
+
+
+
 	}
 
 	
@@ -584,5 +595,19 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		Strides newDomain = this.getDataDomain().concat(this.getSeparatingDomain());
 		return new BayesianFactor(newDomain, data);
 	}
+
+
+	public void applyConvexHull(boolean simplex){
+		for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++) {
+			data[i] = LPConvexHull.compute(data[i], true);
+		}
+	}
+
+	public VertexFactor convexHull(boolean simplex){
+		VertexFactor f = this.copy();
+		f.applyConvexHull(simplex);
+		return f;
+	}
+
 
 }

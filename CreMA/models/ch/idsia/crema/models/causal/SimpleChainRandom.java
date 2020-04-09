@@ -53,7 +53,7 @@ public class SimpleChainRandom {
 
 
     public static void main(String[] args) throws InterruptedException {
-        StructuralCausalModel model = buildModel(3, 2, 5);
+        StructuralCausalModel model = buildModel(5, 2, 5);
 
         int[] X = model.getEndogenousVars();
 

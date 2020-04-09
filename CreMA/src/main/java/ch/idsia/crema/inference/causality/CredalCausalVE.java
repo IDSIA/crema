@@ -59,6 +59,7 @@ public class CredalCausalVE extends CausalInference<SparseModel, VertexFactor> {
         if(evidence.size()>0)
             ve.setEvidence(evidence);
         ve.setNormalize(false);
+        VertexFactor.CONVEX_HULL_MARG = true;
         ve.setFactors(do_csmodel.getFactors());
         return ((VertexFactor) ve.run(target)).normalize();
 
