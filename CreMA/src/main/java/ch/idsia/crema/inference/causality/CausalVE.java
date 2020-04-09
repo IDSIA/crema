@@ -5,10 +5,8 @@ import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.utility.ArraysUtil;
-import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
 
-import java.util.stream.IntStream;
 
 public class CausalVE extends CausalInference<StructuralCausalModel, BayesianFactor> {
 
@@ -27,8 +25,7 @@ public class CausalVE extends CausalInference<StructuralCausalModel, BayesianFac
         // Get the mutilated model
         StructuralCausalModel do_model = applyInterventions(intervention);
 
-        int[] newElimOrder = IntStream.of(elimOrder)
-                    .filter(x -> IntStream.of(do_model.getVariables()).anyMatch(i -> i==x)).toArray();
+        int[] newElimOrder = ArraysUtil.intersection(elimOrder, do_model.getVariables());
 
         // run variable elimination as usual
         VariableElimination ve = new FactorVariableElimination(newElimOrder);
@@ -42,7 +39,8 @@ public class CausalVE extends CausalInference<StructuralCausalModel, BayesianFac
         return elimOrder;
     }
 
-    public void setElimOrder(int[] elimOrder) {
+    public CausalVE setElimOrder(int[] elimOrder) {
         this.elimOrder = elimOrder;
+        return this;
     }
 }
