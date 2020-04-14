@@ -15,7 +15,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import java.util.Arrays;
 
 
-public class QuasiMarkovianChainRandom {
+public class CommonExoChainRandom {
 
     public static int PROB_DECIMALS = 2;
 
@@ -67,6 +67,8 @@ public class QuasiMarkovianChainRandom {
         BayesianFactor result = (BayesianFactor) inf.query(target, evidence, intervention);
         System.out.println(result);
 
+
+
         // error, this is not working
         CausalInference inf2 = new CredalCausalVE(model);
         VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
@@ -75,8 +77,8 @@ public class QuasiMarkovianChainRandom {
 
         CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(0.001);
         IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
-        System.out.println(Arrays.toString(result3.getUpper()));
-        System.out.println(Arrays.toString(result3.getLower()));
+        System.out.println(result3);
+
 
 
 

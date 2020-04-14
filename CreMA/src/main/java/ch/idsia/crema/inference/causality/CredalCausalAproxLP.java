@@ -28,12 +28,7 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
 
     public CredalCausalAproxLP(StructuralCausalModel model){
 
-        // Get the empirical and fix the precision problems
-        BayesianFactor[] empirical = IntStream.of(model.getEndogenousVars())
-                .mapToObj(v -> model.getProb(v).fixPrecission(5,v))
-                .toArray(BayesianFactor[]::new);
-
-        this.model = model.toCredalNetwork(false, empirical);
+        this.model = model.toCredalNetwork(false, model.getEmpiricalProbs());
         this.originalModel = model;
 
     }

@@ -51,7 +51,7 @@ public class SimpleChainRandom {
         return buildModel(n, endoSize, -1);
     }
 
-
+    // Example of use
     public static void main(String[] args) throws InterruptedException {
         StructuralCausalModel model = buildModel(5, 2, 5);
 

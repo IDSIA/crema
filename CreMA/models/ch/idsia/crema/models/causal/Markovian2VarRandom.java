@@ -1,7 +1,15 @@
 package ch.idsia.crema.models.causal;
 
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.inference.causality.CausalVE;
+import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
+import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
+import ch.idsia.crema.user.credal.Interval;
+import gnu.trove.map.hash.TIntIntHashMap;
 
 
 public class Markovian2VarRandom {
@@ -27,5 +35,29 @@ public class Markovian2VarRandom {
 
     public static StructuralCausalModel buildModel() {
         return buildModel(new int[]{2,2}, new int[]{3,5} );
+    }
+
+
+    public static void main(String[] args) throws InterruptedException {
+
+        StructuralCausalModel model = buildModel();
+        int x = 0, y = 1;
+
+        TIntIntHashMap intervention = new TIntIntHashMap();
+        intervention.put(x,0);
+
+        CausalVE inf1 = new CausalVE(model);
+        BayesianFactor res1 = inf1.doQuery(y, intervention);
+        System.out.println(res1);
+
+        CredalCausalVE inf2 = new CredalCausalVE(model);
+        VertexFactor res2 = inf2.doQuery(y, intervention);
+        System.out.println(res2);
+
+        CredalCausalAproxLP inf3 = new CredalCausalAproxLP(model);
+        IntervalFactor res3 = inf3.doQuery(y, intervention);
+        System.out.println(res3);
+
+
     }
 }

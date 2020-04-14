@@ -20,11 +20,9 @@ public class CredalCausalVE extends CausalInference<SparseModel, VertexFactor> {
 
     public CredalCausalVE(StructuralCausalModel model){
         // Get the empirical and fix the precision problems
-        BayesianFactor[] empirical = IntStream.of(model.getEndogenousVars())
-                .mapToObj(v -> model.getProb(v).fixPrecission(5,v))
-                .toArray(BayesianFactor[]::new);
 
-        this.model = model.toCredalNetwork(true, empirical);
+
+        this.model = model.toCredalNetwork(true, model.getEmpiricalProbs());
         this.elimOrder = this.model.getVariables();
     }
 

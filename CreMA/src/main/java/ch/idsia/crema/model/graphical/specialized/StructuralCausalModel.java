@@ -19,9 +19,8 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -202,16 +201,44 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 	/**
 	 * Retruns an array with the IDs of parents that are endogenous variables
-	 * @param v
+	 * @param vars
 	 * @return
 	 */
 
-	public int[] getEndegenousParents(int v){
+	public int[] getEndegenousParents(int... vars){
+		return Ints.concat(
+						IntStream.of(vars).mapToObj(v -> ArraysUtil.intersection(
+								this.getEndogenousVars(), this.getParents(v)
+								)
+						).map(v -> IntStream.of(v).filter(x -> !ArraysUtil.contains(x, vars)).toArray()).toArray(int[][]::new));
+
+	}
+
+	/**
+	 * Retruns an array with the IDs of children that are exogenous variables
+	 * @param v
+	 * @return
+	 */
+	public int[] getExogenousChildren(int v){
 		return ArraysUtil.intersection(
-				this.getEndogenousVars(),
-				this.getParents(v)
+				this.getExogenousVars(),
+				this.getChildren(v)
 		);
 	}
+
+
+	/**
+	 * Retruns an array with the IDs of children that are endogenous variables
+	 * @param v
+	 * @return
+	 */
+	public int[] getEndogenousChildren(int v){
+		return ArraysUtil.intersection(
+				this.getEndogenousVars(),
+				this.getChildren(v)
+		);
+	}
+
 
 
 	/**
@@ -273,17 +300,34 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 	/**
 	 * Gets the empirical probability of a endogenous variable by marginalizing out
-	 * all its exogenous parents.
-	 * @param var
+	 * all its exogenous parents. In case of more than one input variable, returns
+	 * the combination of the probability of each variable.
+	 * @param vars
 	 * @return
 	 */
-	public BayesianFactor getProb(int var) {
-		BayesianFactor pvar = this.getFactor(var);
-		for (int v : this.getExogenousParents(var)) {
-			pvar = pvar.combine(this.getFactor(v));
-		}
-		for (int v : this.getExogenousParents(var)) {
-			pvar = pvar.marginalize(v);
+	public BayesianFactor getProb(int... vars) {
+
+		BayesianFactor pvar = null;
+
+		if(vars.length==1) {
+
+			int var = vars[0];
+
+			pvar = this.getFactor(var);
+			for (int v : this.getExogenousParents(var)) {
+				pvar = pvar.combine(this.getFactor(v));
+			}
+			for (int v : this.getExogenousParents(var)) {
+				pvar = pvar.marginalize(v);
+			}
+
+		}else{
+
+			for(int var : vars){
+				BayesianFactor p = this.getProb(var);
+				if(pvar==null) pvar = p;
+				else pvar = pvar.combine(p);
+			}
 		}
 		return pvar;
 	}
@@ -424,34 +468,35 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 		}
 
 		// Get the credal sets for the exogenous variables U
-		for(int v: this.getExogenousVars()) {
+		for(int u: this.getExogenousVars()) {
 
-			double [] vector = this.getFactor(this.getChildren(v)[0]).getData();
-			int[] children = this.getChildren(v);
+			double [] vector = this.getFactor(this.getChildren(u)[0]).getData();
+			int[] children = this.getChildren(u);
 
 			// Get the coefficients by combining all the EQs of the children
 			double[][] coeff = ArraysUtil.transpose(ArraysUtil.reshape2d(
 					IntStream.of(children).mapToObj(i-> this.getFactor(i)).reduce((f1,f2) -> f1.combine(f2)).get()
-							.getData(), this.getSizes(v)
+							.getData(), this.getSizes(u)
 			));
 
 			// Get the P(ch(U)|endogenous_pa(ch(U)))
-			int x = this.getChildren(v)[0];
+			int[] ch_u = this.getChildren(u);
 
 			BayesianFactor pv = (BayesianFactor) Stream.of(empiricalProbs).filter(f ->
 					ImmutableSet.copyOf(Ints.asList(f.getDomain().getVariables()))
 							.equals(ImmutableSet.copyOf(
-									Ints.asList(Ints.concat(new int[]{x}, this.getEndegenousParents(x))))))
+									Ints.asList(Ints.concat(ch_u, this.getEndegenousParents(ch_u))))
+							))
 					.toArray()[0];
 
 			double[] vals = pv.getData();
 
-			SeparateHalfspaceFactor constFactor = new SeparateHalfspaceFactor(cmodel.getDomain(v), coeff, vals);
+			SeparateHalfspaceFactor constFactor = new SeparateHalfspaceFactor(cmodel.getDomain(u), coeff, vals);
 
 			if(vertex){
-				cmodel.setFactor(v, new HalfspaceToVertex().apply(constFactor));
+				cmodel.setFactor(u, new HalfspaceToVertex().apply(constFactor));
 			}else{
-				cmodel.setFactor(v, constFactor);
+				cmodel.setFactor(u, constFactor);
 			}
 
 
@@ -584,6 +629,21 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	public String getName() {
 		return name;
 	}
+
+
+	public BayesianFactor[] getEmpiricalProbs(){
+
+		BayesianFactor[] empirical = new BayesianFactor[getExogenousVars().length];
+		int i = 0;
+		for(int u : getExogenousVars()){
+			int[] ch_u = getEndogenousChildren(u);
+			empirical[i] = getProb(ch_u).fixPrecission(5,ch_u);
+			i++;
+		}
+		return empirical;
+	}
+
+
 }
 
 

@@ -34,6 +34,15 @@ public abstract class CausalInference<M extends GenericSparseModel, R extends Ge
         return query(new int[]{target}, evidence, intervention);
     }
 
+
+    public R doQuery(int target, TIntIntMap intervention) throws InterruptedException {
+        return query(new int[]{target}, new TIntIntHashMap(), intervention);
+    }
+
+    public R doQuery(int[] target, TIntIntMap intervention) throws InterruptedException {
+        return query(target, new TIntIntHashMap(), intervention);
+    }
+
     public M getModel() {
         return model;
     }
