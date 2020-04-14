@@ -188,16 +188,20 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	}
 
 
+
 	/**
 	 * Retruns an array with the IDs of parents that are exogenous variables
-	 * @param v
+	 * @param vars
 	 * @return
 	 */
-	public int[] getExogenousParents(int v){
-		return ArraysUtil.intersection(
-				this.getExogenousVars(),
-				this.getParents(v)
-		);
+
+	public int[] getExogenousParents(int... vars){
+		return ArraysUtil.unique(Ints.concat(
+				IntStream.of(vars)
+						.mapToObj(v -> ArraysUtil.intersection(this.getExogenousVars(), this.getParents(v)))
+						.map(v -> IntStream.of(v).filter(x -> !ArraysUtil.contains(x, vars)).toArray())
+						.toArray(int[][]::new)));
+
 	}
 
 	/**
@@ -207,11 +211,11 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	 */
 
 	public int[] getEndegenousParents(int... vars){
-		return Ints.concat(
-						IntStream.of(vars).mapToObj(v -> ArraysUtil.intersection(
-								this.getEndogenousVars(), this.getParents(v)
-								)
-						).map(v -> IntStream.of(v).filter(x -> !ArraysUtil.contains(x, vars)).toArray()).toArray(int[][]::new));
+		return ArraysUtil.unique(Ints.concat(
+				IntStream.of(vars)
+						.mapToObj(v -> ArraysUtil.intersection(this.getEndogenousVars(), this.getParents(v)))
+						.map(v -> IntStream.of(v).filter(x -> !ArraysUtil.contains(x, vars)).toArray())
+						.toArray(int[][]::new)));
 
 	}
 
@@ -341,26 +345,20 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 		BayesianFactor pvar = null;
 
-		if(vars.length==1) {
-
-			int var = vars[0];
-
-			pvar = this.getFactor(var);
-			for (int v : this.getExogenousParents(var)) {
-				pvar = pvar.combine(this.getFactor(v));
-			}
-			for (int v : this.getExogenousParents(var)) {
-				pvar = pvar.marginalize(v);
-			}
-
-		}else{
-
-			for(int var : vars){
-				BayesianFactor p = this.getProb(var);
-				if(pvar==null) pvar = p;
-				else pvar = pvar.combine(p);
-			}
+		for(int var : vars){
+			BayesianFactor p = this.getFactor(var);
+			if(pvar==null) pvar = p;
+			else pvar = pvar.combine(p);
 		}
+
+		for (int u : this.getExogenousParents(vars)) {
+			pvar = pvar.combine(this.getFactor(u));
+		}
+
+		for (int u : this.getExogenousParents(vars)) {
+			pvar = pvar.marginalize(u);
+		}
+
 		return pvar;
 	}
 
@@ -480,10 +478,6 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	 */
 	public SparseModel toCredalNetwork(boolean vertex, BayesianFactor... empiricalProbs){
 
-		// check that Structural equations are valid
-		if(!this.areValidSE())
-			throw new IllegalArgumentException("Invalid SEs, this model cannot be converted into a credal network");
-
 
 		// Copy the structure of the this
 		SparseModel cmodel = new SparseModel();
@@ -572,19 +566,15 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 				return false;
 		}
 
-		int ch_comb = this.getDomain(getEndogenousChildren(u)).getCombinations();
+/*		int ch_comb = this.getDomain(getEndogenousChildren(u)).getCombinations();
 
 		for(int i=0; i<coeff.length; i=i+ch_comb) {
-			try{
 			for (double[] c : ArraysUtil.transpose(Arrays.copyOfRange(coeff, i, i+ch_comb))) {
 				if (DoubleStream.of(c).reduce(0, (a, b) -> a + b) != 1)
 					return false;
 			}
-			}catch(Exception e){
-				System.out.println("");
-			}
+		}*/
 
-		}
 		return true;
 	}
 

@@ -38,7 +38,7 @@ public class CommonExoChainRandom {
         }
 
         System.out.println(model.getNetwork());
-        model.fillWithRandomFactors(PROB_DECIMALS, true);
+        model.fillWithRandomFactors(PROB_DECIMALS);
 
 
 

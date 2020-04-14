@@ -4,6 +4,9 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.approxlp.Inference;
+import ch.idsia.crema.inference.causality.CausalVE;
+import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
+import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.Strides;
@@ -84,103 +87,24 @@ public class Fig2 {
         }
 
 
- /*
-
- DIVISION IS NOT IMPLEMENTED SO IT FAILS
- System.out.println("\ndo conditioning result:");
-
- VariableElimination ve = new FactorVariableElimination(csmodel.getVariables());
- ve.setFactors(csmodel.getFactors());
- ve.setEvidence(new TIntIntHashMap(new int[]{x}, new int[]{0}));
- BayesianFactor pcond = (BayesianFactor)ve.run(y);
- System.out.println(Arrays.toString(pcond.getData()));
-
- factors[0].getData()
-
- // fails
-k[u].combine(k[x]).combine(k[y]).marginalize(u).divide(
-        k[u].combine(k[x]).marginalize(u) // precision error here?
-)
-
-*/
-
-        System.out.println("\ndo calculus result:");
-
-        SparseModel do_csmodel = csmodel.intervention(x,0);
-
-        // P(Y|do(x=0)) = P'(Y|x=0) =?= P'(Y)
-        VariableElimination ve = new FactorVariableElimination(do_csmodel.getVariables());
-        ve.setFactors(do_csmodel.getFactors());
-        VertexFactor pdo = (VertexFactor)ve.run(y);
-        System.out.println(pdo);
-
-
-//// check results by performing the same queries of the sets of precise BNS
-
-
-        do_csmodel = csmodel.intervention(x,1);
-
-
-/// check do calculus
-        Stream.of(do_csmodel.sampleVertex(10)).map(
-                (bnet) -> {
-                    VariableElimination veprec = new FactorVariableElimination(bnet.getVariables());
-                    veprec.setFactors(bnet.getFactors());
-                    return ((BayesianFactor) veprec.run(y)).getData();
-                }
-        ).toArray();
 
 
 
+        TIntIntHashMap intervention = new TIntIntHashMap();
+        intervention.put(x,0);
 
 
-        /// conditioning
-        Stream.of(csmodel.sampleVertex(10)).map(
-                (bnet) -> {
-                    VariableElimination veprec = new FactorVariableElimination(bnet.getVariables());
-                    veprec.setEvidence(new TIntIntHashMap(new int[]{x}, new int[]{1}));
-                    veprec.setFactors(bnet.getFactors());
-                    return ((BayesianFactor) veprec.run(y)).getData();
-                }
-        ).toArray();
+        CausalVE inf1 = new CausalVE(smodel);
+        BayesianFactor res1 = inf1.doQuery(y, intervention);
+        System.out.println(res1);
 
+        CredalCausalVE inf2 = new CredalCausalVE(smodel);
+        VertexFactor res2 = inf2.doQuery(y, intervention);
+        System.out.println(res2);
 
-
-        // check that the joint induced is the same
-        Stream.of(csmodel.sampleVertex(10)).map(
-                bnet -> bnet.getFactor(u).combine(bnet.getFactor(x)).combine(bnet.getFactor(y)).marginalize(u).getData()
-        ).toArray();
-
-        // P(X)
-        Stream.of(csmodel.sampleVertex(10)).map(
-                bnet -> bnet.getFactor(u).combine(bnet.getFactor(x)).marginalize(u).getData()
-        ).toArray();
-
-
-
-        // P(Y|x1)
-        Stream.of(csmodel.sampleVertex(10)).map(
-                bnet -> bnet.getFactor(u).combine(bnet.getFactor(x)).combine(bnet.getFactor(y)).marginalize(u).divide(
-                        bnet.getFactor(u).combine(bnet.getFactor(x)).marginalize(u)).filter(x,0).getData()
-        ).toArray();
-
-
-        // P(Y|x2)
-        Stream.of(csmodel.sampleVertex(10)).map(
-                bnet -> bnet.getFactor(u).combine(bnet.getFactor(x)).combine(bnet.getFactor(y)).marginalize(u).divide(
-                        bnet.getFactor(u).combine(bnet.getFactor(x)).marginalize(u)).filter(x,1).getData()
-        ).toArray();
-
-
-
-        // ApproxLP
-
-        Inference approx = new Inference();
-        IntervalFactor resultsALP = null;
-        resultsALP = approx.query(csmodel, y, -1);
-
-        System.out.println(Arrays.toString(resultsALP.getUpper()));
-        System.out.println(Arrays.toString(resultsALP.getLower()));
+        CredalCausalAproxLP inf3 = new CredalCausalAproxLP(smodel);
+        IntervalFactor res3 = inf3.doQuery(y, intervention);
+        System.out.println(res3);
 
 
 

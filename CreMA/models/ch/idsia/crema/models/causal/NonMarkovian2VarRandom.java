@@ -28,7 +28,7 @@ public class NonMarkovian2VarRandom {
         model.addParent(y,u);
         model.addParent(y,x);
 
-        model.fillWithRandomFactors(PROB_DECIMALS, true);
+        model.fillWithRandomFactors(PROB_DECIMALS);
 
 
         return model;
