@@ -18,6 +18,7 @@ import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 
 import java.util.*;
 import java.util.stream.DoubleStream;
@@ -240,12 +241,21 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	}
 
 
+	/**
+	 * Attach to each variable (endogenous or exogenous) a random factor.
+	 * Structural Equations are not checked.
+	 * @param prob_decimals
+	 */
+	public void fillWithRandomFactors(int prob_decimals){
+		this.fillWithRandomFactors(prob_decimals, false);
+	}
 
 	/**
 	 * Attach to each variable (endogenous or exogenous) a random factor.
 	 * @param prob_decimals
+	 * @param EqCheck
 	 */
-	public void fillWithRandomFactors(int prob_decimals){
+	public void fillWithRandomFactors(int prob_decimals, boolean EqCheck){
 
 		for(int u : this.getExogenousVars()){
 			this.setFactor(u,
@@ -253,8 +263,28 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 							this.getDomain(this.getParents(u)),
 							prob_decimals, false)
 			);
+
+			// todo: implement in a wiser way
+			do{
+				for(int x: getEndogenousChildren(u)){
+					Strides pa_x = this.getDomain(this.getParents(x));
+					int[] assignments = RandomUtil.sampleUniform(pa_x.getCombinations(),this.getSize(x), true);
+
+					this.setFactor(x,
+							BayesianFactor.deterministic(
+									this.getDomain(x),
+									pa_x,
+									assignments)
+					);
+				}
+			}while(EqCheck && !areValidSE(u));
+
+
+
 		}
 
+
+		/*
 
 		for(int x : this.getEndogenousVars()){
 			Strides pa_x = this.getDomain(this.getParents(x));
@@ -268,6 +298,8 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 			);
 		}
 
+
+		 */
 
 	}
 
@@ -448,6 +480,11 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	 */
 	public SparseModel toCredalNetwork(boolean vertex, BayesianFactor... empiricalProbs){
 
+		// check that Structural equations are valid
+		if(!this.areValidSE())
+			throw new IllegalArgumentException("Invalid SEs, this model cannot be converted into a credal network");
+
+
 		// Copy the structure of the this
 		SparseModel cmodel = new SparseModel();
 		cmodel.addVariables(this.getSizes(this.getVariables()));
@@ -474,10 +511,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 			int[] children = this.getChildren(u);
 
 			// Get the coefficients by combining all the EQs of the children
-			double[][] coeff = ArraysUtil.transpose(ArraysUtil.reshape2d(
-					IntStream.of(children).mapToObj(i-> this.getFactor(i)).reduce((f1,f2) -> f1.combine(f2)).get()
-							.getData(), this.getSizes(u)
-			));
+			double[][] coeff = this.getCoeff(u);
 
 			// Get the P(ch(U)|endogenous_pa(ch(U)))
 			int[] ch_u = this.getChildren(u);
@@ -493,6 +527,10 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 			SeparateHalfspaceFactor constFactor = new SeparateHalfspaceFactor(cmodel.getDomain(u), coeff, vals);
 
+			if(constFactor==null)
+				throw new NoFeasibleSolutionException();
+
+
 			if(vertex){
 				cmodel.setFactor(u, new HalfspaceToVertex().apply(constFactor));
 			}else{
@@ -504,6 +542,59 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 		return cmodel;
 	}
+
+	/**
+	 * Transforms the structural equations associated to the childrens of a given U into a coefficient matrix.
+	 * @param u
+	 * @return
+	 */
+	private double[][] getCoeff(int u){
+
+		if(!this.isExogenous(u))
+			throw new IllegalArgumentException("Variable "+u+" is not exogenous");
+
+		int[] children = this.getEndogenousChildren(u);
+
+		// Get the coefficients by combining all the EQs of the children
+		double[][] coeff = ArraysUtil.transpose(ArraysUtil.reshape2d(
+				IntStream.of(children).mapToObj(i-> this.getFactor(i)).reduce((f1,f2) -> f1.combine(f2)).get()
+						.getData(), this.getSizes(u)
+		));
+
+		return coeff;
+	}
+
+
+	private boolean areValidSE(int u){
+		double[][] coeff = getCoeff(u);
+		for(double[] c : coeff){
+			if(DoubleStream.of(c).reduce(0, (a, b) -> a + b) <= 0)
+				return false;
+		}
+
+		int ch_comb = this.getDomain(getEndogenousChildren(u)).getCombinations();
+
+		for(int i=0; i<coeff.length; i=i+ch_comb) {
+			try{
+			for (double[] c : ArraysUtil.transpose(Arrays.copyOfRange(coeff, i, i+ch_comb))) {
+				if (DoubleStream.of(c).reduce(0, (a, b) -> a + b) != 1)
+					return false;
+			}
+			}catch(Exception e){
+				System.out.println("");
+			}
+
+		}
+		return true;
+	}
+
+	public boolean areValidSE(){
+		for(int u : this.getExogenousVars())
+			if(!this.areValidSE(u))
+				return false;
+		return true;
+	}
+
 
 	/**
 	 * Assuming that this SCM is a counterfactual model, this object

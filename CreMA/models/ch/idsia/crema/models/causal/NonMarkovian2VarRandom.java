@@ -28,7 +28,9 @@ public class NonMarkovian2VarRandom {
         model.addParent(y,u);
         model.addParent(y,x);
 
-        model.fillWithRandomFactors(PROB_DECIMALS);
+        model.fillWithRandomFactors(PROB_DECIMALS, true);
+
+
         return model;
 
     }
@@ -46,8 +48,6 @@ public class NonMarkovian2VarRandom {
     public static void main(String[] args) throws InterruptedException {
 
 
-        RandomUtil.getRandom().setSeed(230662);
-
 
         StructuralCausalModel model = buildModel(new int[]{2,2});
         int x = 0, y = 1;
@@ -56,20 +56,13 @@ public class NonMarkovian2VarRandom {
         intervention.put(x,0);
 
 
-
-
         CausalVE inf1 = new CausalVE(model);
         BayesianFactor res1 = inf1.doQuery(y, intervention);
         System.out.println(res1);
 
-
-
         CredalCausalVE inf2 = new CredalCausalVE(model);
         VertexFactor res2 = inf2.doQuery(y, intervention);
         System.out.println(res2);
-
-
-
 
         CredalCausalAproxLP inf3 = new CredalCausalAproxLP(model);
         IntervalFactor res3 = inf3.doQuery(y, intervention);

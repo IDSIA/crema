@@ -21,7 +21,6 @@ public class CommonExoChainRandom {
 
     public static StructuralCausalModel buildModel(int n, int endoSize, int exoSize) {
 
-
         StructuralCausalModel model = new StructuralCausalModel();
 
         // add endogenous
@@ -38,9 +37,11 @@ public class CommonExoChainRandom {
             if(i+1<n) model.addParent(i+1, u);
         }
 
-
         System.out.println(model.getNetwork());
-        model.fillWithRandomFactors(PROB_DECIMALS);
+        model.fillWithRandomFactors(PROB_DECIMALS, true);
+
+
+
         return model;
 
     }
@@ -51,17 +52,18 @@ public class CommonExoChainRandom {
 
 
     public static void main(String[] args) throws InterruptedException {
-        StructuralCausalModel model = buildModel(10, 2, 5);
+        int n = 4;
+        StructuralCausalModel model = buildModel(n, 2, 5);
 
         int[] X = model.getEndogenousVars();
 
         TIntIntHashMap evidence = new TIntIntHashMap();
-        evidence.put(X[6], 0);
+        evidence.put(X[n-1], 0);
 
         TIntIntHashMap intervention = new TIntIntHashMap();
-        intervention.put(X[1], 0);
+        intervention.put(X[0], 0);
 
-        int target = X[4];
+        int target = X[1];
 
         CausalInference inf = new CausalVE(model);
         BayesianFactor result = (BayesianFactor) inf.query(target, evidence, intervention);
