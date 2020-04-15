@@ -46,9 +46,9 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
         SparseModel do_csmodel = applyInterventions(intervention);
 
         // preprocessing
-        RemoveBarren removeBarren = new RemoveBarren();
-        do_csmodel = removeBarren
-                .execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);
+        //RemoveBarren removeBarren = new RemoveBarren();
+        //do_csmodel = removeBarren
+        //        .execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);
 
 
         if(epsilon>0.0){
@@ -73,6 +73,10 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
         if(evidence.size()>0) {
             int evbin = new BinarizeEvidence().executeInline(do_csmodel, evidence, evidence.size(), false);
             result = lp1.query(do_csmodel, target[0], evbin);
+            //ApproxLP2 lp2 = new ApproxLP2();
+            //result = lp2.query(do_csmodel, target[0], evidence);
+            //System.out.println("approxlp2");
+
         }else{
             result = lp1.query(do_csmodel, target[0]);
         }
