@@ -9,15 +9,19 @@ import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
 import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 public class ChainNonMarkovianCase {
     public static void main(String[] args) throws InterruptedException {
 
+        RandomUtil.getRandom().setSeed(23066);
+
+
         ////////// Parameters //////////
 
         /** Number of endogenous variables in the chain (should be 3 or greater)*/
-        int N = 6;
+        int N = 5;
 
         /** Number of states in endogenous variables */
         int endoVarSize = 2;
@@ -49,15 +53,18 @@ public class ChainNonMarkovianCase {
         // Run inference
 
         CausalInference inf1 = new CausalVE(model);
+        System.out.println("Running query method 1");
         BayesianFactor result1 = (BayesianFactor) inf1.query(target, evidence, intervention);
         System.out.println(result1);
 
         CausalInference inf2 = new CredalCausalVE(model);
+        System.out.println("Running query method 2");
         VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
         System.out.println(result2);
 
 
         CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(eps);
+        System.out.println("Running query method 3");
         IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
         System.out.println(result3);
 
