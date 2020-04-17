@@ -1,5 +1,6 @@
 package pgm20.experiments;
 
+import ch.idsia.crema.models.causal.RandomChainMarkovian;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
@@ -9,8 +10,6 @@ import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
 import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import gnu.trove.map.hash.TIntIntHashMap;
-
-import ch.idsia.crema.models.causal.*;
 
 public class ChainMarkovianCase {
     public static void main(String[] args) throws InterruptedException {
