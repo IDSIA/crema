@@ -1,0 +1,36 @@
+
+ChainMarkovian: N=4 exovarsize=6 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 16.188 ms.
+Warm-up #1 in 3.425 ms.
+Measurement #0 in 2.065 ms. size=0.0
+Measurement #1 in 2.388 ms. size=0.0
+Measurement #2 in 2.084 ms. size=0.0
+Measurement #3 in 2.504 ms. size=0.0
+Measurement #4 in 2.083 ms. size=0.0
+Measurement #5 in 1.847 ms. size=0.0
+Measurement #6 in 1.303 ms. size=0.0
+Measurement #7 in 2.285 ms. size=0.0
+Measurement #8 in 1.283 ms. size=0.0
+Measurement #9 in 1.137 ms. size=0.0
+1.8979,0.0
+
+
+ChainMarkovian: N=4 exovarsize=6 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 848.363 ms.
+Warm-up #1 in 231.092 ms.
+Measurement #0 in 236.919 ms. size=0.0
+Measurement #1 in 136.056 ms. size=0.0
+Measurement #2 in 143.944 ms. size=0.0
+Measurement #3 in 134.912 ms. size=0.0
+Measurement #4 in 131.153 ms. size=0.0
+Measurement #5 in 104.622 ms. size=0.0
+Measurement #6 in 133.34 ms. size=0.0
+Measurement #7 in 112.463 ms. size=0.0
+Measurement #8 in 92.716 ms. size=0.0
+Measurement #9 in 77.687 ms. size=0.0
+130.38119999999998,0.0
+
