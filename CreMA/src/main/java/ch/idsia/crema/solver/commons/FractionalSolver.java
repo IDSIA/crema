@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.OpenMapRealVector;
 import org.apache.commons.math3.linear.RealVector;
@@ -75,8 +76,15 @@ public class FractionalSolver implements LinearFractionalSolver {
 		RealVector vector = new OpenMapRealVector(columns);
 		vector.setSubVector(0, new ArrayRealVector(denominator));
 		constraints.add(new LinearConstraint(vector, Relationship.EQ, mult));
-		
+		//constraints.add(new LinearConstraint(vector, Relationship.GEQ, mult-0.01));
+		//constraints.add(new LinearConstraint(vector, Relationship.LEQ, mult+0.01));
+
+
+		//constraints = (ArrayList<LinearConstraint>) SeparateHalfspaceFactor.getNoisedConstraintSet(constraints, 0.00001);
+
+
 		SimplexSolver solver = new SimplexSolver();
+
 		solution = solver.optimize(new LinearConstraintSet(constraints), new LinearObjectiveFunction(numerator, 0), goalType, new NonNegativeConstraint(true));
 	}
 

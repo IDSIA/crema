@@ -421,4 +421,28 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	}
 
 
+
+	public int[] getDescendants(int variable){
+		int[] ch = getChildren(variable);
+
+		if(ch.length==0)
+			return ch;
+
+		int[] desc_ch = Ints.concat(IntStream.of(ch).mapToObj(this::getDescendants).toArray(int[][]::new));
+		return ArraysUtil.unique(Ints.concat(ch, desc_ch));
+	}
+
+	public int[] getAncestors(int variable){
+		int[] pa = getParents(variable);
+
+		if(pa.length==0)
+			return pa;
+
+		int[] ances_pa = Ints.concat(IntStream.of(pa).mapToObj(this::getAncestors).toArray(int[][]::new));
+		return ArraysUtil.unique(Ints.concat(pa, ances_pa));
+	}
+
+
+
+
 }

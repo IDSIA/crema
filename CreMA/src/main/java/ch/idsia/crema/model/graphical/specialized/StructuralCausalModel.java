@@ -519,6 +519,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 			double[] vals = pv.getData();
 
+
 			SeparateHalfspaceFactor constFactor = new SeparateHalfspaceFactor(cmodel.getDomain(u), coeff, vals);
 
 			if(constFactor==null)
@@ -566,14 +567,14 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 				return false;
 		}
 
-/*		int ch_comb = this.getDomain(getEndogenousChildren(u)).getCombinations();
+		int ch_comb = this.getDomain(getEndogenousChildren(u)).getCombinations();
 
 		for(int i=0; i<coeff.length; i=i+ch_comb) {
 			for (double[] c : ArraysUtil.transpose(Arrays.copyOfRange(coeff, i, i+ch_comb))) {
 				if (DoubleStream.of(c).reduce(0, (a, b) -> a + b) != 1)
 					return false;
 			}
-		}*/
+		}
 
 		return true;
 	}

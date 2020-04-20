@@ -37,7 +37,7 @@ public class RandomChainNonMarkovian {
             if(i+1<n) model.addParent(i+1, u);
         }
 
-        model.fillWithRandomFactors(PROB_DECIMALS);
+        model.fillWithRandomFactors(PROB_DECIMALS, false);
 
 
 

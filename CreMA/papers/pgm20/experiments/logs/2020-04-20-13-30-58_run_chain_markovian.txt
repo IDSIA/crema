@@ -1,0 +1,60 @@
+
+ChainMarkovian
+   N=10 exovarsize=6 target=9 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 784.826 ms.
+Warm-up #1 in 410.12 ms.
+Warm-up #2 in 558.213 ms.
+Measurement #0 in 544.747 ms. size=0.0
+Measurement #1 in 549.682 ms. size=0.0
+Measurement #2 in 540.36 ms. size=0.0
+Measurement #3 in 534.887 ms. size=0.0
+Measurement #4 in 542.073 ms. size=0.0
+Measurement #5 in 540.268 ms. size=0.0
+Measurement #6 in 550.695 ms. size=0.0
+Measurement #7 in 539.254 ms. size=0.0
+Measurement #8 in 545.119 ms. size=0.0
+Measurement #9 in 530.816 ms. size=0.0
+541.7900999999999,0.0
+
+
+ChainMarkovian
+   N=10 exovarsize=6 target=9 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1237.38 ms.
+Warm-up #1 in 669.78 ms.
+Warm-up #2 in 530.707 ms.
+Measurement #0 in 549.642 ms. size=0.0
+Measurement #1 in 399.144 ms. size=0.0
+Measurement #2 in 385.418 ms. size=0.0
+Measurement #3 in 424.608 ms. size=1.1102230246251565E-16
+Measurement #4 in 419.1 ms. size=0.0
+Measurement #5 in 328.061 ms. size=1.1102230246251565E-16
+Measurement #6 in 322.512 ms. size=0.0
+Measurement #7 in 321.625 ms. size=1.1102230246251565E-16
+Measurement #8 in 320.876 ms. size=1.1102230246251565E-16
+Measurement #9 in 321.383 ms. size=0.0
+379.2369,4.4408920985006264E-17
+
+
+ChainMarkovian
+   N=10 exovarsize=6 target=9 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 7308.322 ms.
+Warm-up #1 in 5676.447 ms.
+Warm-up #2 in 5756.8 ms.
+Measurement #0 in 5701.662 ms. size=7.1345282179891E-6
+Measurement #1 in 5659.678 ms. size=7.134527854946171E-6
+Measurement #2 in 5410.605 ms. size=7.134528280494656E-6
+Measurement #3 in 5504.43 ms. size=7.134527592378426E-6
+Measurement #4 in 5583.259 ms. size=7.134527219676556E-6
+Measurement #5 in 5559.514 ms. size=7.134527561292181E-6
+Measurement #6 in 5638.275 ms. size=7.134528092089809E-6
+Measurement #7 in 5707.828 ms. size=7.134526645025119E-6
+Measurement #8 in 5586.364 ms. size=7.134527972296745E-6
+Measurement #9 in 5743.946 ms. size=7.134528705821097E-6
+5609.5561,7.134527814200986E-6
+

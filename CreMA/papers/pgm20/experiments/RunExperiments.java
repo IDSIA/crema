@@ -9,24 +9,30 @@ import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
 import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.models.causal.RandomChainMarkovian;
+import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
-public class ChainMarkovian {
+import static ch.idsia.crema.models.causal.RandomChainNonMarkovian.buildModel;
+
+
+public class RunExperiments {
 
 
     static StructuralCausalModel model;
 
     static TIntIntHashMap evidence, intervention;
     static int target;
-    static double eps = 0.00001;
+    static double eps;
 
     static String method;
 
-    static int warmups = 2;
+    static int warmups = 3;
     static int measures = 10;
 
 
@@ -34,40 +40,70 @@ public class ChainMarkovian {
         try {
             ////////// Input arguments Parameters //////////
 
+            String modelName = "ChainMarkovian";
+
             /** Number of endogenous variables in the chain (should be 3 or greater)*/
-            int N = 6;
+            int N = 7;
             /** Number of states in the exogenous variables */
             int exoVarSize = 6;
-            /** Inference method: CVE, CCVE, CCALP  **/
-            method = "CVE";
+
+            target = 1;
+
+            int obsvar = N-1;
+
+            int dovar = 0;
+
+            /** Inference method: CVE, CCVE, CCALP, CCALPeps  **/
+            method = "CCALP";
+
+            eps = 0.0;
 
             long seed = 1234;
 
+
+            // ChainNonMarkovian 6 5 1 -1 0 CCALP 1234
             if(args.length>0){
-                N = Integer.parseInt(args[0]);
-                exoVarSize = Integer.parseInt(args[1]);
-                method = args[2];
-                seed = Long.parseLong(args[3]);
+                modelName = args[0];
+                N = Integer.parseInt(args[1]);
+                exoVarSize = Integer.parseInt(args[2]);
+                target = Integer.parseInt(args[3]);
+                obsvar = Integer.parseInt(args[4]);
+                dovar = Integer.parseInt(args[5]);
+                method = args[6];
+                seed = Long.parseLong(args[7]);
             }
 
-            System.out.println("\nChainMarkovian: N="+N+" exovarsize="+exoVarSize+" method="+method+" seed="+seed);
+            if(method.equals("CCALPeps"))
+                eps = 0.000001;
+
+            System.out.println("\n"+modelName+"\n   N="+N+" exovarsize="+exoVarSize+" target="+target+" obsvar="+obsvar+" dovar="+dovar+" method="+method+" seed="+seed);
             System.out.println("=================================================================");
 
 
             /////////////////////////////////
+            RandomUtil.getRandom().setSeed(seed);
+
 
             /** Number of states in endogenous variables */
             int endoVarSize = 2;
             // Load the chain model
-            model = RandomChainMarkovian.buildModel(N, endoVarSize, exoVarSize);
-            // Query: P(X[N/2] | X[N-1]=0, do(X[0])=0)
+
+            if(modelName.equals("ChainMarkovian"))
+                model = RandomChainMarkovian.buildModel(N, endoVarSize, exoVarSize);
+            else if(modelName.equals("ChainNonMarkovian"))
+                model = RandomChainNonMarkovian.buildModel(N, endoVarSize, exoVarSize);
+            else
+                throw new IllegalArgumentException("Non valid model name");
+
+
+
             int[] X = model.getEndogenousVars();
 
             evidence = new TIntIntHashMap();
-            evidence.put(X[N-1], 0);
+            if(obsvar>=0) evidence.put(obsvar, 0);
+
             intervention = new TIntIntHashMap();
-            intervention.put(X[0], 0);
-            target = X[N/2];
+            if(dovar>=0) intervention.put(dovar, 0);
 
             System.out.println("Running experiments...");
 
@@ -98,7 +134,9 @@ public class ChainMarkovian {
             CausalInference inf2 = new CredalCausalVE(model);
             VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
             if (verbose) System.out.println(result2);
-        }else if (method.equals("CCALP")) {
+            intervalSize = Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).max().getAsDouble() -
+                    Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).min().getAsDouble();
+        }else if (method.startsWith("CCALP")) {
             CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(eps);
             IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
             if(verbose) System.out.println(result3);
@@ -110,7 +148,7 @@ public class ChainMarkovian {
         Instant finish = Instant.now();
         double timeElapsed = Duration.between(start, finish).toNanos()/Math.pow(10,6);
 
-        return new double[]{timeElapsed, intervalSize};
+        return new double[]{timeElapsed, Math.abs(intervalSize)};
     }
 
 

@@ -7,6 +7,7 @@ import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
+import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
@@ -46,17 +47,41 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
         SparseModel do_csmodel = applyInterventions(intervention);
 
         // preprocessing
-        //RemoveBarren removeBarren = new RemoveBarren();
-        //do_csmodel = removeBarren
-        //        .execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);
+        RemoveBarren removeBarren = new RemoveBarren();
+        do_csmodel = removeBarren
+                .execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);
 
+
+        //int[] noise = {3,4,5,7,8};
+        //int[] noise = {0,1,2,3,4,5,6,7,8};
+        //int[] noise = {0,2,4,6,7,8};// N=6
+       // int[] noise = {0,1,2,3,4,5,6,7,8,9,10};
+
+        //int[] noise = {0,2,4,7,8,9,10};
+
+/*
+
+        if(true && epsilon>0.0){
+            for(int v : noise) {
+                //if(originalModel.isExogenous(v))
+                //if(do_csmodel.getNetwork())
+//                System.out.println(v);
+                do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoised(epsilon));
+   //             do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoisedInequalities(epsilon));
+  //              do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoisedZeroConstraints(epsilon));
+
+
+            }
+        }
+*/
+//        ((SeparateHalfspaceFactor)do_csmodel.getFactor(1)).printLinearProblem(0);
 
         if(epsilon>0.0){
             for(int v : do_csmodel.getVariables()) {
-                //if(originalModel.isExogenous(v))
-                    do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoised(epsilon));
+                do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoised(epsilon));
             }
         }
+
 
 
         // update the evidence
@@ -75,10 +100,11 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
             result = lp1.query(do_csmodel, target[0], evbin);
             //ApproxLP2 lp2 = new ApproxLP2();
             //result = lp2.query(do_csmodel, target[0], evidence);
-            //System.out.println("approxlp2");
 
         }else{
             result = lp1.query(do_csmodel, target[0]);
+            //ApproxLP2 lp2 = new ApproxLP2();
+            //result = lp2.query(do_csmodel, target[0]);
         }
 
         return result;

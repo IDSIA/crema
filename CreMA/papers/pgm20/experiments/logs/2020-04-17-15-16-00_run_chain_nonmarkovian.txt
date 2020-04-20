@@ -1,0 +1,70 @@
+
+ChainNonMarkovian: N=12 exovarsize=6 method=CVE seed=333
+=================================================================
+Running experiments...
+P([6]) [0.72576096, 0.2742390400000001]
+Warm-up #0 in 104.703 ms.
+P([6]) [0.72576096, 0.2742390400000001]
+Warm-up #1 in 47.089 ms.
+Measurement #0 in 25.804 ms. size=0.0
+Measurement #1 in 22.736 ms. size=0.0
+Measurement #2 in 25.495 ms. size=0.0
+Measurement #3 in 23.599 ms. size=0.0
+Measurement #4 in 27.292 ms. size=0.0
+Measurement #5 in 28.941 ms. size=0.0
+Measurement #6 in 16.511 ms. size=0.0
+Measurement #7 in 19.818 ms. size=0.0
+Measurement #8 in 23.442 ms. size=0.0
+Measurement #9 in 13.734 ms. size=0.0
+22.7372,0.0
+
+
+ChainNonMarkovian: N=12 exovarsize=6 method=CCVE seed=333
+=================================================================
+Running experiments...
+K(vars[6]|[])
+6: 0,1,
+K(vars[6]|[]) [0.72576096, 0.27423904000000004]
+
+Warm-up #0 in 2610.761 ms.
+K(vars[6]|[])
+6: 0,1,
+K(vars[6]|[]) [0.72576096, 0.27423904000000004]
+
+Warm-up #1 in 774.593 ms.
+Measurement #0 in 635.267 ms. size=0.0
+Measurement #1 in 628.765 ms. size=0.0
+Measurement #2 in 608.306 ms. size=0.0
+Measurement #3 in 643.528 ms. size=0.0
+Measurement #4 in 626.638 ms. size=0.0
+Measurement #5 in 603.696 ms. size=0.0
+Measurement #6 in 568.468 ms. size=0.0
+Measurement #7 in 527.503 ms. size=0.0
+Measurement #8 in 600.785 ms. size=0.0
+Measurement #9 in 563.934 ms. size=0.0
+600.6890000000001,0.0
+
+
+ChainNonMarkovian: N=12 exovarsize=6 method=CCALP seed=333
+=================================================================
+Running experiments...
+P([6] | [])
+	[0.7257098254448376, 0.2742146980741442]
+	[0.7257853019258558, 0.27429017455516236]
+Warm-up #0 in 10073.666 ms.
+P([6] | [])
+	[0.7257094769642202, 0.2742150465247471]
+	[0.725784953475253, 0.27429052303577983]
+Warm-up #1 in 8166.524 ms.
+Measurement #0 in 7081.704 ms. size=7.502476660470325E-5
+Measurement #1 in 8939.853 ms. size=7.547647936145818E-5
+Measurement #2 in 7701.525 ms. size=7.582495997915384E-5
+Measurement #3 in 7742.188 ms. size=7.510667493559886E-5
+Measurement #4 in 7750.631 ms. size=7.547216456516015E-5
+Measurement #5 in 8139.212 ms. size=7.512802979914301E-5
+Measurement #6 in 8071.441 ms. size=7.44604423430495E-5
+Measurement #7 in 8758.405 ms. size=7.582064528599552E-5
+Measurement #8 in 8968.865 ms. size=7.546560377191813E-5
+Measurement #9 in 10188.433 ms. size=7.581890306829209E-5
+8334.225699999999,7.535986697144725E-5
+

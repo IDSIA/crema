@@ -1,0 +1,72 @@
+
+ChainNonMarkovian: N=6 exovarsize=6 method=CVE seed=333
+=================================================================
+Running experiments...
+P([3]) [0.962226169330965, 0.037773830669034926]
+Warm-up #0 in 31.257 ms.
+P([3]) [0.962226169330965, 0.037773830669034926]
+Warm-up #1 in 4.407 ms.
+Measurement #0 in 4.225 ms. size=0.0
+Measurement #1 in 4.182 ms. size=0.0
+Measurement #2 in 7.901 ms. size=0.0
+Measurement #3 in 3.343 ms. size=0.0
+Measurement #4 in 2.997 ms. size=0.0
+Measurement #5 in 11.194 ms. size=0.0
+Measurement #6 in 2.645 ms. size=0.0
+Measurement #7 in 2.649 ms. size=0.0
+Measurement #8 in 2.291 ms. size=0.0
+Measurement #9 in 2.157 ms. size=0.0
+4.3584000000000005,0.0
+
+
+ChainNonMarkovian: N=6 exovarsize=6 method=CCVE seed=333
+=================================================================
+Running experiments...
+K(vars[3]|[])
+3: 0,1,
+K(vars[3]|[]) [0.9656804733727811, 0.03431952662721893]
+              [0.9620533467539004, 0.037946653246099644]
+
+Warm-up #0 in 1059.926 ms.
+K(vars[3]|[])
+3: 0,1,
+K(vars[3]|[]) [0.9656804733727811, 0.03431952662721893]
+              [0.9620533467539004, 0.037946653246099644]
+
+Warm-up #1 in 160.108 ms.
+Measurement #0 in 194.534 ms. size=0.0036271266188806495
+Measurement #1 in 152.407 ms. size=0.0036271266188806495
+Measurement #2 in 108.397 ms. size=0.0036271266188806495
+Measurement #3 in 113.614 ms. size=0.0036271266188806495
+Measurement #4 in 111.939 ms. size=0.0036271266188806495
+Measurement #5 in 80.08 ms. size=0.0036271266188806495
+Measurement #6 in 86.381 ms. size=0.0036271266188806495
+Measurement #7 in 72.078 ms. size=0.0036271266188806495
+Measurement #8 in 97.702 ms. size=0.0036271266188806495
+Measurement #9 in 162.89 ms. size=0.0036271266188806495
+118.00219999999999,0.0036271266188806495
+
+
+ChainNonMarkovian: N=6 exovarsize=6 method=CCALP seed=333
+=================================================================
+Running experiments...
+P([3] | [])
+	[0.9620252785232049, 0.03430872429349119]
+	[0.9656912757065088, 0.03797472147679514]
+Warm-up #0 in 3699.775 ms.
+P([3] | [])
+	[0.9620251887565403, 0.034308878474382576]
+	[0.9656911215256174, 0.037974811243459694]
+Warm-up #1 in 2327.968 ms.
+Measurement #0 in 2219.153 ms. size=0.003665997576381974
+Measurement #1 in 2161.527 ms. size=0.0036659216730375865
+Measurement #2 in 2182.972 ms. size=0.003665991075483932
+Measurement #3 in 2134.844 ms. size=0.003666036748247503
+Measurement #4 in 2140.198 ms. size=0.003665856874958795
+Measurement #5 in 2146.092 ms. size=0.0036659837852617283
+Measurement #6 in 2191.627 ms. size=0.003665931683282886
+Measurement #7 in 2145.13 ms. size=0.0036660637551549913
+Measurement #8 in 2136.508 ms. size=0.0036658895045924567
+Measurement #9 in 2172.937 ms. size=0.0036660632449526664
+2163.0988,0.003665973592135452
+

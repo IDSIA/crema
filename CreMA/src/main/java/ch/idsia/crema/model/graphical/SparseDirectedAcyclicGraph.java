@@ -8,6 +8,7 @@ import org.jgrapht.graph.DirectedAcyclicGraph;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -72,7 +73,6 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 	public int[] getVariables(){
 		return Ints.toArray(this.vertexSet());
 	}
-
 
 
 

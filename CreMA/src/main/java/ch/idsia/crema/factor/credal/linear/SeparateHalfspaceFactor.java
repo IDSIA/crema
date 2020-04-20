@@ -358,13 +358,38 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 				if(c.getRelationship() == Relationship.EQ && eps>0) {
 					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() - eps, i);
 					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, c.getValue() + eps, i);
-
 				}else if(c.getRelationship() == Relationship.GEQ && eps>0) {
 					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() + eps, i);
 				}else if(c.getRelationship() == Relationship.LEQ && eps>0) {
 					newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, c.getValue() - eps, i);
 				}else{
 					newFactor.addConstraint(c, i);
+				}
+
+			}
+		}
+
+		return newFactor;
+
+	}
+
+
+
+	public SeparateHalfspaceFactor getNoisedZeroConstraints(double eps){
+
+		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+
+		for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++){
+			for(LinearConstraint c : this.getLinearProblem(i).getConstraints()) {
+				if(c.getValue()==0 && eps>0){
+					if(c.getRelationship() == Relationship.EQ) {
+						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, 0.0, i);
+						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, eps*2, i);
+					}else if(c.getRelationship() == Relationship.GEQ) {
+						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() + eps, i);
+					}else{
+						newFactor.addConstraint(c, i);
+					}
 				}
 
 			}
@@ -395,6 +420,33 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		}
 
 		return newFactor;
+
+	}
+
+
+
+
+	public static Collection<LinearConstraint> getNoisedConstraintSet(Collection<LinearConstraint> constraints, double eps){
+
+		Collection<LinearConstraint> newConstraints = new ArrayList<LinearConstraint>();
+
+			for(LinearConstraint c : constraints) {
+
+				if(c.getRelationship() == Relationship.EQ && eps>0) {
+					newConstraints.add(new LinearConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() - eps));
+					newConstraints.add(new LinearConstraint(c.getCoefficients().toArray(), Relationship.LEQ, c.getValue() + eps));
+				}else if(c.getRelationship() == Relationship.GEQ && eps>0) {
+					newConstraints.add(new LinearConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() + eps));
+				}else if(c.getRelationship() == Relationship.LEQ && eps>0) {
+					newConstraints.add(new LinearConstraint(c.getCoefficients().toArray(), Relationship.LEQ, c.getValue() - eps));
+				}else{
+					newConstraints.add(c);
+				}
+
+			}
+
+
+		return newConstraints;
 
 	}
 
