@@ -108,14 +108,14 @@ public class RunExperiments {
             System.out.println("Running experiments...");
 
             double res[] = run();
-            System.out.println(res[0] + "," + res[1]);
+            System.out.println(res[0] + "," + res[1]+ "," + res[2]);
 
         }catch (Exception e){
             System.out.println(e);
-            System.out.println("nan,nan");
+            System.out.println("nan,nan,nan");
         }catch (Error e){
             System.out.println(e);
-            System.out.println("nan,nan");
+            System.out.println("nan,nan,nan");
         }
 
 
@@ -123,21 +123,26 @@ public class RunExperiments {
 
     static double[] experiment(boolean verbose) throws InterruptedException {
         Instant start = Instant.now();
+        Instant queryStart = null;
+
 
         double intervalSize = 0.0;
 
         if(method.equals("CVE")) {
             CausalInference inf1 = new CausalVE(model);
+            queryStart = Instant.now();
             BayesianFactor result1 = (BayesianFactor) inf1.query(target, evidence, intervention);
             if(verbose) System.out.println(result1);
         }else if(method.equals("CCVE")) {
             CausalInference inf2 = new CredalCausalVE(model);
+            queryStart = Instant.now();
             VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
             if (verbose) System.out.println(result2);
             intervalSize = Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).max().getAsDouble() -
                     Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).min().getAsDouble();
         }else if (method.startsWith("CCALP")) {
             CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(eps);
+            queryStart = Instant.now();
             IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
             if(verbose) System.out.println(result3);
             intervalSize =  result3.getUpper(0)[0] - result3.getLower(0)[0];
@@ -147,14 +152,16 @@ public class RunExperiments {
 
         Instant finish = Instant.now();
         double timeElapsed = Duration.between(start, finish).toNanos()/Math.pow(10,6);
+        double timeElapsedQuery = Duration.between(queryStart, finish).toNanos()/Math.pow(10,6);
 
-        return new double[]{timeElapsed, Math.abs(intervalSize)};
+        return new double[]{timeElapsed, timeElapsedQuery, Math.abs(intervalSize)};
     }
 
 
     public static double[] run() throws InterruptedException {
 
         double time[] = new double[measures];
+        double time2[] = new double[measures];
         double size[] = new double[measures];
 
         // Warm-up
@@ -169,10 +176,13 @@ public class RunExperiments {
             double[] out = experiment(false);
             System.out.println("Measurement #"+i+" in "+out[0]+" ms. size="+out[1]);
             time[i] = out[0];
-            size[i] = out[1];
+            time2[i] = out[1];
+            size[i] = out[2];
         }
 
-        return new double[]{ DoubleStream.of(time).average().getAsDouble(),  DoubleStream.of(size).average().getAsDouble()};
+        return new double[]{    DoubleStream.of(time).average().getAsDouble(),
+                                DoubleStream.of(time2).average().getAsDouble(),
+                                DoubleStream.of(size).average().getAsDouble()};
     }
 
 
