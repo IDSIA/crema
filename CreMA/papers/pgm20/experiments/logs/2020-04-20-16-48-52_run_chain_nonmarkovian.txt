@@ -1,0 +1,890 @@
+
+ChainNonMarkovian
+   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 15.309 ms.
+Warm-up #1 in 2.753 ms.
+Warm-up #2 in 2.147 ms.
+Measurement #0 in 1.908 ms. size=1.902
+Measurement #1 in 1.622 ms. size=1.609
+Measurement #2 in 1.549 ms. size=1.544
+Measurement #3 in 1.502 ms. size=1.497
+Measurement #4 in 1.315 ms. size=1.31
+Measurement #5 in 1.254 ms. size=1.249
+Measurement #6 in 1.305 ms. size=1.3
+Measurement #7 in 1.118 ms. size=1.113
+Measurement #8 in 1.087 ms. size=1.082
+Measurement #9 in 1.122 ms. size=1.117
+1.3782,1.3723,0.0
+
+
+ChainNonMarkovian
+   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 507.715 ms.
+Warm-up #1 in 109.184 ms.
+Warm-up #2 in 96.843 ms.
+Measurement #0 in 98.418 ms. size=12.463
+Measurement #1 in 88.666 ms. size=10.64
+Measurement #2 in 88.438 ms. size=7.721
+Measurement #3 in 87.185 ms. size=7.885
+Measurement #4 in 86.723 ms. size=9.537
+Measurement #5 in 82.163 ms. size=6.514
+Measurement #6 in 74.733 ms. size=7.316
+Measurement #7 in 70.529 ms. size=6.435
+Measurement #8 in 85.811 ms. size=8.148
+Measurement #9 in 77.569 ms. size=4.967
+84.0235,8.162600000000001,0.0
+
+
+ChainNonMarkovian
+   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 604.46 ms.
+Warm-up #1 in 367.854 ms.
+Warm-up #2 in 336.321 ms.
+Measurement #0 in 329.322 ms. size=326.417
+Measurement #1 in 321.835 ms. size=318.107
+Measurement #2 in 323.518 ms. size=320.631
+Measurement #3 in 319.305 ms. size=317.117
+Measurement #4 in 286.953 ms. size=284.591
+Measurement #5 in 245.175 ms. size=243.048
+Measurement #6 in 240.968 ms. size=239.264
+Measurement #7 in 241.463 ms. size=240.003
+Measurement #8 in 241.432 ms. size=239.999
+Measurement #9 in 239.473 ms. size=238.172
+278.9444,276.73490000000004,1.1102230246251565E-16
+
+
+ChainNonMarkovian
+   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 2791.636 ms.
+Warm-up #1 in 2014.769 ms.
+Warm-up #2 in 2060.768 ms.
+Measurement #0 in 2341.883 ms. size=2338.174
+Measurement #1 in 2098.69 ms. size=2095.512
+Measurement #2 in 1919.087 ms. size=1915.735
+Measurement #3 in 1983.516 ms. size=1980.897
+Measurement #4 in 2012.499 ms. size=2010.325
+Measurement #5 in 1962.081 ms. size=1959.327
+Measurement #6 in 1951.336 ms. size=1948.998
+Measurement #7 in 2028.656 ms. size=2026.929
+Measurement #8 in 1905.185 ms. size=1903.594
+Measurement #9 in 1939.742 ms. size=1937.945
+2014.2675,2011.7436000000002,4.810262641674612E-6
+
+
+ChainNonMarkovian
+   N=7 exovarsize=6 target=6 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 18.99 ms.
+Warm-up #1 in 5.258 ms.
+Warm-up #2 in 4.167 ms.
+Measurement #0 in 3.558 ms. size=3.552
+Measurement #1 in 3.057 ms. size=3.046
+Measurement #2 in 2.447 ms. size=2.441
+Measurement #3 in 2.081 ms. size=2.076
+Measurement #4 in 1.97 ms. size=1.964
+Measurement #5 in 1.964 ms. size=1.958
+Measurement #6 in 2.28 ms. size=2.274
+Measurement #7 in 1.974 ms. size=1.969
+Measurement #8 in 1.654 ms. size=1.648
+Measurement #9 in 1.538 ms. size=1.532
+2.2523,2.246,0.0
+
+
+ChainNonMarkovian
+   N=7 exovarsize=6 target=6 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 643.216 ms.
+Warm-up #1 in 179.384 ms.
+Warm-up #2 in 156.796 ms.
+Measurement #0 in 148.151 ms. size=27.662
+Measurement #1 in 140.568 ms. size=16.658
+Measurement #2 in 112.84 ms. size=22.034
+Measurement #3 in 117.756 ms. size=21.532
+Measurement #4 in 110.848 ms. size=18.301
+Measurement #5 in 110.434 ms. size=18.728
+Measurement #6 in 100.264 ms. size=18.62
+Measurement #7 in 117.429 ms. size=14.318
+Measurement #8 in 132.68 ms. size=15.323
+Measurement #9 in 99.599 ms. size=14.2
+119.0569,18.7376,0.0
+
+
+ChainNonMarkovian
+   N=7 exovarsize=6 target=6 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 799.24 ms.
+Warm-up #1 in 566.361 ms.
+Warm-up #2 in 526.403 ms.
+Measurement #0 in 512.637 ms. size=508.587
+Measurement #1 in 460.759 ms. size=456.846
+Measurement #2 in 380.546 ms. size=377.762
+Measurement #3 in 382.082 ms. size=379.414
+Measurement #4 in 378.892 ms. size=376.857
+Measurement #5 in 387.4 ms. size=385.419
+Measurement #6 in 374.579 ms. size=372.507
+Measurement #7 in 371.965 ms. size=370.162
+Measurement #8 in 374.45 ms. size=372.281
+Measurement #9 in 380.739 ms. size=379.059
+400.4049,397.8894,0.0
+
+
+ChainNonMarkovian
+   N=7 exovarsize=6 target=6 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 5144.398 ms.
+Warm-up #1 in 4065.566 ms.
+Warm-up #2 in 4206.45 ms.
+Measurement #0 in 4277.431 ms. size=4273.594
+Measurement #1 in 4360.647 ms. size=4357.594
+Measurement #2 in 4109.025 ms. size=4105.907
+Measurement #3 in 4069.373 ms. size=4066.245
+Measurement #4 in 4004.638 ms. size=4002.115
+Measurement #5 in 4160.453 ms. size=4158.388
+Measurement #6 in 4182.046 ms. size=4180.018
+Measurement #7 in 4122.312 ms. size=4120.443
+Measurement #8 in 4235.533 ms. size=4233.504
+Measurement #9 in 4170.029 ms. size=4168.312
+4169.1487,4166.612,7.566369680697682E-6
+
+
+ChainNonMarkovian
+   N=9 exovarsize=6 target=8 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 26.051 ms.
+Warm-up #1 in 7.811 ms.
+Warm-up #2 in 5.906 ms.
+Measurement #0 in 3.904 ms. size=3.897
+Measurement #1 in 3.942 ms. size=3.932
+Measurement #2 in 3.915 ms. size=3.907
+Measurement #3 in 3.731 ms. size=3.708
+Measurement #4 in 3.838 ms. size=3.815
+Measurement #5 in 3.79 ms. size=3.767
+Measurement #6 in 3.612 ms. size=3.589
+Measurement #7 in 3.646 ms. size=3.623
+Measurement #8 in 3.438 ms. size=3.432
+Measurement #9 in 3.411 ms. size=3.404
+3.7227000000000006,3.7074,0.0
+
+
+ChainNonMarkovian
+   N=9 exovarsize=6 target=8 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 792.431 ms.
+Warm-up #1 in 328.154 ms.
+Warm-up #2 in 250.97 ms.
+Measurement #0 in 242.509 ms. size=95.005
+Measurement #1 in 176.896 ms. size=67.318
+Measurement #2 in 199.744 ms. size=96.5
+Measurement #3 in 184.125 ms. size=86.664
+Measurement #4 in 183.491 ms. size=90.696
+Measurement #5 in 154.249 ms. size=62.975
+Measurement #6 in 166.109 ms. size=67.229
+Measurement #7 in 155.99 ms. size=67.742
+Measurement #8 in 181.918 ms. size=86.18
+Measurement #9 in 165.371 ms. size=78.844
+181.0402,79.9153,0.0
+
+
+ChainNonMarkovian
+   N=9 exovarsize=6 target=8 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1029.61 ms.
+Warm-up #1 in 801.588 ms.
+Warm-up #2 in 750.861 ms.
+Measurement #0 in 623.182 ms. size=618.653
+Measurement #1 in 567.648 ms. size=564.346
+Measurement #2 in 574.897 ms. size=571.548
+Measurement #3 in 565.411 ms. size=562.69
+Measurement #4 in 564.068 ms. size=561.856
+Measurement #5 in 567.411 ms. size=565.139
+Measurement #6 in 562.025 ms. size=559.682
+Measurement #7 in 565.481 ms. size=563.31
+Measurement #8 in 567.502 ms. size=565.816
+Measurement #9 in 563.778 ms. size=562.096
+572.1403,569.5136,0.0
+
+
+ChainNonMarkovian
+   N=9 exovarsize=6 target=8 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 9767.371 ms.
+Warm-up #1 in 8493.115 ms.
+Warm-up #2 in 8229.208 ms.
+Measurement #0 in 8507.305 ms. size=8502.21
+Measurement #1 in 8570.738 ms. size=8567.397
+Measurement #2 in 8505.026 ms. size=8502.101
+Measurement #3 in 8438.366 ms. size=8435.396
+Measurement #4 in 8451.595 ms. size=8447.962
+Measurement #5 in 8253.417 ms. size=8250.785
+Measurement #6 in 8718.566 ms. size=8715.979
+Measurement #7 in 8284.291 ms. size=8282.188
+Measurement #8 in 8162.315 ms. size=8160.437
+Measurement #9 in 8324.471 ms. size=8322.579
+8421.609,8418.7034,7.358487514019796E-6
+
+
+ChainNonMarkovian
+   N=11 exovarsize=6 target=10 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 40.599 ms.
+Warm-up #1 in 13.064 ms.
+Warm-up #2 in 11.164 ms.
+Measurement #0 in 10.363 ms. size=10.338
+Measurement #1 in 9.362 ms. size=9.35
+Measurement #2 in 9.128 ms. size=9.119
+Measurement #3 in 7.607 ms. size=7.6
+Measurement #4 in 24.874 ms. size=24.859
+Measurement #5 in 5.616 ms. size=5.6
+Measurement #6 in 5.384 ms. size=5.377
+Measurement #7 in 5.329 ms. size=5.322
+Measurement #8 in 4.942 ms. size=4.936
+Measurement #9 in 4.562 ms. size=4.556
+8.7167,8.7057,0.0
+
+
+ChainNonMarkovian
+   N=11 exovarsize=6 target=10 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1391.958 ms.
+Warm-up #1 in 666.456 ms.
+Warm-up #2 in 608.025 ms.
+Measurement #0 in 454.469 ms. size=334.775
+Measurement #1 in 419.179 ms. size=314.602
+Measurement #2 in 443.677 ms. size=333.484
+Measurement #3 in 414.319 ms. size=309.014
+Measurement #4 in 446.305 ms. size=342.839
+Measurement #5 in 435.076 ms. size=334.284
+Measurement #6 in 575.452 ms. size=438.768
+Measurement #7 in 631.327 ms. size=519.183
+Measurement #8 in 511.222 ms. size=396.994
+Measurement #9 in 469.925 ms. size=367.243
+480.0951,369.11859999999996,0.0
+
+
+ChainNonMarkovian
+   N=11 exovarsize=6 target=10 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1322.331 ms.
+Warm-up #1 in 1111.622 ms.
+Warm-up #2 in 847.941 ms.
+Measurement #0 in 770.547 ms. size=766.706
+Measurement #1 in 771.835 ms. size=768.431
+Measurement #2 in 1035.678 ms. size=1032.196
+Measurement #3 in 909.901 ms. size=906.415
+Measurement #4 in 831.914 ms. size=828.019
+Measurement #5 in 762.038 ms. size=759.851
+Measurement #6 in 832.762 ms. size=830.636
+Measurement #7 in 853.649 ms. size=851.377
+Measurement #8 in 989.521 ms. size=986.778
+Measurement #9 in 819.629 ms. size=817.178
+857.7474,854.7587,5.551115123125783E-17
+
+
+ChainNonMarkovian
+   N=11 exovarsize=6 target=10 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 16984.569 ms.
+Warm-up #1 in 15412.799 ms.
+Warm-up #2 in 15591.961 ms.
+Measurement #0 in 15806.855 ms. size=15802.199
+Measurement #1 in 16105.604 ms. size=16100.775
+Measurement #2 in 15728.234 ms. size=15724.861
+Measurement #3 in 15502.496 ms. size=15499.272
+Measurement #4 in 15983.995 ms. size=15981.205
+Measurement #5 in 15585.179 ms. size=15582.63
+Measurement #6 in 16478.498 ms. size=16475.727
+Measurement #7 in 15539.536 ms. size=15537.24
+Measurement #8 in 15301.979 ms. size=15299.754
+Measurement #9 in 15575.206 ms. size=15573.046
+15760.7582,15757.670900000001,8.839588637282736E-6
+
+
+ChainNonMarkovian
+   N=13 exovarsize=6 target=12 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 78.871 ms.
+Warm-up #1 in 37.478 ms.
+Warm-up #2 in 36.948 ms.
+Measurement #0 in 35.142 ms. size=35.129
+Measurement #1 in 36.095 ms. size=36.078
+Measurement #2 in 22.741 ms. size=22.731
+Measurement #3 in 27.85 ms. size=27.841
+Measurement #4 in 28.393 ms. size=28.384
+Measurement #5 in 30.094 ms. size=30.085
+Measurement #6 in 28.899 ms. size=28.89
+Measurement #7 in 28.76 ms. size=28.751
+Measurement #8 in 28.127 ms. size=28.119
+Measurement #9 in 32.259 ms. size=32.25
+29.836000000000002,29.825800000000005,0.0
+
+
+ChainNonMarkovian
+   N=13 exovarsize=6 target=12 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 4416.717 ms.
+Warm-up #1 in 3141.005 ms.
+Warm-up #2 in 3200.768 ms.
+Measurement #0 in 3699.525 ms. size=3512.446
+Measurement #1 in 2959.443 ms. size=2819.065
+Measurement #2 in 3001.042 ms. size=2869.212
+Measurement #3 in 2863.339 ms. size=2724.95
+Measurement #4 in 3186.435 ms. size=3057.627
+Measurement #5 in 3524.867 ms. size=3387.255
+Measurement #6 in 3105.191 ms. size=2977.028
+Measurement #7 in 2825.698 ms. size=2665.763
+Measurement #8 in 3202.471 ms. size=3082.016
+Measurement #9 in 3183.381 ms. size=3045.372
+3155.1392,3014.0734,0.0010630919519999393
+
+
+ChainNonMarkovian
+   N=13 exovarsize=6 target=12 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1615.517 ms.
+Warm-up #1 in 1285.904 ms.
+Warm-up #2 in 962.972 ms.
+Measurement #0 in 970.485 ms. size=966.189
+Measurement #1 in 1267.74 ms. size=1263.272
+Measurement #2 in 1436.509 ms. size=1432.71
+Measurement #3 in 983.239 ms. size=978.722
+Measurement #4 in 946.707 ms. size=943.826
+Measurement #5 in 968.378 ms. size=965.469
+Measurement #6 in 1107.759 ms. size=1105.148
+Measurement #7 in 1081.901 ms. size=1079.329
+Measurement #8 in 1009.91 ms. size=1005.315
+Measurement #9 in 945.496 ms. size=943.278
+1071.8124,1068.3258,1.4648837299162664E-4
+
+
+ChainNonMarkovian
+   N=13 exovarsize=6 target=12 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 21471.48 ms.
+Warm-up #1 in 17853.598 ms.
+Warm-up #2 in 17879.663 ms.
+Measurement #0 in 18208.328 ms. size=18203.159
+Measurement #1 in 17550.831 ms. size=17545.847
+Measurement #2 in 18413.589 ms. size=18410.113
+Measurement #3 in 18376.27 ms. size=18371.506
+Measurement #4 in 18508.122 ms. size=18505.225
+Measurement #5 in 17848.526 ms. size=17845.875
+Measurement #6 in 16699.355 ms. size=16696.962
+Measurement #7 in 18238.986 ms. size=18235.753
+Measurement #8 in 18020.799 ms. size=18018.311
+Measurement #9 in 18469.726 ms. size=18467.414
+18033.4532,18030.0165,1.51377332650382E-4
+
+
+ChainNonMarkovian
+   N=15 exovarsize=6 target=14 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 242.397 ms.
+Warm-up #1 in 206.782 ms.
+Warm-up #2 in 191.757 ms.
+Measurement #0 in 198.86 ms. size=198.834
+Measurement #1 in 227.163 ms. size=227.15
+Measurement #2 in 158.392 ms. size=158.382
+Measurement #3 in 166.576 ms. size=166.565
+Measurement #4 in 142.493 ms. size=142.482
+Measurement #5 in 138.74 ms. size=138.73
+Measurement #6 in 121.816 ms. size=121.804
+Measurement #7 in 123.551 ms. size=123.541
+Measurement #8 in 135.273 ms. size=135.257
+Measurement #9 in 136.699 ms. size=136.689
+154.9563,154.9434,0.0
+
+
+ChainNonMarkovian
+   N=15 exovarsize=6 target=14 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 19040.894 ms.
+Warm-up #1 in 19209.061 ms.
+Warm-up #2 in 17155.457 ms.
+Measurement #0 in 16512.465 ms. size=16343.997
+Measurement #1 in 15590.169 ms. size=15425.489
+Measurement #2 in 15625.344 ms. size=15478.046
+Measurement #3 in 16299.646 ms. size=16164.725
+Measurement #4 in 15808.37 ms. size=15662.71
+Measurement #5 in 15272.522 ms. size=15136.38
+Measurement #6 in 15341.047 ms. size=15124.271
+Measurement #7 in 15819.676 ms. size=15546.864
+Measurement #8 in 15904.127 ms. size=15750.713
+Measurement #9 in 15924.811 ms. size=15791.384
+15809.8177,15642.4579,4.543128000467078E-7
+
+
+ChainNonMarkovian
+   N=15 exovarsize=6 target=14 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1887.101 ms.
+Warm-up #1 in 1460.003 ms.
+Warm-up #2 in 1158.808 ms.
+Measurement #0 in 1147.99 ms. size=1143.119
+Measurement #1 in 1146.885 ms. size=1142.481
+Measurement #2 in 1214.845 ms. size=1210.844
+Measurement #3 in 1228.006 ms. size=1224.201
+Measurement #4 in 1232.442 ms. size=1229.524
+Measurement #5 in 1208.339 ms. size=1205.45
+Measurement #6 in 1207.437 ms. size=1204.629
+Measurement #7 in 1154.942 ms. size=1151.749
+Measurement #8 in 1152.198 ms. size=1149.445
+Measurement #9 in 1141.574 ms. size=1138.85
+1183.4658,1180.0292,2.304806396180581E-7
+
+
+ChainNonMarkovian
+   N=15 exovarsize=6 target=14 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 26087.774 ms.
+Warm-up #1 in 25623.131 ms.
+Warm-up #2 in 24757.956 ms.
+Measurement #0 in 24612.342 ms. size=24607.745
+Measurement #1 in 24812.065 ms. size=24807.697
+Measurement #2 in 25160.786 ms. size=25155.735
+Measurement #3 in 24988.835 ms. size=24985.174
+Measurement #4 in 24888.315 ms. size=24885.175
+Measurement #5 in 25532.106 ms. size=25528.413
+Measurement #6 in 25709.545 ms. size=25706.731
+Measurement #7 in 25780.845 ms. size=25778.08
+Measurement #8 in 25425.87 ms. size=25422.008
+Measurement #9 in 25523.695 ms. size=25520.797
+25243.4404,25239.7555,9.308180706102398E-6
+
+
+ChainNonMarkovian
+   N=17 exovarsize=6 target=16 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1152.451 ms.
+Warm-up #1 in 900.092 ms.
+Warm-up #2 in 710.981 ms.
+Measurement #0 in 799.942 ms. size=799.932
+Measurement #1 in 712.725 ms. size=712.705
+Measurement #2 in 713.9 ms. size=713.89
+Measurement #3 in 808.59 ms. size=808.573
+Measurement #4 in 724.596 ms. size=724.585
+Measurement #5 in 765.599 ms. size=765.588
+Measurement #6 in 777.363 ms. size=777.353
+Measurement #7 in 734.102 ms. size=734.088
+Measurement #8 in 760.536 ms. size=760.526
+Measurement #9 in 740.361 ms. size=740.351
+753.7714,753.7591,0.0
+
+
+ChainNonMarkovian
+   N=17 exovarsize=6 target=16 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 86258.932 ms.
+Warm-up #1 in 78072.863 ms.
+Warm-up #2 in 76423.527 ms.
+Measurement #0 in 74739.394 ms. size=74574.652
+Measurement #1 in 75927.002 ms. size=75770.12
+Measurement #2 in 75680.108 ms. size=75515.299
+Measurement #3 in 78196.257 ms. size=78019.164
+Measurement #4 in 75527.581 ms. size=75371.15
+Measurement #5 in 75111.65 ms. size=74963.254
+Measurement #6 in 75077.693 ms. size=74853.16
+Measurement #7 in 75030.327 ms. size=74851.92
+Measurement #8 in 74458.071 ms. size=74311.365
+Measurement #9 in 74908.98 ms. size=74763.069
+75465.70629999999,75299.3153,0.0
+
+
+ChainNonMarkovian
+   N=17 exovarsize=6 target=16 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 2154.646 ms.
+Warm-up #1 in 1492.817 ms.
+Warm-up #2 in 1336.786 ms.
+Measurement #0 in 1343.512 ms. size=1338.515
+Measurement #1 in 1321.618 ms. size=1317.183
+Measurement #2 in 1363.339 ms. size=1359.106
+Measurement #3 in 1559.876 ms. size=1556.258
+Measurement #4 in 1397.551 ms. size=1394.24
+Measurement #5 in 1385.474 ms. size=1382.305
+Measurement #6 in 1332.565 ms. size=1329.423
+Measurement #7 in 1398.171 ms. size=1395.182
+Measurement #8 in 1392.268 ms. size=1389.355
+Measurement #9 in 1413.39 ms. size=1410.497
+1390.7764,1387.2064,0.0
+
+
+ChainNonMarkovian
+   N=17 exovarsize=6 target=16 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 36769.874 ms.
+Warm-up #1 in 33236.059 ms.
+Warm-up #2 in 33630.849 ms.
+Measurement #0 in 32793.484 ms. size=32786.827
+Measurement #1 in 33362.645 ms. size=33357.938
+Measurement #2 in 34266.136 ms. size=34261.459
+Measurement #3 in 34703.958 ms. size=34700.178
+Measurement #4 in 35443.256 ms. size=35439.503
+Measurement #5 in 34944.555 ms. size=34941.351
+Measurement #6 in 34182.75 ms. size=34179.023
+Measurement #7 in 35831.506 ms. size=35828.414
+Measurement #8 in 33790.93 ms. size=33787.461
+Measurement #9 in 34008.271 ms. size=34005.247
+34332.7491,34328.7401,1.389758243205419E-5
+
+
+ChainNonMarkovian
+   N=19 exovarsize=6 target=18 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 6003.869 ms.
+Warm-up #1 in 4525.46 ms.
+Warm-up #2 in 4489.652 ms.
+Measurement #0 in 4764.429 ms. size=4764.419
+Measurement #1 in 4426.885 ms. size=4426.871
+Measurement #2 in 4366.793 ms. size=4366.775
+Measurement #3 in 4309.319 ms. size=4309.307
+Measurement #4 in 4622.791 ms. size=4622.78
+Measurement #5 in 4503.634 ms. size=4503.624
+Measurement #6 in 4452.469 ms. size=4452.458
+Measurement #7 in 4455.909 ms. size=4455.892
+Measurement #8 in 4371.434 ms. size=4371.423
+Measurement #9 in 4265.588 ms. size=4265.574
+4453.9251,4453.9123,0.0
+
+
+ChainNonMarkovian
+   N=19 exovarsize=6 target=18 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 2454.19 ms.
+Warm-up #1 in 1682.357 ms.
+Warm-up #2 in 1558.339 ms.
+Measurement #0 in 1785.572 ms. size=1776.028
+Measurement #1 in 2101.879 ms. size=2094.167
+Measurement #2 in 1597.658 ms. size=1592.654
+Measurement #3 in 1628.95 ms. size=1624.324
+Measurement #4 in 2009.195 ms. size=2004.707
+Measurement #5 in 1918.801 ms. size=1912.898
+Measurement #6 in 1721.743 ms. size=1716.493
+Measurement #7 in 1771.02 ms. size=1767.405
+Measurement #8 in 1973.606 ms. size=1963.548
+Measurement #9 in 1725.13 ms. size=1719.818
+1823.3554,1817.2042000000001,2.220446049250313E-16
+
+
+ChainNonMarkovian
+   N=19 exovarsize=6 target=18 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 45953.682 ms.
+Warm-up #1 in 43629.144 ms.
+Warm-up #2 in 45042.224 ms.
+Measurement #0 in 42673.32 ms. size=42667.32
+Measurement #1 in 44494.519 ms. size=44489.408
+Measurement #2 in 43042.551 ms. size=43038.063
+Measurement #3 in 44270.559 ms. size=44264.44
+Measurement #4 in 44432.04 ms. size=44428.37
+Measurement #5 in 45600.062 ms. size=45596.275
+Measurement #6 in 45592.544 ms. size=45588.567
+Measurement #7 in 45867.394 ms. size=45863.121
+Measurement #8 in 42053.632 ms. size=42049.112
+Measurement #9 in 45500.526 ms. size=45494.508
+44352.7147,44347.9184,1.3117480276103599E-5
+
+
+ChainNonMarkovian
+   N=21 exovarsize=6 target=20 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 11609833472 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid10553.log
+
+
+ChainNonMarkovian
+   N=21 exovarsize=6 target=20 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 3057647616 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid10655.log
+
+
+ChainNonMarkovian
+   N=21 exovarsize=6 target=20 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 3040.067 ms.
+Warm-up #1 in 1924.281 ms.
+Warm-up #2 in 1811.23 ms.
+Measurement #0 in 1854.277 ms. size=1847.471
+Measurement #1 in 1957.938 ms. size=1952.337
+Measurement #2 in 2181.649 ms. size=2176.453
+Measurement #3 in 1930.309 ms. size=1923.567
+Measurement #4 in 1924.179 ms. size=1919.868
+Measurement #5 in 1873.423 ms. size=1869.148
+Measurement #6 in 1910.009 ms. size=1905.803
+Measurement #7 in 1916.395 ms. size=1908.707
+Measurement #8 in 1816.264 ms. size=1811.688
+Measurement #9 in 1872.287 ms. size=1867.714
+1923.673,1918.2756000000002,3.885780586188048E-16
+
+
+ChainNonMarkovian
+   N=21 exovarsize=6 target=20 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 62072.631 ms.
+Warm-up #1 in 59233.23 ms.
+Warm-up #2 in 56491.193 ms.
+Measurement #0 in 59357.173 ms. size=59348.639
+Measurement #1 in 58853.192 ms. size=58846.137
+Measurement #2 in 55838.542 ms. size=55832.626
+Measurement #3 in 55748.572 ms. size=55743.414
+Measurement #4 in 55809.938 ms. size=55804.41
+Measurement #5 in 54452.683 ms. size=54448.168
+Measurement #6 in 57403.91 ms. size=57398.889
+Measurement #7 in 56445.492 ms. size=56440.827
+Measurement #8 in 56788.446 ms. size=56784.043
+Measurement #9 in 55946.986 ms. size=55942.554
+56664.4934,56658.97069999999,8.049853016534048E-6
+
+
+ChainNonMarkovian
+   N=23 exovarsize=6 target=22 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 11609833472 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid12546.log
+
+
+ChainNonMarkovian
+   N=23 exovarsize=6 target=22 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 1769996288 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid12648.log
+
+
+ChainNonMarkovian
+   N=23 exovarsize=6 target=22 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 2992.929 ms.
+Warm-up #1 in 2289.928 ms.
+Warm-up #2 in 2480.33 ms.
+Measurement #0 in 2304.352 ms. size=2296.364
+Measurement #1 in 2061.787 ms. size=2055.039
+Measurement #2 in 2204.747 ms. size=2199.688
+Measurement #3 in 2369.31 ms. size=2361.201
+Measurement #4 in 2445.749 ms. size=2439.874
+Measurement #5 in 2591.995 ms. size=2585.572
+Measurement #6 in 2498.122 ms. size=2491.989
+Measurement #7 in 2423.873 ms. size=2414.572
+Measurement #8 in 2265.677 ms. size=2259.551
+Measurement #9 in 2225.85 ms. size=2221.728
+2339.1462,2332.5578,4.440892098500626E-16
+
+
+ChainNonMarkovian
+   N=23 exovarsize=6 target=22 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 67586.233 ms.
+Warm-up #1 in 68522.332 ms.
+Warm-up #2 in 63393.746 ms.
+Measurement #0 in 58390.73 ms. size=58384.155
+Measurement #1 in 62550.56 ms. size=62544.329
+Measurement #2 in 68068.15 ms. size=68062.923
+Measurement #3 in 59104.738 ms. size=59099.099
+Measurement #4 in 61862.023 ms. size=61855.617
+Measurement #5 in 62283.301 ms. size=62277.054
+Measurement #6 in 65700.471 ms. size=65695.121
+Measurement #7 in 69271.138 ms. size=69265.566
+Measurement #8 in 68414.297 ms. size=68408.355
+Measurement #9 in 64298.142 ms. size=64292.827
+63994.355,63988.5046,1.4796992230997618E-5
+
+
+ChainNonMarkovian
+   N=25 exovarsize=6 target=24 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 11609833472 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid14580.log
+
+
+ChainNonMarkovian
+   N=25 exovarsize=6 target=24 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 3548381184 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid14682.log
+
+
+ChainNonMarkovian
+   N=25 exovarsize=6 target=24 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 3560.492 ms.
+Warm-up #1 in 2474.442 ms.
+Warm-up #2 in 2392.047 ms.
+Measurement #0 in 2441.595 ms. size=2433.652
+Measurement #1 in 2489.517 ms. size=2482.858
+Measurement #2 in 2445.155 ms. size=2438.874
+Measurement #3 in 2409.869 ms. size=2403.429
+Measurement #4 in 2336.561 ms. size=2330.677
+Measurement #5 in 2487.112 ms. size=2480.77
+Measurement #6 in 2556.72 ms. size=2549.322
+Measurement #7 in 2641.591 ms. size=2634.113
+Measurement #8 in 2496.9 ms. size=2490.282
+Measurement #9 in 2723.727 ms. size=2711.983
+2502.8747,2495.596,5.995204332975846E-16
+
+
+ChainNonMarkovian
+   N=25 exovarsize=6 target=24 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 73203.582 ms.
+Warm-up #1 in 74696.216 ms.
+Warm-up #2 in 71870.271 ms.
+Measurement #0 in 69910.925 ms. size=69901.208
+Measurement #1 in 69097.143 ms. size=69090.482
+Measurement #2 in 70384.361 ms. size=70377.12
+Measurement #3 in 66416.369 ms. size=66409.945
+Measurement #4 in 68427.321 ms. size=68421.369
+Measurement #5 in 67687.497 ms. size=67679.843
+Measurement #6 in 71127.02 ms. size=71120.124
+Measurement #7 in 69718.827 ms. size=69710.999
+Measurement #8 in 68389.147 ms. size=68378.609
+Measurement #9 in 68563.843 ms. size=68557.805
+68972.2453,68964.75039999999,1.4466569295157328E-5
+
+
+ChainNonMarkovian
+   N=27 exovarsize=6 target=26 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 11609833472 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid16648.log
+
+
+ChainNonMarkovian
+   N=27 exovarsize=6 target=26 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 3649044480 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid16750.log
+
+
+ChainNonMarkovian
+   N=27 exovarsize=6 target=26 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 3744.969 ms.
+Warm-up #1 in 2740.85 ms.
+Warm-up #2 in 2816.334 ms.
+Measurement #0 in 2768.634 ms. size=2760.18
+Measurement #1 in 2604.751 ms. size=2595.823
+Measurement #2 in 2567.387 ms. size=2559.856
+Measurement #3 in 2834.579 ms. size=2827.592
+Measurement #4 in 2581.895 ms. size=2574.914
+Measurement #5 in 2573.534 ms. size=2567.383
+Measurement #6 in 2527.314 ms. size=2520.452
+Measurement #7 in 2817.661 ms. size=2812.046
+Measurement #8 in 2539.624 ms. size=2533.38
+Measurement #9 in 2588.162 ms. size=2581.583
+2640.3541,2633.3208999999997,4.440892098500626E-16
+
+
+ChainNonMarkovian
+   N=29 exovarsize=6 target=28 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 1937768448 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid19324.log
+
+
+ChainNonMarkovian
+   N=29 exovarsize=6 target=28 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 2302672896 bytes for committing reserved memory.
+# An error report file with more information is saved as:
+# /home/rcabanas/work_java_crema/crema/CreMA/hs_err_pid19426.log
+
+
+ChainNonMarkovian
+   N=29 exovarsize=6 target=28 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 4178.485 ms.
+Warm-up #1 in 3595.156 ms.
+Warm-up #2 in 3480.917 ms.
+Measurement #0 in 3240.941 ms. size=3231.004
+Measurement #1 in 3299.638 ms. size=3275.245
+Measurement #2 in 3290.128 ms. size=3282.03
+Measurement #3 in 3021.381 ms. size=3012.165
+Measurement #4 in 3343.451 ms. size=3336.04
+Measurement #5 in 3012.021 ms. size=3002.491
+Measurement #6 in 2987.382 ms. size=2980.652
+Measurement #7 in 3320.986 ms. size=3313.673
+Measurement #8 in 3231.905 ms. size=3225.484
+Measurement #9 in 2888.748 ms. size=2882.624
+3163.6580999999996,3154.1408,4.718447854656915E-16
+
