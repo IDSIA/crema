@@ -54,7 +54,7 @@ public class RunExperiments {
             int dovar = 0;
 
             /** Inference method: CVE, CCVE, CCALP, CCALPeps  **/
-            method = "CCALP";
+            method = "CCALPeps";
 
             eps = 0.0;
 
@@ -174,7 +174,7 @@ public class RunExperiments {
         for(int i=0; i<measures; i++){
 
             double[] out = experiment(false);
-            System.out.println("Measurement #"+i+" in "+out[0]+" ms. size="+out[1]);
+            System.out.println("Measurement #"+i+" in "+out[0]+" ms. size="+out[2]);
             time[i] = out[0];
             time2[i] = out[1];
             size[i] = out[2];

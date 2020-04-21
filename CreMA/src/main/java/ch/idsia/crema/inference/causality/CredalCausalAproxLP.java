@@ -68,18 +68,20 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
 */
 //        ((SeparateHalfspaceFactor)do_csmodel.getFactor(1)).printLinearProblem(0);
 
-        if(epsilon>0.0){
-            for(int v : do_csmodel.getVariables()) {
+        for(int v : do_csmodel.getVariables()) {
 
+                do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).removeNormConstraints());
 
-                //do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoised(epsilon));
+                if(epsilon>0.0){
+
+                    //do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoised(epsilon));
                 //do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoisedInequalities(epsilon));
                 do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getPerturbedZeroConstraints(epsilon));
-                do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getPerturbedEqualitiesToOne(epsilon));
+                //do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getPerturbedEqualitiesToOne(epsilon));
 
 
-                //((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).printLinearProblem();
-            }
+               // ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).printLinearProblem();
+             }
         }
 
 
