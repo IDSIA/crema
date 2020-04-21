@@ -44,8 +44,8 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	public SeparateHalfspaceFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
 		this(left, Strides.empty());
 
-		// Build the constraints (including normalization and non-negative one)
-		LinearConstraint[] C = buildConstraints(true, true, coefficients, values, rel);
+		// Build the constraints (including non-negative constraints)
+		LinearConstraint[] C = buildConstraints(false, true, coefficients, values, rel);
 
 		// add constraints to this factor
 		for (LinearConstraint c : C) {
@@ -348,7 +348,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 
-	public SeparateHalfspaceFactor getNoised(double eps){
+	public SeparateHalfspaceFactor getPerturbed(double eps){
 
 		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
 
@@ -375,25 +375,55 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 
 
 
-	public SeparateHalfspaceFactor getNoisedZeroConstraints(double eps){
+	public SeparateHalfspaceFactor getPerturbedZeroConstraints(double eps){
 
 		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
 
 		for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++){
 			for(LinearConstraint c : this.getLinearProblem(i).getConstraints()) {
-				if(c.getValue()==0 && eps>0){
-					if(c.getRelationship() == Relationship.EQ) {
+
+					if(c.getRelationship() == Relationship.EQ && c.getValue()==0 && eps>0) {
+
 						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, 0.0, i);
 						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, eps*2, i);
-					}else if(c.getRelationship() == Relationship.GEQ) {
+					}else
+						if(c.getRelationship() == Relationship.GEQ && c.getValue()==0 && eps>0) {
 						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() + eps, i);
 					}else{
+						newFactor.addConstraint(c, i);
+					}
+
+
+			}
+		}
+
+		return newFactor;
+
+	}
+
+
+
+	public SeparateHalfspaceFactor getPerturbedEqualitiesToOne(double eps){
+
+		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+
+		for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++){
+			for(LinearConstraint c : this.getLinearProblem(i).getConstraints()) {
+
+					if(c.getRelationship() == Relationship.EQ && c.getValue()==1 && eps>0) {
+						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, 1-eps, i);
+						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, 1+eps, i);
+					}
+					/*else if(c.getRelationship() == Relationship.GEQ && eps>0) {
+						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() + eps, i);
+					}*/
+					else{
 						newFactor.addConstraint(c, i);
 					}
 				}
 
 			}
-		}
+
 
 		return newFactor;
 

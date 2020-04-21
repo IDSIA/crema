@@ -26,7 +26,7 @@ public class ChainMarkovianCase {
         int exoVarSize = 5;
 
         /** epsilon value for ApproxLP  */
-        double eps = 0.0;
+        double eps = 0.0001;
 
         /////////////////////////////////
 
