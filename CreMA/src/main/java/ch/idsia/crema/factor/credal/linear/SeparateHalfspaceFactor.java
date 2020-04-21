@@ -1,6 +1,8 @@
 package ch.idsia.crema.factor.credal.linear;
 
 import java.util.*;
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
@@ -385,7 +387,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 					if(c.getRelationship() == Relationship.EQ && c.getValue()==0 && eps>0) {
 
 						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, 0.0, i);
-						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, eps*2, i);
+						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.LEQ, eps, i);
 					}else
 						if(c.getRelationship() == Relationship.GEQ && c.getValue()==0 && eps>0) {
 						newFactor.addConstraint(c.getCoefficients().toArray(), Relationship.GEQ, c.getValue() + eps, i);
@@ -455,6 +457,29 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 
 
 
+	public SeparateHalfspaceFactor removeNormConstraints(){
+
+		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+
+		for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++){
+			for(LinearConstraint c : this.getLinearProblem(i).getConstraints()) {
+
+
+				if(!(c.getRelationship() == Relationship.EQ && c.getValue()==1
+						&& DoubleStream.of(c.getCoefficients().toArray()).allMatch(x -> x == 1))) {
+
+					newFactor.addConstraint(c, i);
+				}
+
+			}
+		}
+
+		return newFactor;
+
+	}
+
+
+
 
 	public static Collection<LinearConstraint> getNoisedConstraintSet(Collection<LinearConstraint> constraints, double eps){
 
@@ -479,6 +504,8 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		return newConstraints;
 
 	}
+
+
 
 
 
