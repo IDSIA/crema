@@ -17,16 +17,16 @@ public class ChainMarkovianCase {
         ////////// Parameters //////////
 
         /** Number of endogenous variables in the chain (should be 3 or greater)*/
-        int N = 6;
+        int N = 5;
 
         /** Number of states in endogenous variables */
         int endoVarSize = 2;
 
         /** Number of states in the exogenous variables */
-        int exoVarSize = 5;
+        int exoVarSize = 6;
 
         /** epsilon value for ApproxLP  */
-        double eps = 0.0001;
+        double eps = 0.0000;
 
         /////////////////////////////////
 
@@ -38,12 +38,16 @@ public class ChainMarkovianCase {
         int[] X = model.getEndogenousVars();
 
         TIntIntHashMap evidence = new TIntIntHashMap();
-        evidence.put(X[N-1], 0);
+        //evidence.put(X[N-1], 0);
+        //evidence.put(X[0], 0);
+
 
         TIntIntHashMap intervention = new TIntIntHashMap();
         intervention.put(X[0], 0);
 
+
         int target = X[N/2];
+        target = X[N-1];
 
 
         // Run inference

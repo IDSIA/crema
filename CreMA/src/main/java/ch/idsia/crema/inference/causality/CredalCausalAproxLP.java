@@ -10,6 +10,7 @@ import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.CutObservedSepHalfspace;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFactor> {
@@ -32,6 +33,7 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
 
     @Override
     public IntervalFactor query(int[] target, TIntIntMap evidence, TIntIntMap intervention) throws InterruptedException {
+
 
         if(target.length>1)
             throw new IllegalArgumentException("A single target variable is allowed with CredalCausalAproxLP ");
@@ -85,11 +87,12 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
         }
 
 
+        TIntIntHashMap filteredEvidence = new TIntIntHashMap();
 
         // update the evidence
         for(int v: evidence.keys()){
-            if(!ArrayUtils.contains(do_csmodel.getVariables(), v)){
-                evidence.remove(v);
+            if(ArrayUtils.contains(do_csmodel.getVariables(), v)){
+                filteredEvidence.put(v, evidence.get(v));
             }
         }
 
@@ -97,8 +100,8 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
         IntervalFactor result = null;
         Inference lp1 = new Inference();
 
-        if(evidence.size()>0) {
-            int evbin = new BinarizeEvidence().executeInline(do_csmodel, evidence, evidence.size(), false);
+        if(filteredEvidence.size()>0) {
+            int evbin = new BinarizeEvidence().executeInline(do_csmodel, filteredEvidence, evidence.size(), false);
             result = lp1.query(do_csmodel, target[0], evbin);
             //ApproxLP2 lp2 = new ApproxLP2();
             //result = lp2.query(do_csmodel, target[0], evidence);

@@ -1,0 +1,429 @@
+
+ChainMarkovian
+   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 32.851 ms.
+set timeout 6 s.
+Warm-up #1 in 6.446 ms.
+set timeout 6 s.
+Warm-up #2 in 4.989 ms.
+set timeout 3 s.
+Measurement #0 in 4.498 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 4.177 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 3.356 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 3.767 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 3.749 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 3.353 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 2.412 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 1.902 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 1.892 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 1.819 ms. size=0.0
+3.0925000000000002,3.0763,0.0
+
+
+ChainMarkovian
+   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 1007.917 ms.
+set timeout 6 s.
+Warm-up #1 in 236.82 ms.
+set timeout 6 s.
+Warm-up #2 in 233.054 ms.
+set timeout 3 s.
+Measurement #0 in 228.462 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 150.318 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 141.953 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 137.595 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 166.783 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 128.011 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 127.071 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 128.572 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 134.65 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 106.244 ms. size=0.0
+144.9659,48.969,0.0
+
+
+ChainMarkovian
+   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 584.281 ms.
+set timeout 6 s.
+Warm-up #1 in 303.116 ms.
+set timeout 6 s.
+Warm-up #2 in 208.017 ms.
+set timeout 3 s.
+Measurement #0 in 198.626 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 192.327 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 211.594 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 183.473 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 157.647 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 165.261 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 163.211 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 164.862 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 115.274 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 108.052 ms. size=0.0
+166.0327,162.9001,0.0
+
+
+ChainMarkovian
+   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 1000.636 ms.
+set timeout 6 s.
+Warm-up #1 in 606.842 ms.
+set timeout 6 s.
+Warm-up #2 in 456.167 ms.
+set timeout 3 s.
+Measurement #0 in 481.765 ms. size=5.000009998812338E-6
+set timeout 3 s.
+Measurement #1 in 381.144 ms. size=5.000009998812338E-6
+set timeout 3 s.
+Measurement #2 in 315.163 ms. size=5.000009998701316E-6
+set timeout 3 s.
+Measurement #3 in 368.959 ms. size=5.00000999892336E-6
+set timeout 3 s.
+Measurement #4 in 315.787 ms. size=5.000009998701316E-6
+set timeout 3 s.
+Measurement #5 in 308.446 ms. size=5.000009998812338E-6
+set timeout 3 s.
+Measurement #6 in 313.347 ms. size=5.00000999892336E-6
+set timeout 3 s.
+Measurement #7 in 311.911 ms. size=5.000009998812338E-6
+set timeout 3 s.
+Measurement #8 in 296.905 ms. size=5.000009998701316E-6
+set timeout 3 s.
+Measurement #9 in 308.554 ms. size=5.000009998812338E-6
+340.19809999999995,337.0851,5.000009998801236E-6
+
+
+ChainMarkovian
+   N=6 exovarsize=6 target=5 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 34.535 ms.
+set timeout 6 s.
+Warm-up #1 in 6.759 ms.
+set timeout 6 s.
+Warm-up #2 in 6.87 ms.
+set timeout 3 s.
+Measurement #0 in 4.675 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 4.53 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 4.02 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 2.227 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 3.178 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 3.243 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 3.028 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 2.893 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 2.561 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 2.901 ms. size=0.0
+3.3256,3.3101999999999996,0.0
+
+
+ChainMarkovian
+   N=6 exovarsize=6 target=5 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 1350.278 ms.
+set timeout 6 s.
+Warm-up #1 in 567.252 ms.
+set timeout 6 s.
+Warm-up #2 in 375.703 ms.
+set timeout 3 s.
+Measurement #0 in 445.728 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 339.295 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 250.513 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 287.816 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 533.187 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 193.733 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 209.643 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 197.234 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 177.522 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 187.127 ms. size=0.0
+282.1798,132.0917,0.0
+
+
+ChainMarkovian
+   N=6 exovarsize=6 target=5 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 697.761 ms.
+set timeout 6 s.
+Warm-up #1 in 377.982 ms.
+set timeout 6 s.
+Warm-up #2 in 272.963 ms.
+set timeout 3 s.
+Measurement #0 in 308.516 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 243.268 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 230.354 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 217.482 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 206.16 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 250.987 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 213.3 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 144.669 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 140.219 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 148.877 ms. size=0.0
+210.3832,206.78699999999998,0.0
+
+
+ChainMarkovian
+   N=6 exovarsize=6 target=5 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 1321.149 ms.
+set timeout 6 s.
+Warm-up #1 in 810.407 ms.
+set timeout 6 s.
+Warm-up #2 in 731.056 ms.
+set timeout 3 s.
+Measurement #0 in 524.475 ms. size=6.00001499895253E-6
+set timeout 3 s.
+Measurement #1 in 505.211 ms. size=6.000014999063552E-6
+set timeout 3 s.
+Measurement #2 in 457.362 ms. size=6.000014999063552E-6
+set timeout 3 s.
+Measurement #3 in 442.837 ms. size=6.0000149988415075E-6
+set timeout 3 s.
+Measurement #4 in 438.689 ms. size=6.00001499895253E-6
+set timeout 3 s.
+Measurement #5 in 428.175 ms. size=6.00001499895253E-6
+set timeout 3 s.
+Measurement #6 in 434.087 ms. size=6.00001499895253E-6
+set timeout 3 s.
+Measurement #7 in 441.659 ms. size=6.000014999063552E-6
+set timeout 3 s.
+Measurement #8 in 430.661 ms. size=6.00001499895253E-6
+set timeout 3 s.
+Measurement #9 in 460.984 ms. size=6.00001499895253E-6
+456.41400000000004,453.0748,6.000014998974734E-6
+
+
+ChainMarkovian
+   N=7 exovarsize=6 target=6 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 43.484 ms.
+set timeout 6 s.
+Warm-up #1 in 19.264 ms.
+set timeout 6 s.
+Warm-up #2 in 14.87 ms.
+set timeout 3 s.
+Measurement #0 in 10.838 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 11.553 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 9.554 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 10.265 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 8.73 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 7.647 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 7.845 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 7.633 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 7.65 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 7.024 ms. size=0.0
+8.8739,8.8574,0.0
+
+
+ChainMarkovian
+   N=7 exovarsize=6 target=6 obsvar=-1 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 2377.8 ms.
+set timeout 6 s.
+Warm-up #1 in 763.827 ms.
+set timeout 6 s.
+Warm-up #2 in 645.778 ms.
+set timeout 3 s.
+Measurement #0 in 596.953 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 617.118 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 630.114 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 549.683 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 507.61 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 484.753 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 499.007 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 506.732 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 479.1 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 469.901 ms. size=0.0
+534.0971000000001,436.1155,0.0
+
+
+ChainMarkovian
+   N=7 exovarsize=6 target=6 obsvar=-1 dovar=0 method=CCALP seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 729.961 ms.
+set timeout 6 s.
+Warm-up #1 in 357.913 ms.
+set timeout 6 s.
+Warm-up #2 in 323.595 ms.
+set timeout 3 s.
+Measurement #0 in 321.034 ms. size=0.0
+set timeout 3 s.
+Measurement #1 in 305.207 ms. size=0.0
+set timeout 3 s.
+Measurement #2 in 273.223 ms. size=0.0
+set timeout 3 s.
+Measurement #3 in 317.472 ms. size=0.0
+set timeout 3 s.
+Measurement #4 in 242.574 ms. size=0.0
+set timeout 3 s.
+Measurement #5 in 277.895 ms. size=0.0
+set timeout 3 s.
+Measurement #6 in 180.804 ms. size=0.0
+set timeout 3 s.
+Measurement #7 in 181.124 ms. size=0.0
+set timeout 3 s.
+Measurement #8 in 169.992 ms. size=0.0
+set timeout 3 s.
+Measurement #9 in 167.042 ms. size=0.0
+243.63670000000002,239.77550000000002,0.0
+
+
+ChainMarkovian
+   N=7 exovarsize=6 target=6 obsvar=-1 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 6 s.
+Warm-up #0 in 1562.057 ms.
+set timeout 6 s.
+Warm-up #1 in 971.933 ms.
+set timeout 6 s.
+Warm-up #2 in 1040.632 ms.
+set timeout 3 s.
+Measurement #0 in 698.543 ms. size=7.000020998515488E-6
+set timeout 3 s.
+Measurement #1 in 1073.0 ms. size=7.000020998737533E-6
+set timeout 3 s.
+Measurement #2 in 573.908 ms. size=7.000020998570999E-6
+set timeout 3 s.
+Measurement #3 in 834.197 ms. size=7.0000209986265105E-6
+set timeout 3 s.
+Measurement #4 in 573.826 ms. size=7.000020998793044E-6
+set timeout 3 s.
+Measurement #5 in 563.283 ms. size=7.000020998737533E-6
+set timeout 3 s.
+Measurement #6 in 556.955 ms. size=7.0000209986265105E-6
+set timeout 3 s.
+Measurement #7 in 553.889 ms. size=7.0000209986265105E-6
+set timeout 3 s.
+Measurement #8 in 662.814 ms. size=7.000020998737533E-6
+set timeout 3 s.
+Measurement #9 in 630.11 ms. size=7.000020998737533E-6
+672.0525,667.8912,7.00002099867092E-6
+
+
+ChainMarkovian
+   N=8 exovarsize=6 target=7 obsvar=-1 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 2 s.
+Warm-up #0 in 86.192 ms.
+set timeout 2 s.
+Warm-up #1 in 17.074 ms.
+set timeout 2 s.
+Warm-up #2 in 22.95 ms.
+set timeout 1 s.
+Measurement #0 in 22.048 ms. size=0.0
+set timeout 1 s.
+Measurement #1 in 30.231 ms. size=0.0
+set timeout 1 s.
+Measurement #2 in 17.298 ms. size=0.0
+set timeout 1 s.
+Measurement #3 in 20.637 ms. size=0.0
+set timeout 1 s.
+Measurement #4 in 16.247 ms. size=0.0
+set timeout 1 s.
+Measurement #5 in 18.105 ms. size=0.0
+set timeout 1 s.
+Measurement #6 in 17.901 ms. size=0.0
+set timeout 1 s.
+Measurement #7 in 20.622 ms. size=0.0
+set timeout 1 s.
+Measurement #8 in 18.472 ms. size=0.0
+set timeout 1 s.
+Measurement #9 in 21.165 ms. size=0.0
+20.2726,20.240199999999998,0.0
+

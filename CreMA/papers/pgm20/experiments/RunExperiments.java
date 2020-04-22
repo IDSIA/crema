@@ -49,7 +49,7 @@ public class RunExperiments {
             String modelName = "ChainMarkovian";
 
             /** Number of endogenous variables in the chain (should be 3 or greater)*/
-            int N = 10;
+            int N = 6;
             /** Number of states in the exogenous variables */
             int exoVarSize = 6;
 
@@ -60,7 +60,7 @@ public class RunExperiments {
             int dovar = 0;
 
             /** Inference method: CVE, CCVE, CCALP, CCALPeps  **/
-            method = "CCALPeps";
+            method = "CCVE";
 
             eps = 0.0;
 
@@ -113,17 +113,22 @@ public class RunExperiments {
             System.out.println("Running experiments...");
 
             double res[] = run();
-            System.out.println(res[0] + "," + res[1] + "," + res[2]);
+            for(int i=0; i<res.length; i++){
+                if(i!=res.length-1)
+                    System.out.print(res[i]+",");
+                else
+                    System.out.println(res[i]);
+            }
 
         }catch (TimeoutException e){
             System.out.println(e);
-            System.out.println("inf,inf,nan");
+            System.out.println("inf,inf,nan,nan,nan");
         }catch (Exception e){
             System.out.println(e);
-            System.out.println("nan,nan,nan");
+            System.out.println("nan,nan,nan,nan,nan");
         }catch (Error e){
             System.out.println(e);
-            System.out.println("nan,nan,nan");
+            System.out.println("nan,nan,nan,nan,nan");
         }
 
 
@@ -135,25 +140,40 @@ public class RunExperiments {
 
 
         double intervalSize = 0.0;
+        double lowerBound = 0;
+        double upperBound = 0;
 
         if(method.equals("CVE")) {
             CausalInference inf1 = new CausalVE(model);
             queryStart = Instant.now();
             BayesianFactor result1 = (BayesianFactor) inf1.query(target, evidence, intervention);
             if(verbose) System.out.println(result1);
+            lowerBound = result1.getData()[0];
+            upperBound = lowerBound;
+
+
+
         }else if(method.equals("CCVE")) {
             CausalInference inf2 = new CredalCausalVE(model);
             queryStart = Instant.now();
             VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
             if (verbose) System.out.println(result2);
-            intervalSize = Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).max().getAsDouble() -
-                    Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).min().getAsDouble();
+
+            lowerBound = Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).min().getAsDouble();
+            upperBound = Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).max().getAsDouble();
+
+
+
         }else if (method.startsWith("CCALP")) {
             CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(eps);
             queryStart = Instant.now();
             IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
             if(verbose) System.out.println(result3);
-            intervalSize =  result3.getUpper(0)[0] - result3.getLower(0)[0];
+
+            lowerBound =  result3.getLower(0)[0];
+            upperBound =  result3.getUpper(0)[0];
+
+
         }else {
             throw new IllegalArgumentException("Unknown inference method");
         }
@@ -162,7 +182,18 @@ public class RunExperiments {
         double timeElapsed = Duration.between(start, finish).toNanos()/Math.pow(10,6);
         double timeElapsedQuery = Duration.between(queryStart, finish).toNanos()/Math.pow(10,6);
 
-        return new double[]{timeElapsed, timeElapsedQuery, Math.abs(intervalSize)};
+
+
+        if(lowerBound>upperBound) {
+            double aux = lowerBound;
+            lowerBound = upperBound;
+            upperBound = aux;
+        }
+
+        intervalSize = upperBound - lowerBound;
+
+        if(intervalSize<0.0) throw new RuntimeException("negative interval size");
+        return new double[]{timeElapsed, timeElapsedQuery, intervalSize, lowerBound, upperBound};
     }
 
 
@@ -171,6 +202,8 @@ public class RunExperiments {
         double time[] = new double[measures];
         double time2[] = new double[measures];
         double size[] = new double[measures];
+        double lbound[] = new double[measures];
+        double ubound[] = new double[measures];
 
         ch.idsia.crema.utility.InvokerWithTimeout<double[]> invoker = new InvokerWithTimeout<>();
 
@@ -188,11 +221,16 @@ public class RunExperiments {
             time[i] = out[0];
             time2[i] = out[1];
             size[i] = out[2];
+            lbound[i] = out[3];
+            ubound[i] = out[4];
         }
 
         return new double[]{    DoubleStream.of(time).average().getAsDouble(),
                                 DoubleStream.of(time2).average().getAsDouble(),
-                                DoubleStream.of(size).average().getAsDouble()};
+                                DoubleStream.of(size).average().getAsDouble(),
+                                DoubleStream.of(lbound).average().getAsDouble(),
+                                DoubleStream.of(ubound).average().getAsDouble(),
+        };
     }
 
 
