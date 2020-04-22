@@ -15,6 +15,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
@@ -35,6 +36,10 @@ public class RunExperiments {
     static int warmups = 3;
     static int measures = 10;
 
+    static boolean verbose = false;
+
+    static long TIMEOUT = 5*60;
+
 
     public static void main(String[] args) throws InterruptedException {
         try {
@@ -43,13 +48,13 @@ public class RunExperiments {
             String modelName = "ChainMarkovian";
 
             /** Number of endogenous variables in the chain (should be 3 or greater)*/
-            int N = 7;
+            int N = 10;
             /** Number of states in the exogenous variables */
             int exoVarSize = 6;
 
             target = 1;
 
-            int obsvar = N-1;
+            int obsvar = N - 1;
 
             int dovar = 0;
 
@@ -62,7 +67,7 @@ public class RunExperiments {
 
 
             // ChainNonMarkovian 6 5 1 -1 0 CCALP 1234
-            if(args.length>0){
+            if (args.length > 0) {
                 modelName = args[0];
                 N = Integer.parseInt(args[1]);
                 exoVarSize = Integer.parseInt(args[2]);
@@ -73,10 +78,10 @@ public class RunExperiments {
                 seed = Long.parseLong(args[7]);
             }
 
-            if(method.equals("CCALPeps"))
+            if (method.equals("CCALPeps"))
                 eps = 0.000001;
 
-            System.out.println("\n"+modelName+"\n   N="+N+" exovarsize="+exoVarSize+" target="+target+" obsvar="+obsvar+" dovar="+dovar+" method="+method+" seed="+seed);
+            System.out.println("\n" + modelName + "\n   N=" + N + " exovarsize=" + exoVarSize + " target=" + target + " obsvar=" + obsvar + " dovar=" + dovar + " method=" + method + " seed=" + seed);
             System.out.println("=================================================================");
 
 
@@ -88,28 +93,30 @@ public class RunExperiments {
             int endoVarSize = 2;
             // Load the chain model
 
-            if(modelName.equals("ChainMarkovian"))
+            if (modelName.equals("ChainMarkovian"))
                 model = RandomChainMarkovian.buildModel(N, endoVarSize, exoVarSize);
-            else if(modelName.equals("ChainNonMarkovian"))
+            else if (modelName.equals("ChainNonMarkovian"))
                 model = RandomChainNonMarkovian.buildModel(N, endoVarSize, exoVarSize);
             else
                 throw new IllegalArgumentException("Non valid model name");
 
 
-
             int[] X = model.getEndogenousVars();
 
             evidence = new TIntIntHashMap();
-            if(obsvar>=0) evidence.put(obsvar, 0);
+            if (obsvar >= 0) evidence.put(obsvar, 0);
 
             intervention = new TIntIntHashMap();
-            if(dovar>=0) intervention.put(dovar, 0);
+            if (dovar >= 0) intervention.put(dovar, 0);
 
             System.out.println("Running experiments...");
 
             double res[] = run();
-            System.out.println(res[0] + "," + res[1]+ "," + res[2]);
+            System.out.println(res[0] + "," + res[1] + "," + res[2]);
 
+        }catch (TimeoutException e){
+            System.out.println(e);
+            System.out.println("inf,inf,nan");
         }catch (Exception e){
             System.out.println(e);
             System.out.println("nan,nan,nan");
@@ -121,7 +128,7 @@ public class RunExperiments {
 
     }
 
-    static double[] experiment(boolean verbose) throws InterruptedException {
+    static double[] experiment() throws InterruptedException {
         Instant start = Instant.now();
         Instant queryStart = null;
 
@@ -158,22 +165,24 @@ public class RunExperiments {
     }
 
 
-    public static double[] run() throws InterruptedException {
+    public static double[] run() throws InterruptedException, TimeoutException {
 
         double time[] = new double[measures];
         double time2[] = new double[measures];
         double size[] = new double[measures];
 
+        InvokerWithTimeout<double[]> invoker = new InvokerWithTimeout<>();
+
         // Warm-up
         for(int i=0; i<warmups; i++){
-            double[] out = experiment(false);
+            double[] out = invoker.run(RunExperiments::experiment, TIMEOUT*2);
             System.out.println("Warm-up #"+i+" in "+out[0]+" ms.");
         }
 
         // Measures
         for(int i=0; i<measures; i++){
 
-            double[] out = experiment(false);
+            double[] out = invoker.run(RunExperiments::experiment, TIMEOUT);
             System.out.println("Measurement #"+i+" in "+out[0]+" ms. size="+out[2]);
             time[i] = out[0];
             time2[i] = out[1];
