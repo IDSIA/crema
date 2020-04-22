@@ -30,7 +30,6 @@ public class  InvokerWithTimeout<R extends Object>  {
         // Do the call in a separate thread, get a Future back
         Future<R> future = executorService.submit(task);
         try {
-            // Wait for at most 10 seconds until the result is returned
             return future.get(seconds, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
             executorService.shutdownNow();
