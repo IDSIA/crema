@@ -1,6 +1,4 @@
-package pgm20.experiments;
-
-import ch.idsia.crema.inference.causality.CausalInference;
+package ch.idsia.crema.utility;
 
 import java.util.Arrays;
 import java.util.concurrent.*;

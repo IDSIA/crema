@@ -10,6 +10,7 @@ import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.models.causal.RandomChainMarkovian;
 import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
+import ch.idsia.crema.utility.InvokerWithTimeout;
 import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
@@ -171,7 +172,7 @@ public class RunExperiments {
         double time2[] = new double[measures];
         double size[] = new double[measures];
 
-        InvokerWithTimeout<double[]> invoker = new InvokerWithTimeout<>();
+        ch.idsia.crema.utility.InvokerWithTimeout<double[]> invoker = new InvokerWithTimeout<>();
 
         // Warm-up
         for(int i=0; i<warmups; i++){
