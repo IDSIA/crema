@@ -92,7 +92,7 @@ public class RunExperiments {
             if (method.equals("CCALPeps"))
                 eps = 0.000001;
 
-            System.out.println("\n" + modelName + "\n   N=" + N + " exovarsize=" + exoVarSize + " target=" + target + " obsvar=" + obsvar + " dovar=" + dovar + " method=" + method + " seed=" + seed);
+            System.out.println("\n" + modelName + "\n   N=" + N + " endovarsize=" + endoVarSize + " exovarsize=" + exoVarSize + " target=" + target + " obsvar=" + obsvar + " dovar=" + dovar + " method=" + method + " seed=" + seed);
             System.out.println("=================================================================");
 
 
