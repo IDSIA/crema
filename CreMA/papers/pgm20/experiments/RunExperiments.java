@@ -46,28 +46,28 @@ public class RunExperiments {
         try {
             ////////// Input arguments Parameters //////////
 
-            String modelName = "ChainMarkovian";
+            String modelName = "ChainNonMarkovian";
 
             /** Number of endogenous variables in the chain (should be 3 or greater)*/
-            int N = 6;
+            int N = 5;
             /** Number of states in the exogenous variables */
             int exoVarSize = 6;
 
-            target = 1;
+            target = N/2;
 
             int obsvar = N - 1;
 
             int dovar = 0;
 
             /** Inference method: CVE, CCVE, CCALP, CCALPeps  **/
-            method = "CCVE";
+            method = "CVE";
 
             eps = 0.0;
 
             long seed = 1234;
 
 
-            // ChainNonMarkovian 6 5 1 -1 0 CCALP 1234
+            // ChainNonMarkovian 6 5 1 -1 0 CCALP 1234 0 1
             if (args.length > 0) {
                 modelName = args[0];
                 N = Integer.parseInt(args[1]);
@@ -77,6 +77,11 @@ public class RunExperiments {
                 dovar = Integer.parseInt(args[5]);
                 method = args[6];
                 seed = Long.parseLong(args[7]);
+                if(args.length>8) {
+                    warmups = Integer.parseInt(args[8]);
+                    measures = Integer.parseInt(args[9]);
+                }
+
             }
 
             if (method.equals("CCALPeps"))
