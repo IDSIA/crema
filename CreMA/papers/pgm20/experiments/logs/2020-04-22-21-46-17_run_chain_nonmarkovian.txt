@@ -1,0 +1,243 @@
+
+ChainNonMarkovian
+   N=5 exovarsize=6 target=2 obsvar=4 dovar=4 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=5 exovarsize=6 target=2 obsvar=4 dovar=4 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=5 exovarsize=6 target=2 obsvar=4 dovar=4 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=7 exovarsize=6 target=3 obsvar=6 dovar=6 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=7 exovarsize=6 target=3 obsvar=6 dovar=6 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=7 exovarsize=6 target=3 obsvar=6 dovar=6 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=9 exovarsize=6 target=4 obsvar=8 dovar=8 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=17 exovarsize=6 target=8 obsvar=16 dovar=16 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=17 exovarsize=6 target=8 obsvar=16 dovar=16 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=19 exovarsize=6 target=9 obsvar=18 dovar=18 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=19 exovarsize=6 target=9 obsvar=18 dovar=18 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=19 exovarsize=6 target=9 obsvar=18 dovar=18 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=21 exovarsize=6 target=10 obsvar=20 dovar=20 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=21 exovarsize=6 target=10 obsvar=20 dovar=20 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=21 exovarsize=6 target=10 obsvar=20 dovar=20 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=23 exovarsize=6 target=11 obsvar=22 dovar=22 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=23 exovarsize=6 target=11 obsvar=22 dovar=22 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=23 exovarsize=6 target=11 obsvar=22 dovar=22 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=25 exovarsize=6 target=12 obsvar=24 dovar=24 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=25 exovarsize=6 target=12 obsvar=24 dovar=24 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=25 exovarsize=6 target=12 obsvar=24 dovar=24 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=27 exovarsize=6 target=13 obsvar=26 dovar=26 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=27 exovarsize=6 target=13 obsvar=26 dovar=26 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=27 exovarsize=6 target=13 obsvar=26 dovar=26 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=29 exovarsize=6 target=14 obsvar=28 dovar=28 method=CVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=29 exovarsize=6 target=14 obsvar=28 dovar=28 method=CCVE seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
+
+ChainNonMarkovian
+   N=29 exovarsize=6 target=14 obsvar=28 dovar=28 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+set timeout 600 s.
+java.lang.InterruptedException
+nan,nan,nan,nan,nan
+
