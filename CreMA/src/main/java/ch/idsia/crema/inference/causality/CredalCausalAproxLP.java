@@ -13,6 +13,8 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
+
 public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFactor> {
 
 
@@ -44,6 +46,8 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
         RemoveBarren removeBarren = new RemoveBarren();
         do_csmodel = removeBarren
                 .execute(new CutObservedSepHalfspace().execute(do_csmodel, evidence), target, evidence);
+
+
 
 
         //int[] noise = {3,4,5,7,8};
@@ -101,7 +105,7 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
         Inference lp1 = new Inference();
 
         if(filteredEvidence.size()>0) {
-            int evbin = new BinarizeEvidence().executeInline(do_csmodel, filteredEvidence, evidence.size(), false);
+            int evbin = new BinarizeEvidence().executeInline(do_csmodel, filteredEvidence, filteredEvidence.size(), false);
             result = lp1.query(do_csmodel, target[0], evbin);
             //ApproxLP2 lp2 = new ApproxLP2();
             //result = lp2.query(do_csmodel, target[0], evidence);

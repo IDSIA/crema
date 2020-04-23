@@ -1,5 +1,6 @@
 package pgm20.experiments;
 
+import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.models.causal.RandomChainMarkovian;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -10,26 +11,32 @@ import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
 import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
+
+import java.util.Random;
 
 public class ChainNonMarkovianCase {
     public static void main(String[] args) throws InterruptedException {
 
         ////////// Parameters //////////
 
+        //RandomUtil.getRandom().setSeed(123442234);
+
         /** Number of endogenous variables in the chain (should be 3 or greater)*/
-        int N = 6;
+        int N = 5;
 
         /** Number of states in endogenous variables */
         int endoVarSize = 2;
 
         /** Number of states in the exogenous variables */
-        int exoVarSize = 5;
+        int exoVarSize = 6;
 
         /** epsilon value for ApproxLP  */
-        double eps = 0.0;
+        double eps = 0.00001;
 
         /////////////////////////////////
+        //RandomUtil.getRandom().setSeed(123354);
 
         // Load the chain model
         StructuralCausalModel model = RandomChainNonMarkovian.buildModel(N, endoVarSize, exoVarSize);
@@ -47,6 +54,8 @@ public class ChainNonMarkovianCase {
         int target = X[N/2];
 
 
+
+
         // Run inference
 
         CausalInference inf1 = new CausalVE(model);
@@ -57,6 +66,7 @@ public class ChainNonMarkovianCase {
         VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
         System.out.println(result2);
 
+        //model.printSummary();
 
         CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(eps);
         IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);

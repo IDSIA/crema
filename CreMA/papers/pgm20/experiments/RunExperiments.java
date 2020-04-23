@@ -49,7 +49,11 @@ public class RunExperiments {
             String modelName = "ChainNonMarkovian";
 
             /** Number of endogenous variables in the chain (should be 3 or greater)*/
-            int N = 5;
+            int N = 4;
+
+
+            /** Number of states in endogenous variables */
+            int endoVarSize = 2;
             /** Number of states in the exogenous variables */
             int exoVarSize = 6;
 
@@ -57,10 +61,10 @@ public class RunExperiments {
 
             int obsvar = N - 1;
 
-            int dovar = 0;
+            int dovar = -1;
 
             /** Inference method: CVE, CCVE, CCALP, CCALPeps  **/
-            method = "CVE";
+            method = "CCALP";
 
             eps = 0.0;
 
@@ -71,15 +75,16 @@ public class RunExperiments {
             if (args.length > 0) {
                 modelName = args[0];
                 N = Integer.parseInt(args[1]);
-                exoVarSize = Integer.parseInt(args[2]);
-                target = Integer.parseInt(args[3]);
-                obsvar = Integer.parseInt(args[4]);
-                dovar = Integer.parseInt(args[5]);
-                method = args[6];
-                seed = Long.parseLong(args[7]);
-                if(args.length>8) {
-                    warmups = Integer.parseInt(args[8]);
-                    measures = Integer.parseInt(args[9]);
+                endoVarSize = Integer.parseInt(args[2]);
+                exoVarSize = Integer.parseInt(args[3]);
+                target = Integer.parseInt(args[4]);
+                obsvar = Integer.parseInt(args[5]);
+                dovar = Integer.parseInt(args[6]);
+                method = args[7];
+                seed = Long.parseLong(args[8]);
+                if(args.length>9) {
+                    warmups = Integer.parseInt(args[9]);
+                    measures = Integer.parseInt(args[10]);
                 }
 
             }
@@ -95,8 +100,6 @@ public class RunExperiments {
             RandomUtil.getRandom().setSeed(seed);
 
 
-            /** Number of states in endogenous variables */
-            int endoVarSize = 2;
             // Load the chain model
 
             if (modelName.equals("ChainMarkovian"))
