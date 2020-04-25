@@ -191,7 +191,7 @@ public class RunExperiments {
                     --dovar 0
                     --method  CCALP
                     --seed 1234
-                    --warmpus 0
+                    --warmups 0
                     --repetitions 1
                 */
 
@@ -205,7 +205,7 @@ public class RunExperiments {
         options.addOption(Option.builder("d").longOpt("dovar").hasArg(true).required(false).build());
         options.addOption(Option.builder("m").longOpt("method").hasArg(true).required().build());
         options.addOption(Option.builder("s").longOpt("seed").hasArg(true).required(false).build());
-        options.addOption(Option.builder("w").longOpt("warmpus").hasArg(true).required(false).build());
+        options.addOption(Option.builder("w").longOpt("warmups").hasArg(true).required(false).build());
         options.addOption(Option.builder("r").longOpt("repetitions").hasArg(true).required(false).build());
         options.addOption(Option.builder("e").longOpt("epsilon").hasArg(true).required(false).build());
 
