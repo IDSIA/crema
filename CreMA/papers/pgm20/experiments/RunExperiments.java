@@ -12,6 +12,7 @@ import ch.idsia.crema.models.causal.RandomChainMarkovian;
 import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
 import ch.idsia.crema.utility.InvokerWithTimeout;
 import ch.idsia.crema.utility.RandomUtil;
+import com.google.common.primitives.Doubles;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import org.apache.commons.cli.*;
@@ -21,6 +22,7 @@ import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static ch.idsia.crema.models.causal.RandomChainNonMarkovian.buildModel;
@@ -35,14 +37,19 @@ public class RunExperiments {
     static int target;
     static double eps;
 
+    static int endoVarSize;
+    static int exoVarSize;
+
     static String method;
 
     static int warmups = 0;
     static int repetitions = 1;
 
-    static boolean verbose = true;
+    static boolean verbose = false;
 
     static long TIMEOUT = 5*60;
+
+
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -54,9 +61,9 @@ public class RunExperiments {
             /** Number of endogenous variables in the chain (should be 3 or greater)*/
             int N = 4;
             /** Number of states in endogenous variables */
-            int endoVarSize = 3;
+            endoVarSize = 3;
             /** Number of states in the exogenous variables */
-            int exoVarSize = 9;
+            exoVarSize = 9;
 
             target = N/2;
             target = 1;
@@ -111,6 +118,9 @@ public class RunExperiments {
 
             }
 
+            if(!method.equals("CCALPeps"))
+                eps = 0.0;
+
 
             System.out.println("\n" + modelName + "\n   N=" + N + " endovarsize=" + endoVarSize + " exovarsize=" + exoVarSize + " target=" + target + " obsvar=" + obsvar + " dovar=" + dovar + " method=" + method + " seed=" + seed);
             System.out.println("=================================================================");
@@ -148,16 +158,23 @@ public class RunExperiments {
                     System.out.println(res[i]);
             }
 
+
+
+
         }catch (TimeoutException e){
             System.out.println(e);
-            System.out.println("inf,inf,nan,nan,nan");
+            String[] nanStrings = IntStream.range(0, endoVarSize*2).mapToObj(i -> "nan").toArray(String[]::new);
+            System.out.println("inf,inf,"+String.join(",",nanStrings));
         }catch (Exception e){
             System.out.println(e);
             //e.printStackTrace();
-            System.out.println("nan,nan,nan,nan,nan");
+            String[] nanStrings = IntStream.range(0, endoVarSize*2).mapToObj(i -> "nan").toArray(String[]::new);
+            System.out.println("nan,nan,"+String.join(",",nanStrings));
         }catch (Error e){
             System.out.println(e);
-            System.out.println("nan,nan,nan,nan,nan");
+            String[] nanStrings = IntStream.range(0, endoVarSize*2).mapToObj(i -> "nan").toArray(String[]::new);
+            System.out.println("nan,nan,"+String.join(",",nanStrings));
+
         }
 
 
@@ -205,15 +222,15 @@ public class RunExperiments {
 
 
         double intervalSize = 0.0;
-        double lowerBound = 0;
-        double upperBound = 0;
+        double[] lowerBound = new double[endoVarSize];
+        double[] upperBound = new double[endoVarSize];
 
         if(method.equals("CVE")) {
             CausalInference inf1 = new CausalVE(model);
             queryStart = Instant.now();
             BayesianFactor result1 = (BayesianFactor) inf1.query(target, evidence, intervention);
             if(verbose) System.out.println(result1);
-            lowerBound = result1.getData()[0];
+            lowerBound = result1.getData();
             upperBound = lowerBound;
 
 
@@ -224,9 +241,10 @@ public class RunExperiments {
             VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
             if (verbose) System.out.println(result2);
 
-            lowerBound = Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).min().getAsDouble();
-            upperBound = Stream.of(result2.filter(target,0).getData()[0]).mapToDouble(v->v[0]).max().getAsDouble();
-
+            for(int i=0; i<endoVarSize; i++) {
+                lowerBound[i] =Stream.of(result2.filter(target, i).getData()[0]).mapToDouble(v -> v[0]).min().getAsDouble();
+                upperBound[i] = Stream.of(result2.filter(target, i).getData()[0]).mapToDouble(v -> v[0]).max().getAsDouble();
+            }
 
 
         }else if (method.startsWith("CCALP")) {
@@ -235,9 +253,10 @@ public class RunExperiments {
             IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
             if(verbose) System.out.println(result3);
 
-            lowerBound =  result3.getLower(0)[0];
-            upperBound =  result3.getUpper(0)[0];
-
+            for(int i=0; i<endoVarSize; i++) {
+                lowerBound[i] = result3.getLower(0)[i];
+                upperBound[i] = result3.getUpper(0)[i];
+            }
 
         }else {
             throw new IllegalArgumentException("Unknown inference method");
@@ -248,33 +267,32 @@ public class RunExperiments {
         double timeElapsedQuery = Duration.between(queryStart, finish).toNanos()/Math.pow(10,6);
 
 
-
-        if(lowerBound>upperBound) {
-            double aux = lowerBound;
-            lowerBound = upperBound;
-            upperBound = aux;
+        for(int i=0; i<endoVarSize; i++) {
+            if (lowerBound[i] > upperBound[i]) {
+                double aux = lowerBound[i];
+                lowerBound[i] = upperBound[i];
+                upperBound[i] = aux;
+            }
         }
 
-        intervalSize = upperBound - lowerBound;
 
         if(intervalSize<0.0) throw new RuntimeException("negative interval size");
-        return new double[]{timeElapsed, timeElapsedQuery, intervalSize, lowerBound, upperBound};
+        return Doubles.concat(new double[]{timeElapsed, timeElapsedQuery}, lowerBound, upperBound);
     }
 
 
     public static double[] run() throws InterruptedException, TimeoutException, ExecutionException {
 
-        double time[] = new double[repetitions];
-        double time2[] = new double[repetitions];
-        double size[] = new double[repetitions];
-        double lbound[] = new double[repetitions];
-        double ubound[] = new double[repetitions];
+        double time = 0.0;
+        double time2 = 0.0;
+        double lbound[] = new double[endoVarSize];
+        double ubound[] = new double[endoVarSize];
 
         ch.idsia.crema.utility.InvokerWithTimeout<double[]> invoker = new InvokerWithTimeout<>();
 
         // Warm-up
         for(int i=0; i<warmups; i++){
-            double[] out =experiment();//double[] out = invoker.run(RunExperiments::experiment, TIMEOUT*2);
+            double[] out =  invoker.run(RunExperiments::experiment, TIMEOUT*2);
             System.out.println("Warm-up #"+i+" in "+out[0]+" ms.");
         }
 
@@ -282,20 +300,21 @@ public class RunExperiments {
         for(int i = 0; i< repetitions; i++){
 
             double[] out = invoker.run(RunExperiments::experiment, TIMEOUT);
-            System.out.println("Measurement #"+i+" in "+out[0]+" ms. size="+out[2]);
-            time[i] = out[0];
-            time2[i] = out[1];
-            size[i] = out[2];
-            lbound[i] = out[3];
-            ubound[i] = out[4];
+            //double[] out = experiment();
+            System.out.println("Measurement #"+i+" in "+out[0]+" ms.");
+            time += out[0];
+            time2 += out[1];
+            for(int k = 0; k<endoVarSize; k++) {
+                lbound[k] = out[k+2];
+                ubound[k] = out[k+2+endoVarSize];
+            }
         }
 
-        return new double[]{    DoubleStream.of(time).average().getAsDouble(),
-                                DoubleStream.of(time2).average().getAsDouble(),
-                                DoubleStream.of(size).average().getAsDouble(),
-                                DoubleStream.of(lbound).average().getAsDouble(),
-                                DoubleStream.of(ubound).average().getAsDouble(),
-        };
+        return Doubles.concat(new double[] {time/repetitions, time2/repetitions},
+                DoubleStream.of(lbound).map( v -> v/repetitions).toArray(),
+                DoubleStream.of(ubound).map( v -> v/repetitions).toArray());
+
+
     }
 
 
