@@ -4,6 +4,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.inference.approxlp.Inference;
+import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
@@ -36,7 +37,6 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
     @Override
     public IntervalFactor query(int[] target, TIntIntMap evidence, TIntIntMap intervention) throws InterruptedException {
 
-
         if(target.length>1)
             throw new IllegalArgumentException("A single target variable is allowed with CredalCausalAproxLP ");
 
@@ -49,34 +49,8 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
 
 
 
-
-        //int[] noise = {3,4,5,7,8};
-        //int[] noise = {0,1,2,3,4,5,6,7,8};
-        //int[] noise = {0,2,4,6,7,8};// N=6
-       // int[] noise = {0,1,2,3,4,5,6,7,8,9,10};
-
-        //int[] noise = {0,2,4,7,8,9,10};
-
-/*
-
-        if(true && epsilon>0.0){
-            for(int v : noise) {
-                //if(originalModel.isExogenous(v))
-                //if(do_csmodel.getNetwork())
-//                System.out.println(v);
-                do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoised(epsilon));
-   //             do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoisedInequalities(epsilon));
-  //              do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoisedZeroConstraints(epsilon));
-
-
-            }
-        }
-*/
-//        ((SeparateHalfspaceFactor)do_csmodel.getFactor(1)).printLinearProblem(0);
-
         for(int v : do_csmodel.getVariables()) {
-
-                do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).removeNormConstraints());
+             do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).removeNormConstraints());
 
                 if(epsilon>0.0){
 

@@ -40,11 +40,10 @@ public class CutObservedSepHalfspace {
             int[] affected  = model.getChildren(observed);
 
             for (int variable : affected) {
-                //if(variable != observed){
-                    SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor)model.getFactor(variable)).filter(observed, state);
-                        model.removeParent(variable, observed);
-                        model.setFactor(variable, new_factor);
-                    //}
+                SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor)model.getFactor(variable)).filter(observed, state);
+                if(variable != observed) model.removeParent(variable, observed);
+                model.setFactor(variable, new_factor);
+
             }
         }
     }

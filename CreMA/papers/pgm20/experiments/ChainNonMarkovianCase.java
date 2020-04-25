@@ -24,13 +24,13 @@ public class ChainNonMarkovianCase {
         //RandomUtil.getRandom().setSeed(123442234);
 
         /** Number of endogenous variables in the chain (should be 3 or greater)*/
-        int N = 5;
+        int N = 4;
 
         /** Number of states in endogenous variables */
-        int endoVarSize = 2;
+        int endoVarSize = 3;
 
         /** Number of states in the exogenous variables */
-        int exoVarSize = 6;
+        int exoVarSize = 9;
 
         /** epsilon value for ApproxLP  */
         double eps = 0.00001;
@@ -51,7 +51,7 @@ public class ChainNonMarkovianCase {
         TIntIntHashMap intervention = new TIntIntHashMap();
         intervention.put(X[0], 0);
 
-        int target = X[N/2];
+        int target = X[2];
 
 
 

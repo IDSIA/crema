@@ -14,8 +14,11 @@ import ch.idsia.crema.utility.InvokerWithTimeout;
 import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
+import org.apache.commons.cli.*;
+
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
@@ -34,10 +37,10 @@ public class RunExperiments {
 
     static String method;
 
-    static int warmups = 3;
-    static int measures = 10;
+    static int warmups = 0;
+    static int repetitions = 1;
 
-    static boolean verbose = false;
+    static boolean verbose = true;
 
     static long TIMEOUT = 5*60;
 
@@ -46,51 +49,68 @@ public class RunExperiments {
         try {
             ////////// Input arguments Parameters //////////
 
-            String modelName = "ChainNonMarkovian";
+            String modelName = "ChainMarkovian";
 
             /** Number of endogenous variables in the chain (should be 3 or greater)*/
             int N = 4;
-
-
             /** Number of states in endogenous variables */
-            int endoVarSize = 2;
+            int endoVarSize = 3;
             /** Number of states in the exogenous variables */
-            int exoVarSize = 6;
+            int exoVarSize = 9;
 
             target = N/2;
+            target = 1;
 
             int obsvar = N - 1;
+            //obsvar = -1;
 
-            int dovar = -1;
+            int dovar = 0;
 
             /** Inference method: CVE, CCVE, CCALP, CCALPeps  **/
-            method = "CCALP";
+            method = "CCALPeps";
+           // method = "CVE";
 
-            eps = 0.0;
+            eps = 0.0001;
 
             long seed = 1234;
 
 
             // ChainNonMarkovian 6 5 1 -1 0 CCALP 1234 0 1
             if (args.length > 0) {
+
+                Options options = getArgOptions();
+                CommandLineParser parser = new DefaultParser();
+                HelpFormatter formatter = new HelpFormatter();
+
+                CommandLine cmd = null;
+
+                try {
+                    cmd = parser.parse(options, args);
+                } catch (ParseException e) {
+                    System.out.println(e.getMessage());
+                    formatter.printHelp("utility-name", options);
+
+                    System.exit(1);
+                }
+
                 modelName = args[0];
                 N = Integer.parseInt(args[1]);
-                endoVarSize = Integer.parseInt(args[2]);
-                exoVarSize = Integer.parseInt(args[3]);
-                target = Integer.parseInt(args[4]);
-                obsvar = Integer.parseInt(args[5]);
-                dovar = Integer.parseInt(args[6]);
-                method = args[7];
-                seed = Long.parseLong(args[8]);
-                if(args.length>9) {
-                    warmups = Integer.parseInt(args[9]);
-                    measures = Integer.parseInt(args[10]);
-                }
+
+                endoVarSize = Integer.parseInt(cmd.getOptionValue("endovarsize"));
+                exoVarSize = Integer.parseInt(cmd.getOptionValue("exovarsize"));
+                target = Integer.parseInt(cmd.getOptionValue("target"));
+                method = cmd.getOptionValue("method");
+
+                if(cmd.hasOption("obsvar")) obsvar = Integer.parseInt(cmd.getOptionValue("obsvar"));
+                if(cmd.hasOption("dovar")) dovar = Integer.parseInt(cmd.getOptionValue("dovar"));
+                if(cmd.hasOption("seed")) seed = Long.parseLong(cmd.getOptionValue("seed"));
+                if(cmd.hasOption("warmups")) warmups = Integer.parseInt(cmd.getOptionValue("warmups"));
+                if(cmd.hasOption("repetitions")) repetitions = Integer.parseInt(cmd.getOptionValue("repetitions"));
+                if(cmd.hasOption("epsilon")) eps = Double.parseDouble(cmd.getOptionValue("epsilon"));
+
 
             }
 
-            if (method.equals("CCALPeps"))
-                eps = 0.000001;
 
             System.out.println("\n" + modelName + "\n   N=" + N + " endovarsize=" + endoVarSize + " exovarsize=" + exoVarSize + " target=" + target + " obsvar=" + obsvar + " dovar=" + dovar + " method=" + method + " seed=" + seed);
             System.out.println("=================================================================");
@@ -133,6 +153,7 @@ public class RunExperiments {
             System.out.println("inf,inf,nan,nan,nan");
         }catch (Exception e){
             System.out.println(e);
+            //e.printStackTrace();
             System.out.println("nan,nan,nan,nan,nan");
         }catch (Error e){
             System.out.println(e);
@@ -141,6 +162,42 @@ public class RunExperiments {
 
 
     }
+
+    public static Options getArgOptions(){
+
+                        /*
+                ChainNonMarkovian 6
+                    --endovarsize 5
+                    --exovarsize 9
+                    --target 1
+                    --obsvar -1
+                    --dovar 0
+                    --method  CCALP
+                    --seed 1234
+                    --warmpus 0
+                    --repetitions 1
+                */
+
+
+        Options options = new Options();
+
+        options.addOption(Option.builder("v").longOpt("endovarsize").hasArg(true).required().build());
+        options.addOption(Option.builder("V").longOpt("exovarsize").hasArg(true).required().build());
+        options.addOption(Option.builder("t").longOpt("target").hasArg(true).required().build());
+        options.addOption(Option.builder("o").longOpt("obsvar").hasArg(true).required(false).build());
+        options.addOption(Option.builder("d").longOpt("dovar").hasArg(true).required(false).build());
+        options.addOption(Option.builder("m").longOpt("method").hasArg(true).required().build());
+        options.addOption(Option.builder("s").longOpt("seed").hasArg(true).required(false).build());
+        options.addOption(Option.builder("w").longOpt("warmpus").hasArg(true).required(false).build());
+        options.addOption(Option.builder("r").longOpt("repetitions").hasArg(true).required(false).build());
+        options.addOption(Option.builder("e").longOpt("epsilon").hasArg(true).required(false).build());
+
+
+        return options;
+
+    }
+
+
 
     static double[] experiment() throws InterruptedException {
         Instant start = Instant.now();
@@ -205,24 +262,24 @@ public class RunExperiments {
     }
 
 
-    public static double[] run() throws InterruptedException, TimeoutException {
+    public static double[] run() throws InterruptedException, TimeoutException, ExecutionException {
 
-        double time[] = new double[measures];
-        double time2[] = new double[measures];
-        double size[] = new double[measures];
-        double lbound[] = new double[measures];
-        double ubound[] = new double[measures];
+        double time[] = new double[repetitions];
+        double time2[] = new double[repetitions];
+        double size[] = new double[repetitions];
+        double lbound[] = new double[repetitions];
+        double ubound[] = new double[repetitions];
 
         ch.idsia.crema.utility.InvokerWithTimeout<double[]> invoker = new InvokerWithTimeout<>();
 
         // Warm-up
         for(int i=0; i<warmups; i++){
-            double[] out = invoker.run(RunExperiments::experiment, TIMEOUT*2);
+            double[] out =experiment();//double[] out = invoker.run(RunExperiments::experiment, TIMEOUT*2);
             System.out.println("Warm-up #"+i+" in "+out[0]+" ms.");
         }
 
         // Measures
-        for(int i=0; i<measures; i++){
+        for(int i = 0; i< repetitions; i++){
 
             double[] out = invoker.run(RunExperiments::experiment, TIMEOUT);
             System.out.println("Measurement #"+i+" in "+out[0]+" ms. size="+out[2]);

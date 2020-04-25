@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.concurrent.*;
 
 public class  InvokerWithTimeout<R extends Object>  {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
 
         InvokerWithTimeout<double[]> invoker = new InvokerWithTimeout<>();
 
@@ -21,7 +21,7 @@ public class  InvokerWithTimeout<R extends Object>  {
     }
 
 
-    public R run(Callable<R> task, long seconds) throws TimeoutException, InterruptedException {
+    public R run(Callable<R> task, long seconds) throws TimeoutException, InterruptedException, ExecutionException {
 
         ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -29,14 +29,15 @@ public class  InvokerWithTimeout<R extends Object>  {
         Future<R> future = executorService.submit(task);
         R result = null;
         try {
-            System.out.println("set timeout "+seconds+" s.");
+            //System.out.println("set timeout "+seconds+" s.");
             result = future.get(seconds, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
             executorService.shutdownNow();
             throw new TimeoutException();
         } catch (Exception e) {
+            //e.printStackTrace();
             executorService.shutdownNow();
-            throw new InterruptedException();
+            throw e;
         }
         executorService.shutdownNow();
         return result;

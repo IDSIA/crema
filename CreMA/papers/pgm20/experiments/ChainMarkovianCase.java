@@ -9,46 +9,66 @@ import ch.idsia.crema.inference.causality.CausalVE;
 import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
 import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 public class ChainMarkovianCase {
     public static void main(String[] args) throws InterruptedException {
 
-        ////////// Parameters //////////
-
         /** Number of endogenous variables in the chain (should be 3 or greater)*/
-        int N = 5;
+        int N = 4;
 
         /** Number of states in endogenous variables */
-        int endoVarSize = 2;
+        int endoVarSize = 3;
 
         /** Number of states in the exogenous variables */
-        int exoVarSize = 6;
+        int exoVarSize = 9;
 
         /** epsilon value for ApproxLP  */
-        double eps = 0.0000;
+        double eps = 0.00001;
+
+
+        long seed = 1234;
+
+
+
 
         /////////////////////////////////
 
+
+
+
+
+        RandomUtil.getRandom().setSeed(seed);
         // Load the chain model
         StructuralCausalModel model = RandomChainMarkovian.buildModel(N, endoVarSize, exoVarSize);
+
 
         // Query: P(X[N/2] | X[N-1]=0, do(X[0])=0)
 
         int[] X = model.getEndogenousVars();
 
         TIntIntHashMap evidence = new TIntIntHashMap();
-        //evidence.put(X[N-1], 0);
-        //evidence.put(X[0], 0);
 
+        int obsvar = X[0];
+        //obsvar = -1;
+        int dovar = X[N-1];
+
+       if(obsvar!=-1) evidence.put(obsvar, 1);
 
         TIntIntHashMap intervention = new TIntIntHashMap();
-        intervention.put(X[0], 0);
+        if(dovar!=-1) intervention.put(X[0], 0);
 
 
         int target = X[N/2];
-        target = X[N-1];
+        target = X[1];
 
+
+
+        System.out.println("\nChainMarkovian\n   N=" + N + " endovarsize=" + endoVarSize + " exovarsize=" + exoVarSize + " target=" + target + " obsvar=" + obsvar + " dovar=" + dovar + " seed=" + seed);
+        System.out.println("=================================================================");
+
+        model.printSummary();
 
         // Run inference
 
