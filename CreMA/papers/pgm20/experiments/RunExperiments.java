@@ -10,17 +10,21 @@ import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.models.causal.RandomChainMarkovian;
 import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
+import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.InvokerWithTimeout;
 import ch.idsia.crema.utility.RandomUtil;
+import com.google.common.collect.Streams;
 import com.google.common.primitives.Doubles;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import org.apache.commons.cli.*;
+import org.apache.commons.math3.util.Pair;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -267,17 +271,19 @@ public class RunExperiments {
         double timeElapsedQuery = Duration.between(queryStart, finish).toNanos()/Math.pow(10,6);
 
 
+        double[] bounds = new double[endoVarSize*2];
         for(int i=0; i<endoVarSize; i++) {
             if (lowerBound[i] > upperBound[i]) {
                 double aux = lowerBound[i];
                 lowerBound[i] = upperBound[i];
                 upperBound[i] = aux;
             }
+            bounds[i*2]=lowerBound[i];
+            bounds[i*2+1]= upperBound[i];
         }
 
 
-        if(intervalSize<0.0) throw new RuntimeException("negative interval size");
-        return Doubles.concat(new double[]{timeElapsed, timeElapsedQuery}, lowerBound, upperBound);
+        return Doubles.concat(new double[]{timeElapsed, timeElapsedQuery}, bounds);
     }
 
 
