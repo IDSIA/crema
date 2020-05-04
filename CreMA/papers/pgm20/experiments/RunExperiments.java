@@ -162,7 +162,7 @@ public class RunExperiments {
             System.out.println("Running experiments...");
 
             double res[] = run();
-            for(int i=0; i<resultSize*2; i++){
+            for(int i=0; i<res.length; i++){
                 if(i!=res.length-1)
                     System.out.print(res[i]+",");
                 else
@@ -233,8 +233,8 @@ public class RunExperiments {
 
 
         double intervalSize = 0.0;
-        double[] lowerBound = new double[endoVarSize];
-        double[] upperBound = new double[endoVarSize];
+        double[] lowerBound = new double[resultSize];
+        double[] upperBound = new double[resultSize];
 
         if(method.equals("CVE")) {
             CausalInference inf1 = new CausalVE(model);
@@ -326,7 +326,6 @@ public class RunExperiments {
         return Doubles.concat(new double[] {time/repetitions, time2/repetitions},
                 DoubleStream.of(lbound).map( v -> v/repetitions).toArray(),
                 DoubleStream.of(ubound).map( v -> v/repetitions).toArray());
-
 
     }
 
