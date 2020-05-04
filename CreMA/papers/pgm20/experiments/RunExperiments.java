@@ -10,6 +10,8 @@ import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.models.causal.RandomChainMarkovian;
 import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
+import ch.idsia.crema.models.causal.TerBinChainMarkovian;
+import ch.idsia.crema.models.causal.TerBinChainNonMarkovian;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.InvokerWithTimeout;
 import ch.idsia.crema.utility.RandomUtil;
@@ -53,7 +55,7 @@ public class RunExperiments {
 
     static long TIMEOUT = 5*60;
 
-
+    static int resultSize = 3;
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -140,9 +142,14 @@ public class RunExperiments {
                 model = RandomChainMarkovian.buildModel(N, endoVarSize, exoVarSize);
             else if (modelName.equals("ChainNonMarkovian"))
                 model = RandomChainNonMarkovian.buildModel(N, endoVarSize, exoVarSize);
+            else if (modelName.equals("TerBinChainMarkovian"))
+                model = TerBinChainMarkovian.buildModel(N);
+            else if (modelName.equals("TerBinChainNonMarkovian"))
+                model = TerBinChainNonMarkovian.buildModel(N);
             else
                 throw new IllegalArgumentException("Non valid model name");
 
+            resultSize = model.getDomain(target).getCombinations();
 
             int[] X = model.getEndogenousVars();
 
@@ -155,7 +162,7 @@ public class RunExperiments {
             System.out.println("Running experiments...");
 
             double res[] = run();
-            for(int i=0; i<res.length; i++){
+            for(int i=0; i<resultSize*2; i++){
                 if(i!=res.length-1)
                     System.out.print(res[i]+",");
                 else
@@ -167,16 +174,16 @@ public class RunExperiments {
 
         }catch (TimeoutException e){
             System.out.println(e);
-            String[] nanStrings = IntStream.range(0, endoVarSize*2).mapToObj(i -> "nan").toArray(String[]::new);
+            String[] nanStrings = IntStream.range(0, resultSize*2).mapToObj(i -> "nan").toArray(String[]::new);
             System.out.println("inf,inf,"+String.join(",",nanStrings));
         }catch (Exception e){
             System.out.println(e);
             //e.printStackTrace();
-            String[] nanStrings = IntStream.range(0, endoVarSize*2).mapToObj(i -> "nan").toArray(String[]::new);
+            String[] nanStrings = IntStream.range(0, resultSize*2).mapToObj(i -> "nan").toArray(String[]::new);
             System.out.println("nan,nan,"+String.join(",",nanStrings));
         }catch (Error e){
             System.out.println(e);
-            String[] nanStrings = IntStream.range(0, endoVarSize*2).mapToObj(i -> "nan").toArray(String[]::new);
+            String[] nanStrings = IntStream.range(0, resultSize*2).mapToObj(i -> "nan").toArray(String[]::new);
             System.out.println("nan,nan,"+String.join(",",nanStrings));
 
         }
@@ -245,7 +252,7 @@ public class RunExperiments {
             VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
             if (verbose) System.out.println(result2);
 
-            for(int i=0; i<endoVarSize; i++) {
+            for(int i=0; i<resultSize; i++) {
                 lowerBound[i] =Stream.of(result2.filter(target, i).getData()[0]).mapToDouble(v -> v[0]).min().getAsDouble();
                 upperBound[i] = Stream.of(result2.filter(target, i).getData()[0]).mapToDouble(v -> v[0]).max().getAsDouble();
             }
@@ -257,7 +264,7 @@ public class RunExperiments {
             IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
             if(verbose) System.out.println(result3);
 
-            for(int i=0; i<endoVarSize; i++) {
+            for(int i=0; i<resultSize; i++) {
                 lowerBound[i] = result3.getLower(0)[i];
                 upperBound[i] = result3.getUpper(0)[i];
             }
@@ -271,8 +278,8 @@ public class RunExperiments {
         double timeElapsedQuery = Duration.between(queryStart, finish).toNanos()/Math.pow(10,6);
 
 
-        double[] bounds = new double[endoVarSize*2];
-        for(int i=0; i<endoVarSize; i++) {
+        double[] bounds = new double[resultSize*2];
+        for(int i=0; i<resultSize; i++) {
             if (lowerBound[i] > upperBound[i]) {
                 double aux = lowerBound[i];
                 lowerBound[i] = upperBound[i];
@@ -291,8 +298,8 @@ public class RunExperiments {
 
         double time = 0.0;
         double time2 = 0.0;
-        double lbound[] = new double[endoVarSize];
-        double ubound[] = new double[endoVarSize];
+        double lbound[] = new double[resultSize];
+        double ubound[] = new double[resultSize];
 
         ch.idsia.crema.utility.InvokerWithTimeout<double[]> invoker = new InvokerWithTimeout<>();
 
@@ -310,9 +317,9 @@ public class RunExperiments {
             System.out.println("Measurement #"+i+" in "+out[0]+" ms.");
             time += out[0];
             time2 += out[1];
-            for(int k = 0; k<endoVarSize; k++) {
+            for(int k = 0; k<resultSize; k++) {
                 lbound[k] = out[k+2];
-                ubound[k] = out[k+2+endoVarSize];
+                ubound[k] = out[k+2+resultSize];
             }
         }
 

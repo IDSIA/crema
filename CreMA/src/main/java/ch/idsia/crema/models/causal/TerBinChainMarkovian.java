@@ -2,7 +2,6 @@ package ch.idsia.crema.models.causal;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.causality.CausalInference;
 import ch.idsia.crema.inference.causality.CausalVE;
@@ -15,26 +14,37 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import java.util.Arrays;
 
 
-public class RandomChainNonMarkovian {
+public class TerBinChainMarkovian {
 
     public static int PROB_DECIMALS = 2;
 
-    public static StructuralCausalModel buildModel(int n, int endoSize, int exoSize) {
+    public static StructuralCausalModel buildModel(int n) {
+
 
         StructuralCausalModel model = new StructuralCausalModel();
 
         // add endogenous
         for (int i=0; i < n; i++) {
-            model.addVariable(endoSize);
+            if(i%2!=0)
+                model.addVariable(2);
+            else
+                model.addVariable(3);
             if(i>0)
                 model.addParent(i, i-1);
         }
 
+
+
         //add exogenous
-        for (int i=0; i < n; i+=2) {
-            int u = model.addVariable(exoSize, true);
+        for (int i=0; i < n; i++) {
+            int u;
+
+            if(i%2!=0)
+                u = model.addVariable(3, true);
+            else
+                u = model.addVariable(4, true);
+
             model.addParent(i,u);
-            if(i+1<n) model.addParent(i+1, u);
         }
 
         model.fillWithRandomFactors(PROB_DECIMALS, false);
@@ -45,19 +55,16 @@ public class RandomChainNonMarkovian {
 
     }
 
-    public static StructuralCausalModel buildModel(int n, int endoSize) {
-        return buildModel(n, endoSize, -1);
-    }
 
-
+    // Example of use
     public static void main(String[] args) throws InterruptedException {
-        int n = 5;
-        StructuralCausalModel model = buildModel(n, 2, 6);
+        StructuralCausalModel model = buildModel(5);
 
         int[] X = model.getEndogenousVars();
 
+        // without evidence this is not working
         TIntIntHashMap evidence = new TIntIntHashMap();
-        evidence.put(X[n-1], 0);
+        evidence.put(X[X.length-1], 0);
 
         TIntIntHashMap intervention = new TIntIntHashMap();
         intervention.put(X[0], 0);
@@ -68,9 +75,7 @@ public class RandomChainNonMarkovian {
         BayesianFactor result = (BayesianFactor) inf.query(target, evidence, intervention);
         System.out.println(result);
 
-
-
-        // error, this is not working
+        // with n>3, heap space error
         CausalInference inf2 = new CredalCausalVE(model);
         VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
         System.out.println(result2);
@@ -78,11 +83,10 @@ public class RandomChainNonMarkovian {
 
         CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(0.001);
         IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
-        System.out.println(result3);
-
-
-
+        System.out.println(Arrays.toString(result3.getUpper()));
+        System.out.println(Arrays.toString(result3.getLower()));
 
     }
+
 
 }
