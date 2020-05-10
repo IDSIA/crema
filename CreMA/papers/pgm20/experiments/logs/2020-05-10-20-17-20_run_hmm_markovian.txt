@@ -1,0 +1,184 @@
+2020-05-10-20-17-20
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=2 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 53.3 ms.
+Warm-up #1 in 9.758 ms.
+Measurement #0 in 8.037 ms.
+Measurement #1 in 7.003 ms.
+Measurement #2 in 7.295 ms.
+Measurement #3 in 5.56 ms.
+Measurement #4 in 7.071 ms.
+6.9932,6.3374,0.192,0.192,0.008,0.008
+
+[6.9932, 6.3374, 0.192, 0.192, 0.008, 0.008]
+2020-05-10-20-17-22
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=2 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1307.096 ms.
+Warm-up #1 in 229.895 ms.
+Measurement #0 in 191.379 ms.
+Measurement #1 in 156.764 ms.
+Measurement #2 in 134.996 ms.
+Measurement #3 in 143.875 ms.
+Measurement #4 in 116.981 ms.
+148.799,2.3246,0.192,0.192,0.007999999999999998,0.007999999999999998
+
+[148.799, 2.3246, 0.192, 0.192, 0.007999999999999998, 0.007999999999999998]
+2020-05-10-20-17-26
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=2 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 324.642 ms.
+Warm-up #1 in 112.002 ms.
+Measurement #0 in 94.934 ms.
+Measurement #1 in 89.031 ms.
+Measurement #2 in 80.142 ms.
+Measurement #3 in 74.271 ms.
+Measurement #4 in 54.213 ms.
+78.51820000000001,72.5414,0.2,0.2,0.0,0.0
+
+[78.51820000000001, 72.5414, 0.2, 0.2, 0.0, 0.0]
+2020-05-10-20-17-28
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=2 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 42.782 ms.
+Warm-up #1 in 9.944 ms.
+Measurement #0 in 7.167 ms.
+Measurement #1 in 5.038 ms.
+Measurement #2 in 5.303 ms.
+Measurement #3 in 6.119 ms.
+Measurement #4 in 6.096 ms.
+5.944599999999999,5.3420000000000005,0.022,0.022,0.17800000000000002,0.17800000000000002
+
+[5.944599999999999, 5.3420000000000005, 0.022, 0.022, 0.17800000000000002, 0.17800000000000002]
+2020-05-10-20-17-29
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-32
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-32
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-33
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-33
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-33
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-33
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-33
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-33
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-34
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-34
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-34
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-34
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-34
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-35
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-35
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-35
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-35
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-35
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-36
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-36
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-36
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-36
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-36
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-37
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-37
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-37
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-37
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-38
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-38
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-38
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-38
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-38
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-39
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-39
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-39
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-39
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-39
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-40
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-40
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-40
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-40
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-41
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-41
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-41
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-41
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-41
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-42
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-42
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-42
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-42
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-42
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-43
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-43
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-43
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-43
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-44
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-44
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-44
+[inf, inf, nan, nan, nan, nan]
+2020-05-10-20-17-44
+[inf, inf, nan, nan, nan, nan]

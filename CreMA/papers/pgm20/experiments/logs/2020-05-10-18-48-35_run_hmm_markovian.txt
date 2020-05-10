@@ -1,0 +1,106 @@
+2020-05-10-18-48-35
+
+HMM-Markovian
+   N=10 endovarsize=2 exovarsize=6 target=5 obsvar=9 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.OutOfMemoryError: Java heap space
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-18-48-37
+
+HMM-Markovian
+   N=10 endovarsize=2 exovarsize=6 target=5 obsvar=9 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 2654.635 ms.
+Warm-up #1 in 852.126 ms.
+Measurement #0 in 677.846 ms.
+Measurement #1 in 732.277 ms.
+Measurement #2 in 786.78 ms.
+Measurement #3 in 756.228 ms.
+Measurement #4 in 638.901 ms.
+718.4064000000001,469.3308,0.1632864,0.1632864,0.036713600000000006,0.036713600000000006
+
+2020-05-10-18-48-45
+
+HMM-Markovian
+   N=10 endovarsize=2 exovarsize=6 target=5 obsvar=9 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1925.752 ms.
+Warm-up #1 in 1153.728 ms.
+Measurement #0 in 983.776 ms.
+Measurement #1 in 736.704 ms.
+Measurement #2 in 847.924 ms.
+Measurement #3 in 746.229 ms.
+Measurement #4 in 756.726 ms.
+814.2718,801.1596000000001,0.16325824081767987,0.16325824081767995,0.03674175918232006,0.03674175918232012
+
+2020-05-10-18-48-54
+
+HMM-Markovian
+   N=10 endovarsize=2 exovarsize=6 target=5 obsvar=9 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.OutOfMemoryError: Java heap space
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-18-48-56
+
+HMM-Markovian
+   N=10 endovarsize=2 exovarsize=6 target=5 obsvar=9 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 2503.854 ms.
+Warm-up #1 in 1016.785 ms.
+Measurement #0 in 743.021 ms.
+Measurement #1 in 696.343 ms.
+Measurement #2 in 858.421 ms.
+Measurement #3 in 662.084 ms.
+Measurement #4 in 616.832 ms.
+715.3401999999999,408.9946,0.09813618507425813,0.09813618507425813,0.10186381492574186,0.10186381492574186
+
+2020-05-10-18-49-04
+
+HMM-Markovian
+   N=10 endovarsize=2 exovarsize=6 target=5 obsvar=9 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 2183.123 ms.
+Warm-up #1 in 1211.797 ms.
+Measurement #0 in 1102.077 ms.
+Measurement #1 in 850.524 ms.
+Measurement #2 in 715.204 ms.
+Measurement #3 in 749.81 ms.
+Measurement #4 in 768.393 ms.
+837.2016,822.9104,0.09814320892577448,0.09814320892577458,0.1018567910742254,0.10185679107422552
+
+2020-05-10-18-49-13
+2020-05-10-18-49-14
+2020-05-10-18-49-15
+2020-05-10-18-49-15
+2020-05-10-18-49-15
+2020-05-10-18-49-16
+2020-05-10-18-49-16
+2020-05-10-18-49-16
+2020-05-10-18-49-16
+2020-05-10-18-49-16
+2020-05-10-18-49-17
+2020-05-10-18-49-17
+2020-05-10-18-49-17
+2020-05-10-18-49-17
+2020-05-10-18-49-17
+2020-05-10-18-49-18
+2020-05-10-18-49-18
+2020-05-10-18-49-18
+2020-05-10-18-49-18
+2020-05-10-18-49-18
+2020-05-10-18-49-19
+2020-05-10-18-49-19
+2020-05-10-18-49-19
+2020-05-10-18-49-19
+2020-05-10-18-49-19
+2020-05-10-18-49-20
+2020-05-10-18-49-20
+2020-05-10-18-49-20

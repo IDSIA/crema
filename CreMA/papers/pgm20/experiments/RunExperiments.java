@@ -8,10 +8,7 @@ import ch.idsia.crema.inference.causality.CausalVE;
 import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
 import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.models.causal.RandomChainMarkovian;
-import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
-import ch.idsia.crema.models.causal.TerBinChainMarkovian;
-import ch.idsia.crema.models.causal.TerBinChainNonMarkovian;
+import ch.idsia.crema.models.causal.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.InvokerWithTimeout;
 import ch.idsia.crema.utility.RandomUtil;
@@ -146,6 +143,10 @@ public class RunExperiments {
                 model = TerBinChainMarkovian.buildModel(N);
             else if (modelName.equals("TerBinChainNonMarkovian"))
                 model = TerBinChainNonMarkovian.buildModel(N);
+            else if (modelName.equals("HMM-Markovian"))
+                model = RandomHMM.buildModel(true, N, endoVarSize, exoVarSize);
+            else if (modelName.equals("HMM-NonMarkovian"))
+                model = RandomHMM.buildModel(false, N, endoVarSize, exoVarSize);
             else
                 throw new IllegalArgumentException("Non valid model name");
 
@@ -168,9 +169,6 @@ public class RunExperiments {
                 else
                     System.out.println(res[i]);
             }
-
-
-
 
         }catch (TimeoutException e){
             System.out.println(e);

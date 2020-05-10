@@ -1,0 +1,195 @@
+2020-05-10-18-47-48
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 51.7 ms.
+Warm-up #1 in 10.845 ms.
+Measurement #0 in 8.597 ms.
+Measurement #1 in 9.948 ms.
+Measurement #2 in 10.272 ms.
+Measurement #3 in 8.241 ms.
+Measurement #4 in 7.434 ms.
+8.898399999999999,7.9036,0.2,0.2,0.0,0.0
+
+2020-05-10-18-47-49
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1127.424 ms.
+Warm-up #1 in 235.283 ms.
+Measurement #0 in 171.536 ms.
+Measurement #1 in 163.598 ms.
+Measurement #2 in 144.005 ms.
+Measurement #3 in 137.899 ms.
+Measurement #4 in 112.424 ms.
+145.8924,5.8596,0.2,0.2,0.0,0.0
+
+2020-05-10-18-47-53
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 792.208 ms.
+Warm-up #1 in 403.32 ms.
+Measurement #0 in 267.54 ms.
+Measurement #1 in 221.797 ms.
+Measurement #2 in 249.402 ms.
+Measurement #3 in 217.459 ms.
+Measurement #4 in 199.33 ms.
+231.1056,225.1784,0.19996159910892866,0.19996159910892866,3.840089107133398E-5,3.8400891071344036E-5
+
+2020-05-10-18-47-57
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 42.705 ms.
+Warm-up #1 in 9.412 ms.
+Measurement #0 in 7.776 ms.
+Measurement #1 in 7.688 ms.
+Measurement #2 in 6.931 ms.
+Measurement #3 in 6.016 ms.
+Measurement #4 in 6.395 ms.
+6.9612,6.354000000000001,0.10200000000000001,0.10200000000000001,0.09800000000000002,0.09800000000000002
+
+2020-05-10-18-47-58
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 708.647 ms.
+Warm-up #1 in 185.929 ms.
+Measurement #0 in 213.193 ms.
+Measurement #1 in 164.174 ms.
+Measurement #2 in 139.951 ms.
+Measurement #3 in 122.17 ms.
+Measurement #4 in 111.521 ms.
+150.2018,5.7186,0.10200000000000001,0.10200000000000001,0.098,0.098
+
+2020-05-10-18-48-01
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 751.805 ms.
+Warm-up #1 in 282.801 ms.
+Measurement #0 in 266.513 ms.
+Measurement #1 in 196.969 ms.
+Measurement #2 in 287.178 ms.
+Measurement #3 in 214.377 ms.
+Measurement #4 in 215.409 ms.
+236.08919999999998,230.8172,0.10204043495444567,0.10204043495444579,0.09795956504555423,0.09795956504555432
+
+2020-05-10-18-48-04
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 31.098 ms.
+Warm-up #1 in 6.198 ms.
+Measurement #0 in 8.328 ms.
+Measurement #1 in 9.374 ms.
+Measurement #2 in 9.43 ms.
+Measurement #3 in 10.769 ms.
+Measurement #4 in 9.302 ms.
+9.4406,8.691999999999998,0.046,0.046,0.154,0.154
+
+2020-05-10-18-48-06
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 724.095 ms.
+Warm-up #1 in 216.909 ms.
+Measurement #0 in 181.627 ms.
+Measurement #1 in 188.995 ms.
+Measurement #2 in 147.082 ms.
+Measurement #3 in 125.304 ms.
+Measurement #4 in 114.642 ms.
+151.52999999999997,5.98,0.046,0.046,0.154,0.154
+
+2020-05-10-18-48-09
+
+HMM-Markovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 660.909 ms.
+Warm-up #1 in 297.225 ms.
+Measurement #0 in 267.635 ms.
+Measurement #1 in 255.961 ms.
+Measurement #2 in 218.247 ms.
+Measurement #3 in 266.862 ms.
+Measurement #4 in 228.54 ms.
+247.449,242.1116,0.04601900436015734,0.04601900436015739,0.15398099563984263,0.15398099563984266
+
+2020-05-10-18-48-12
+2020-05-10-18-48-13
+2020-05-10-18-48-15
+2020-05-10-18-48-15
+2020-05-10-18-48-15
+2020-05-10-18-48-15
+2020-05-10-18-48-15
+2020-05-10-18-48-16
+2020-05-10-18-48-16
+2020-05-10-18-48-16
+2020-05-10-18-48-16
+2020-05-10-18-48-16
+2020-05-10-18-48-17
+2020-05-10-18-48-17
+2020-05-10-18-48-17
+2020-05-10-18-48-17
+2020-05-10-18-48-17
+2020-05-10-18-48-18
+2020-05-10-18-48-18
+2020-05-10-18-48-18
+2020-05-10-18-48-18
+2020-05-10-18-48-18
+2020-05-10-18-48-19
+2020-05-10-18-48-19
+2020-05-10-18-48-19
+2020-05-10-18-48-19
+2020-05-10-18-48-19
+2020-05-10-18-48-19
+
+HMM-Markovian
+   N=4 endovarsize=2 exovarsize=6 target=2 obsvar=3 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 144.444 ms.
+Warm-up #1 in 84.986 ms.
+Measurement #0 in 54.851 ms.
+Measurement #1 in 42.089 ms.
+Measurement #2 in 33.909 ms.
+Measurement #3 in 31.752 ms.
+Measurement #4 in 38.381 ms.
+40.1964,39.132600000000004,0.142,0.142,0.05800000000000003,0.05800000000000003
+
+2020-05-10-18-48-21
+
+HMM-Markovian
+   N=4 endovarsize=2 exovarsize=6 target=2 obsvar=3 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 780.783 ms.
+Warm-up #1 in 258.185 ms.
+Measurement #0 in 239.303 ms.
+Measurement #1 in 205.287 ms.
+Measurement #2 in 155.44 ms.
+Measurement #3 in 154.408 ms.
+Measurement #4 in 124.443 ms.
+175.7762,4.7456,0.14200000000000002,0.14200000000000002,0.057999999999999996,0.057999999999999996
+
+2020-05-10-18-48-25
+2020-05-10-18-48-28
+2020-05-10-18-48-29
