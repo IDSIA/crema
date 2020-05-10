@@ -1,0 +1,540 @@
+2020-05-07-15-34-00
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 611.736 ms.
+611.736,560.016,0.14514005371416638,0.1451545962453979,0.854845403754602,0.8548599462858336
+
+2020-05-07-15-34-01
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 603.152 ms.
+603.152,547.066,0.9595800762082187,0.95959509587546,0.040404904124540016,0.04041992379178124
+
+2020-05-07-15-34-03
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 623.309 ms.
+623.309,570.158,0.011930173160989224,0.9822998905248376,0.01770010947516243,0.9880698268390108
+
+2020-05-07-15-34-04
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Measurement #0 in 605.726 ms.
+605.726,554.267,0.20070516700630148,0.2008213609162544,0.7991786390837456,0.7992948329936985
+
+2020-05-07-15-34-06
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Measurement #0 in 640.618 ms.
+640.618,588.356,0.05298638812415515,0.05299207172786253,0.9470079282721374,0.9470136118758449
+
+2020-05-07-15-34-07
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Measurement #0 in 647.255 ms.
+647.255,595.01,0.9735513248364792,0.9998943644096635,1.0563559033649472E-4,0.026448675163520785
+
+2020-05-07-15-34-09
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Measurement #0 in 635.286 ms.
+635.286,581.553,0.004370940766656721,0.004373008826520301,0.9956269911734797,0.9956290592333433
+
+2020-05-07-15-34-11
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Measurement #0 in 571.007 ms.
+571.007,516.753,0.03492550085847251,0.24682057308546101,0.753179426914539,0.9650744991415275
+
+2020-05-07-15-34-12
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Measurement #0 in 641.163 ms.
+641.163,585.091,0.05156044997877924,0.8200307274783986,0.17996927252160144,0.9484395500212208
+
+2020-05-07-15-34-14
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Measurement #0 in 699.028 ms.
+699.028,638.052,0.045064467975663144,0.13180561638269628,0.8681943836173037,0.9549355320243369
+
+2020-05-07-15-34-15
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 629.675 ms.
+629.675,574.687,0.14514005371416638,0.1451545962453979,0.854845403754602,0.8548599462858336
+
+2020-05-07-15-34-17
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 607.438 ms.
+607.438,552.757,0.9595800762082187,0.95959509587546,0.040404904124540016,0.04041992379178124
+
+2020-05-07-15-34-18
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 595.532 ms.
+595.532,540.299,0.011930173160989226,0.9822998905248376,0.01770010947516243,0.9880698268390108
+
+2020-05-07-15-34-20
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Measurement #0 in 598.455 ms.
+598.455,545.103,0.20070516700630148,0.2008213609162544,0.7991786390837456,0.7992948329936985
+
+2020-05-07-15-34-21
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Measurement #0 in 620.096 ms.
+620.096,566.303,0.05298638812415514,0.05299207172786253,0.9470079282721374,0.9470136118758449
+
+2020-05-07-15-34-23
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Measurement #0 in 655.721 ms.
+655.721,598.575,0.9735513248364792,0.9998943644096635,1.0563559033649472E-4,0.026448675163520785
+
+2020-05-07-15-34-25
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Measurement #0 in 587.098 ms.
+587.098,537.334,0.004370940766656722,0.0043730088265202995,0.9956269911734797,0.9956290592333433
+
+2020-05-07-15-34-26
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Measurement #0 in 580.122 ms.
+580.122,526.866,0.03492550085847251,0.24682057308546101,0.753179426914539,0.9650744991415275
+
+2020-05-07-15-34-28
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Measurement #0 in 658.921 ms.
+658.921,607.867,0.05156044997877924,0.8200307274783986,0.17996927252160144,0.9484395500212208
+
+2020-05-07-15-34-29
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=1 obsvar=2 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Measurement #0 in 650.933 ms.
+650.933,594.423,0.045064467975663144,0.13180561638269628,0.8681943836173037,0.9549355320243369
+
+2020-05-07-15-34-31
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 1170.966 ms.
+1170.966,1118.117,0.14188865928516373,0.14190325021748967,0.8580967497825103,0.8581113407148363
+
+2020-05-07-15-34-33
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 1216.064 ms.
+1216.064,1157.077,0.9852708618997705,0.985276481588376,0.014723518411624033,0.014729138100229466
+
+2020-05-07-15-34-35
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 1051.944 ms.
+1051.944,995.612,0.009498394314872751,0.9778153387509528,0.02218466124904718,0.9905016056851272
+
+2020-05-07-15-34-37
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Measurement #0 in 1218.183 ms.
+1218.183,1162.01,0.09130862187982734,0.09136872270236526,0.9086312772976347,0.9086913781201726
+
+2020-05-07-15-34-39
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Measurement #0 in 1279.891 ms.
+1279.891,1219.902,0.11975706292984603,0.11976900304183385,0.8802309969581662,0.880242937070154
+
+2020-05-07-15-34-41
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Measurement #0 in 1203.634 ms.
+1203.634,1146.94,0.9515434841097264,0.9998020075537126,1.979924462873761E-4,0.04845651589027351
+
+2020-05-07-15-34-43
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Measurement #0 in 1191.867 ms.
+1191.867,1131.871,0.06804620603228399,0.06807637960963238,0.9319236203903676,0.931953793967716
+
+2020-05-07-15-34-46
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Measurement #0 in 982.827 ms.
+982.827,924.793,0.02734555577395729,0.2029223620160486,0.7970776379839514,0.9726544442260427
+
+2020-05-07-15-34-47
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Measurement #0 in 1160.261 ms.
+1160.261,1103.519,0.09574670333781199,0.8987321002760752,0.10126789972392482,0.904253296662188
+
+2020-05-07-15-34-50
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=1 obsvar=4 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Measurement #0 in 1207.152 ms.
+1207.152,1150.529,0.3526671662913002,0.6367132972085284,0.36328670279147157,0.6473328337086999
+
+2020-05-07-15-34-52
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 1065.144 ms.
+1065.144,1008.216,0.7908791682927141,0.7909101496044533,0.20908985039554678,0.20912083170728585
+
+2020-05-07-15-34-54
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 1082.829 ms.
+1082.829,1024.318,0.9972665971670143,0.997267356767103,0.002732643232897029,0.002733402832985721
+
+2020-05-07-15-34-56
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 1198.811 ms.
+1198.811,1139.243,0.8775167713913844,0.959573841338124,0.040426158661876044,0.1224832286086156
+
+2020-05-07-15-34-58
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Measurement #0 in 1254.069 ms.
+1254.069,1197.119,0.37384948148265945,0.373878318268634,0.626121681731366,0.6261505185173406
+
+2020-05-07-15-35-00
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Measurement #0 in 1228.348 ms.
+1228.348,1171.329,0.9292094442411332,0.9292168866495146,0.07078311335048539,0.07079055575886684
+
+2020-05-07-15-35-02
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Measurement #0 in 1234.314 ms.
+1234.314,1178.696,0.32242842648078285,0.3300005986637925,0.6699994013362075,0.6775715735192172
+
+2020-05-07-15-35-04
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Measurement #0 in 1137.639 ms.
+1137.639,1081.439,0.9026745629942554,0.9027055726704418,0.09729442732955818,0.09732543700574453
+
+2020-05-07-15-35-07
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Measurement #0 in 978.769 ms.
+978.769,924.688,0.6843998157990394,0.7056003850515996,0.2943996149484004,0.3156001842009606
+
+2020-05-07-15-35-08
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Measurement #0 in 1184.867 ms.
+1184.867,1131.448,0.46934986736638806,0.6717888376169139,0.3282111623830861,0.5306501326336119
+
+2020-05-07-15-35-11
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Measurement #0 in 1142.625 ms.
+1142.625,1088.623,0.38073397092439165,0.6167985287212262,0.3832014712787738,0.6192660290756083
+
+2020-05-07-15-35-13
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 1915.793 ms.
+1915.793,1853.271,0.14523982305361105,0.14525517086078601,0.854744829139214,0.854760176946389
+
+2020-05-07-15-35-16
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 2075.92 ms.
+2075.92,2015.266,0.911544216090336,0.9115754406018286,0.0884245593981714,0.08845578390966402
+
+2020-05-07-15-35-19
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 1998.959 ms.
+1998.959,1941.708,0.010387240650774739,0.979692986451369,0.02030701354863096,0.9896127593492252
+
+2020-05-07-15-35-21
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Measurement #0 in 1939.077 ms.
+1939.077,1877.65,0.1133866047573378,0.11345942318791122,0.8865405768120888,0.8866133952426622
+
+2020-05-07-15-35-24
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Measurement #0 in 1948.666 ms.
+1948.666,1883.502,0.12006400599716043,0.12007597240675927,0.8799240275932407,0.8799359940028396
+
+2020-05-07-15-35-27
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Measurement #0 in 1982.515 ms.
+1982.515,1920.627,0.9496947168211717,0.9997940550255917,2.059449744083021E-4,0.050305283178828306
+
+2020-05-07-15-35-30
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Measurement #0 in 1974.931 ms.
+1974.931,1916.295,0.07001864759472531,0.07004959206600954,0.9299504079339904,0.9299813524052747
+
+2020-05-07-15-35-33
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Measurement #0 in 1710.152 ms.
+1710.152,1652.672,0.03020996580373957,0.22001799580165984,0.7799820041983402,0.9697900341962604
+
+2020-05-07-15-35-36
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Measurement #0 in 2053.108 ms.
+2053.108,1995.353,0.06983593107873104,0.8628784994267105,0.13712150057328953,0.9301640689212689
+
+2020-05-07-15-35-39
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=1 obsvar=6 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Measurement #0 in 2110.019 ms.
+2110.019,2049.322,0.3062010763238573,0.5867447446284215,0.4132552553715785,0.6937989236761427
+
+2020-05-07-15-35-42
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 1871.66 ms.
+1871.66,1813.912,0.03795931583152687,0.03800815027918388,0.9619918497208161,0.9620406841684731
+
+2020-05-07-15-35-45
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 2117.753 ms.
+2117.753,2060.927,0.7192025553876764,0.7192238255779502,0.28077617442204983,0.2807974446123236
+
+2020-05-07-15-35-48
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 1981.881 ms.
+1981.881,1920.065,0.7770210410893557,0.7965985183852065,0.20340148161479357,0.2229789589106443
+
+2020-05-07-15-35-51
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Measurement #0 in 2031.039 ms.
+2031.039,1968.101,0.9621314886743648,0.9621556994892582,0.03784430051074189,0.037868511325635144
+
+2020-05-07-15-35-54
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Measurement #0 in 1945.985 ms.
+1945.985,1886.988,0.6735634938956341,0.6736078108584008,0.3263921891415992,0.3264365061043659
+
+2020-05-07-15-35-57
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Measurement #0 in 1972.933 ms.
+1972.933,1911.676,0.9815578742278831,0.999736870167507,2.6312983249299204E-4,0.018442125772116902
+
+2020-05-07-15-36-00
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Measurement #0 in 1956.106 ms.
+1956.106,1898.616,0.3494886717372636,0.34950129923730994,0.6504987007626901,0.6505113282627364
+
+2020-05-07-15-36-03
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Measurement #0 in 1740.224 ms.
+1740.224,1675.724,0.1243866712976487,0.15094916837320888,0.8490508316267912,0.8756133287023513
+
+2020-05-07-15-36-05
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Measurement #0 in 2084.895 ms.
+2084.895,2024.363,0.2173059815526951,0.37052967112220025,0.6294703288777997,0.7826940184473049
+
+2020-05-07-15-36-08
+
+ChainNonMarkovian
+   N=7 endovarsize=2 exovarsize=6 target=3 obsvar=6 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Measurement #0 in 2160.614 ms.
+2160.614,2100.828,0.5216183578876219,0.7502600297177455,0.24973997028225448,0.4783816421123781
+

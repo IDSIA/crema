@@ -1,0 +1,225 @@
+2020-05-07-10-26-53
+
+TerBinChainMarkovian
+   N=3 endovarsize=2 exovarsize=4 target=1 obsvar=2 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 24.002 ms.
+24.002,22.036,0.7723577235772358,0.7723577235772358,0.22764227642276424,0.22764227642276424
+
+2020-05-07-10-26-54
+2020-05-07-10-26-55
+2020-05-07-10-26-55
+
+TerBinChainMarkovian
+   N=3 endovarsize=2 exovarsize=4 target=1 obsvar=2 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 21.989 ms.
+21.989,20.296,0.9299999999999999,0.9299999999999999,0.07,0.07
+
+2020-05-07-10-26-56
+
+TerBinChainMarkovian
+   N=3 endovarsize=2 exovarsize=4 target=1 obsvar=2 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 469.027 ms.
+469.027,29.46,0.9299999999999999,0.9299999999999999,0.06999999999999999,0.06999999999999999
+
+2020-05-07-10-26-58
+
+TerBinChainMarkovian
+   N=3 endovarsize=2 exovarsize=4 target=1 obsvar=2 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 548.905 ms.
+548.905,493.227,0.9298090505886424,0.9298090505886424,0.07019094941135762,0.07019094941135762
+
+2020-05-07-10-26-59
+
+TerBinChainMarkovian
+   N=3 endovarsize=2 exovarsize=4 target=1 obsvar=2 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 23.117 ms.
+23.117,21.335,1.0,1.0,0.0,0.0
+
+2020-05-07-10-27-00
+
+TerBinChainMarkovian
+   N=3 endovarsize=2 exovarsize=4 target=1 obsvar=2 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 469.394 ms.
+469.394,26.826,1.0,1.0,0.0,0.0
+
+2020-05-07-10-27-01
+
+TerBinChainMarkovian
+   N=3 endovarsize=2 exovarsize=4 target=1 obsvar=2 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 482.532 ms.
+482.532,429.279,0.9999247852098682,0.9999247852098682,7.521479013180364E-5,7.521479013183896E-5
+
+2020-05-07-10-27-03
+
+TerBinChainMarkovian
+   N=4 endovarsize=2 exovarsize=4 target=1 obsvar=3 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 22.775 ms.
+22.775,20.985,0.8415263311593497,0.8415263311593497,0.15847366884065028,0.15847366884065028
+
+2020-05-07-10-27-04
+
+TerBinChainMarkovian
+   N=4 endovarsize=2 exovarsize=4 target=1 obsvar=3 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 25.924 ms.
+25.924,23.689,0.8967423756551739,0.8967423756551739,0.10325762434482606,0.10325762434482606
+
+2020-05-07-10-27-05
+
+TerBinChainMarkovian
+   N=4 endovarsize=2 exovarsize=4 target=1 obsvar=3 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 521.943 ms.
+521.943,36.515,0.896742375655174,0.896742375655174,0.10325762434482605,0.10325762434482605
+
+2020-05-07-10-27-06
+
+TerBinChainMarkovian
+   N=4 endovarsize=2 exovarsize=4 target=1 obsvar=3 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 654.071 ms.
+654.071,596.863,0.8964899029373604,0.8964899029373605,0.1035100970626395,0.10351009706263956
+
+2020-05-07-10-27-08
+
+TerBinChainMarkovian
+   N=4 endovarsize=2 exovarsize=4 target=1 obsvar=3 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 25.068 ms.
+25.068,23.014,0.14132698601606664,0.14132698601606664,0.8586730139839334,0.8586730139839334
+
+2020-05-07-10-27-09
+
+TerBinChainMarkovian
+   N=4 endovarsize=2 exovarsize=4 target=1 obsvar=3 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 502.057 ms.
+502.057,33.818,0.14132698601606664,0.14132698601606664,0.8586730139839334,0.8586730139839334
+
+2020-05-07-10-27-10
+
+TerBinChainMarkovian
+   N=4 endovarsize=2 exovarsize=4 target=1 obsvar=3 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 688.139 ms.
+688.139,634.165,0.14241743848336133,0.14241743848336147,0.8575825615166386,0.8575825615166387
+
+2020-05-07-10-27-12
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=1 obsvar=4 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 28.927 ms.
+28.927,23.949,0.9558096452919638,0.9558096452919638,0.04419035470803625,0.04419035470803625
+
+2020-05-07-10-27-13
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=1 obsvar=4 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 26.785 ms.
+26.785,22.296,0.896742375655174,0.896742375655174,0.10325762434482606,0.10325762434482606
+
+2020-05-07-10-27-14
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=1 obsvar=4 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 571.483 ms.
+571.483,53.526,0.896742375655174,0.896742375655174,0.10325762434482605,0.10325762434482605
+
+2020-05-07-10-27-15
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=1 obsvar=4 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 880.358 ms.
+880.358,820.826,0.8965664786370786,0.8965664786370787,0.10343352136292129,0.10343352136292137
+
+2020-05-07-10-27-17
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=1 obsvar=4 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 26.575 ms.
+26.575,22.492,0.753871590944257,0.753871590944257,0.24612840905574296,0.24612840905574296
+
+2020-05-07-10-27-18
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=1 obsvar=4 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 537.966 ms.
+537.966,53.659,0.753871590944257,0.753871590944257,0.24612840905574296,0.24612840905574296
+
+2020-05-07-10-27-19
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=1 obsvar=4 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 968.748 ms.
+968.748,907.186,0.7537696753773383,0.7537696753773385,0.2462303246226615,0.2462303246226617
+
+2020-05-07-10-27-21
+
+TerBinChainMarkovian
+   N=6 endovarsize=2 exovarsize=4 target=1 obsvar=5 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 28.754 ms.
+28.754,24.476,0.9524386062068307,0.9524386062068307,0.04756139379316925,0.04756139379316925
+
+2020-05-07-10-27-22
+
+TerBinChainMarkovian
+   N=6 endovarsize=2 exovarsize=4 target=1 obsvar=5 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 28.654 ms.
+28.654,24.209,0.9573150874093908,0.9573150874093908,0.04268491259060918,0.04268491259060918
+
+2020-05-07-10-27-23
+2020-05-07-10-27-24
+2020-05-07-10-27-24
+2020-05-07-10-27-25
+2020-05-07-10-27-25
+2020-05-07-10-27-26
+
+TerBinChainMarkovian
+   N=7 endovarsize=2 exovarsize=4 target=1 obsvar=6 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 34.899 ms.
+34.899,30.166,0.9477258527522657,0.9477258527522657,0.05227414724773425,0.05227414724773425
+
+2020-05-07-10-27-27
+2020-05-07-10-27-27

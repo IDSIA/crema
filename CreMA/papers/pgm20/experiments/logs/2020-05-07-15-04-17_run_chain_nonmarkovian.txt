@@ -1,0 +1,276 @@
+2020-05-07-15-04-17
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 473.85 ms.
+473.85,37.246,0.9470124013528749,0.9470124013528749,0.05298759864712515,0.05298759864712515
+
+2020-05-07-15-04-19
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 730.598 ms.
+730.598,676.049,0.9468169742081437,0.9468417529931052,0.05315824700689481,0.05318302579185628
+
+2020-05-07-15-04-20
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 805.728 ms.
+805.728,378.595,0.18347151644824816,0.25654450261780104,0.743455497382199,0.8165284835517518
+
+2020-05-07-15-04-22
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 688.892 ms.
+688.892,634.987,0.18366972763362902,0.25656808748263893,0.7434319125173611,0.816330272366371
+
+2020-05-07-15-04-24
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 466.769 ms.
+466.769,50.743,0.07079646017699115,0.9753694581280788,0.02463054187192118,0.9292035398230089
+
+2020-05-07-15-04-25
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 665.412 ms.
+665.412,612.631,0.07115189898762674,0.974691551291821,0.025308448708179054,0.9288481010123733
+
+2020-05-07-15-04-27
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 486.94 ms.
+486.94,42.392,0.01800232288037166,0.01800232288037166,0.9819976771196284,0.9819976771196284
+
+2020-05-07-15-04-28
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 898.066 ms.
+898.066,842.235,0.018173452377089082,0.01817784185640143,0.9818221581435985,0.9818265476229109
+
+2020-05-07-15-04-30
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 545.227 ms.
+545.227,81.899,0.04761904761904762,0.1634241245136187,0.8365758754863815,0.9523809523809524
+
+2020-05-07-15-04-31
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 799.583 ms.
+799.583,747.056,0.04805653118242913,0.1633412162013912,0.8366587837986088,0.9519434688175709
+
+2020-05-07-15-04-33
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 850.262 ms.
+850.262,406.802,0.0019801980198019802,0.04210526315789473,0.9578947368421052,0.998019801980198
+
+2020-05-07-15-04-35
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 832.933 ms.
+832.933,777.957,0.0020115337816222394,0.042474744426927356,0.9575252555730727,0.9979884662183778
+
+2020-05-07-15-04-37
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 475.393 ms.
+475.393,35.004,0.9470124013528749,0.9470124013528749,0.05298759864712515,0.05298759864712515
+
+2020-05-07-15-04-38
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 715.652 ms.
+715.652,661.692,0.9468169742081437,0.9468417529931052,0.05315824700689481,0.05318302579185628
+
+2020-05-07-15-04-40
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 791.75 ms.
+791.75,363.73,0.18347151644824816,0.25654450261780104,0.743455497382199,0.8165284835517518
+
+2020-05-07-15-04-41
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 651.977 ms.
+651.977,598.123,0.18366972763362902,0.25656808748263893,0.7434319125173611,0.816330272366371
+
+2020-05-07-15-04-43
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 517.766 ms.
+517.766,47.358,0.07079646017699115,0.9753694581280788,0.02463054187192118,0.9292035398230089
+
+2020-05-07-15-04-44
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=7 target=1 obsvar=2 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 712.041 ms.
+712.041,657.264,0.07115189898762674,0.9746915512918208,0.025308448708179165,0.9288481010123733
+
+2020-05-07-15-04-46
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 501.328 ms.
+501.328,40.527,0.01800232288037166,0.01800232288037166,0.9819976771196284,0.9819976771196284
+
+2020-05-07-15-04-48
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 865.509 ms.
+865.509,809.608,0.01817345237708908,0.01817784185640143,0.9818221581435985,0.9818265476229109
+
+2020-05-07-15-04-49
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 539.253 ms.
+539.253,85.777,0.04761904761904762,0.1634241245136187,0.8365758754863815,0.9523809523809524
+
+2020-05-07-15-04-51
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 855.686 ms.
+855.686,799.643,0.04805653118242913,0.1633412162013912,0.8366587837986088,0.9519434688175709
+
+2020-05-07-15-04-53
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCVE seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 875.797 ms.
+875.797,423.786,0.0019801980198019802,0.04210526315789473,0.9578947368421052,0.998019801980198
+
+2020-05-07-15-04-54
+
+ChainNonMarkovian
+   N=3 endovarsize=2 exovarsize=8 target=1 obsvar=2 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 824.597 ms.
+824.597,769.227,0.002011533781622239,0.042474744426927356,0.9575252555730727,0.9979884662183778
+
+2020-05-07-15-04-56
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=7 target=1 obsvar=4 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 559.23 ms.
+559.23,62.971,0.8820116054158607,0.8820116054158607,0.11798839458413926,0.11798839458413926
+
+2020-05-07-15-04-58
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=7 target=1 obsvar=4 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 1321.411 ms.
+1321.411,1262.137,0.8817907828607487,0.8818420774695708,0.11815792253042924,0.11820921713925125
+
+2020-05-07-15-05-00
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=7 target=1 obsvar=4 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 10407.471 ms.
+10407.471,9931.258,0.13305643582812934,0.1907406324896241,0.8092593675103759,0.8669435641718707
+
+2020-05-07-15-05-11
+
+ChainNonMarkovian
+   N=5 endovarsize=2 exovarsize=7 target=1 obsvar=4 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 1378.622 ms.
+1378.622,1322.936,0.13321752536819242,0.19077102814156016,0.8092289718584398,0.8667824746318076
+
+2020-05-07-15-05-14
+2020-05-07-15-08-30
+2020-05-07-15-08-31
+2020-05-07-15-08-31
+2020-05-07-15-08-31
+2020-05-07-15-08-31
+2020-05-07-15-08-31
+2020-05-07-15-08-31
+2020-05-07-15-08-32
+2020-05-07-15-08-32
+2020-05-07-15-08-32
+2020-05-07-15-08-33
+2020-05-07-15-08-33
+2020-05-07-15-08-33
+2020-05-07-15-08-34
+2020-05-07-15-08-34
+2020-05-07-15-08-34
+2020-05-07-15-08-34
+2020-05-07-15-08-34
+2020-05-07-15-08-35
+2020-05-07-15-08-35
+2020-05-07-15-08-35
+2020-05-07-15-08-35
+2020-05-07-15-08-36

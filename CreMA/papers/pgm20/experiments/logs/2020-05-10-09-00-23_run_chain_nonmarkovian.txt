@@ -1,0 +1,1980 @@
+2020-05-10-09-00-23
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 17300.972 ms.
+Warm-up #1 in 16364.398 ms.
+Measurement #0 in 18285.103 ms.
+Measurement #1 in 17298.371 ms.
+Measurement #2 in 15354.605 ms.
+Measurement #3 in 15732.905 ms.
+Measurement #4 in 17965.077 ms.
+16927.2122,16926.3796,0.10287412267443945,0.10287412267443945,0.09712587732556056,0.09712587732556056
+
+2020-05-10-09-02-23
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 8429.849 ms.
+Warm-up #1 in 7159.231 ms.
+Measurement #0 in 6189.809 ms.
+Measurement #1 in 6404.722 ms.
+Measurement #2 in 6833.554 ms.
+Measurement #3 in 6290.765 ms.
+Measurement #4 in 6395.32 ms.
+6422.834,6416.6746,0.10285488725472343,0.10285499388191807,0.09714500611808193,0.09714511274527657
+
+2020-05-10-09-03-11
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 18053.651 ms.
+Warm-up #1 in 23823.562 ms.
+Measurement #0 in 16718.489 ms.
+Measurement #1 in 17962.68 ms.
+Measurement #2 in 17612.159 ms.
+Measurement #3 in 18709.273 ms.
+Measurement #4 in 16749.487 ms.
+17550.417599999997,17549.659200000002,0.03379999999999999,0.03379999999999999,0.16620000000000001,0.16620000000000001
+
+2020-05-10-09-05-22
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 7318.569 ms.
+Warm-up #1 in 6896.005 ms.
+Measurement #0 in 6859.538 ms.
+Measurement #1 in 6175.438 ms.
+Measurement #2 in 7082.28 ms.
+Measurement #3 in 6394.12 ms.
+Measurement #4 in 6314.893 ms.
+6565.2538,6558.7991999999995,0.03381447850409437,0.03381605711459971,0.16618394288540028,0.16618552149590562
+
+2020-05-10-09-06-11
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 18776.627 ms.
+Warm-up #1 in 22201.633 ms.
+Measurement #0 in 19092.918 ms.
+Measurement #1 in 16670.862 ms.
+Measurement #2 in 21871.171 ms.
+Measurement #3 in 19356.044 ms.
+Measurement #4 in 15175.527 ms.
+18433.3044,18432.4604,0.11712328576000001,0.11712328576000001,0.08287671423999998,0.08287671423999998
+
+2020-05-10-09-08-25
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 8362.174 ms.
+Warm-up #1 in 7659.932 ms.
+Measurement #0 in 7237.775 ms.
+Measurement #1 in 6935.477 ms.
+Measurement #2 in 6960.525 ms.
+Measurement #3 in 6734.451 ms.
+Measurement #4 in 7501.927 ms.
+7074.031,7067.753599999999,0.11710625207450913,0.1171179557526191,0.08288204424738091,0.08289374792549087
+
+2020-05-10-09-09-18
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 17255.51 ms.
+Warm-up #1 in 15885.401 ms.
+Measurement #0 in 17097.93 ms.
+Measurement #1 in 18979.451 ms.
+Measurement #2 in 14677.17 ms.
+Measurement #3 in 17439.387 ms.
+Measurement #4 in 17569.7 ms.
+17152.7276,17151.963,0.11697280000000002,0.11697280000000002,0.0830272,0.0830272
+
+2020-05-10-09-11-18
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 7777.816 ms.
+Warm-up #1 in 7719.962 ms.
+Measurement #0 in 7307.515 ms.
+Measurement #1 in 6570.587 ms.
+Measurement #2 in 7219.119 ms.
+Measurement #3 in 7340.61 ms.
+Measurement #4 in 6762.684 ms.
+7040.103,7033.497,0.11697838144842801,0.1169790514333553,0.08302094856664471,0.083021618551572
+
+2020-05-10-09-12-10
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 18051.1 ms.
+Warm-up #1 in 18159.913 ms.
+Measurement #0 in 14909.72 ms.
+Measurement #1 in 17560.507 ms.
+Measurement #2 in 18762.616 ms.
+Measurement #3 in 16938.587 ms.
+Measurement #4 in 15609.481 ms.
+16756.1822,16755.431800000002,0.037797272555496406,0.037797272555496406,0.1622027274445036,0.1622027274445036
+
+2020-05-10-09-14-11
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 7931.01 ms.
+Warm-up #1 in 6942.071 ms.
+Measurement #0 in 7094.402 ms.
+Measurement #1 in 6698.138 ms.
+Measurement #2 in 6654.58 ms.
+Measurement #3 in 6955.312 ms.
+Measurement #4 in 7102.781 ms.
+6901.042600000001,6894.9014,0.03780630595143948,0.03780692186267166,0.16219307813732836,0.16219369404856052
+
+2020-05-10-09-15-02
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 18149.118 ms.
+Warm-up #1 in 19105.152 ms.
+Measurement #0 in 18280.737 ms.
+Measurement #1 in 15103.853 ms.
+Measurement #2 in 15163.118 ms.
+Measurement #3 in 17809.809 ms.
+Measurement #4 in 14015.291 ms.
+16074.561599999997,16073.8086,0.16209687728365685,0.16209687728365685,0.03790312271634316,0.03790312271634316
+
+2020-05-10-09-17-01
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 8694.42 ms.
+Warm-up #1 in 7653.976 ms.
+Measurement #0 in 8088.71 ms.
+Measurement #1 in 8064.011 ms.
+Measurement #2 in 7106.21 ms.
+Measurement #3 in 7647.19 ms.
+Measurement #4 in 7412.471 ms.
+7663.7184,7656.7598,0.16207956718904876,0.1620802619449214,0.03791973805507861,0.037920432810951255
+
+2020-05-10-09-17-57
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 19267.875 ms.
+Warm-up #1 in 23669.3 ms.
+Measurement #0 in 18550.583 ms.
+Measurement #1 in 18431.635 ms.
+Measurement #2 in 18122.308 ms.
+Measurement #3 in 19028.112 ms.
+Measurement #4 in 17305.33 ms.
+18287.5936,18286.8326,0.170368,0.170368,0.029632000000000012,0.029632000000000012
+
+2020-05-10-09-20-13
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 7991.676 ms.
+Warm-up #1 in 6846.154 ms.
+Measurement #0 in 7193.661 ms.
+Measurement #1 in 7079.871 ms.
+Measurement #2 in 7025.298 ms.
+Measurement #3 in 6976.788 ms.
+Measurement #4 in 7271.91 ms.
+7109.5055999999995,7103.534400000001,0.1703390714096722,0.17033946307941278,0.02966053692058724,0.0296609285903278
+
+2020-05-10-09-21-04
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 17300.77 ms.
+Warm-up #1 in 17560.567 ms.
+Measurement #0 in 17985.72 ms.
+Measurement #1 in 14027.82 ms.
+Measurement #2 in 16444.751 ms.
+Measurement #3 in 15796.192 ms.
+Measurement #4 in 14151.742 ms.
+15681.244999999999,15680.5286,0.1568935900660902,0.1568935900660902,0.04310640993390983,0.04310640993390983
+
+2020-05-10-09-22-59
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 7204.039 ms.
+Warm-up #1 in 6561.632 ms.
+Measurement #0 in 6966.123 ms.
+Measurement #1 in 6298.04 ms.
+Measurement #2 in 6363.881 ms.
+Measurement #3 in 6576.61 ms.
+Measurement #4 in 6298.516 ms.
+6500.634,6494.415999999999,0.15686839035176164,0.15686839072402953,0.04313160927597047,0.04313160964823837
+
+2020-05-10-09-23-46
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 17538.23 ms.
+Warm-up #1 in 18741.72 ms.
+Measurement #0 in 16239.779 ms.
+Measurement #1 in 15777.561 ms.
+Measurement #2 in 17357.465 ms.
+Measurement #3 in 16956.591 ms.
+Measurement #4 in 15518.287 ms.
+16369.9366,16369.045999999998,0.023226032608000012,0.023226032608000012,0.176773967392,0.176773967392
+
+2020-05-10-09-25-46
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 7283.991 ms.
+Warm-up #1 in 6592.463 ms.
+Measurement #0 in 6685.509 ms.
+Measurement #1 in 6818.171 ms.
+Measurement #2 in 6817.588 ms.
+Measurement #3 in 7080.175 ms.
+Measurement #4 in 6461.619 ms.
+6772.6124,6765.933599999999,0.023240879054068096,0.02336521988122968,0.17663478011877032,0.1767591209459319
+
+2020-05-10-09-26-35
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CVE seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 17270.655 ms.
+Warm-up #1 in 17466.827 ms.
+Measurement #0 in 17144.371 ms.
+Measurement #1 in 15681.131 ms.
+Measurement #2 in 15888.528 ms.
+Measurement #3 in 16463.505 ms.
+Measurement #4 in 15363.13 ms.
+16108.133000000002,16107.412800000002,0.09439004194471431,0.09439004194471431,0.1056099580552857,0.1056099580552857
+
+2020-05-10-09-28-31
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=10 obsvar=19 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 8578.887 ms.
+Warm-up #1 in 8474.169 ms.
+Measurement #0 in 7899.066 ms.
+Measurement #1 in 8026.51 ms.
+Measurement #2 in 8621.249 ms.
+Measurement #3 in 7675.095 ms.
+Measurement #4 in 8196.193 ms.
+8083.6226,8077.219800000001,0.09439338964312649,0.09439706071227633,0.10560293928772366,0.1056066103568735
+
+2020-05-10-09-29-30
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 19071.214 ms.
+Warm-up #1 in 19245.547 ms.
+Measurement #0 in 19275.204 ms.
+Measurement #1 in 17777.139 ms.
+Measurement #2 in 19613.303 ms.
+Measurement #3 in 20134.071 ms.
+Measurement #4 in 18949.198 ms.
+19149.783000000003,19148.9852,0.030000003969323404,0.030000003969323404,0.1699999960306766,0.1699999960306766
+
+2020-05-10-09-31-46
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 7325.46 ms.
+Warm-up #1 in 6997.121 ms.
+Measurement #0 in 6205.14 ms.
+Measurement #1 in 6487.844 ms.
+Measurement #2 in 6180.249 ms.
+Measurement #3 in 6771.816 ms.
+Measurement #4 in 6309.912 ms.
+6390.9922,6384.4196,0.030028004357700595,0.0300309954605749,0.1699690045394251,0.16997199564229942
+
+2020-05-10-09-32-33
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 17560.769 ms.
+Warm-up #1 in 20406.108 ms.
+Measurement #0 in 19415.48 ms.
+Measurement #1 in 20898.151 ms.
+Measurement #2 in 16901.702 ms.
+Measurement #3 in 17475.887 ms.
+Measurement #4 in 17198.965 ms.
+18378.037,18377.2968,0.178,0.178,0.021999999999999985,0.021999999999999985
+
+2020-05-10-09-34-44
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 7962.154 ms.
+Warm-up #1 in 7785.87 ms.
+Measurement #0 in 7581.065 ms.
+Measurement #1 in 7128.248 ms.
+Measurement #2 in 7035.021 ms.
+Measurement #3 in 6744.478 ms.
+Measurement #4 in 7526.38 ms.
+7203.0383999999995,7196.8974,0.1779692081184842,0.1779767998406639,0.022023200159336127,0.0220307918815158
+
+2020-05-10-09-35-37
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 17565.59 ms.
+Warm-up #1 in 18255.142 ms.
+Measurement #0 in 17849.787 ms.
+Measurement #1 in 16182.552 ms.
+Measurement #2 in 16300.031 ms.
+Measurement #3 in 17344.839 ms.
+Measurement #4 in 16911.71 ms.
+16917.783799999997,16917.0072,0.188,0.188,0.012,0.012
+
+2020-05-10-09-37-39
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 7644.597 ms.
+Warm-up #1 in 7095.148 ms.
+Measurement #0 in 6811.368 ms.
+Measurement #1 in 7086.896 ms.
+Measurement #2 in 6711.636 ms.
+Measurement #3 in 6762.4 ms.
+Measurement #4 in 6765.385 ms.
+6827.537000000001,6821.4334,0.002078180463125559,0.19594001415776832,0.004059985842231693,0.19792181953687443
+
+2020-05-10-09-38-29
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 18280.74 ms.
+Warm-up #1 in 17556.723 ms.
+Measurement #0 in 16719.996 ms.
+Measurement #1 in 13893.811 ms.
+Measurement #2 in 17199.35 ms.
+Measurement #3 in 16621.675 ms.
+Measurement #4 in 16686.305 ms.
+16224.227399999998,16223.516399999999,0.022,0.022,0.178,0.178
+
+2020-05-10-09-40-28
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 8189.808 ms.
+Warm-up #1 in 7089.531 ms.
+Measurement #0 in 6866.989 ms.
+Measurement #1 in 6923.001 ms.
+Measurement #2 in 7545.761 ms.
+Measurement #3 in 6499.713 ms.
+Measurement #4 in 6516.632 ms.
+6870.419199999999,6863.3564,0.022016000319576054,0.022030192061485803,0.1779698079385142,0.17798399968042394
+
+2020-05-10-09-41-18
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 17440.568 ms.
+Warm-up #1 in 18640.01 ms.
+Measurement #0 in 17749.686 ms.
+Measurement #1 in 16166.823 ms.
+Measurement #2 in 16827.454 ms.
+Measurement #3 in 16925.957 ms.
+Measurement #4 in 18216.51 ms.
+17177.286,17176.5614,0.024000001150673824,0.024000001150673824,0.17599999884932616,0.17599999884932616
+
+2020-05-10-09-43-22
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 8335.893 ms.
+Warm-up #1 in 7614.203 ms.
+Measurement #0 in 7802.269 ms.
+Measurement #1 in 7357.947 ms.
+Measurement #2 in 7597.037 ms.
+Measurement #3 in 7054.574 ms.
+Measurement #4 in 6946.145 ms.
+7351.5944,7345.6036,0.024012802340632532,0.02401519562265076,0.17598480437734926,0.1759871976593675
+
+2020-05-10-09-44-16
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 17544.067 ms.
+Warm-up #1 in 18780.003 ms.
+Measurement #0 in 15411.255 ms.
+Measurement #1 in 15906.152 ms.
+Measurement #2 in 17266.824 ms.
+Measurement #3 in 16338.855 ms.
+Measurement #4 in 17222.514 ms.
+16429.12,16428.417999999998,0.19800000009894408,0.19800000009894408,0.001999999901055926,0.001999999901055926
+
+2020-05-10-09-46-16
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 8050.775 ms.
+Warm-up #1 in 6643.62 ms.
+Measurement #0 in 7461.055 ms.
+Measurement #1 in 6701.648 ms.
+Measurement #2 in 7215.025 ms.
+Measurement #3 in 6520.493 ms.
+Measurement #4 in 7117.383 ms.
+7003.1208000000015,6996.134,0.1899838037332188,0.19995900430199148,4.0995698008505775E-5,0.010016196266781208
+
+2020-05-10-09-47-06
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 18458.648 ms.
+Warm-up #1 in 19606.763 ms.
+Measurement #0 in 18737.997 ms.
+Measurement #1 in 15344.315 ms.
+Measurement #2 in 14918.674 ms.
+Measurement #3 in 16903.647 ms.
+Measurement #4 in 15117.322 ms.
+16204.391,16203.596599999999,0.014000000000000002,0.014000000000000002,0.186,0.186
+
+2020-05-10-09-49-07
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 7500.987 ms.
+Warm-up #1 in 7638.377 ms.
+Measurement #0 in 7348.183 ms.
+Measurement #1 in 7337.97 ms.
+Measurement #2 in 7137.675 ms.
+Measurement #3 in 7037.327 ms.
+Measurement #4 in 7234.744 ms.
+7219.179800000001,7212.8914,0.01401720027957207,0.014023394421081853,0.18597660557891815,0.18598279972042792
+
+2020-05-10-09-49-59
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 18182.825 ms.
+Warm-up #1 in 17510.691 ms.
+Measurement #0 in 16127.404 ms.
+Measurement #1 in 17648.42 ms.
+Measurement #2 in 16791.056 ms.
+Measurement #3 in 15549.606 ms.
+Measurement #4 in 16424.785 ms.
+16508.254200000003,16507.5524,0.011999999999999993,0.011999999999999993,0.188,0.188
+
+2020-05-10-09-51-59
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 7668.911 ms.
+Warm-up #1 in 6497.411 ms.
+Measurement #0 in 6117.865 ms.
+Measurement #1 in 6351.669 ms.
+Measurement #2 in 6249.068 ms.
+Measurement #3 in 6396.134 ms.
+Measurement #4 in 6178.399 ms.
+6258.6269999999995,6252.138400000001,0.006041993160747909,0.04400359916033199,0.155996400839668,0.19395800683925207
+
+2020-05-10-09-52-46
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 17584.092 ms.
+Warm-up #1 in 16411.916 ms.
+Measurement #0 in 15802.528 ms.
+Measurement #1 in 16954.522 ms.
+Measurement #2 in 17671.792 ms.
+Measurement #3 in 15492.34 ms.
+Measurement #4 in 17050.909 ms.
+16594.4182,16593.555,0.018000000000000006,0.018000000000000006,0.182,0.182
+
+2020-05-10-09-54-44
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 7949.95 ms.
+Warm-up #1 in 7418.983 ms.
+Measurement #0 in 7372.807 ms.
+Measurement #1 in 6764.195 ms.
+Measurement #2 in 7011.112 ms.
+Measurement #3 in 6782.973 ms.
+Measurement #4 in 7013.605 ms.
+6988.938399999999,6982.805200000001,0.016051188001887713,0.1759432139977683,0.02405678600223169,0.18394881199811228
+
+2020-05-10-09-55-36
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CVE seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 17034.558 ms.
+Warm-up #1 in 19370.606 ms.
+Measurement #0 in 15729.773 ms.
+Measurement #1 in 18926.208 ms.
+Measurement #2 in 15132.888 ms.
+Measurement #3 in 17966.608 ms.
+Measurement #4 in 14487.13 ms.
+16448.5214,16447.8096,0.07800000018430979,0.07800000018430979,0.12199999981569021,0.12199999981569021
+
+2020-05-10-09-57-36
+
+ChainNonMarkovian
+   N=20 endovarsize=2 exovarsize=6 target=1 obsvar=19 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 9092.365 ms.
+Warm-up #1 in 8241.114 ms.
+Measurement #0 in 8493.525 ms.
+Measurement #1 in 7853.368 ms.
+Measurement #2 in 7741.119 ms.
+Measurement #3 in 8615.947 ms.
+Measurement #4 in 8254.042 ms.
+8191.600199999999,8185.452,0.06004758948368958,0.11597680450769285,0.08402319549230716,0.1399524105163104
+
+2020-05-10-09-58-35
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-09-58-54
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 8388.908 ms.
+Warm-up #1 in 7246.268 ms.
+Measurement #0 in 7393.358 ms.
+Measurement #1 in 6901.439 ms.
+Measurement #2 in 7089.912 ms.
+Measurement #3 in 6926.248 ms.
+Measurement #4 in 6674.059 ms.
+6997.003200000001,6990.716399999999,0.1028245745136374,0.10282468115035823,0.09717531884964177,0.0971754254863626
+
+2020-05-10-09-59-45
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-00-04
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 8053.843 ms.
+Warm-up #1 in 6515.431 ms.
+Measurement #0 in 6797.581 ms.
+Measurement #1 in 6653.686 ms.
+Measurement #2 in 6734.115 ms.
+Measurement #3 in 6772.873 ms.
+Measurement #4 in 6609.239 ms.
+6713.498799999999,6706.8992,0.03381447850409437,0.033816057114599715,0.16618394288540028,0.16618552149590562
+
+2020-05-10-10-00-53
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-01-11
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 9155.443 ms.
+Warm-up #1 in 8451.447 ms.
+Measurement #0 in 8410.024 ms.
+Measurement #1 in 8122.987 ms.
+Measurement #2 in 8277.078 ms.
+Measurement #3 in 8442.126 ms.
+Measurement #4 in 8403.73 ms.
+8331.188999999998,8323.753999999999,0.11710625207450916,0.1171179557526191,0.08288204424738091,0.08289374792549084
+
+2020-05-10-10-02-11
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=4936
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-02-29
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 8731.33 ms.
+Warm-up #1 in 7437.493 ms.
+Measurement #0 in 7916.541 ms.
+Measurement #1 in 7722.014 ms.
+Measurement #2 in 7360.939 ms.
+Measurement #3 in 7297.327 ms.
+Measurement #4 in 7682.48 ms.
+7595.8602,7589.4886,0.11697838144842802,0.11697905143335527,0.08302094856664473,0.08302161855157196
+
+2020-05-10-10-03-24
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=6170
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-03-41
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 9792.685 ms.
+Warm-up #1 in 8936.422 ms.
+Measurement #0 in 7965.143 ms.
+Measurement #1 in 8447.325 ms.
+Measurement #2 in 7870.572 ms.
+Measurement #3 in 8983.541 ms.
+Measurement #4 in 8066.903 ms.
+8266.6968,8259.696,0.03780681119373953,0.03780740175632834,0.16219259824367166,0.1621931888062605
+
+2020-05-10-10-04-42
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=7404
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-05-00
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 9273.182 ms.
+Warm-up #1 in 8720.057 ms.
+Measurement #0 in 8485.372 ms.
+Measurement #1 in 8707.472 ms.
+Measurement #2 in 8684.534 ms.
+Measurement #3 in 8611.752 ms.
+Measurement #4 in 9149.78 ms.
+8727.782,8720.9162,0.16052789303787496,0.16052809066245302,0.03947190933754698,0.039472106962125046
+
+2020-05-10-10-06-03
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=8638
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-06-20
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 8906.941 ms.
+Warm-up #1 in 8123.13 ms.
+Measurement #0 in 8037.003 ms.
+Measurement #1 in 8554.525 ms.
+Measurement #2 in 8063.296 ms.
+Measurement #3 in 7888.678 ms.
+Measurement #4 in 7497.581 ms.
+8008.2166,8001.957800000001,0.1703390714096722,0.17033946307941278,0.029660536920587233,0.0296609285903278
+
+2020-05-10-10-07-18
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=9872
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-07-37
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 8602.935 ms.
+Warm-up #1 in 7252.866 ms.
+Measurement #0 in 7380.872 ms.
+Measurement #1 in 7358.378 ms.
+Measurement #2 in 7182.092 ms.
+Measurement #3 in 7163.179 ms.
+Measurement #4 in 7456.955 ms.
+7308.2952000000005,7301.7116000000005,0.15686706665235406,0.15686706666597444,0.04313293333402557,0.04313293334764592
+
+2020-05-10-10-08-30
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=11106
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-08-47
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 8345.625 ms.
+Warm-up #1 in 7473.868 ms.
+Measurement #0 in 7339.748 ms.
+Measurement #1 in 7233.648 ms.
+Measurement #2 in 6992.393 ms.
+Measurement #3 in 6771.182 ms.
+Measurement #4 in 7192.729 ms.
+7105.9400000000005,7098.642,0.02324087905406809,0.023365219881229686,0.17663478011877032,0.1767591209459319
+
+2020-05-10-10-09-40
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=12340
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-09-58
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 10340.541 ms.
+Warm-up #1 in 9673.387 ms.
+Measurement #0 in 9493.239 ms.
+Measurement #1 in 9140.938 ms.
+Measurement #2 in 8706.096 ms.
+Measurement #3 in 8997.132 ms.
+Measurement #4 in 9002.418 ms.
+9067.9646,9060.4956,0.09439401698986363,0.09439768780270694,0.10560231219729306,0.10560598301013638
+
+2020-05-10-10-11-04
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-11-22
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 8220.367 ms.
+Warm-up #1 in 7374.824 ms.
+Measurement #0 in 7581.012 ms.
+Measurement #1 in 6966.594 ms.
+Measurement #2 in 7399.088 ms.
+Measurement #3 in 7333.838 ms.
+Measurement #4 in 7224.63 ms.
+7301.032399999999,7293.3516,0.030028002567050717,0.030030993669778173,0.16996900633022183,0.16997199743294927
+
+2020-05-10-10-12-15
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-12-33
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 8429.606 ms.
+Warm-up #1 in 7303.672 ms.
+Measurement #0 in 8046.145 ms.
+Measurement #1 in 6840.582 ms.
+Measurement #2 in 6995.275 ms.
+Measurement #3 in 7142.413 ms.
+Measurement #4 in 7378.658 ms.
+7280.614600000001,7274.383600000001,0.1779692081184842,0.1779767998406639,0.02202320015933612,0.022030791881515795
+
+2020-05-10-10-13-27
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-13-46
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 8500.67 ms.
+Warm-up #1 in 7735.804 ms.
+Measurement #0 in 7940.085 ms.
+Measurement #1 in 7636.511 ms.
+Measurement #2 in 7929.602 ms.
+Measurement #3 in 8159.975 ms.
+Measurement #4 in 7619.191 ms.
+7857.0728,7850.2076,0.0020781804631255438,0.19594001415776832,0.004059985842231692,0.19792181953687446
+
+2020-05-10-10-14-42
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=4936
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-15-01
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 8521.906 ms.
+Warm-up #1 in 7366.176 ms.
+Measurement #0 in 8791.738 ms.
+Measurement #1 in 8456.318 ms.
+Measurement #2 in 7745.836 ms.
+Measurement #3 in 8164.693 ms.
+Measurement #4 in 7691.455 ms.
+8170.008,8163.5484,0.022016000319576054,0.022030192061485796,0.1779698079385142,0.17798399968042394
+
+2020-05-10-10-15-59
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=6170
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-16-17
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 8974.172 ms.
+Warm-up #1 in 7314.092 ms.
+Measurement #0 in 7377.007 ms.
+Measurement #1 in 7644.052 ms.
+Measurement #2 in 7354.327 ms.
+Measurement #3 in 6837.265 ms.
+Measurement #4 in 7800.664 ms.
+7402.662999999999,7395.2339999999995,0.024012801218670807,0.02401519450059219,0.17598480549940781,0.1759871987813292
+
+2020-05-10-10-17-11
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=7404
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-17-29
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 8515.444 ms.
+Warm-up #1 in 7877.849 ms.
+Measurement #0 in 7558.373 ms.
+Measurement #1 in 8158.654 ms.
+Measurement #2 in 7780.978 ms.
+Measurement #3 in 8412.765 ms.
+Measurement #4 in 8212.602 ms.
+8024.674400000001,8018.0628,0.1899838033199088,0.19995900430021102,4.0995699788992646E-5,0.010016196680091193
+
+2020-05-10-10-18-27
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=8638
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-18-44
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 8979.435 ms.
+Warm-up #1 in 7772.156 ms.
+Measurement #0 in 7704.634 ms.
+Measurement #1 in 7615.176 ms.
+Measurement #2 in 7422.545 ms.
+Measurement #3 in 7459.132 ms.
+Measurement #4 in 7674.409 ms.
+7575.1792000000005,7568.5336,0.014017200279572073,0.014023394421081853,0.18597660557891815,0.18598279972042792
+
+2020-05-10-10-19-40
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=9872
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-19-57
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 8218.069 ms.
+Warm-up #1 in 7806.224 ms.
+Measurement #0 in 7985.771 ms.
+Measurement #1 in 7737.818 ms.
+Measurement #2 in 7450.809 ms.
+Measurement #3 in 6929.589 ms.
+Measurement #4 in 7307.955 ms.
+7482.388400000001,7475.967600000001,0.006041993160747912,0.04400359916033199,0.155996400839668,0.19395800683925207
+
+2020-05-10-10-20-52
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=11106
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-21-11
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 8774.718 ms.
+Warm-up #1 in 8063.326 ms.
+Measurement #0 in 7868.827 ms.
+Measurement #1 in 7852.035 ms.
+Measurement #2 in 7694.567 ms.
+Measurement #3 in 8109.51 ms.
+Measurement #4 in 7928.562 ms.
+7890.700199999999,7883.092600000001,0.01605118800188771,0.1759432139977683,0.02405678600223169,0.18394881199811228
+
+2020-05-10-10-22-09
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=12340
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-10-22-27
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 10086.775 ms.
+Warm-up #1 in 8628.956 ms.
+Measurement #0 in 8476.337 ms.
+Measurement #1 in 8777.262 ms.
+Measurement #2 in 8342.568 ms.
+Measurement #3 in 8611.128 ms.
+Measurement #4 in 7857.598 ms.
+8412.978599999999,8406.5476,0.06004758945935178,0.11597680447946915,0.08402319552053086,0.13995241054064822
+
+2020-05-10-10-23-29
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 8337.839 ms.
+Warm-up #1 in 7876.237 ms.
+Measurement #0 in 7947.164 ms.
+Measurement #1 in 7996.154 ms.
+Measurement #2 in 7927.583 ms.
+Measurement #3 in 7872.569 ms.
+Measurement #4 in 8122.486 ms.
+7973.191199999999,7965.926800000001,0.19380787509709999,0.19380787858695586,0.006192121413044157,0.006192124902900021
+
+2020-05-10-10-24-26
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 9553.02 ms.
+Warm-up #1 in 9661.101 ms.
+Measurement #0 in 9096.159 ms.
+Measurement #1 in 9216.587 ms.
+Measurement #2 in 8615.712 ms.
+Measurement #3 in 7976.658 ms.
+Measurement #4 in 7989.353 ms.
+8578.893800000002,8572.5128,0.009887427489174223,0.009888241760641035,0.19011175823935897,0.19011257251082578
+
+2020-05-10-10-25-29
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 9734.149 ms.
+Warm-up #1 in 7856.117 ms.
+Measurement #0 in 8082.892 ms.
+Measurement #1 in 8339.619 ms.
+Measurement #2 in 8157.341 ms.
+Measurement #3 in 7531.619 ms.
+Measurement #4 in 7851.304 ms.
+7992.5549999999985,7985.542200000001,0.015102663516266799,0.0151126086274359,0.1848873913725641,0.18489733648373322
+
+2020-05-10-10-26-28
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 7859.538 ms.
+Warm-up #1 in 7516.631 ms.
+Measurement #0 in 7420.548 ms.
+Measurement #1 in 6695.451 ms.
+Measurement #2 in 7410.333 ms.
+Measurement #3 in 7519.078 ms.
+Measurement #4 in 7100.804 ms.
+7229.2428,7222.549800000001,0.0052779764347227285,0.005277976434722736,0.19472202356527726,0.1947220235652773
+
+2020-05-10-10-27-20
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 8360.208 ms.
+Warm-up #1 in 7954.725 ms.
+Measurement #0 in 7832.32 ms.
+Measurement #1 in 7977.349 ms.
+Measurement #2 in 7715.069 ms.
+Measurement #3 in 7743.744 ms.
+Measurement #4 in 7688.247 ms.
+7791.3458,7783.770999999999,0.08809748691506103,0.08810036034817526,0.11189963965182474,0.11190251308493897
+
+2020-05-10-10-28-17
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 9334.649 ms.
+Warm-up #1 in 7721.256 ms.
+Measurement #0 in 8566.479 ms.
+Measurement #1 in 8400.538 ms.
+Measurement #2 in 8707.196 ms.
+Measurement #3 in 8074.572 ms.
+Measurement #4 in 9048.557 ms.
+8559.468400000002,8552.2536,0.07021624001848156,0.07022488411796515,0.12977511588203483,0.12978375998151842
+
+2020-05-10-10-29-17
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 8821.83 ms.
+Warm-up #1 in 7768.536 ms.
+Measurement #0 in 8511.999 ms.
+Measurement #1 in 7302.354 ms.
+Measurement #2 in 8131.526 ms.
+Measurement #3 in 7310.573 ms.
+Measurement #4 in 8177.799 ms.
+7886.850200000001,7880.3554,0.006825870127120379,0.006825890609174362,0.19317410939082563,0.19317412987287963
+
+2020-05-10-10-30-15
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 9508.697 ms.
+Warm-up #1 in 8441.724 ms.
+Measurement #0 in 8612.506 ms.
+Measurement #1 in 8328.823 ms.
+Measurement #2 in 8054.509 ms.
+Measurement #3 in 8203.378 ms.
+Measurement #4 in 8378.097 ms.
+8315.4626,8307.8654,0.03607985905820872,0.03608241406968985,0.16391758593031014,0.16392014094179128
+
+2020-05-10-10-31-15
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 8246.092 ms.
+Warm-up #1 in 7397.335 ms.
+Measurement #0 in 6996.428 ms.
+Measurement #1 in 6880.454 ms.
+Measurement #2 in 7351.607 ms.
+Measurement #3 in 6864.926 ms.
+Measurement #4 in 7114.209 ms.
+7041.524800000001,7034.731999999999,0.16905698235950997,0.16905698235951,0.03094301764048999,0.03094301764049003
+
+2020-05-10-10-32-07
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=11 obsvar=21 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 9556.084 ms.
+Warm-up #1 in 8749.391 ms.
+Measurement #0 in 8110.823 ms.
+Measurement #1 in 8504.08 ms.
+Measurement #2 in 7749.369 ms.
+Measurement #3 in 7569.994 ms.
+Measurement #4 in 8332.424 ms.
+8053.337999999999,8046.8238,0.17176012702705884,0.17176014329389036,0.02823985670610965,0.02823987297294117
+
+2020-05-10-10-33-07
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 8731.304 ms.
+Warm-up #1 in 7551.189 ms.
+Measurement #0 in 7323.592 ms.
+Measurement #1 in 7355.01 ms.
+Measurement #2 in 7347.153 ms.
+Measurement #3 in 6967.147 ms.
+Measurement #4 in 7153.089 ms.
+7229.198199999999,7221.747,0.002019999940267766,0.0020243926223319645,0.19797560737766803,0.19798000005973224
+
+2020-05-10-10-34-00
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 8961.314 ms.
+Warm-up #1 in 8550.156 ms.
+Measurement #0 in 8977.085 ms.
+Measurement #1 in 8998.379 ms.
+Measurement #2 in 8337.731 ms.
+Measurement #3 in 8427.779 ms.
+Measurement #4 in 7907.265 ms.
+8529.6478,8522.8724,0.1679696083984242,0.16798639536166377,0.032013604638336246,0.032030391601575794
+
+2020-05-10-10-35-01
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 9985.062 ms.
+Warm-up #1 in 8567.264 ms.
+Measurement #0 in 8806.859 ms.
+Measurement #1 in 8865.047 ms.
+Measurement #2 in 8314.282 ms.
+Measurement #3 in 9130.894 ms.
+Measurement #4 in 8384.336 ms.
+8700.2836,8692.244999999999,7.498150294956835E-5,0.1939168211965925,0.006083178803407505,0.1999250184970504
+
+2020-05-10-10-36-04
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 9133.548 ms.
+Warm-up #1 in 7814.829 ms.
+Measurement #0 in 8263.195 ms.
+Measurement #1 in 8511.936 ms.
+Measurement #2 in 8380.385 ms.
+Measurement #3 in 8138.87 ms.
+Measurement #4 in 8611.336 ms.
+8381.144400000001,8371.5942,0.05805678664190371,0.1999580065993001,4.199340069990232E-5,0.1419432133580963
+
+2020-05-10-10-37-04
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 8644.878 ms.
+Warm-up #1 in 7557.402 ms.
+Measurement #0 in 7744.617 ms.
+Measurement #1 in 7479.557 ms.
+Measurement #2 in 6962.494 ms.
+Measurement #3 in 7446.388 ms.
+Measurement #4 in 7451.481 ms.
+7416.907399999999,7410.4956,0.006018204291760022,0.0060379883557283775,0.19396201164427163,0.19398179570823998
+
+2020-05-10-10-37-58
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 9201.691 ms.
+Warm-up #1 in 7751.375 ms.
+Measurement #0 in 8037.89 ms.
+Measurement #1 in 8386.064 ms.
+Measurement #2 in 7050.384 ms.
+Measurement #3 in 7530.76 ms.
+Measurement #4 in 7613.167 ms.
+7723.653000000001,7715.130999999999,0.12998800436077967,0.12998959988206069,0.07001040011793931,0.07001199563922031
+
+2020-05-10-10-38-55
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 9725.706 ms.
+Warm-up #1 in 7235.308 ms.
+Measurement #0 in 8522.445 ms.
+Measurement #1 in 7787.777 ms.
+Measurement #2 in 8469.728 ms.
+Measurement #3 in 8144.698 ms.
+Measurement #4 in 8167.042 ms.
+8218.338,8211.724400000001,0.016048988661777737,0.07799040375934416,0.12200959624065584,0.18395101133822228
+
+2020-05-10-10-39-54
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 8778.63 ms.
+Warm-up #1 in 8551.08 ms.
+Measurement #0 in 8065.235 ms.
+Measurement #1 in 8762.381 ms.
+Measurement #2 in 7781.102 ms.
+Measurement #3 in 8218.016 ms.
+Measurement #4 in 8131.22 ms.
+8191.5908,8185.167600000001,0.14802079184142375,0.19994521243806027,5.478756193975087E-5,0.05197920815857624
+
+2020-05-10-10-40-53
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 8036.444 ms.
+Warm-up #1 in 7632.485 ms.
+Measurement #0 in 7785.656 ms.
+Measurement #1 in 7620.298 ms.
+Measurement #2 in 7387.222 ms.
+Measurement #3 in 7068.65 ms.
+Measurement #4 in 7059.649 ms.
+7384.295,7377.323199999999,0.08400639872019192,0.08400639872019204,0.11599360127980796,0.1159936012798081
+
+2020-05-10-10-41-47
+
+ChainNonMarkovian
+   N=22 endovarsize=2 exovarsize=6 target=1 obsvar=21 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 9537.147 ms.
+Warm-up #1 in 7982.186 ms.
+Measurement #0 in 7934.841 ms.
+Measurement #1 in 7917.188 ms.
+Measurement #2 in 7406.282 ms.
+Measurement #3 in 7627.471 ms.
+Measurement #4 in 7867.92 ms.
+7750.7404,7744.1458,0.07602959208128776,0.1999524102784202,4.7589721579788245E-5,0.12397040791871224
+
+2020-05-10-10-42-44
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 8990.574 ms.
+Warm-up #1 in 8245.266 ms.
+Measurement #0 in 8093.551 ms.
+Measurement #1 in 7998.046 ms.
+Measurement #2 in 7827.909 ms.
+Measurement #3 in 7167.778 ms.
+Measurement #4 in 8219.658 ms.
+7861.388399999999,7854.861,0.15828037325853855,0.1582803732585386,0.04171962674146139,0.04171962674146146
+
+2020-05-10-10-43-42
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 9279.545 ms.
+Warm-up #1 in 8205.927 ms.
+Measurement #0 in 7865.624 ms.
+Measurement #1 in 8331.28 ms.
+Measurement #2 in 8876.039 ms.
+Measurement #3 in 8307.519 ms.
+Measurement #4 in 8914.047 ms.
+8458.9018,8450.6532,0.0694189150710344,0.06942350969246427,0.13057649030753574,0.1305810849289656
+
+2020-05-10-10-44-43
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 10048.919 ms.
+Warm-up #1 in 10700.635 ms.
+Measurement #0 in 9679.356 ms.
+Measurement #1 in 8896.76 ms.
+Measurement #2 in 9125.427 ms.
+Measurement #3 in 10058.45 ms.
+Measurement #4 in 9807.208 ms.
+9513.440200000001,9505.9716,0.08155272406112393,0.08156124614021357,0.11843875385978644,0.11844727593887608
+
+2020-05-10-10-45-52
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 8120.667 ms.
+Warm-up #1 in 7149.911 ms.
+Measurement #0 in 6879.617 ms.
+Measurement #1 in 7158.85 ms.
+Measurement #2 in 7099.58 ms.
+Measurement #3 in 7133.288 ms.
+Measurement #4 in 7239.994 ms.
+7102.265799999999,7095.244199999999,0.14399320028001195,0.14399320028001203,0.05600679971998797,0.05600679971998805
+
+2020-05-10-10-46-44
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 9964.958 ms.
+Warm-up #1 in 8735.623 ms.
+Measurement #0 in 9096.182 ms.
+Measurement #1 in 8344.786 ms.
+Measurement #2 in 9434.158 ms.
+Measurement #3 in 8063.212 ms.
+Measurement #4 in 8759.178 ms.
+8739.503200000001,8732.6738,0.18758439895668622,0.1875969625259716,0.0124030374740284,0.012415601043313785
+
+2020-05-10-10-47-47
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 10435.541 ms.
+Warm-up #1 in 9276.856 ms.
+Measurement #0 in 9133.021 ms.
+Measurement #1 in 9086.441 ms.
+Measurement #2 in 9884.914 ms.
+Measurement #3 in 8739.234 ms.
+Measurement #4 in 8428.609 ms.
+9054.4438,9047.328599999999,0.02803092049687453,0.028216574474229466,0.17178342552577053,0.17196907950312548
+
+2020-05-10-10-48-53
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 8476.246 ms.
+Warm-up #1 in 8043.141 ms.
+Measurement #0 in 7621.747 ms.
+Measurement #1 in 7031.083 ms.
+Measurement #2 in 8186.682 ms.
+Measurement #3 in 8120.971 ms.
+Measurement #4 in 7842.248 ms.
+7760.5462,7751.7645999999995,0.181983601639836,0.18198360163983604,0.018016398360163957,0.018016398360164
+
+2020-05-10-10-49-49
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 10437.79 ms.
+Warm-up #1 in 9441.509 ms.
+Measurement #0 in 10203.107 ms.
+Measurement #1 in 9636.72 ms.
+Measurement #2 in 9370.868 ms.
+Measurement #3 in 9098.234 ms.
+Measurement #4 in 10574.83 ms.
+9776.751800000002,9768.8086,0.18907039680310034,0.18907844719419326,0.010921552805806764,0.010929603196899663
+
+2020-05-10-10-50-59
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 8690.761 ms.
+Warm-up #1 in 7739.468 ms.
+Measurement #0 in 7981.274 ms.
+Measurement #1 in 8372.846 ms.
+Measurement #2 in 8482.165 ms.
+Measurement #3 in 7568.395 ms.
+Measurement #4 in 7540.667 ms.
+7989.0694,7982.2686,0.13735835440558813,0.13735835440558825,0.06264164559441174,0.06264164559441186
+
+2020-05-10-10-51-56
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=11 obsvar=22 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 12314.278 ms.
+Warm-up #1 in 10911.771 ms.
+Measurement #0 in 9878.945 ms.
+Measurement #1 in 10241.843 ms.
+Measurement #2 in 9958.039 ms.
+Measurement #3 in 10318.193 ms.
+Measurement #4 in 9487.421 ms.
+9976.888200000001,9969.422999999999,0.013875206135508253,0.013876680208129205,0.1861233197918708,0.18612479386449174
+
+2020-05-10-10-53-11
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 9931.549 ms.
+Warm-up #1 in 8441.266 ms.
+Measurement #0 in 9121.08 ms.
+Measurement #1 in 9493.706 ms.
+Measurement #2 in 8664.759 ms.
+Measurement #3 in 9799.648 ms.
+Measurement #4 in 8594.67 ms.
+9134.7726,9127.814199999999,0.05402679580037193,0.08398320367963213,0.11601679632036785,0.14597320419962806
+
+2020-05-10-10-54-16
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 9636.072 ms.
+Warm-up #1 in 7895.111 ms.
+Measurement #0 in 8440.215 ms.
+Measurement #1 in 7895.05 ms.
+Measurement #2 in 8241.175 ms.
+Measurement #3 in 7948.279 ms.
+Measurement #4 in 7928.91 ms.
+8090.7258,8083.342600000001,0.08999440207964,0.08999440207964013,0.11000559792035988,0.11000559792036
+
+2020-05-10-10-55-15
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 9219.367 ms.
+Warm-up #1 in 7851.428 ms.
+Measurement #0 in 9386.726 ms.
+Measurement #1 in 8775.086 ms.
+Measurement #2 in 8238.489 ms.
+Measurement #3 in 8551.486 ms.
+Measurement #4 in 7615.935 ms.
+8513.544399999999,8506.733,0.18797200487930407,0.1879720048793041,0.0120279951206959,0.012027995120695922
+
+2020-05-10-10-56-15
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 9661.434 ms.
+Warm-up #1 in 8886.16 ms.
+Measurement #0 in 8951.342 ms.
+Measurement #1 in 8137.807 ms.
+Measurement #2 in 9039.64 ms.
+Measurement #3 in 8787.887 ms.
+Measurement #4 in 8702.891 ms.
+8723.9134,8716.8222,0.1199870070983102,0.11999899750070997,0.08000100249929003,0.0800129929016898
+
+2020-05-10-10-57-19
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 10293.406 ms.
+Warm-up #1 in 9240.524 ms.
+Measurement #0 in 9105.003 ms.
+Measurement #1 in 8727.142 ms.
+Measurement #2 in 8396.852 ms.
+Measurement #3 in 9040.047 ms.
+Measurement #4 in 8839.761 ms.
+8821.761,8814.491199999999,0.0800227939609798,0.14796240935850427,0.05203759064149573,0.1199772060390202
+
+2020-05-10-10-58-23
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 9486.153 ms.
+Warm-up #1 in 9107.513 ms.
+Measurement #0 in 8764.158 ms.
+Measurement #1 in 8351.247 ms.
+Measurement #2 in 8659.784 ms.
+Measurement #3 in 7853.65 ms.
+Measurement #4 in 8530.508 ms.
+8431.8694,8425.4548,0.004056588861461815,0.18196400551945607,0.01803599448054392,0.1959434111385382
+
+2020-05-10-10-59-25
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 9816.356 ms.
+Warm-up #1 in 8990.369 ms.
+Measurement #0 in 8798.395 ms.
+Measurement #1 in 9136.408 ms.
+Measurement #2 in 8899.675 ms.
+Measurement #3 in 9115.166 ms.
+Measurement #4 in 8579.429 ms.
+8905.814600000002,8897.543000000001,0.19596161167764833,0.19597399996066786,0.004026000039332134,0.0040383883223516544
+
+2020-05-10-11-00-29
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 9418.08 ms.
+Warm-up #1 in 8880.166 ms.
+Measurement #0 in 8342.286 ms.
+Measurement #1 in 8169.165 ms.
+Measurement #2 in 8042.072 ms.
+Measurement #3 in 8144.27 ms.
+Measurement #4 in 8249.04 ms.
+8189.366599999999,8181.937999999999,0.002119168165175288,0.19995980805879016,4.0191941209836796E-5,0.19788083183482472
+
+2020-05-10-11-01-30
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 10248.804 ms.
+Warm-up #1 in 8638.53 ms.
+Measurement #0 in 9238.068 ms.
+Measurement #1 in 8993.982 ms.
+Measurement #2 in 9264.06 ms.
+Measurement #3 in 9606.676 ms.
+Measurement #4 in 9327.404 ms.
+9286.038,9278.390000000001,0.020047191041119836,0.06799480084008402,0.132005199159916,0.17995280895888016
+
+2020-05-10-11-02-36
+
+ChainNonMarkovian
+   N=23 endovarsize=2 exovarsize=6 target=1 obsvar=22 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 10538.705 ms.
+Warm-up #1 in 9006.052 ms.
+Measurement #0 in 9727.807 ms.
+Measurement #1 in 8976.851 ms.
+Measurement #2 in 9129.973 ms.
+Measurement #3 in 9456.691 ms.
+Measurement #4 in 9043.866 ms.
+9267.0376,9260.0028,0.1060167967202879,0.11398499994056202,0.08601500005943799,0.09398320327971209
+
+2020-05-10-11-03-43
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 10145.312 ms.
+Warm-up #1 in 8805.305 ms.
+Measurement #0 in 8475.543 ms.
+Measurement #1 in 8743.345 ms.
+Measurement #2 in 8572.422 ms.
+Measurement #3 in 8702.884 ms.
+Measurement #4 in 8559.073 ms.
+8610.6534,8602.897400000002,0.027415513301382217,0.027415567377490374,0.1725844326225096,0.17258448669861778
+
+2020-05-10-11-04-46
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 9611.696 ms.
+Warm-up #1 in 8306.808 ms.
+Measurement #0 in 8156.147 ms.
+Measurement #1 in 7651.494 ms.
+Measurement #2 in 8481.527 ms.
+Measurement #3 in 7929.183 ms.
+Measurement #4 in 7593.779 ms.
+7962.4259999999995,7954.438,0.008427015282668508,0.008427253963299566,0.19157274603670044,0.19157298471733147
+
+2020-05-10-11-05-45
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 11271.487 ms.
+Warm-up #1 in 10757.953 ms.
+Measurement #0 in 10516.98 ms.
+Measurement #1 in 9451.267 ms.
+Measurement #2 in 10591.661 ms.
+Measurement #3 in 9950.092 ms.
+Measurement #4 in 9568.378 ms.
+10015.675599999999,10008.588800000001,0.19075187796323254,0.19076500832530405,0.009234991674695948,0.009248122036767456
+
+2020-05-10-11-06-58
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 10388.452 ms.
+Warm-up #1 in 9755.424 ms.
+Measurement #0 in 9543.004 ms.
+Measurement #1 in 8174.326 ms.
+Measurement #2 in 9147.268 ms.
+Measurement #3 in 8778.495 ms.
+Measurement #4 in 9338.698 ms.
+8996.358199999999,8989.1686,0.06074715574356804,0.060747200523248515,0.13925279947675148,0.13925284425643197
+
+2020-05-10-11-08-04
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 9373.168 ms.
+Warm-up #1 in 7871.057 ms.
+Measurement #0 in 7981.028 ms.
+Measurement #1 in 8104.512 ms.
+Measurement #2 in 8166.769 ms.
+Measurement #3 in 8135.373 ms.
+Measurement #4 in 8042.988 ms.
+8086.134,8078.9708,0.06916549432553781,0.06916580239095117,0.13083419760904885,0.1308345056744622
+
+2020-05-10-11-09-02
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 11506.922 ms.
+Warm-up #1 in 10412.855 ms.
+Measurement #0 in 9822.055 ms.
+Measurement #1 in 11075.276 ms.
+Measurement #2 in 9486.658 ms.
+Measurement #3 in 9113.494 ms.
+Measurement #4 in 9981.308 ms.
+9895.7582,9888.6418,0.07111303486143995,0.07111540156627644,0.12888459843372355,0.12888696513856007
+
+2020-05-10-11-10-15
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 9356.841 ms.
+Warm-up #1 in 8042.368 ms.
+Measurement #0 in 8910.126 ms.
+Measurement #1 in 8559.427 ms.
+Measurement #2 in 8877.413 ms.
+Measurement #3 in 8032.189 ms.
+Measurement #4 in 8663.119 ms.
+8608.4548,8601.6594,0.07683547824774038,0.07683579304150015,0.12316420695849986,0.12316452175225963
+
+2020-05-10-11-11-16
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 11561.299 ms.
+Warm-up #1 in 9616.382 ms.
+Measurement #0 in 9529.27 ms.
+Measurement #1 in 9455.402 ms.
+Measurement #2 in 9969.063 ms.
+Measurement #3 in 9740.784 ms.
+Measurement #4 in 9350.046 ms.
+9608.913,9601.6774,0.1665536526662414,0.1665543478900088,0.033445652109991196,0.0334463473337586
+
+2020-05-10-11-12-27
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 9505.311 ms.
+Warm-up #1 in 8914.6 ms.
+Measurement #0 in 9117.546 ms.
+Measurement #1 in 8871.916 ms.
+Measurement #2 in 8397.304 ms.
+Measurement #3 in 8230.081 ms.
+Measurement #4 in 8159.3 ms.
+8555.2294,8547.548200000001,0.016019718263622543,0.016019718267633206,0.1839802817323668,0.18398028173637745
+
+2020-05-10-11-13-29
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=12 obsvar=23 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 10366.33 ms.
+Warm-up #1 in 9167.72 ms.
+Measurement #0 in 9350.009 ms.
+Measurement #1 in 7938.471 ms.
+Measurement #2 in 7834.727 ms.
+Measurement #3 in 8332.393 ms.
+Measurement #4 in 8497.07 ms.
+8390.534,8382.288,0.0934304744072075,0.09343521974484888,0.10656478025515112,0.1065695255927925
+
+2020-05-10-11-14-31
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 9541.53 ms.
+Warm-up #1 in 8724.073 ms.
+Measurement #0 in 8385.667 ms.
+Measurement #1 in 8732.149 ms.
+Measurement #2 in 8021.055 ms.
+Measurement #3 in 9171.185 ms.
+Measurement #4 in 9091.462 ms.
+8680.3036,8673.3274,0.010036394652000067,0.010036394652034167,0.18996360534796583,0.18996360534799994
+
+2020-05-10-11-15-34
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 9964.482 ms.
+Warm-up #1 in 9310.09 ms.
+Measurement #0 in 9352.549 ms.
+Measurement #1 in 8413.456 ms.
+Measurement #2 in 8888.931 ms.
+Measurement #3 in 8288.348 ms.
+Measurement #4 in 8773.269 ms.
+8743.3106,8736.1276,0.096000801919408,0.09601079492110791,0.10398920507889209,0.10399919808059199
+
+2020-05-10-11-16-38
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 10409.006 ms.
+Warm-up #1 in 9152.493 ms.
+Measurement #0 in 9127.328 ms.
+Measurement #1 in 9273.485 ms.
+Measurement #2 in 8539.848 ms.
+Measurement #3 in 9875.732 ms.
+Measurement #4 in 8698.05 ms.
+9102.8886,9095.833999999999,0.19196281147767633,0.19197360224001597,0.00802639775998402,0.008037188522323659
+
+2020-05-10-11-17-44
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 10773.772 ms.
+Warm-up #1 in 9273.139 ms.
+Measurement #0 in 9721.252 ms.
+Measurement #1 in 9178.803 ms.
+Measurement #2 in 9275.054 ms.
+Measurement #3 in 9554.317 ms.
+Measurement #4 in 9700.305 ms.
+9485.9462,9478.0144,0.12001159772013992,0.19596080392000798,0.004039196079992022,0.07998840227986008
+
+2020-05-10-11-18-53
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 9362.166 ms.
+Warm-up #1 in 7765.547 ms.
+Measurement #0 in 8207.866 ms.
+Measurement #1 in 8034.113 ms.
+Measurement #2 in 7902.879 ms.
+Measurement #3 in 8139.452 ms.
+Measurement #4 in 7487.35 ms.
+7954.332,7947.0556,0.04603379405299342,0.12197880352314852,0.07802119647685149,0.15396620594700658
+
+2020-05-10-11-19-50
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 10790.449 ms.
+Warm-up #1 in 10336.826 ms.
+Measurement #0 in 10628.392 ms.
+Measurement #1 in 9299.777 ms.
+Measurement #2 in 9446.691 ms.
+Measurement #3 in 9588.009 ms.
+Measurement #4 in 9531.326 ms.
+9698.839,9691.5416,0.004041393420701917,0.02999400259974009,0.1700059974002599,0.1959586065792981
+
+2020-05-10-11-21-01
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 10532.985 ms.
+Warm-up #1 in 8357.075 ms.
+Measurement #0 in 8612.575 ms.
+Measurement #1 in 8522.866 ms.
+Measurement #2 in 8870.049 ms.
+Measurement #3 in 8575.971 ms.
+Measurement #4 in 8591.801 ms.
+8634.652399999999,8627.828400000002,2.0001999000179954E-5,3.918824235964566E-5,0.19996081175764036,0.1999799980009998
+
+2020-05-10-11-22-04
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 9286.367 ms.
+Warm-up #1 in 8157.745 ms.
+Measurement #0 in 8187.729 ms.
+Measurement #1 in 8993.713 ms.
+Measurement #2 in 8596.226 ms.
+Measurement #3 in 7952.226 ms.
+Measurement #4 in 8028.409 ms.
+8351.6606,8344.307400000002,0.1759684064390281,0.17596840643902817,0.024031593560971842,0.024031593560971887
+
+2020-05-10-11-23-04
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 10316.2 ms.
+Warm-up #1 in 9635.598 ms.
+Measurement #0 in 9582.043 ms.
+Measurement #1 in 8729.851 ms.
+Measurement #2 in 8446.763 ms.
+Measurement #3 in 9249.087 ms.
+Measurement #4 in 8956.554 ms.
+8992.8596,8984.951599999999,0.15797280783850418,0.15798859910049395,0.04201140089950606,0.04202719216149581
+
+2020-05-10-11-24-10
+
+ChainNonMarkovian
+   N=24 endovarsize=2 exovarsize=6 target=1 obsvar=23 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 10018.125 ms.
+Warm-up #1 in 8979.507 ms.
+Measurement #0 in 8530.28 ms.
+Measurement #1 in 9677.664 ms.
+Measurement #2 in 8889.539 ms.
+Measurement #3 in 8245.226 ms.
+Measurement #4 in 8817.068 ms.
+8831.9554,8824.0918,0.136000600379718,0.1879584069592241,0.012041593040775922,0.06399939962028198
+

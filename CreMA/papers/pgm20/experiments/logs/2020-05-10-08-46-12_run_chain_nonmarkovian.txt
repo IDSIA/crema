@@ -1,0 +1,278 @@
+2020-05-10-08-46-12
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-46-30
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 8331.895 ms.
+Warm-up #1 in 7395.863 ms.
+Measurement #0 in 7708.483 ms.
+Measurement #1 in 7156.544 ms.
+Measurement #2 in 7256.318 ms.
+Measurement #3 in 7574.067 ms.
+Measurement #4 in 7034.628 ms.
+7346.008,7339.256599999999,0.1028245745136374,0.10282468115035823,0.09717531884964177,0.09717542548636258
+
+2020-05-10-08-47-24
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=2468
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-47-41
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Warm-up #0 in 7655.0 ms.
+Warm-up #1 in 6631.784 ms.
+Measurement #0 in 7629.832 ms.
+Measurement #1 in 6936.932 ms.
+Measurement #2 in 6504.749 ms.
+Measurement #3 in 6301.824 ms.
+Measurement #4 in 6592.136 ms.
+6793.094599999999,6785.473,0.03381447850409437,0.033816057114599715,0.16618394288540028,0.16618552149590562
+
+2020-05-10-08-48-31
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=3702
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-48-48
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Warm-up #0 in 8866.266 ms.
+Warm-up #1 in 7502.98 ms.
+Measurement #0 in 8046.716 ms.
+Measurement #1 in 8519.622 ms.
+Measurement #2 in 7884.27 ms.
+Measurement #3 in 8316.108 ms.
+Measurement #4 in 7219.127 ms.
+7997.1686,7989.7932,0.11710625207450916,0.1171179557526191,0.08288204424738091,0.08289374792549084
+
+2020-05-10-08-49-46
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=4936
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-50-03
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Warm-up #0 in 9096.629 ms.
+Warm-up #1 in 7624.041 ms.
+Measurement #0 in 7620.089 ms.
+Measurement #1 in 7762.695 ms.
+Measurement #2 in 6832.404 ms.
+Measurement #3 in 7931.258 ms.
+Measurement #4 in 7208.461 ms.
+7470.9814000000015,7464.3478000000005,0.11697838144842802,0.1169790514333553,0.0830209485666447,0.08302161855157196
+
+2020-05-10-08-50-58
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=6170
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-51-15
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Warm-up #0 in 9154.591 ms.
+Warm-up #1 in 8591.283 ms.
+Measurement #0 in 7962.202 ms.
+Measurement #1 in 8291.978 ms.
+Measurement #2 in 8020.696 ms.
+Measurement #3 in 7855.116 ms.
+Measurement #4 in 7597.614 ms.
+7945.5212,7938.7789999999995,0.03780681096464501,0.03780740175632834,0.16219259824367166,0.16219318903535498
+
+2020-05-10-08-52-13
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=7404
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-52-31
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=7404
+=================================================================
+Running experiments...
+Warm-up #0 in 9210.278 ms.
+Warm-up #1 in 8527.167 ms.
+Measurement #0 in 8296.979 ms.
+Measurement #1 in 7865.796 ms.
+Measurement #2 in 8211.167 ms.
+Measurement #3 in 8814.396 ms.
+Measurement #4 in 8885.818 ms.
+8414.8312,8408.5356,0.16052789303787493,0.1605280907180908,0.039471909281909204,0.03947210696212505
+
+2020-05-10-08-53-32
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=8638
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-53-51
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=8638
+=================================================================
+Running experiments...
+Warm-up #0 in 8759.518 ms.
+Warm-up #1 in 8128.723 ms.
+Measurement #0 in 8376.824 ms.
+Measurement #1 in 7722.118 ms.
+Measurement #2 in 7587.635 ms.
+Measurement #3 in 7688.6 ms.
+Measurement #4 in 7813.976 ms.
+7837.830600000001,7830.193799999999,0.1703390714096722,0.17033946307941278,0.029660536920587233,0.029660928590327797
+
+2020-05-10-08-54-48
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=9872
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-55-05
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=9872
+=================================================================
+Running experiments...
+Warm-up #0 in 8728.006 ms.
+Warm-up #1 in 7414.307 ms.
+Measurement #0 in 7296.604 ms.
+Measurement #1 in 7042.985 ms.
+Measurement #2 in 7330.207 ms.
+Measurement #3 in 7575.898 ms.
+Measurement #4 in 6718.598 ms.
+7192.8584,7186.222400000001,0.15686706665235406,0.15686706666597444,0.04313293333402555,0.04313293334764594
+
+2020-05-10-08-55-58
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=11106
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-56-16
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=11106
+=================================================================
+Running experiments...
+Warm-up #0 in 8677.139 ms.
+Warm-up #1 in 7723.761 ms.
+Measurement #0 in 7313.838 ms.
+Measurement #1 in 7634.088 ms.
+Measurement #2 in 7269.853 ms.
+Measurement #3 in 7384.8 ms.
+Measurement #4 in 7610.215 ms.
+7442.558799999999,7435.852800000001,0.023240879054068093,0.023365219881229686,0.17663478011877032,0.1767591209459319
+
+2020-05-10-08-57-11
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CVE seed=12340
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-57-28
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=10 obsvar=20 dovar=0 method=CCALPeps seed=12340
+=================================================================
+Running experiments...
+Warm-up #0 in 9946.253 ms.
+Warm-up #1 in 9195.77 ms.
+Measurement #0 in 9145.212 ms.
+Measurement #1 in 9199.957 ms.
+Measurement #2 in 9289.387 ms.
+Measurement #3 in 8838.455 ms.
+Measurement #4 in 9087.475 ms.
+9112.0972,9105.103200000001,0.09439401698986367,0.09439768780270696,0.10560231219729303,0.10560598301013632
+
+2020-05-10-08-58-34
+
+ChainNonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=1 obsvar=20 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.NegativeArraySizeException: -1392590848
+nan,nan,nan,nan,nan,nan
+
+2020-05-10-08-58-52
+2020-05-10-08-59-10
+2020-05-10-08-59-10
+2020-05-10-08-59-10
+2020-05-10-08-59-10
+2020-05-10-08-59-10
+2020-05-10-08-59-11
+2020-05-10-08-59-11
+2020-05-10-08-59-11
+2020-05-10-08-59-11
+2020-05-10-08-59-11
+2020-05-10-08-59-12
+2020-05-10-08-59-12
+2020-05-10-08-59-12
+2020-05-10-08-59-12
+2020-05-10-08-59-12
+2020-05-10-08-59-12
+2020-05-10-08-59-13
+2020-05-10-08-59-13
+2020-05-10-08-59-13
+2020-05-10-08-59-13
+2020-05-10-08-59-13
+2020-05-10-08-59-14
+2020-05-10-08-59-14
+2020-05-10-08-59-14
+2020-05-10-08-59-14
+2020-05-10-08-59-15
+2020-05-10-08-59-15
+2020-05-10-08-59-15

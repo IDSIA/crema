@@ -1,0 +1,78 @@
+2020-05-04-09-12-39
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=2 obsvar=4 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 32.6 ms.
+Warm-up #1 in 5.38 ms.
+Measurement #0 in 4.709 ms.
+Measurement #1 in 4.318 ms.
+Measurement #2 in 3.482 ms.
+Measurement #3 in 2.932 ms.
+Measurement #4 in 3.18 ms.
+3.7242000000000006,3.0594,0.03156594795900812,0.03156594795900812,0.16481958740491912,0.16481958740491912,0.003614464636072788,0.003614464636072788
+
+2020-05-04-09-12-40
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=2 obsvar=4 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 638.507 ms.
+Warm-up #1 in 197.735 ms.
+Measurement #0 in 145.741 ms.
+Measurement #1 in 182.78 ms.
+Measurement #2 in 142.82 ms.
+Measurement #3 in 129.399 ms.
+Measurement #4 in 118.273 ms.
+143.8026,8.8526,0.03156594795900812,0.03156594795900812,0.16481958740491912,0.16481958740491912,0.0036144646360727886,0.0036144646360727886
+
+2020-05-04-09-12-43
+
+TerBinChainMarkovian
+   N=5 endovarsize=2 exovarsize=4 target=2 obsvar=4 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1824.681 ms.
+Warm-up #1 in 1410.216 ms.
+Measurement #0 in 1518.535 ms.
+Measurement #1 in 1158.824 ms.
+Measurement #2 in 1121.64 ms.
+Measurement #3 in 1126.848 ms.
+Measurement #4 in 1120.937 ms.
+1209.3568,1205.3902,0.031585951080154,0.03158595108015403,0.1647771872532961,0.16477718725329613,0.0036368616665498677,0.00363686166654987
+
+2020-05-04-09-12-53
+
+TerBinChainMarkovian
+   N=6 endovarsize=2 exovarsize=4 target=3 obsvar=5 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 32.08 ms.
+Warm-up #1 in 7.215 ms.
+Measurement #0 in 7.2 ms.
+Measurement #1 in 4.184 ms.
+Measurement #2 in 3.996 ms.
+Measurement #3 in 3.627 ms.
+Measurement #4 in 2.604 ms.
+4.3222000000000005,3.604,0.006007730421232036,0.006007730421232036,0.19399226957876797,0.19399226957876797
+
+2020-05-04-09-12-54
+
+TerBinChainMarkovian
+   N=6 endovarsize=2 exovarsize=4 target=3 obsvar=5 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 709.008 ms.
+Warm-up #1 in 203.331 ms.
+Measurement #0 in 193.177 ms.
+Measurement #1 in 182.24 ms.
+Measurement #2 in 162.635 ms.
+Measurement #3 in 156.027 ms.
+Measurement #4 in 145.926 ms.
+168.00099999999998,17.3528,0.006007730421232036,0.006007730421232036,0.19399226957876797,0.19399226957876797
+
+2020-05-04-09-12-57
+2020-05-04-09-13-01
+2020-05-04-09-13-02

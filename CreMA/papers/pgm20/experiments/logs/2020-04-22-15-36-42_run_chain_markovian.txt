@@ -1,9 +1,0 @@
-
-ChainMarkovian
-   N=5 exovarsize=6 target=4 obsvar=-1 dovar=0 method=CVE seed=1234
-=================================================================
-Running experiments...
-set timeout 0 s.
-java.util.concurrent.TimeoutException
-inf,inf,nan
-
