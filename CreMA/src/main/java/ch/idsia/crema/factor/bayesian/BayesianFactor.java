@@ -400,6 +400,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		long idx = 0;
 		double[] result = new double[target.getCombinations()];
 
+
 		for (int i = 0; i < result.length; ++i) {
 			if (log)
 				result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.data[(int) (idx >>> 32l)];

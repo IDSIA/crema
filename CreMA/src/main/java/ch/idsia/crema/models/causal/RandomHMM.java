@@ -63,7 +63,7 @@ public class RandomHMM {
     public static void main(String[] args) throws InterruptedException {
         int n = 3;
 
-        StructuralCausalModel model = buildModel(false, n, 2, 6);
+        StructuralCausalModel model = buildModel(true, n, 2, 6);
 
 
         System.out.println(model.getNetwork());
@@ -77,12 +77,13 @@ public class RandomHMM {
 
         int target = X[2];
 
+        System.out.println("p("+target+"|"+evidence.keys()[0]+",do("+intervention.keys()[0]+"))");
 
 
 
         CausalInference inf = new CausalVE(model);
         BayesianFactor result = (BayesianFactor) inf.query(target, evidence, intervention);
-
+        System.out.println(result);
 
 
         // error, this is not working

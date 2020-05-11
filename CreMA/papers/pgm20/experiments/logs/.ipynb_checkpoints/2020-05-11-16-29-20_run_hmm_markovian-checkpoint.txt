@@ -1,0 +1,80 @@
+2020-05-11-16-29-20
+
+HMM-Markovian
+   N=6 endovarsize=2 exovarsize=6 target=4 obsvar=5 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.OutOfMemoryError: Java heap space
+nan,nan,nan,nan,nan,nan
+
+setting as not evaluable: {'N': 6, 'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 4}
+2020-05-11-16-29-22
+
+HMM-Markovian
+   N=6 endovarsize=2 exovarsize=6 target=4 obsvar=5 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1037.836 ms.
+Warm-up #1 in 363.777 ms.
+Measurement #0 in 302.544 ms.
+Measurement #1 in 279.86 ms.
+Measurement #2 in 225.594 ms.
+Measurement #3 in 190.926 ms.
+Measurement #4 in 208.297 ms.
+241.4442,14.036200000000003,0.035802977696698636,0.035802977696698636,0.16419702230330133,0.16419702230330133
+
+2020-05-11-16-29-26
+
+HMM-Markovian
+   N=6 endovarsize=2 exovarsize=6 target=4 obsvar=5 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1127.147 ms.
+Warm-up #1 in 503.218 ms.
+Measurement #0 in 429.45 ms.
+Measurement #1 in 474.03 ms.
+Measurement #2 in 411.913 ms.
+Measurement #3 in 686.2 ms.
+Measurement #4 in 398.988 ms.
+480.11620000000005,471.68,0.03582868830862649,0.03582868830862653,0.16417131169137347,0.1641713116913735
+
+2020-05-11-16-29-31
+
+HMM-Markovian
+   N=7 endovarsize=2 exovarsize=6 target=6 obsvar=6 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.OutOfMemoryError: Java heap space
+nan,nan,nan,nan,nan,nan
+
+setting as not evaluable: {'N': 7, 'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 6}
+2020-05-11-16-29-33
+
+HMM-Markovian
+   N=7 endovarsize=2 exovarsize=6 target=6 obsvar=6 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 996.183 ms.
+Warm-up #1 in 396.027 ms.
+Measurement #0 in 299.521 ms.
+Measurement #1 in 246.564 ms.
+Measurement #2 in 226.126 ms.
+Measurement #3 in 230.871 ms.
+Measurement #4 in 231.894 ms.
+246.9952,15.1334,0.1895472,0.1895472,0.0104528,0.0104528
+
+2020-05-11-16-29-37
+
+HMM-Markovian
+   N=7 endovarsize=2 exovarsize=6 target=6 obsvar=6 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 948.99 ms.
+Warm-up #1 in 492.739 ms.
+Measurement #0 in 480.054 ms.
+Measurement #1 in 345.129 ms.
+Measurement #2 in 313.996 ms.
+Measurement #3 in 256.138 ms.
+Measurement #4 in 224.192 ms.
+323.9018,314.9632,0.2,0.2,0.0,0.0
+

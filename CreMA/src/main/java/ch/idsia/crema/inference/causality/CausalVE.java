@@ -30,8 +30,10 @@ public class CausalVE extends CausalInference<StructuralCausalModel, BayesianFac
         StructuralCausalModel do_model = applyInterventions(intervention);
 
         RemoveBarren removeBarren = new RemoveBarren();
-        model = removeBarren
-                .execute(new CutObserved().execute(model, evidence), target, evidence);
+        do_model = removeBarren
+                .execute(new CutObserved().execute(do_model, evidence), target, evidence);
+
+
 
         TIntIntHashMap filteredEvidence = new TIntIntHashMap();
         // update the evidence

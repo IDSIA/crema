@@ -181,6 +181,7 @@ public class RunExperiments {
             System.out.println("nan,nan,"+String.join(",",nanStrings));
         }catch (Error e){
             System.out.println(e);
+            //e.printStackTrace();
             String[] nanStrings = IntStream.range(0, resultSize*2).mapToObj(i -> "nan").toArray(String[]::new);
             System.out.println("nan,nan,"+String.join(",",nanStrings));
 
@@ -303,6 +304,7 @@ public class RunExperiments {
 
         // Warm-up
         for(int i=0; i<warmups; i++){
+            //double[] out = RunExperiments.experiment();
             double[] out =  invoker.run(RunExperiments::experiment, TIMEOUT*2);
             System.out.println("Warm-up #"+i+" in "+out[0]+" ms.");
         }

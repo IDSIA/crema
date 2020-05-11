@@ -1,0 +1,58 @@
+current: {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 4}
+previous: []
+2020-05-11-17-35-29
+
+HMM-Markovian
+   N=6 endovarsize=2 exovarsize=6 target=4 obsvar=5 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+java.util.concurrent.ExecutionException: java.lang.OutOfMemoryError: Java heap space
+nan,nan,nan,nan,nan,nan
+
+setting as not evaluable: {'N': 6, 'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 4}
+current: {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE', 'target': 4}
+previous: [{'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 4}]
+2020-05-11-17-35-31
+
+HMM-Markovian
+   N=6 endovarsize=2 exovarsize=6 target=4 obsvar=5 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1070.759 ms.
+Warm-up #1 in 362.427 ms.
+Measurement #0 in 293.501 ms.
+Measurement #1 in 249.279 ms.
+Measurement #2 in 229.506 ms.
+Measurement #3 in 197.292 ms.
+Measurement #4 in 230.268 ms.
+239.9692,13.265799999999999,0.03580297769669864,0.03580297769669864,0.16419702230330135,0.16419702230330135
+
+current: {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps', 'target': 4}
+previous: [{'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 4}]
+2020-05-11-17-35-35
+
+HMM-Markovian
+   N=6 endovarsize=2 exovarsize=6 target=4 obsvar=5 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 1076.83 ms.
+Warm-up #1 in 550.865 ms.
+Measurement #0 in 579.194 ms.
+Measurement #1 in 571.836 ms.
+Measurement #2 in 526.026 ms.
+Measurement #3 in 494.726 ms.
+Measurement #4 in 408.881 ms.
+516.1326,507.1924,0.03582868830862649,0.03582868830862653,0.16417131169137347,0.1641713116913735
+
+current: {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 6}
+previous: [{'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 4}]
+2020-05-11-17-35-41
+setting as not evaluable: {'N': 7, 'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 6}
+current: {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE', 'target': 6}
+previous: [{'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 4}, {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 6}]
+2020-05-11-17-35-41
+setting as not evaluable: {'N': 7, 'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE', 'target': 6}
+current: {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps', 'target': 6}
+previous: [{'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 4}, {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE', 'target': 6}, {'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE', 'target': 6}]
+2020-05-11-17-35-41
+setting as not evaluable: {'N': 7, 'dovar': 0, 'obsvar': -1, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps', 'target': 6}

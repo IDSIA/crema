@@ -107,7 +107,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 		StructuralCausalModel copy = new StructuralCausalModel();
 		for (int v: this.getVariables()){
-			copy.addVariable(this.getSize(v), this.isExogenous(v));
+			int vid = copy.addVariable(v, this.getSize(v), this.isExogenous(v));
 		}
 
 		for (int v : copy.getVariables()){
@@ -134,6 +134,17 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 		if(exogenous)
 			this.exogenousVars.add(vid);
 		return vid;
+	}
+
+	public int addVariable(int vid, int size, boolean exogenous){
+		if(vid>max) max = vid;
+		this.cardinalities.put(vid, size);
+		network.addVariable(vid, size);
+		if(exogenous)
+			this.exogenousVars.add(vid);
+		return vid;
+
+
 	}
 
 	/**
