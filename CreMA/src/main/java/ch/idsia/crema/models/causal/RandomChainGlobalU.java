@@ -8,45 +8,29 @@ import ch.idsia.crema.inference.causality.CausalVE;
 import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
 import ch.idsia.crema.inference.causality.CredalCausalVE;
 import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 
-public class RandomHMM {
+public class RandomChainGlobalU {
 
     public static int PROB_DECIMALS = 2;
 
-    public static StructuralCausalModel buildModel(boolean markovian, int n, int endoSize, int exoSize) {
+    public static StructuralCausalModel buildModel(int n, int endoSize, int exoSize) {
 
         StructuralCausalModel model = new StructuralCausalModel();
 
-        int[] X = new int[n];
-        int[] Y = new int[n];
-
         // add endogenous
         for (int i=0; i < n; i++) {
-            X[i] = model.addVariable(endoSize);
-            Y[i] = model.addVariable(endoSize);
-
-            model.addParent(Y[i], X[i]);
-
+            model.addVariable(endoSize);
             if(i>0)
-                model.addParent(X[i], X[i-1]);
+                model.addParent(i, i-1);
         }
+
+        int u = model.addVariable(exoSize, true);
 
         //add exogenous
-
-        int step = 1;
-        if (!markovian) step = 2;
-        for (int i = 0; i < n; i += step) {
-            int u = model.addVariable(exoSize, true);
-            model.addParent(X[i], u);
-            if (!markovian && i + 1 < n) model.addParent(X[i + 1], u);
-        }
-
-        for(int i = 0; i<n; i++){
-            int u = model.addVariable(exoSize, true);
-            model.addParent(Y[i], u);
+        for (int i=0; i < n; i++) {
+            model.addParent(i,u);
         }
 
         model.fillWithRandomFactors(PROB_DECIMALS, false);
@@ -57,41 +41,30 @@ public class RandomHMM {
 
     }
 
-
+    public static StructuralCausalModel buildModel(int n, int endoSize) {
+        return buildModel(n, endoSize, -1);
+    }
 
 
     public static void main(String[] args) throws InterruptedException {
-        int n = 3;
+        int n = 4;
+        int endoSize = 2;
+        int exoSize = (int) (Math.pow(endoSize,n)+1);
+        StructuralCausalModel model = buildModel(n, endoSize,exoSize);
 
-        RandomUtil.getRandom().setSeed(3702);
-        //RandomUtil.getRandom().setSeed(1234);
-
-        StructuralCausalModel model = buildModel(false, n, 2, 6);
-
-
-        System.out.println(model.getNetwork());
         int[] X = model.getEndogenousVars();
 
         TIntIntHashMap evidence = new TIntIntHashMap();
-        //evidence.put(X[2*n-1], 0);
-        evidence.put(4, 1);
-
 
         TIntIntHashMap intervention = new TIntIntHashMap();
-       // intervention.put(X[0], 0);
-        intervention.put(0, 0);
+        intervention.put(X[0], 0);
 
-
-        int target = X[2];
-        target = 2;
-
-   //     System.out.println("p("+target+"|"+evidence.keys()[0]+",do("+intervention.keys()[0]+"))");
-
-
+        int target = X[n-1];
 
         CausalInference inf = new CausalVE(model);
         BayesianFactor result = (BayesianFactor) inf.query(target, evidence, intervention);
         System.out.println(result);
+
 
 
         // error, this is not working
@@ -100,7 +73,7 @@ public class RandomHMM {
         System.out.println(result2);
 
 
-        CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(0.000001);
+        CausalInference inf3 = new CredalCausalAproxLP(model).setEpsilon(0.001);
         IntervalFactor result3 = (IntervalFactor) inf3.query(target, evidence, intervention);
         System.out.println(result3);
 

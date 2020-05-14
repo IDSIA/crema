@@ -21,6 +21,7 @@ import org.apache.commons.math3.util.Pair;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
@@ -315,17 +316,22 @@ public class RunExperiments {
             double[] out = invoker.run(RunExperiments::experiment, TIMEOUT);
             //double[] out = experiment();
             System.out.println("Measurement #"+i+" in "+out[0]+" ms.");
+
             time += out[0];
             time2 += out[1];
+
             for(int k = 0; k<resultSize; k++) {
                 lbound[k] = out[k+2];
                 ubound[k] = out[k+2+resultSize];
             }
         }
 
+        System.out.println(Arrays.toString(lbound));
+
+
         return Doubles.concat(new double[] {time/repetitions, time2/repetitions},
-                DoubleStream.of(lbound).map( v -> v/repetitions).toArray(),
-                DoubleStream.of(ubound).map( v -> v/repetitions).toArray());
+                DoubleStream.of(lbound).map( v -> v).toArray(),
+                DoubleStream.of(ubound).map( v -> v).toArray());
 
     }
 
