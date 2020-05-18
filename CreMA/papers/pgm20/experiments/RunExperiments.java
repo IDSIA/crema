@@ -148,6 +148,14 @@ public class RunExperiments {
                 model = RandomHMM.buildModel(true, N, endoVarSize, exoVarSize);
             else if (modelName.equals("HMM-NonMarkovian"))
                 model = RandomHMM.buildModel(false, N, endoVarSize, exoVarSize);
+            else if (modelName.equals("RHMM-Markovian"))
+                model = RandomRevHMM.buildModel(true, N, endoVarSize, exoVarSize);
+            else if (modelName.equals("RHMM-NonMarkovian"))
+                model = RandomRevHMM.buildModel(false, N, endoVarSize, exoVarSize);
+            else if (modelName.equals("Squares-Markovian"))
+                model = RandomSquares.buildModel(true, N, endoVarSize, exoVarSize);
+            else if (modelName.equals("Squares-NonMarkovian"))
+                model = RandomSquares.buildModel(false, N, endoVarSize, exoVarSize);
             else
                 throw new IllegalArgumentException("Non valid model name");
 
