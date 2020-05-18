@@ -1,0 +1,20 @@
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: [{'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}, {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-12-14-23-56
+java -cp /home/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /home/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java HMM-NonMarkovian 25 -v 2 -V 6 -t 12 -o 24 -d 0 -m CVE -e 0.0001 -s 1234 -w 2 -r 5 
+
+HMM-NonMarkovian
+   N=25 endovarsize=2 exovarsize=6 target=12 obsvar=24 dovar=0 method=CVE seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 389.15 ms.
+Warm-up #1 in 315.779 ms.
+Measurement #0 in 306.609 ms.
+Measurement #1 in 301.688 ms.
+Measurement #2 in 306.183 ms.
+Measurement #3 in 310.567 ms.
+Measurement #4 in 199.853 ms.
+284.98,284.1812,0.11279999999999997,0.11279999999999997,0.08720000000000001,0.08720000000000001
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: [{'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}, {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}]

@@ -7,6 +7,8 @@ def plot(data, x_column, y_column, series_column, transformation=None, ax=None, 
 
     ax = ax or plt.figure(figsize=(10, 8), dpi= 80, facecolor='w', edgecolor='k').gca()
 
+    data['method'] = data['method'].str.replace('eps','')
+    
     if transformation is not None:
         data = transformation(data)
     
