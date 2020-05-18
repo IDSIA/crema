@@ -1,0 +1,3420 @@
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-18
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-19
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-20
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-21
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-22
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-23
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
+current: {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-14-20-21-24
+echo 0,0,0,0,0,0
+0,0,0,0,0,0
+
