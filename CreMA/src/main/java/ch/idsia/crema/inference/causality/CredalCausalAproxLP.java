@@ -24,14 +24,13 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
     private StructuralCausalModel originalModel = null;
 
     public CredalCausalAproxLP(StructuralCausalModel model){
-
-        this.model = model.toCredalNetwork(false, model.getEmpiricalProbs());
-        this.originalModel = model;
-
+        this(model,model.getEmpiricalProbs());
     }
 
     public CredalCausalAproxLP(StructuralCausalModel model, BayesianFactor[] empirical){
         this.model = model.toCredalNetwork(false, empirical);
+        this.originalModel = model;
+
     }
 
     @Override

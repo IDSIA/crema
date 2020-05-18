@@ -203,6 +203,7 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		return vid;
 	}
 
+
 	@Override
 	public void removeParent(int variable, int parent) {
 		F factor = factors.get(variable);
