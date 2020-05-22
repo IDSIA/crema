@@ -1,120 +1,39 @@
 % This file was created by tikzplotlib v0.9.1.
 \begin{tikzpicture}
 
-\definecolor{color0}{rgb}{0.12156862745098,0.466666666666667,0.705882352941177}
-\definecolor{color1}{rgb}{1,0.498039215686275,0.0549019607843137}
-\definecolor{color2}{rgb}{0.172549019607843,0.627450980392157,0.172549019607843}
+\definecolor{color0}{rgb}{0.266666666666667,0.447058823529412,0.768627450980392}
 
-\begin{groupplot}[group style={group size=3 by 1}]
-\nextgroupplot[
+\begin{axis}[
 legend cell align={left},
 legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
 tick align=outside,
 tick pos=left,
-title={Chain 2-6 (Non Makovian case)},
+title={ },
 x grid style={white!69.0196078431373!black},
-xlabel={Number of endogenous variables},
+xlabel={Model length},
 xmin=2.7, xmax=9.3,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
-ylabel={size},
-ymin=0.00547956128904109, ymax=0.253218757003415,
+ylabel={interval size},
+ymin=-0.00603211920600413, ymax=0.253426422598087,
 ytick style={color=black}
 ]
-\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
+\addplot [semithick, color0, dashed, mark=x, mark size=5, mark options={solid}]
 table {%
-3 0.241957884470943
-5 0.0738501769490111
-7 0.0451820357947919
-9 0.0167404338215126
+3 0.031439
+5 0.0143407734
+7 0.005761450876
+9 0.00655788435984579
 };
-\addlegendentry{CCALP}
-\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
+\addlegendentry{Polytree}
+\addplot [semithick, color0, dashed, mark=*, mark size=4, mark options={solid}]
 table {%
 3 0.241632852516083
 5 0.0968431656002964
 7 0.0505953140846606
 9 0.0170379876441064
 };
-\addlegendentry{CCVE}
+\addlegendentry{Tree}
+\end{axis}
 
-\nextgroupplot[
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
-tick align=outside,
-tick pos=left,
-title={HMM 2-6 (Non Makovian case)},
-x grid style={white!69.0196078431373!black},
-xlabel={Number of endogenous variables},
-xmin=5.4, xmax=18.6,
-xtick style={color=black},
-y grid style={white!69.0196078431373!black},
-ylabel={size},
-ymin=0.00484976534822673, ymax=0.266123212266315,
-ytick style={color=black}
-]
-\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
-table {%
-6 0.254247146497311
-10 0.0863257579920813
-14 0.0395394590292748
-18 0.0167258311172308
-};
-\addlegendentry{CCALP}
-\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
-table {%
-6 0.249384364224207
-10 0.0651128654962942
-14 0.0267611597554305
-18 0.0252501108951204
-};
-\addlegendentry{CCVE}
-
-\nextgroupplot[
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
-tick align=outside,
-tick pos=left,
-title={Reverse HMM 2-6 (Non Makovian case)},
-x grid style={white!69.0196078431373!black},
-xlabel={Number of endogenous variables},
-xmin=5.4, xmax=18.6,
-xtick style={color=black},
-y grid style={white!69.0196078431373!black},
-ylabel={size},
-ymin=-0.00157195, ymax=0.03301095,
-ytick style={color=black}
-]
-\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
-table {%
-6 0.016976327275599
-10 0.00830137112301579
-14 0.00330955699235801
-18 0.00294308738694705
-};
-\addlegendentry{CCALP}
-\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
-table {%
-6 0.031439
-10 0.0143407734
-14 0.005761450876
-18 0.00655788435984579
-};
-\addlegendentry{CCVE}
-\addplot [semithick, color2, mark=*, mark size=3, mark options={solid}]
-table {%
-6 0
-10 0
-14 0
-18 0
-};
-\addlegendentry{CVE}
-\end{groupplot}
-
-\draw ({$(current bounding box.south west)!0.5!(current bounding box.south east)$}|-{$(current bounding box.south west)!0.98!(current bounding box.north west)$}) node[
-  scale=0.6,
-  anchor=north,
-  text=black,
-  rotate=0.0
-]{Resulting interval size};
 \end{tikzpicture}
