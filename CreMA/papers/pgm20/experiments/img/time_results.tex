@@ -1,0 +1,440 @@
+% This file was created by tikzplotlib v0.9.1.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{0.12156862745098,0.466666666666667,0.705882352941177}
+\definecolor{color1}{rgb}{1,0.498039215686275,0.0549019607843137}
+\definecolor{color2}{rgb}{0.172549019607843,0.627450980392157,0.172549019607843}
+
+\begin{groupplot}[group style={group size=3 by 2}]
+\nextgroupplot[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
+tick align=outside,
+tick pos=left,
+title={Chain 2-6 (Makovian case)},
+x grid style={white!69.0196078431373!black},
+xlabel={Number of endogenous variables},
+xmin=2.2, xmax=19.8,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={ },
+ymin=-4411.02109, ymax=92680.68725,
+ytick style={color=black}
+]
+\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
+table {%
+3 376.9809
+4 715.94548
+5 1005.02062
+6 1376.42852
+7 1854.20724
+8 2159.22026
+9 2621.01922
+10 2964.09184
+11 3370.16177777778
+12 4045.08831111111
+13 4171.06191111111
+14 4589.99286666667
+15 5096.46015555556
+16 5398.34682222222
+17 5996.71606666667
+18 6592.05124444444
+19 6935.83462222222
+};
+\addlegendentry{CCALP}
+\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
+table {%
+3 99.98128
+4 127.78574
+5 168.41542
+6 265.15466
+7 632.0731
+8 3238.88632
+9 16652.67828
+10 88267.42778
+};
+\addlegendentry{CCVE}
+\addplot [semithick, color2, mark=*, mark size=3, mark options={solid}]
+table {%
+3 2.23838
+4 2.83426
+5 4.28948
+6 6.10636
+7 15.88846
+8 55.37234
+9 252.37046
+10 1596.75384
+11 10726.1552
+};
+\addlegendentry{CVE}
+
+\nextgroupplot[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
+tick align=outside,
+tick pos=left,
+title={HMM 2-6 (Makovian case)},
+x grid style={white!69.0196078431373!black},
+xlabel={Number of endogenous variables},
+xmin=3.9, xmax=50.1,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={ },
+ymin=-4564.344263, ymax=95917.767643,
+ytick style={color=black}
+]
+\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
+table {%
+6 694.59802
+8 1024.30638
+10 1375.07764
+12 1842.16775555556
+14 2254.29891111111
+16 2674.50062222222
+18 2905.06773333333
+20 3380.36164444444
+22 3741.63328888889
+24 4361.8506
+26 4723.104
+28 5063.26515555555
+30 5382.54877777778
+32 6283.07045
+34 6470.312275
+36 7047.321025
+38 7698.860725
+40 8401.553025
+42 8806.025425
+44 9234.002925
+46 9932.50135
+48 10414.421775
+};
+\addlegendentry{CCALP}
+\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
+table {%
+6 169.58384
+8 227.04394
+10 340.6471
+12 720.71854
+14 3455.2952
+16 17378.05502
+18 91350.39892
+};
+\addlegendentry{CCVE}
+\addplot [semithick, color2, mark=*, mark size=3, mark options={solid}]
+table {%
+6 3.02446
+8 4.36944
+10 6.1072
+12 16.08184
+14 55.85096
+16 261.0344
+18 1517.15722
+20 9820.35964
+};
+\addlegendentry{CVE}
+
+\nextgroupplot[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
+tick align=outside,
+tick pos=left,
+title={Reverse HMM 2-6 (Makovian case)},
+x grid style={white!69.0196078431373!black},
+xlabel={Number of endogenous variables},
+xmin=4.4, xmax=39.6,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={ },
+ymin=-672.672319, ymax=14184.062299,
+ytick style={color=black}
+]
+\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
+table {%
+6 437.11408
+8 437.41496
+10 1121.05126
+12 1144.8987
+14 1958.65404
+16 1976.39072
+18 2820.16384
+20 2845.78692
+22 3676.99544
+24 3712.27112
+26 4562.82886
+28 4568.5583
+30 5482.98996
+32 5691.9649
+34 6380.58096
+36 6410.35434
+38 7142.26678
+};
+\addlegendentry{CCALP}
+\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
+table {%
+6 163.94376
+8 200.50044
+10 262.15532
+12 299.3682
+14 690.96754
+16 720.84762
+18 13100.14116
+20 13508.75618
+};
+\addlegendentry{CCVE}
+\addplot [semithick, color2, mark=*, mark size=3, mark options={solid}]
+table {%
+6 2.6338
+8 2.8396
+10 4.18314
+12 4.515
+14 13.89352
+16 13.7937
+18 183.16634
+20 185.84564
+22 6404.65422
+24 6426.06094
+};
+\addlegendentry{CVE}
+
+\nextgroupplot[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, at={(0.03,0.97)}, anchor=north west, draw=white!80!black},
+tick align=outside,
+tick pos=left,
+title={Chain 2-6 (Non Makovian case)},
+x grid style={white!69.0196078431373!black},
+xlabel={Number of endogenous variables},
+xmin=1.95, xmax=25.05,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={ },
+ymin=-5743.513777, ymax=120661.044437,
+ytick style={color=black}
+]
+\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
+table {%
+3 341.75796
+4 466.1655
+5 741.43504
+6 860.7
+7 1368.57902
+8 1398.87822
+9 2118.5295
+10 2301.23888
+11 2914.66794
+12 3059.9051
+13 3925.44538
+14 3958.07788
+15 4864.45886
+16 5095.64466
+17 5755.08222
+18 6175.7121
+19 6875.71724
+20 6970.33168
+21 7804.0553
+22 7968.99234
+23 8621.53904
+24 8959.3829
+};
+\addlegendentry{CCALP}
+\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
+table {%
+3 72.76482
+4 68.45506
+5 114.651755555556
+6 107.642844444444
+7 2203.501675
+8 148.208425
+9 234.517066666667
+10 257.6461
+11 15495.6344666667
+12 715.1094
+13 8091.72163333333
+14 4476.42063333333
+15 19177.7441333333
+16 20482.2364
+17 82015.5528666667
+18 114915.3827
+};
+\addlegendentry{CCVE}
+\addplot [semithick, color2, mark=*, mark size=3, mark options={solid}]
+table {%
+3 2.14796
+4 2.40792
+5 3.00414
+6 3.36182
+7 4.55934
+8 4.55656
+9 6.5312
+10 8.35964
+11 17.90886
+12 27.5617
+13 63.85294
+14 97.7789
+15 310.04334
+16 488.5539
+17 1867.77882
+18 2779.65726
+19 10780.8081
+20 16881.9189
+};
+\addlegendentry{CVE}
+
+\nextgroupplot[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, at={(0.03,0.97)}, anchor=north west, draw=white!80!black},
+tick align=outside,
+tick pos=left,
+title={HMM 2-6 (Non Makovian case)},
+x grid style={white!69.0196078431373!black},
+xlabel={Number of endogenous variables},
+xmin=2.4, xmax=81.6,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={ },
+ymin=-6299.166788, ymax=132339.762388,
+ytick style={color=black}
+]
+\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
+table {%
+6 335.5191
+10 309.53166
+14 772.52528
+18 730.41544
+22 1322.03848
+26 1253.86018
+30 2134.8958
+34 1943.36104
+38 3051.3002
+42 2783.56648
+46 4025.15342
+50 3969.01316
+54 4913.86106
+58 5221.89214
+62 6282.8169
+66 6477.51222
+70 8531.58802
+74 9265.20796
+78 12635.52358
+};
+\addlegendentry{CCALP}
+\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
+table {%
+6 186.18284
+10 200.13236
+14 1972.4702
+18 565.36976
+22 6757.67922
+26 474.54294
+30 9582.8595
+34 15076.9630285714
+38 14455.3256857143
+42 6892.14677142857
+46 4889.43831428571
+50 3446.19243333333
+54 23962.02768
+58 17743.06196
+62 126037.99288
+66 102032.2696
+};
+\addlegendentry{CCVE}
+\addplot [semithick, color2, mark=*, mark size=3, mark options={solid}]
+table {%
+6 2.60272
+10 2.83072
+14 4.35658
+18 5.05538
+22 7.29092
+26 13.01346
+30 19.71382
+34 23.9093
+38 40.89036
+42 71.20842
+46 224.27276
+50 279.43692
+54 769.82724
+58 900.3263
+62 3970.63334
+66 4134.5036
+70 21488.5354
+74 19981.955275
+};
+\addlegendentry{CVE}
+
+\nextgroupplot[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, at={(0.03,0.97)}, anchor=north west, draw=white!80!black},
+tick align=outside,
+tick pos=left,
+title={Reverse HMM 2-6 (Non Makovian case)},
+x grid style={white!69.0196078431373!black},
+xlabel={Number of endogenous variables},
+xmin=4.4, xmax=39.6,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={ },
+ymin=-2208.465861, ymax=46435.468841,
+ytick style={color=black}
+]
+\addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
+table {%
+6 408.62302
+8 420.32126
+10 1027.56284
+12 1032.6249
+14 1905.64848
+16 1841.4882
+18 2881.49032
+20 2829.37108
+22 3586.16784
+24 3660.1014
+26 4680.13072
+28 4667.79206
+30 5656.65744
+32 5452.92936
+34 6658.11156
+36 6662.38022
+38 7495.09794
+};
+\addlegendentry{CCALP}
+\addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
+table {%
+6 151.9284
+8 186.38274
+10 227.72204
+12 250.73974
+14 434.69478
+16 676.15602
+18 5666.89414
+20 3727.4308
+22 12255.798
+24 34147.61718
+};
+\addlegendentry{CCVE}
+\addplot [semithick, color2, mark=*, mark size=3, mark options={solid}]
+table {%
+6 2.62208
+8 2.76724
+10 4.18462
+12 4.50014
+14 5.84866
+16 6.29642
+18 38.17408
+20 40.1707
+22 196.6129
+24 204.58396
+26 6464.76226
+28 6321.37124
+30 44224.3809
+32 42476.29122
+};
+\addlegendentry{CVE}
+\end{groupplot}
+
+\draw ({$(current bounding box.south west)!0.5!(current bounding box.south east)$}|-{$(current bounding box.south west)!0.98!(current bounding box.north west)$}) node[
+  scale=0.6,
+  anchor=north,
+  text=black,
+  rotate=0.0
+]{Time};
+\end{tikzpicture}

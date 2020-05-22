@@ -10,7 +10,8 @@ def plot(data, x_column, y_column, series_column, transformation=None, ax=None, 
     data['method'] = data['method'].str.replace('eps','')
     
     if transformation is not None:
-        data = transformation(data)
+        for t in transformation:
+            data = t(data)
     
     data = data.replace([np.inf, -np.inf], np.nan).dropna(subset=[y_column])    
     series = np.unique(data[series_column].to_numpy())
@@ -67,9 +68,10 @@ def plot_time(data, *args, **kwargs):
     return plot(data, "N", "time", "method", *args, **kwargs)
 
 def plot_size(data, *args, **kwargs):
-    return plot(data, "N", "mean_size", "method", transformation = compute_mean_size, *args, **kwargs)
+    T = [] if "transformation" not in kwargs else kwargs.pop("transformation")
+    return plot(data, "N", "mean_size", "method", transformation = T + [compute_mean_size], *args, **kwargs)
 
 def plot_rmse(data, *args, **kwargs):
-    return plot(data, "N", "rmse", "method", transformation = get_rmse_bounds, *args, **kwargs)
+    T = [] if "transformation" not in kwargs else kwargs.pop("transformation")
+    return plot(data, "N", "rmse", "method", transformation = T + [get_rmse_bounds], *args, **kwargs)
 
-    
