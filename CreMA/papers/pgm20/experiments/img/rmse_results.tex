@@ -13,27 +13,35 @@ tick pos=left,
 title={Chain 2-6 (Non Makovian case)},
 x grid style={white!69.0196078431373!black},
 xlabel={Number of endogenous variables},
-xmin=2.7, xmax=9.3,
+xmin=2.65, xmax=10.35,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
 ylabel={RMSE},
-ymin=-0.00143440680248464, ymax=0.0301225428521775,
+ymin=-0.0015342135534993, ymax=0.0322184846234853,
 ytick style={color=black}
 ]
 \addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
 table {%
 3 0.00170303454728925
-5 0.0286881360496929
-7 0.0111108573172661
-9 0.00687337048159673
+4 0.030684271069986
+5 0.0288712649879035
+6 0.0128622923985618
+7 0.0112313758949834
+8 0.00869170795825492
+9 0.00702111793553997
+10 0.00399382587541356
 };
 \addlegendentry{CCALP}
 \addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
 table {%
 3 0
+4 0
 5 0
+6 0
 7 0
+8 0
 9 0
+10 0
 };
 \addlegendentry{CCVE}
 
@@ -77,7 +85,7 @@ tick pos=left,
 title={Reverse HMM 2-6 (Non Makovian case)},
 x grid style={white!69.0196078431373!black},
 xlabel={Number of endogenous variables},
-xmin=5.4, xmax=18.6,
+xmin=5.3, xmax=20.7,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
 ylabel={RMSE},
@@ -87,17 +95,25 @@ ytick style={color=black}
 \addplot [semithick, color0, mark=*, mark size=3, mark options={solid}]
 table {%
 6 0.01488976060082
-10 0.0066967457622893
+8 0.00663752690475607
+10 0.00669674576228931
+12 0.0017517558788385
 14 0.00340793302190663
-18 0.00485599542376127
+16 0.00477553772547994
+18 0.00485599542376126
+20 0.00154409950939019
 };
 \addlegendentry{CCALP}
 \addplot [semithick, color1, mark=*, mark size=3, mark options={solid}]
 table {%
 6 0
+8 0
 10 0
+12 0
 14 0
+16 0
 18 0
+20 0
 };
 \addlegendentry{CCVE}
 \end{groupplot}

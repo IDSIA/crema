@@ -11,29 +11,43 @@ tick pos=left,
 title={ },
 x grid style={white!69.0196078431373!black},
 xlabel={Model length},
-xmin=2.7, xmax=9.3,
+xmin=2.65, xmax=10.35,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
 ylabel={interval size},
-ymin=-0.00603211920600413, ymax=0.253426422598087,
+ymin=-0.0113168431151816, ymax=0.253678076117571,
 ytick style={color=black}
 ]
 \addplot [semithick, color0, dashed, mark=x, mark size=5, mark options={solid}]
 table {%
 3 0.031439
+4 0.036164
 5 0.0143407734
+6 0.0051071316
 7 0.005761450876
+8 0.011751127621
 9 0.00655788435984579
+10 0.000728380486307201
 };
 \addlegendentry{Polytree}
 \addplot [semithick, color0, dashed, mark=*, mark size=4, mark options={solid}]
 table {%
 3 0.241632852516083
-5 0.0968431656002964
-7 0.0505953140846606
-9 0.0170379876441064
+4 0.0827369747945837
+5 0.0974351989224048
+6 0.0525462494103399
+7 0.0511574819785494
+8 0.0193659417261228
+9 0.0174203018535359
+10 0.00869335343163224
 };
 \addlegendentry{Tree}
 \end{axis}
 
+\draw ({$(current bounding box.south west)!-0.2!(current bounding box.south east)$}|-{$(current bounding box.south west)!0!(current bounding box.north west)$}) node[
+  scale=0.5,
+  anchor=base,
+  text=black,
+  rotate=0.0
+]{.};
 \end{tikzpicture}
