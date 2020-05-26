@@ -300,6 +300,7 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		int[] vars = factor.getDomain().getVariables();
 		int index = ArrayUtils.indexOf(vars, variable);
 
+
 		int[] parents = ArraysUtil.remove(vars, index);
 		addParents(variable, parents);
 

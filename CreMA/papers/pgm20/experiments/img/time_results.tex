@@ -1,24 +1,26 @@
-% This file was created by tikzplotlib v0.9.1.
+% This file was created by tikzplotlib v0.9.2.
 \begin{tikzpicture}
 
 \definecolor{color0}{rgb}{0.266666666666667,0.447058823529412,0.768627450980392}
 \definecolor{color1}{rgb}{0.662745098039216,0.819607843137255,0.556862745098039}
 
-\begin{groupplot}[group style={group size=2 by 1}]
+\begin{groupplot}[group style={group size=3 by 1}]
 \nextgroupplot[
 tick align=outside,
 tick pos=left,
 title={Tree},
 x grid style={white!69.0196078431373!black},
 xlabel={ },
+xmajorgrids,
 xmin=1.95, xmax=25.05,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
 ylabel={time (s.)},
+ymajorgrids,
 ymin=-5.743513777, ymax=120.661044437,
 ytick style={color=black}
 ]
-\addplot [semithick, red!59.6078431372549!black, dotted]
+\addplot [thick, red!59.6078431372549!black, dotted]
 table {%
 3 0.34175796
 4 0.4661655
@@ -43,7 +45,7 @@ table {%
 23 8.62153904
 24 8.9593829
 };
-\addplot [semithick, color0, dashed]
+\addplot [thick, color0, dashed]
 table {%
 3 0.07276482
 4 0.06845506
@@ -62,7 +64,7 @@ table {%
 17 82.0155528666667
 18 114.9153827
 };
-\addplot [semithick, color1]
+\addplot [thick, color1]
 table {%
 3 0.00214796
 4 0.00240792
@@ -85,23 +87,23 @@ table {%
 };
 
 \nextgroupplot[
-legend cell align={left},
-legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
 scaled y ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
 title={Polytree},
 x grid style={white!69.0196078431373!black},
 xlabel={ },
+xmajorgrids,
 xmin=1.95, xmax=25.05,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
 ylabel={ },
+ymajorgrids,
 ymin=-5.743513777, ymax=120.661044437,
 ytick style={color=black},
 yticklabels={}
 ]
-\addplot [semithick, red!59.6078431372549!black, dotted]
+\addplot [thick, red!59.6078431372549!black, dotted]
 table {%
 3 0.40862302
 4 0.42032126
@@ -126,8 +128,7 @@ table {%
 23 9.43711438
 24 9.55195646
 };
-\addlegendentry{CCALP}
-\addplot [semithick, color0, dashed]
+\addplot [thick, color0, dashed]
 table {%
 3 0.1519284
 4 0.18638274
@@ -140,8 +141,7 @@ table {%
 11 12.255798
 12 34.14761718
 };
-\addlegendentry{CCVE}
-\addplot [semithick, color1]
+\addplot [thick, color1]
 table {%
 3 0.00262208
 4 0.00276724
@@ -158,11 +158,68 @@ table {%
 15 44.2243809
 16 42.47629122
 };
+
+\nextgroupplot[
+legend cell align={left},
+legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!black},
+scaled y ticks=manual:{}{\pgfmathparse{#1}},
+tick align=outside,
+tick pos=left,
+title={Squares},
+x grid style={white!69.0196078431373!black},
+xlabel={ },
+xmajorgrids,
+xmin=1.95, xmax=25.05,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ylabel={ },
+ymajorgrids,
+ymin=-5.743513777, ymax=120.661044437,
+ytick style={color=black},
+yticklabels={}
+]
+\addplot [thick, red!59.6078431372549!black, dotted]
+table {%
+3 1.9700621
+4 2.34051874
+5 4.7520846
+6 4.90502024
+7 7.84319146
+8 8.4303279
+9 12.8570035
+10 13.15327414
+11 17.11887106
+12 17.04285958
+13 21.78841026
+14 18.25676448
+};
+\addlegendentry{CCALP}
+\addplot [thick, color0, dashed]
+table {%
+3 0.148006
+4 0.16463044
+5 0.7672054
+6 1.3035927
+7 24.4201753
+8 37.4387636
+};
+\addlegendentry{CCVE}
+\addplot [thick, color1]
+table {%
+3 0.00420972
+4 0.00578928
+5 0.02525908
+6 0.04683852
+7 0.5816202
+8 1.3596042
+9 21.88020866
+10 46.34041656
+};
 \addlegendentry{CVE}
 \end{groupplot}
 
-\draw ({$(current bounding box.south west)!0.5!(current bounding box.south east)$}|-{$(current bounding box.south west)!0.04!(current bounding box.north west)$}) node[
-  scale=0.5,
+\draw ({$(current bounding box.south west)!0.5!(current bounding box.south east)$}|-{$(current bounding box.south west)!0!(current bounding box.north west)$}) node[
+  scale=0.6,
   anchor=base,
   text=black,
   rotate=0.0

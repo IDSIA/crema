@@ -538,10 +538,14 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 
 			if(vertex){
-				cmodel.setFactor(u, new HalfspaceToVertex().apply(constFactor));
+				VertexFactor fu = new HalfspaceToVertex().apply(constFactor);
+				if(fu.getData()[0]==null) throw new NoFeasibleSolutionException();
+				cmodel.setFactor(u, fu);
 			}else{
 				cmodel.setFactor(u, constFactor);
 			}
+
+
 
 
 		}
@@ -554,7 +558,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 	 * @param u
 	 * @return
 	 */
-	private double[][] getCoeff(int u){
+	public double[][] getCoeff(int u){
 
 		if(!this.isExogenous(u))
 			throw new IllegalArgumentException("Variable "+u+" is not exogenous");
@@ -566,6 +570,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 				IntStream.of(children).mapToObj(i-> this.getFactor(i)).reduce((f1,f2) -> f1.combine(f2)).get()
 						.getData(), this.getSizes(u)
 		));
+
 
 		return coeff;
 	}
@@ -735,6 +740,38 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 		}
 		return empirical;
 	}
+
+
+
+	public StructuralCausalModel findModelWithEmpirical(int prob_decimals, BayesianFactor[] empirical, int[] keepFactors, long maxIterations){
+
+		StructuralCausalModel smodel = this.copy();
+		SparseModel cmodel = null;
+		for (int i = 0; i < maxIterations; i++) {
+
+			try {
+				smodel.fillWithRandomFactors(prob_decimals);
+				for(int v:keepFactors)
+					smodel.setFactor(v,this.getFactor(v));
+				cmodel = smodel.toCredalNetwork(true, empirical);
+				break;
+
+			} catch (Exception e) { }
+		}
+
+
+		if(cmodel != null){
+			for(int u : smodel.getExogenousVars()){
+				smodel.setFactor(u, ((VertexFactor)cmodel.getFactor(u)).sampleVertex());
+			}
+
+		}else{
+			smodel = null;
+		}
+
+		return smodel;
+	}
+
 
 
 }
