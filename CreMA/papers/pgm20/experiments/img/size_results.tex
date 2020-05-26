@@ -1,4 +1,4 @@
-% This file was created by tikzplotlib v0.9.1.
+% This file was created by tikzplotlib v0.9.2.
 \begin{tikzpicture}
 
 \definecolor{color0}{rgb}{0.266666666666667,0.447058823529412,0.768627450980392}
@@ -11,14 +11,16 @@ tick pos=left,
 title={ },
 x grid style={white!69.0196078431373!black},
 xlabel={Model length},
+xmajorgrids,
 xmin=2.65, xmax=10.35,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
 ylabel={interval size},
-ymin=-0.0113168431151816, ymax=0.253678076117571,
+ymajorgrids,
+ymin=-0.0120816426258041, ymax=0.253714495141887,
 ytick style={color=black}
 ]
-\addplot [semithick, color0, dashed, mark=x, mark size=5, mark options={solid}]
+\addplot [semithick, color0, dashed, mark=x, mark size=4.5, mark options={solid}]
 table {%
 3 0.031439
 4 0.036164
@@ -30,7 +32,17 @@ table {%
 10 0.000728380486307201
 };
 \addlegendentry{Polytree}
-\addplot [semithick, color0, dashed, mark=*, mark size=4, mark options={solid}]
+\addplot [semithick, color0, dashed, mark=square*, mark size=3.5, mark options={solid}]
+table {%
+3 0.016428715834721
+4 0.0160996738456202
+5 0
+6 0.0160545028126254
+7 0
+8 0
+};
+\addlegendentry{Squares}
+\addplot [semithick, color0, dashed, mark=+, mark size=4.5, mark options={solid}]
 table {%
 3 0.241632852516083
 4 0.0827369747945837
@@ -45,7 +57,7 @@ table {%
 \end{axis}
 
 \draw ({$(current bounding box.south west)!-0.2!(current bounding box.south east)$}|-{$(current bounding box.south west)!0!(current bounding box.north west)$}) node[
-  scale=0.5,
+  scale=0.6,
   anchor=base,
   text=black,
   rotate=0.0

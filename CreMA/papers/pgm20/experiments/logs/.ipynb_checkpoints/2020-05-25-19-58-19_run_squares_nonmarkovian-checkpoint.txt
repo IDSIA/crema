@@ -1,0 +1,218 @@
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-25-19-58-19
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 1234 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 1027.436 ms.
+[0.5162224745420247, 0.5162224745420247]
+1027.436,204.987,0.5162224745420247,0.5162224745420247,0.48377752545797525,0.48377752545797525
+
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: []
+2020-05-25-19-58-21
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 1234 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Measurement #0 in 2768.632 ms.
+[0.5160364962038374, 0.5160638274485072]
+2768.632,2655.544,0.5160364962038374,0.5160638274485072,0.48393617255149285,0.4839635037961626
+
+current: {'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-25-19-58-26
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 1851 -w 0 -r 1 
+setting as not evaluable: {'N': 3, 'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE', 'target': 2, 'obsvar': 5}
+current: {'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-06-49
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 1851 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=1851
+=================================================================
+Running experiments...
+Measurement #0 in 2887.868 ms.
+[0.022861075875450033, 0.9554361124427201]
+2887.868,2770.357,0.022861075875450033,0.9554361124427201,0.04456388755727995,0.97713892412455
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-06-53
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 2468 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCVE seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 1163.715 ms.
+[0.8852551914401819, 0.8852551914401819]
+1163.715,244.756,0.8852551914401819,0.8852551914401819,0.11474480855981808,0.11474480855981808
+
+current: {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-06-56
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 2468 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=2468
+=================================================================
+Running experiments...
+Measurement #0 in 2683.568 ms.
+[0.8849464650740938, 0.885066233188477]
+2683.568,2582.447,0.8849464650740938,0.885066233188477,0.11493376681152301,0.11505353492590616
+
+current: {'dovar': 0, 'seed': 3085, 'exovarsize': 6, 'method': 'CCVE'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-07-01
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 3085 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCVE seed=3085
+=================================================================
+Running experiments...
+Measurement #0 in 1120.877 ms.
+[0.22396885369254946, 0.22396885369254946]
+1120.877,243.275,0.22396885369254946,0.22396885369254946,0.7760311463074505,0.7760311463074505
+
+current: {'dovar': 0, 'seed': 3085, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-07-03
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 3085 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=3085
+=================================================================
+Running experiments...
+Measurement #0 in 3174.858 ms.
+[0.22402697319239676, 0.22410327197071014]
+3174.858,3028.407,0.22402697319239676,0.22410327197071014,0.7758967280292899,0.7759730268076033
+
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-07-09
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 3702 -w 0 -r 1 
+setting as not evaluable: {'N': 3, 'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE', 'target': 2, 'obsvar': 5}
+current: {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-09
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 3702 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=3702
+=================================================================
+Running experiments...
+Measurement #0 in 3213.163 ms.
+[0.00831034188488381, 0.9746942805541975]
+3213.163,3081.364,0.00831034188488381,0.9746942805541975,0.02530571944580256,0.9916896581151162
+
+current: {'dovar': 0, 'seed': 4319, 'exovarsize': 6, 'method': 'CCVE'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-14
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 4319 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCVE seed=4319
+=================================================================
+Running experiments...
+Measurement #0 in 1167.478 ms.
+[0.14919287259071895, 0.14919287259071895]
+1167.478,229.546,0.14919287259071895,0.14919287259071895,0.8508071274092811,0.8508071274092811
+
+current: {'dovar': 0, 'seed': 4319, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-17
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 4319 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=4319
+=================================================================
+Running experiments...
+Measurement #0 in 2980.876 ms.
+[0.14935115096351864, 0.14935115096351878]
+2980.876,2891.475,0.14935115096351864,0.14935115096351878,0.8506488490364812,0.8506488490364813
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-21
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 4936 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCVE seed=4936
+=================================================================
+Running experiments...
+Measurement #0 in 1095.178 ms.
+[0.1319930293975565, 0.1319930293975565]
+1095.178,249.978,0.1319930293975565,0.1319930293975565,0.8680069706024436,0.8680069706024436
+
+current: {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-24
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 4936 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=4936
+=================================================================
+Running experiments...
+Measurement #0 in 3027.393 ms.
+[0.1320704975564959, 0.1321296200544015]
+3027.393,2940.875,0.1320704975564959,0.1321296200544015,0.8678703799455985,0.8679295024435041
+
+current: {'dovar': 0, 'seed': 5553, 'exovarsize': 6, 'method': 'CCVE'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-29
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 5553 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCVE seed=5553
+=================================================================
+Running experiments...
+Measurement #0 in 1184.297 ms.
+[0.2533960046887798, 0.2533960046887798]
+1184.297,273.115,0.2533960046887798,0.2533960046887798,0.74660399531122,0.74660399531122
+
+current: {'dovar': 0, 'seed': 5553, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-32
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 5553 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=5553
+=================================================================
+Running experiments...
+Measurement #0 in 3126.543 ms.
+[0.25350890478843224, 0.2535089047884326]
+3126.543,3006.587,0.25350890478843224,0.2535089047884326,0.7464910952115674,0.7464910952115678
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-36
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCVE -e 0.0001 -s 6170 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCVE seed=6170
+=================================================================
+Running experiments...
+Measurement #0 in 1107.78 ms.
+[0.1315733733849383, 0.1315733733849383]
+1107.78,250.556,0.1315733733849383,0.1315733733849383,0.8684266266150618,0.8684266266150618
+
+current: {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 1851, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}]
+2020-05-25-22-49-39
+java -cp /Users/rcabanas/work_java_crema/crema/CreMA/target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /Users/rcabanas/work_java_crema/crema/CreMA/papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 3 -v 2 -V 6 -t 2 -o 5 -d 0 -m CCALPeps -e 0.0001 -s 6170 -w 0 -r 1 
+
+Squares-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=5 dovar=0 method=CCALPeps seed=6170
+=================================================================
+Running experiments...
+Measurement #0 in 3191.311 ms.
+[0.1316367001370944, 0.131650232558131]
+3191.311,3101.888,0.1316367001370944,0.131650232558131,0.868349767441869,0.8683632998629056
+
