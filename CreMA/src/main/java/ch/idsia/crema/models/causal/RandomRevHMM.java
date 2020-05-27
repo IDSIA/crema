@@ -61,7 +61,7 @@ public class RandomRevHMM {
 
 
     public static void main(String[] args) throws InterruptedException {
-        int n = 3;
+        int n = 4;
 
         RandomUtil.getRandom().setSeed(3702);
         //RandomUtil.getRandom().setSeed(1234);
@@ -74,7 +74,7 @@ public class RandomRevHMM {
 
         TIntIntHashMap evidence = new TIntIntHashMap();
         //evidence.put(X[2*n-1], 0);
-        evidence.put(4, 1);
+        evidence.put(5, 1);
 
 
         TIntIntHashMap intervention = new TIntIntHashMap();

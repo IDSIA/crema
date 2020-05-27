@@ -99,7 +99,8 @@ public final class Strides implements Domain {
 
 	@Override
 	public final int indexOf(int variable) {
-		return Arrays.binarySearch(variables, variable);
+		//return Arrays.binarySearch(variables, variable);
+		return ArraysUtil.indexOf(variable, variables);
 	}
 
 	@Override

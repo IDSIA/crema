@@ -7,7 +7,6 @@ import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 public class Party {
     public static StructuralCausalModel buildModel(){
 
-        // Create an empty model
         StructuralCausalModel model = new StructuralCausalModel();
 
         // define the variables (endogenous and exogenous)
@@ -19,7 +18,7 @@ public class Party {
         int u1 = model.addVariable(2, true);
         int u2 = model.addVariable(4, true);
         int u3 = model.addVariable(4, true);
-        int u4 = model.addVariable(4, true);
+        int u4 = model.addVariable(3, true);
 
         model.addParents(x1, u1);
         model.addParents(x2, u2, x1);
@@ -31,19 +30,37 @@ public class Party {
         // define the factors
         BayesianFactor pu1 = new BayesianFactor(model.getDomain(u1), new double[] { .4, .6 });
         BayesianFactor pu2 = new BayesianFactor(model.getDomain(u2), new double[] { .07, .9, .03, .0 });
-        BayesianFactor pu3 = new BayesianFactor(model.getDomain(u3), new double[] { .07, .9, .03, .0 });
-        BayesianFactor pu4 = new BayesianFactor(model.getDomain(u4), new double[] { .07, .9, .03, .0 });
+        BayesianFactor pu3 = new BayesianFactor(model.getDomain(u3), new double[] { .05, .0, .85, .10 });
+        BayesianFactor pu4 = new BayesianFactor(model.getDomain(u4), new double[] { .05, .9, .05 });
+
+        model.setFactor(u1,pu1);
+        model.setFactor(u2,pu2);
+        model.setFactor(u3,pu3);
+        model.setFactor(u4,pu4);
+
+        BayesianFactor f1 = BayesianFactor.deterministic(model.getDomain(x1), model.getDomain(u1),0,1);
+
+        BayesianFactor f2 = BayesianFactor.deterministic(model.getDomain(x2), model.getDomain(u2,x1),
+                0,0,1,1,  0,1,0,1);
+
+        BayesianFactor f3 = BayesianFactor.deterministic(model.getDomain(x3), model.getDomain(u3,x1),
+                0,0,1,1,  0,1,0,1);
 
 
-/*
 
-        BayesianFactor fx = BayesianFactor.deterministic(model.getDomain(x), model.getDomain(ux), 1,1,0);
-        BayesianFactor pux = new BayesianFactor(model.getDomain(ux), new double[] { 0.6, 0.2, 0.2 });
+        BayesianFactor f4 = BayesianFactor.deterministic(model.getDomain(x4), model.getDomain(u4,x3,x2),
+                0,0,1,  0,0,1,  0,0,0, 0,1,1);
 
-        model.setFactor(x,fx);
-        model.setFactor(ux, pux);
-*/
+
+
+        model.setFactor(x1,f1);
+        model.setFactor(x2,f2);
+        model.setFactor(x3,f3);
+        model.setFactor(x4,f4);
+
         return model;
 
     }
+
+    
 }
