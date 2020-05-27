@@ -8,14 +8,14 @@
 \nextgroupplot[
 tick align=outside,
 tick pos=left,
-title={Tree},
+title={Trees},
 x grid style={white!69.0196078431373!black},
 xlabel={ },
 xmajorgrids,
 xmin=1.95, xmax=25.05,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
-ylabel={time (s.)},
+ylabel={Execution time (s)},
 ymajorgrids,
 ymin=-5.743513777, ymax=120.661044437,
 ytick style={color=black}
@@ -105,58 +105,42 @@ yticklabels={}
 ]
 \addplot [thick, red!59.6078431372549!black, dotted]
 table {%
-3 0.40862302
-4 0.42032126
-5 1.02756284
-6 1.0326249
-7 1.90564848
-8 1.8414882
-9 2.88149032
-10 2.82937108
-11 3.58616784
-12 3.6601014
-13 4.68013072
-14 4.66779206
-15 5.65665744
-16 5.45292936
-17 6.65811156
-18 6.66238022
-19 7.49509794
-20 7.33361874
-21 8.4928074
-22 8.49452316
-23 9.43711438
-24 9.55195646
+3 1.18404278
+4 2.0135235
+5 3.01600816
+6 3.6482678
+7 4.79382692
+8 5.6895563
+9 6.90622232
+10 7.79111284
+11 8.6776697
+12 9.87128006
+13 11.06409046
+14 12.32954792
+15 14.07663598
+16 14.35551094
+17 15.94762614
+18 16.73624754
+19 19.00742956
+20 19.60153704
+21 20.7491502
+22 22.30260426
+23 22.91129952
+24 25.84993288
 };
 \addplot [thick, color0, dashed]
 table {%
-3 0.1519284
-4 0.18638274
-5 0.22772204
-6 0.25073974
-7 0.43469478
-8 0.67615602
-9 5.66689414
-10 3.7274308
-11 12.255798
-12 34.14761718
+3 0.228463177777778
+4 0.335780622222222
+5 2.48168586666667
+6 14.3929486666667
 };
 \addplot [thick, color1]
 table {%
-3 0.00262208
-4 0.00276724
-5 0.00418462
-6 0.00450014
-7 0.00584866
-8 0.00629642
-9 0.03817408
-10 0.0401707
-11 0.1966129
-12 0.20458396
-13 6.46476226
-14 6.32137124
-15 44.2243809
-16 42.47629122
+3 0.00713102
+4 0.01123696
+5 0.0454375
+6 0.23324074
 };
 
 \nextgroupplot[
@@ -165,7 +149,7 @@ legend style={fill opacity=0.8, draw opacity=1, text opacity=1, draw=white!80!bl
 scaled y ticks=manual:{}{\pgfmathparse{#1}},
 tick align=outside,
 tick pos=left,
-title={Squares},
+title={Muliply connected},
 x grid style={white!69.0196078431373!black},
 xlabel={ },
 xmajorgrids,
@@ -223,5 +207,5 @@ table {%
   anchor=base,
   text=black,
   rotate=0.0
-]{Model length};
+]{Model length $N$};
 \end{tikzpicture}
