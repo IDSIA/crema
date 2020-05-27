@@ -13,6 +13,7 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class CredalCausalVE extends CausalInference<SparseModel, VertexFactor> {
@@ -52,7 +53,7 @@ public class CredalCausalVE extends CausalInference<SparseModel, VertexFactor> {
         // Get the new elimination order
         int[] newElimOrder = ArraysUtil.intersection(elimOrder, do_csmodel.getVariables());
 
-
+        System.out.println("deleted = "+ Arrays.toString(removeBarren.getDeleted()));
         FactorVariableElimination ve = new FactorVariableElimination(newElimOrder);
         if(filteredEvidence.size()>0)
             ve.setEvidence(filteredEvidence);
