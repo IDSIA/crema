@@ -10,17 +10,27 @@ tick align=outside,
 tick pos=left,
 title={ },
 x grid style={white!69.0196078431373!black},
-xlabel={Model length},
+xlabel={Model size \(\displaystyle N\)},
 xmajorgrids,
 xmin=2.65, xmax=10.35,
 xtick style={color=black},
 y grid style={white!69.0196078431373!black},
-ylabel={interval size},
+ylabel={Interval size},
 ymajorgrids,
 ymin=-0.0120816426258041, ymax=0.253714495141887,
 ytick style={color=black}
 ]
-\addplot [semithick, color0, dashed, mark=x, mark size=4.5, mark options={solid}]
+\addplot [semithick, color0, dashed, mark=x, mark size=4, mark options={solid}]
+table {%
+3 0.016428715834721
+4 0.0160996738456202
+5 0
+6 0.0160545028126254
+7 0
+8 0
+};
+\addlegendentry{Muliply connected}
+\addplot [semithick, color0, dashed, mark=square*, mark size=3, mark options={solid}]
 table {%
 3 0.031439
 4 0.036164
@@ -32,17 +42,7 @@ table {%
 10 0.000728380486307201
 };
 \addlegendentry{Polytree}
-\addplot [semithick, color0, dashed, mark=square*, mark size=3.5, mark options={solid}]
-table {%
-3 0.016428715834721
-4 0.0160996738456202
-5 0
-6 0.0160545028126254
-7 0
-8 0
-};
-\addlegendentry{Squares}
-\addplot [semithick, color0, dashed, mark=+, mark size=4.5, mark options={solid}]
+\addplot [semithick, color0, dashed, mark=+, mark size=4, mark options={solid}]
 table {%
 3 0.241632852516083
 4 0.0827369747945837
@@ -53,7 +53,7 @@ table {%
 9 0.0174203018535359
 10 0.00869335343163224
 };
-\addlegendentry{Tree}
+\addlegendentry{Trees}
 \end{axis}
 
 \draw ({$(current bounding box.south west)!-0.2!(current bounding box.south east)$}|-{$(current bounding box.south west)!0!(current bounding box.north west)$}) node[
