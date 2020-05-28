@@ -357,6 +357,20 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	}
 
 
+	public GenericSparseModel counterfactual_do(int var, int state){
+		GenericSparseModel do_model = this.copy();
+		// remove the parents
+		for(int v: this.getParents(var)){
+			do_model.removeParent(var, v);
+		}
+
+		// Fix the value of the intervened variable
+		do_model.setFactor(var, this.getFactor(var).get_deterministic(var, state));
+		return do_model;
+	}
+
+
+
 	public GenericSparseModel observe(int var, int state){
 		GenericSparseModel obs_model = this.copy();
 		// Fix the value of the intervened variable
@@ -375,6 +389,29 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 						ArraysUtil.sort(this.getFactor(v).getDomain().getVariables()),
 						ArraysUtil.sort(ArrayUtils.add(this.getParents(v), v))
 				));
+	}
+
+	/**
+	 * Determines if the factor domains match with the structure of the DAG.
+	 * @return
+	 */
+	public boolean inspectFactorDomains(){
+
+		boolean correct = true;
+		for(int v : this.getVariables()){
+			int[] d1 = ArraysUtil.sort(this.getFactor(v).getDomain().getVariables());
+			int[] d2 = ArraysUtil.sort(ArrayUtils.add(this.getParents(v), v));
+
+			if(!Arrays.equals(d1,d2)){
+				System.out.println("Error in "+v+":");
+				System.out.println("factor domain: "+Arrays.toString(d1));
+				System.out.println("factor in net:  "+Arrays.toString(d2));
+				correct=false;
+
+			}
+		}
+		return correct;
+
 	}
 
 	/**

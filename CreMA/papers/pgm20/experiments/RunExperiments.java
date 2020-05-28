@@ -128,7 +128,8 @@ public class RunExperiments {
 
             System.out.println("\n" + modelName + "\n   N=" + N + " endovarsize=" + endoVarSize + " exovarsize=" + exoVarSize + " target=" + target + " obsvar=" + obsvar + " dovar=" + dovar + " method=" + method + " seed=" + seed);
             System.out.println("=================================================================");
-
+            long heapMaxSize = Runtime.getRuntime().maxMemory();
+            System.out.println("max heap memory = -Xmx"+heapMaxSize/1024/1024/1024+"g -Xmx"+heapMaxSize/1024/1024+"m");
 
             /////////////////////////////////
             RandomUtil.getRandom().setSeed(seed);
