@@ -269,6 +269,8 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	 * @return
 	 */
 	public VertexFactor marginalize(int... vars) {
+
+		//System.out.println("marg "+Arrays.toString(vars)+" from "+toStringSimple());
 		// only vars of the domain
 		Strides sum_strides = getDataDomain().intersection(vars);
 		Strides left = getDataDomain().remove(vars);
@@ -375,6 +377,8 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	@Override
 	public VertexFactor combine(VertexFactor other) {
 
+		//System.out.println("combine "+toStringSimple()+" with "+other.toStringSimple());
+
 		if(!this.getDomain().isConsistentWith(other.getDomain())){
 			throw new IllegalArgumentException("Factors domains are not consistent: "+this+", "+other);
 		}
@@ -461,6 +465,16 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		}
 		return build.toString();
 	}
+
+	public String toStringSimple() {
+		StringBuilder build = new StringBuilder();
+		build.append("K(vars").append(Arrays.toString(getDataDomain().getVariables()));
+		build.append("|").append(Arrays.toString(getSeparatingDomain().getVariables()));
+		build.append(")");
+
+		return build.toString();
+	}
+
 
 	public double[][][] getInternalData() {
 		return data;

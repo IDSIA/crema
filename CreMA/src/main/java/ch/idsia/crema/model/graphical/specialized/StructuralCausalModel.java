@@ -384,6 +384,10 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 		return (StructuralCausalModel)super.intervention(var, state);
 	}
 
+	@Override
+	public StructuralCausalModel counterfactual_do(int var, int state){
+		return (StructuralCausalModel)super.counterfactual_do(var, state);
+	}
 
 	/**
 	 * Prints a summary of the SCM

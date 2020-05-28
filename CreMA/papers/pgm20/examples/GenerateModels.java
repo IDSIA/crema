@@ -27,8 +27,8 @@ public class GenerateModels {
         );
 
         m.setFactor( x2,
-                BayesianFactor.deterministic(m.getDomain(x2), m.getDomain(m.getParents(x2)), 1,1, 1,0, 0,0, 0,1, 0,0) // original
-                //BayesianFactor.deterministic(m.getDomain(x2), m.getDomain(m.getParents(x2)), 1,1, 1,1, 0,0, 0,1, 0,0)   // without CI
+                //BayesianFactor.deterministic(m.getDomain(x2), m.getDomain(m.getParents(x2)), 1,1, 1,0, 0,0, 0,1, 0,0) // original
+                BayesianFactor.deterministic(m.getDomain(x2), m.getDomain(m.getParents(x2)), 1,1, 1,1, 0,0, 0,1, 0,0)   // without CI
         );
 
         m.setFactor(u1,
@@ -91,7 +91,7 @@ public class GenerateModels {
         m2.addParents(x2, u,x1);
         m2.addParents(x1, u);
 
-        m2 = m2.findModelWithEmpirical(3,new BayesianFactor[]{emp_join}, new int[]{x2}, 10000);
+        m2 = m2.findModelWithEmpirical(3,new BayesianFactor[]{emp_join}, new int[]{}, 10000);
 
 
         m2.printSummary();
