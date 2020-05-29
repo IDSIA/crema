@@ -1,0 +1,15 @@
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps'}
+previous: [{'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CCVE'}, {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 2468, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 3702, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 4936, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 6170, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 7404, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 8638, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 9872, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 11106, 'exovarsize': 6, 'method': 'CVE'}, {'dovar': 0, 'seed': 12340, 'exovarsize': 6, 'method': 'CVE'}]
+2020-05-28-19-16-25
+java -cp /home/rcabanas/crema/CreMA//target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /home/rcabanas/crema/CreMA//papers/pgm20/experiments//RunExperiments.java Squares-NonMarkovian 21 -v 2 -V 6 -t 20 -o 41 -d 0 -m CCALPeps -e 0.0001 -s 1234 -w 2 -r 5 
+
+Squares-NonMarkovian
+   N=21 endovarsize=2 exovarsize=6 target=20 obsvar=41 dovar=0 method=CCALPeps seed=1234
+=================================================================
+Running experiments...
+Warm-up #0 in 312132.751 ms.
+Warm-up #1 in 360047.329 ms.
+java.util.concurrent.TimeoutException
+inf,inf,nan,nan,nan,nan
+
+setting as not evaluable: {'N': 21, 'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCALPeps', 'target': 20, 'obsvar': 41}

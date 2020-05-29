@@ -1,0 +1,15 @@
+2020-05-28-18-30-08
+current: {'dovar': 0, 'seed': 1234, 'exovarsize': 6, 'method': 'CCVE'}
+previous: []
+2020-05-28-18-30-08
+java -cp /home/rcabanas/crema/CreMA//target/CreMA-0.1.1-SNAPSHOT-jar-with-dependencies.jar /home/rcabanas/crema/CreMA//papers/pgm20/experiments//RunExperiments.java RHMM-NonMarkovian 3 -v 2 -V 6 -t 2 -o 4 -d 0 -m CCVE -e 0.0001 -s 1234 -w 0 -r 1 
+
+RHMM-NonMarkovian
+   N=3 endovarsize=2 exovarsize=6 target=2 obsvar=4 dovar=0 method=CCVE seed=1234
+=================================================================
+Running experiments...
+deleted = []
+Measurement #0 in 687.971 ms.
+[0.45746409650015196, 0.45746409650015196]
+687.971,93.662,0.45746409650015196,0.45746409650015196,0.542535903499848,0.542535903499848
+
