@@ -543,7 +543,8 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 			if(vertex){
 				VertexFactor fu = new HalfspaceToVertex().apply(constFactor);
-				if(fu.getData()[0]==null) throw new NoFeasibleSolutionException();
+				if(fu.getData()[0]==null)
+					throw new NoFeasibleSolutionException();
 				cmodel.setFactor(u, fu);
 			}else{
 				cmodel.setFactor(u, constFactor);
