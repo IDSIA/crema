@@ -58,7 +58,7 @@ PyQt5==5.9
 pyrsistent==0.15.2
 python-dateutil==2.7.3
 pytz==2017.3
-PyYAML==3.12
+PyYAML==5.1
 pyzmq==18.0.1
 qtconsole==4.5.1
 requests==2.18.4
