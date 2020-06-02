@@ -61,7 +61,7 @@ pytz==2017.3
 PyYAML==3.12
 pyzmq==18.0.1
 qtconsole==4.5.1
-requests==2.18.4
+requests==2.20.0
 requests-toolbelt==0.8.0
 ReText==7.1.0
 Send2Trash==1.5.0
