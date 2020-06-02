@@ -138,6 +138,7 @@ public class StructuralCausalModel extends GenericSparseModel<BayesianFactor, Sp
 
 	public int addVariable(int vid, int size, boolean exogenous){
 		if(vid>max) max = vid;
+		max++;
 		this.cardinalities.put(vid, size);
 		network.addVariable(vid, size);
 		if(exogenous)

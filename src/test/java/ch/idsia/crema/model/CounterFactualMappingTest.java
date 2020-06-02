@@ -29,7 +29,7 @@ public class CounterFactualMappingTest {
 		cmodel.addParent(1,2);
 
 		cmodel.fillWithRandomFactors(2);
-		StructuralCausalModel[] models = {cmodel.intervention(0,0), cmodel.intervention(1,1)};
+		StructuralCausalModel[] models = {cmodel.counterfactual_do(0,0), cmodel.counterfactual_do(1,1)};
 
 		merged = cmodel.merge(models);
 		cfmapping = merged.getMap();
