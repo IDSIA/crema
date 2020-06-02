@@ -1,8 +1,3 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import math
-import pandas as pd
-
 def plot(data, x_column, y_column, series_column, transformation=None, ax=None, 
          ylabel=None, xlabel=None, title=None, legend=True, linecolors = None):
 
@@ -16,22 +11,26 @@ def plot(data, x_column, y_column, series_column, transformation=None, ax=None,
     
     data = data.replace([np.inf, -np.inf], np.nan).dropna(subset=[y_column])    
     series = np.unique(data[series_column].to_numpy())
+    
+    dataout = pd.DataFrame(columns=[series_column,x_column,y_column])
+    
     for s in series:    
             print(f"{series_column}=='{s}'")
             data_s = data.query(f"{series_column}=='{s}'")
             x = np.unique(data_s[x_column].to_numpy())
             y = data_s.groupby(x_column).mean().filter(items=[y_column]).to_numpy()
-
-            ax.plot(x, y, marker='o', label=s)
-            
+            print(f"mean = {np.mean(y)} std = {np.std(y)}")
+            ax.plot(x, y, marker='o', label=s)        
             if legend: ax.legend()
+            dataout = dataout.append(pd.DataFrame(np.transpose(np.vstack([[s]*len(x), x, y.flatten()])), columns=dataout.columns))
+
 
     ax.set_ylabel(ylabel or y_column)
     ax.set_xlabel(xlabel or x_column)
 
     ax.set_title(title or "")
     
-    return ax
+    return ax,dataout
 
 
 ### transformations ###
@@ -78,4 +77,5 @@ def plot_size(data, *args, **kwargs):
 
 def plot_rmse(data, *args, **kwargs):
     T = [] if "transformation" not in kwargs else kwargs.pop("transformation")
+    series_column = "method" if "series_column" not in kwargs else kwargs.pop("series_column")
     return plot(data, "N", "rmse", series_column, transformation = T + [get_rmse_bounds], *args, **kwargs)
