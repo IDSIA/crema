@@ -1,2 +1,0 @@
-Benchmark-long1.xml,40,,SePolyVE,0.1831408960251342;0.33005681721702534;0.34409828371047757,0.2825682836885567;0.44554744862617474;0.43124114002186054
-Benchmark-long1.xml,40,,ApproxLP,org.apache.commons.math3.optim.linear.NoFeasibleSolutionException: no feasible solution
