@@ -1,3 +1,4 @@
+[![GitHub version](https://badge.fury.io/gh/idsia%2Fcrema.svg)](https://badge.fury.io/gh/idsia%2Fcrema)
 # CreMA
 
 CreMA is a open-source java toolbox that provides multiple
@@ -43,3 +44,25 @@ System.out.println(ve.run(x));
 
 
 ``` 
+
+## Installation
+
+Add the following code in the  pom.xml of your project:
+
+```
+    <repositories>
+        <repository>
+            <id>cremaRepo</id>
+            <url>https://raw.github.com/idsia/crema/mvn-repo/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>ch.idsia</groupId>
+            <artifactId>crema</artifactId>
+            <version>0.1.1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+```
