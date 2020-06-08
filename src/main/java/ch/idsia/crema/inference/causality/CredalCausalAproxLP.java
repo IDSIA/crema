@@ -50,17 +50,11 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
 
         for(int v : do_csmodel.getVariables()) {
              do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).removeNormConstraints());
-
                 if(epsilon>0.0){
-
-                    //do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoised(epsilon));
-                //do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getNoisedInequalities(epsilon));
-                do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getPerturbedZeroConstraints(epsilon));
-                //do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getPerturbedEqualitiesToOne(epsilon));
-
-
-               // ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).printLinearProblem();
+                   do_csmodel.setFactor(v, ((SeparateHalfspaceFactor) do_csmodel.getFactor(v)).getPerturbedZeroConstraints(epsilon));
              }
+            System.out.println("->");
+
         }
 
 
@@ -80,13 +74,9 @@ public class CredalCausalAproxLP extends CausalInference<SparseModel, IntervalFa
         if(filteredEvidence.size()>0) {
             int evbin = new BinarizeEvidence().executeInline(do_csmodel, filteredEvidence, filteredEvidence.size(), false);
             result = lp1.query(do_csmodel, target[0], evbin);
-            //ApproxLP2 lp2 = new ApproxLP2();
-            //result = lp2.query(do_csmodel, target[0], evidence);
 
         }else{
             result = lp1.query(do_csmodel, target[0]);
-            //ApproxLP2 lp2 = new ApproxLP2();
-            //result = lp2.query(do_csmodel, target[0]);
         }
 
         return result;

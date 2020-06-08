@@ -69,8 +69,6 @@ public class RandomChainNonMarkovian {
         System.out.println(result);
 
 
-
-        // error, this is not working
         CausalInference inf2 = new CredalCausalVE(model);
         VertexFactor result2 = (VertexFactor) inf2.query(target, evidence, intervention);
         System.out.println(result2);
