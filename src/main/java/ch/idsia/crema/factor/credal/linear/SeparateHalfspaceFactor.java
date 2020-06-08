@@ -59,10 +59,9 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	public SeparateHalfspaceFactor(Strides left, Strides right, double[][][] coefficients, double[][] values, Relationship rel) {
 		this(left, right);
 
-
 		for(int i=0; i<right.getCombinations(); i++) {
 			// Build the constraints (including normalization and non-negative one)
-			LinearConstraint[] C = buildConstraints(true, true, coefficients[i], values[i], rel);
+			LinearConstraint[] C = buildConstraints(false, true, coefficients[i], values[i], rel);
 			// add constraints to this factor
 			for (LinearConstraint c : C) {
 				this.addConstraint(c, i);

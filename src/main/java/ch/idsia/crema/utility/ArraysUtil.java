@@ -13,6 +13,8 @@ import org.apache.commons.math3.util.Precision;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -593,6 +595,24 @@ public class ArraysUtil {
 		return out;
 
 	}
+	/**
+	 * Transforms a 1d vector into a 2d matrix
+	 * @param vector - vector to transform
+	 * @param shape - fully-defined vector specifying the 3 new dimensions.
+	 * @return
+	 */
+
+	public static double[][][] reshape3d(double[] vector, int[] shape) {
+        if(shape[0]*shape[1]*shape[2] != vector.length)
+			throw new IllegalArgumentException("ERROR: incompatible shapes");
+
+		double[][][] out = new double[shape[0]][][];
+		int step = shape[1]*shape[2];
+			for(int k=0; k<out.length;k++){
+			out[k] = reshape2d(Arrays.copyOfRange(vector, k*step, (k+1)*step), new int[]{shape[1],shape[2]});
+		}
+		return out;
+	}
 
 	/**
 	 * Given a vector representing a multidimensional array, swaps the axis.
@@ -790,6 +810,67 @@ public class ArraysUtil {
 		return Stream.of(arr).map(v -> toIntVector(v)).toArray(int[][]::new);
 	}
 
+
+	public static double[][] copyOfRange(double[][] original, int from, int to, int axis){
+
+		double sliced[][] = null;
+
+		if(axis==0){
+			sliced = Arrays.copyOfRange(original, from, to);
+		} else if (axis==1){
+			sliced = new double[original.length][];
+			for(int i =0; i<original.length; i++){
+				sliced[i] = Arrays.copyOfRange(original[i], from, to);
+			}
+		}else{
+			throw new IllegalArgumentException("axis cannot be greater than 1");
+		}
+
+		return sliced;
+
+	}
+
+	public static double[][] filterRows(double[][] array, Predicate<double[]> cond){
+		//Predicate cond = v-> DoubleStream.of((double[]) v).anyMatch(x->x!=0);
+		return IntStream.range(0,array.length).mapToObj(i -> array[i]).filter(cond).toArray(double[][]::new);
+	}
+
+	public static double[][] filterNonZeroRows(double[][] array){
+		Predicate<double[]> cond = v-> DoubleStream.of(v).anyMatch(x->x!=0);
+		return filterRows(array, cond);
+	}
+
+	public static int[] rowsWhere(double[][] array, Predicate<double[]> cond){
+		return IntStream.range(0,array.length).filter(i->cond.test(array[i])).toArray();
+	}
+	public static int[] rowsWhereAllZeros(double[][] array){
+		Predicate cond = v-> DoubleStream.of((double[]) v).allMatch(x->x==0);
+		return rowsWhere(array, cond);
+	}
+
+	public static double[][] sliceRows(double[][] array, int... idx){
+		return IntStream.of(idx).mapToObj(i->array[i]).toArray(double[][]::new);
+	}
+
+	public static double[][] sliceColumns(double[][] array, int... idx){
+		double[][] out = new double[array.length][idx.length];
+		for(int i=0;i<array.length;i++){
+			for(int j=0; j<idx.length; j++){
+				out[i][j] = array[i][idx[j]];
+			}
+		}
+		return out;
+	}
+
+	public static double[][] dropRows(double[][] array, int... idx){
+		int[] idx_comp = IntStream.range(0,ArraysUtil.getShape(array)[0]).filter(i -> !ArraysUtil.contains(i,idx)).toArray();
+		return sliceRows(array,idx_comp);
+	}
+
+	public static double[][] dropColumns(double[][] array, int... idx){
+		int[] idx_comp = IntStream.range(0,ArraysUtil.getShape(array)[1]).filter(i -> !ArraysUtil.contains(i,idx)).toArray();
+		return sliceColumns(array,idx_comp);
+	}
 
 
 }
