@@ -53,7 +53,7 @@ public class UaiParser {
         String[] elements = stringBuilder.toString().split("[ \\t\\n]+");
 
         // Credal network
-        SparseModel credalNetwork = new SparseModel();
+        SparseModel model = new SparseModel();
 
 
         int offset = 1;
@@ -71,7 +71,7 @@ public class UaiParser {
         // Creating the credal network variables with their proper cardinality
         int[] x = new int[numberOfVariables];
         for (int i = 0; i < numberOfVariables; i++) {
-            x[i] = credalNetwork.addVariable(cardinalities[i]);
+            x[i] = model.addVariable(cardinalities[i]);
         }
 
         // Parsing the number of tables (useless variable kept for compatibility reasons only)
@@ -93,8 +93,11 @@ public class UaiParser {
 
         // Adding the parents to each variable
         for (int k = 0; k < numberOfVariables; k++) {
-            credalNetwork.addParents(x[k], parents[k]);
+            model.addParents(x[k], parents[k]);
         }
+
+
+
 
         // Parsing the a and b coefficient for each variable
         double[][] aCoeff = new double[numberOfVariables][];
@@ -121,16 +124,16 @@ public class UaiParser {
         // Specifying the linear constraints for each variable
         SeparateHalfspaceFactor[] cpt = new SeparateHalfspaceFactor[numberOfVariables];
         for (int i = 0; i < numberOfVariables; i++) {
-            int varsize = credalNetwork.getDomain(i).getSizes()[0];
+            int varsize = model.getDomain(i).getSizes()[0];
 
             if (parents[i].length == 0) {
                 // reshaped coeff A
                 double[][] A2d = ArraysUtil.reshape2d(aCoeff[i], aCoeff[i].length / varsize);
                 // build the factor
-                cpt[i] = new SeparateHalfspaceFactor(credalNetwork.getDomain(i), A2d, bCoeff[i], Relationship.LEQ);
+                cpt[i] = new SeparateHalfspaceFactor(model.getDomain(i), A2d, bCoeff[i], Relationship.LEQ);
             } else {
 
-                int par_comb = credalNetwork.getDomain(credalNetwork.getParents(i)).getCombinations();
+                int par_comb = model.getDomain(model.getParents(i)).getCombinations();
                 double[][] A2d_full = ArraysUtil.reshape2d(aCoeff[i], aCoeff[i].length / (varsize * par_comb));
 
                 // Get the coefficients matrices for each combination of the parents
@@ -147,22 +150,22 @@ public class UaiParser {
                 }
 
                 // build the factor
-                cpt[i] = new SeparateHalfspaceFactor(credalNetwork.getDomain(i),
-                        credalNetwork.getDomain(credalNetwork.getParents(i)),
+                cpt[i] = new SeparateHalfspaceFactor(model.getDomain(i),
+                        model.getDomain(model.getParents(i)),
                         A, b, Relationship.LEQ);
 
 
             }
         }
 
-        credalNetwork.setFactors(cpt);
+        model.setFactors(cpt);
 
 
         // Print factors for checking
 
         for (int i = 0; i < numberOfVariables; i++) {
             System.out.println("Variable " + i);
-            ((SeparateHalfspaceFactor) credalNetwork.getFactor(i)).printLinearProblem();
+            ((SeparateHalfspaceFactor) model.getFactor(i)).printLinearProblem();
         }
 
 
