@@ -1,4 +1,5 @@
 [![GitHub version](https://badge.fury.io/gh/idsia%2Fcrema.svg)](https://badge.fury.io/gh/idsia%2Fcrema)
+[![Build Status](https://travis-ci.org/IDSIA/crema.svg?branch=master)](https://travis-ci.org/IDSIA/crema)
 # CreMA
 
 CreMA is a open-source java toolbox that provides multiple
