@@ -1,0 +1,46 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>webdav-deploy</artifactId>
+    <packaging>pom</packaging>
+    <version>1</version>
+    <name>Webdav Deploy</name>
+
+
+    <scm>
+        <connection>scm:git:git@github.com:idsia/crema.git</connection>
+        <developerConnection>scm:git:git@github.com:idsia/crema.git</developerConnection>
+        <url>git@github.com:idsia/crema.git</url>
+    </scm>
+
+
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>/Users/rcabanas/GoogleDrive/IDSIA/causality/dev/crema/target/mvn-repo</url>
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+        <github.global.server>github</github.global.server>
+        <additionalparam>-Xdoclint:none</additionalparam>
+        <doclint>none</doclint>
+    </properties>
+
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>3.0.0</version>
+            </extension>
+        </extensions>
+    </build>
+
+
+
+</project>
