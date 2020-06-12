@@ -106,7 +106,7 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
     }
 
     public static void main(String[] args) {
-        String fileName = "./examples/network.cn"; // .cn File to open
+        String fileName = "./examples/simple-hcredal.uai"; // .cn File to open
         HCredalUAIParser parser  = new HCredalUAIParser(fileName);
         SparseModel model = parser.parse();
 

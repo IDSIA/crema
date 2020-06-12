@@ -20,7 +20,7 @@ public class UaiParser {
 
     public static void main(String[] args) throws InterruptedException {
 
-        String fileName = "./examples/network.cn"; // .cn File to open
+        String fileName = "./examples/simple-hcredal.uai"; // .cn File to open
 
         StringBuilder stringBuilder = new StringBuilder();
 
