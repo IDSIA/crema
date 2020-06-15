@@ -73,12 +73,12 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
             int parentComb = IntStream.of(parents[i]).map(p->cardinalities[p]).reduce((a,b)-> a*b).orElse(1);
             vertices[i] = new double[parentComb][][];
             for(int j=0;j<parentComb;j++){
-                int numVertices = Integer.parseInt(popElement())/cardinalities[i];
+                int numVertices = popInteger()/cardinalities[i];
                 vertices[i][j]=new double[numVertices][];
                 for(int k=0; k<numVertices; k++){
                     vertices[i][j][k] = new double[cardinalities[i]];
                     for(int s=0; s<cardinalities[i]; s++){
-                        vertices[i][j][k][s] = Double.parseDouble(popElement());
+                        vertices[i][j][k][s] = popDouble();
                     }
                 }
             }

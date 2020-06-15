@@ -100,16 +100,16 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
         bCoeff = new double[numberOfVariables][];
         int n_a, n_b;
         for (int i = 0; i < numberOfVariables; i++) {
-            n_a = Integer.parseInt(popElement());
+            n_a = popInteger();
             aCoeff[i] = new double[n_a];
             for (int k = 0; k < n_a; k++) {
-                aCoeff[i][k] = Double.parseDouble(popElement());
+                aCoeff[i][k] = popDouble();
             }
 
-            n_b = Integer.parseInt(popElement());
+            n_b = popInteger();
             bCoeff[i] = new double[n_b];
             for (int k = 0; k < n_b; k++) {
-                bCoeff[i][k] = Double.parseDouble(popElement());
+                bCoeff[i][k] = popDouble();
             }
         }
     }

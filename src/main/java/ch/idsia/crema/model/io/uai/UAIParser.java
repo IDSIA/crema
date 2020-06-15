@@ -13,9 +13,9 @@ public abstract class UAIParser<T extends  Object> {
     protected String[] elements = null;
     private int offset = 0;
     protected BufferedReader bufferedReader;
-    private String parsedType;
+    private String parsedType="";
 
-    protected String TYPE;
+    protected String TYPE="";
 
     public static Object open(String fileName) throws IOException {
         BufferedReader buff = initReader(fileName);
@@ -102,6 +102,13 @@ public abstract class UAIParser<T extends  Object> {
 
     protected void parseType(){
         parsedType = popElement();
+    }
+
+    protected int popInteger(){
+        return Integer.parseInt(popElement());
+    }
+    protected double popDouble(){
+        return Double.parseDouble(popElement());
     }
 
 }

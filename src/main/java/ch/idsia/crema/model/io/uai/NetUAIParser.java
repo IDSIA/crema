@@ -16,27 +16,27 @@ public abstract class NetUAIParser<T extends SparseModel> extends UAIParser<T> {
     // todo: this assume that variables take consecutive ids from 0
     protected void parseVariablesInfo(){
         // Parsing the number of variables in the network
-        numberOfVariables = Integer.parseInt(popElement());
+        numberOfVariables = popInteger();
         // Parse the number of states of each variable
         cardinalities = new int[numberOfVariables];
         for (int i = 0; i < numberOfVariables; i++) {
-            cardinalities[i] = Integer.parseInt(popElement());
+            cardinalities[i] = popInteger();
             assert cardinalities[i]>1;
         }
     }
 
     protected void parseDomains(){
-        numberOfTables = Integer.parseInt(popElement());
+        numberOfTables = popInteger();
 
         // Parsing the number of parents and the parents
         parents = new int[numberOfTables][];
         int numberOfParents = 0;
         for (int i = 0; i < numberOfTables; i++) {
-            numberOfParents = Integer.parseInt(popElement()) - 1;
-            int left_var = Integer.parseInt(popElement());
+            numberOfParents = popInteger() - 1;
+            int left_var = popInteger();
             parents[left_var] = new int[numberOfParents];
             for (int k = 0; k < numberOfParents; k++) {
-                parents[i][k] = Integer.parseInt(popElement());
+                parents[i][k] = popInteger();
             }
         }
 
