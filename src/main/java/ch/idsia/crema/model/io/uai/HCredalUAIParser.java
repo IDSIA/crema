@@ -5,15 +5,24 @@ import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import org.apache.commons.math3.optim.linear.Relationship;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class HCredalUAIParser extends NetUAIParser<SparseModel>{
 
 
     private double[][] aCoeff = new double[numberOfVariables][];
     private double[][] bCoeff = new double[numberOfVariables][];
 
-    public HCredalUAIParser(String file){
+    public HCredalUAIParser(String file) throws FileNotFoundException {
         TYPE = "H-CREDAL";
-        this.fileName = file;
+        this.bufferedReader = initReader(file);
+    }
+
+    public HCredalUAIParser(BufferedReader reader) {
+        TYPE = "H-CREDAL";
+        this.bufferedReader = reader;
     }
 
     @Override
@@ -105,15 +114,17 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
         }
     }
 
-    public static void main(String[] args) {
-        String fileName = "./examples/simple-hcredal.uai"; // .cn File to open
-        HCredalUAIParser parser  = new HCredalUAIParser(fileName);
-        SparseModel model = parser.parse();
+    public static void main(String[] args) throws IOException {
+        String fileName = "./models/simple-hcredal.uai";
+        SparseModel model = (SparseModel) UAIParser.open(fileName);
 
         for (int i = 0; i < model.getVariables().length; i++) {
             System.out.println("Variable " + i);
             ((SeparateHalfspaceFactor) model.getFactor(i)).printLinearProblem();
         }
+
+
+
     }
 
 }
