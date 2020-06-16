@@ -52,7 +52,6 @@ public class Party {
                 0,1,1,  0,0,0,  0,0,0, 0,1,1);
 
 
-
         model.setFactor(x1,f1);
         model.setFactor(x2,f2);
         model.setFactor(x3,f3);
