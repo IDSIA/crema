@@ -40,7 +40,9 @@ extensions = ['sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'sphinx.ext.autodoc',
     'sphinxcontrib.napoleon',
-    'nbsphinx']
+    'nbsphinx',
+    'recommonmark',]
+
 
 # Napoleon settings
 napoleon_google_docstring = True
@@ -65,7 +67,11 @@ templates_path = ['_templates']
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'markdown',
+    '.md': 'markdown',
+}
 
 # The master toctree document.
 master_doc = 'index'
