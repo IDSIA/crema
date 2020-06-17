@@ -2,9 +2,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import com.google.common.primitives.Doubles;
-import org.apache.commons.lang3.ArrayUtils;
+import ch.idsia.credici.model.StructuralCausalModel;
 
 public class SC2CNSimpleCase {
     public static void main(String[] args) {

@@ -3,21 +3,18 @@ package pgm20.examples;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.causality.CausalVE;
-import ch.idsia.crema.inference.causality.CredalCausalVE;
+import ch.idsia.credici.inference.CredalCausalVE;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
-import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.models.causal.Party;
+import ch.idsia.credici.model.StructuralCausalModel;
+import ch.idsia.credici.model.predefined.Party;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class Example9 {
     public static void main(String[] args) throws InterruptedException {

@@ -1,15 +1,12 @@
 package ch.idsia.crema.model.graphical;
 
-import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.NoSuchVariableException;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.change.CardinalityChange;
 import ch.idsia.crema.model.change.DomainChange;
 import ch.idsia.crema.model.change.NullChange;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Ints;
 import gnu.trove.iterator.TIntObjectIterator;

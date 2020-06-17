@@ -1,12 +1,9 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.inference.approxlp.Inference;
-import ch.idsia.crema.inference.ve.FactorVariableElimination;
-import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import gnu.trove.map.hash.TIntIntHashMap;
+import ch.idsia.credici.model.StructuralCausalModel;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;

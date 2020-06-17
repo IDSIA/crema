@@ -1,59 +1,63 @@
-package ch.idsia.crema.models.causal;
+package ch.idsia.credici.model.predefined;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.causality.CausalInference;
-import ch.idsia.crema.inference.causality.CausalVE;
-import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
-import ch.idsia.crema.inference.causality.CredalCausalVE;
-import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-
+import ch.idsia.credici.inference.CausalInference;
+import ch.idsia.credici.inference.CausalVE;
+import ch.idsia.credici.inference.CredalCausalAproxLP;
+import ch.idsia.credici.inference.CredalCausalVE;
+import ch.idsia.credici.model.StructuralCausalModel;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.Arrays;
 
 
-public class RandomChainMarkovian {
+public class TerBinChainMarkovian {
 
     public static int PROB_DECIMALS = 2;
 
-    public static StructuralCausalModel buildModel(int n, int endoSize, int exoSize) {
+    public static StructuralCausalModel buildModel(int n) {
 
-        SparseDirectedAcyclicGraph graph = new SparseDirectedAcyclicGraph();
-        int[] endo = new int[n];
-        int[] endo_sizes = new int[n];
 
-        for (int i = 0; i < n; i++) {
-            endo[i] = i;
-            endo_sizes[i] = endoSize;
-            graph.addVariable(endo[i]);
-            if (i > 0) {
-                graph.addLink(endo[i - 1], endo[i]);
-            }
+        StructuralCausalModel model = new StructuralCausalModel();
+
+        // add endogenous
+        for (int i=0; i < n; i++) {
+            if(i%2!=0)
+                model.addVariable(2);
+            else
+                model.addVariable(3);
+            if(i>0)
+                model.addParent(i, i-1);
         }
 
-        StructuralCausalModel model = null;
-
-        if (exoSize > 0)
-            model = new StructuralCausalModel(graph, endo_sizes, exoSize);
-        else
-            model = new StructuralCausalModel(graph, endo_sizes);
 
 
-        model.fillWithRandomFactors(PROB_DECIMALS);
+        //add exogenous
+        for (int i=0; i < n; i++) {
+            int u;
+
+            if(i%2!=0)
+                u = model.addVariable(3, true);
+            else
+                u = model.addVariable(4, true);
+
+            model.addParent(i,u);
+        }
+
+        model.fillWithRandomFactors(PROB_DECIMALS, false);
+
+
+
         return model;
 
     }
 
-    public static StructuralCausalModel buildModel(int n, int endoSize) {
-        return buildModel(n, endoSize, -1);
-    }
 
     // Example of use
     public static void main(String[] args) throws InterruptedException {
-        StructuralCausalModel model = buildModel(5, 2, 5);
+        StructuralCausalModel model = buildModel(5);
 
         int[] X = model.getEndogenousVars();
 

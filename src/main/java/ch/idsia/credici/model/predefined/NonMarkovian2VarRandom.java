@@ -1,15 +1,13 @@
-package ch.idsia.crema.models.causal;
+package ch.idsia.credici.model.predefined;
 // models/ch.idsia.crema.models.causal/NonMarkovian2VarRandom.java
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.causality.CausalVE;
-import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
-import ch.idsia.crema.inference.causality.CredalCausalVE;
-import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.utility.RandomUtil;
+import ch.idsia.credici.inference.CausalVE;
+import ch.idsia.credici.inference.CredalCausalAproxLP;
+import ch.idsia.credici.inference.CredalCausalVE;
+import ch.idsia.credici.model.StructuralCausalModel;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 

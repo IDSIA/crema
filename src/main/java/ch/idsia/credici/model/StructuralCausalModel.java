@@ -1,4 +1,4 @@
-package ch.idsia.crema.model.graphical.specialized;
+package ch.idsia.credici.model;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToHalfSpace;

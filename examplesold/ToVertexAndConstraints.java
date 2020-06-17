@@ -2,7 +2,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
+import ch.idsia.credici.model.StructuralCausalModel;
 
 import java.util.stream.IntStream;
 

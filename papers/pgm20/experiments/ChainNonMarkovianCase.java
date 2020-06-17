@@ -1,20 +1,15 @@
 package pgm20.experiments;
 
-import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.models.causal.RandomChainMarkovian;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.causality.CausalInference;
-import ch.idsia.crema.inference.causality.CausalVE;
-import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
-import ch.idsia.crema.inference.causality.CredalCausalVE;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.models.causal.RandomChainNonMarkovian;
-import ch.idsia.crema.utility.RandomUtil;
+import ch.idsia.credici.inference.CausalInference;
+import ch.idsia.credici.inference.CausalVE;
+import ch.idsia.credici.inference.CredalCausalAproxLP;
+import ch.idsia.credici.inference.CredalCausalVE;
+import ch.idsia.credici.model.StructuralCausalModel;
+import ch.idsia.credici.model.predefined.RandomChainNonMarkovian;
 import gnu.trove.map.hash.TIntIntHashMap;
-
-import java.util.Random;
 
 public class ChainNonMarkovianCase {
     public static void main(String[] args) throws InterruptedException {

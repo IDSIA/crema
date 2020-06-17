@@ -1,6 +1,4 @@
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-
-import java.util.stream.Stream;
+import ch.idsia.credici.model.StructuralCausalModel;
 
 public class CounterFactuals {
     public static void main(String[] args) {

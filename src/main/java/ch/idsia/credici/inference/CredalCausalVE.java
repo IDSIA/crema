@@ -1,11 +1,10 @@
-package ch.idsia.crema.inference.causality;
+package ch.idsia.credici.inference;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
-import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
+import ch.idsia.credici.model.StructuralCausalModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -14,7 +13,6 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class CredalCausalVE extends CausalInference<SparseModel, VertexFactor> {
 

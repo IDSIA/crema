@@ -1,14 +1,11 @@
-package ch.idsia.crema.model;
+package ch.idsia.credici.model;
 
 import ch.idsia.crema.model.counterfact.CounterFactMapping;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.utility.ArraysUtil;
-import org.apache.commons.lang3.ArrayUtils;
+import ch.idsia.credici.model.StructuralCausalModel;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 

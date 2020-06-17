@@ -1,24 +1,16 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.approxlp2.ApproxLP2;
-import ch.idsia.crema.inference.causality.CausalInference;
-import ch.idsia.crema.inference.causality.CausalVE;
-import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
-import ch.idsia.crema.inference.causality.CredalCausalVE;
-import ch.idsia.crema.inference.ve.FactorVariableElimination;
-import ch.idsia.crema.inference.ve.VariableElimination;
+import ch.idsia.credici.inference.CausalInference;
+import ch.idsia.credici.inference.CausalVE;
+import ch.idsia.credici.inference.CredalCausalAproxLP;
+import ch.idsia.credici.inference.CredalCausalVE;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
-import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.preprocess.CutObserved;
-import ch.idsia.crema.preprocess.CutObservedSepHalfspace;
-import ch.idsia.crema.preprocess.RemoveBarren;
+import ch.idsia.credici.model.StructuralCausalModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 public class CausalInference_withfullSCM {
     public static void main(String[] args) throws InterruptedException {

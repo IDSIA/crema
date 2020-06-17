@@ -1,35 +1,31 @@
 package pgm20.experiments;
 
+import ch.idsia.credici.model.predefined.RandomSquares;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.causality.CausalInference;
-import ch.idsia.crema.inference.causality.CausalVE;
-import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
-import ch.idsia.crema.inference.causality.CredalCausalVE;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
-import ch.idsia.crema.models.causal.*;
-import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.credici.inference.CausalInference;
+import ch.idsia.credici.inference.CausalVE;
+import ch.idsia.credici.inference.CredalCausalAproxLP;
+import ch.idsia.credici.inference.CredalCausalVE;
+import ch.idsia.credici.model.StructuralCausalModel;
 import ch.idsia.crema.utility.InvokerWithTimeout;
 import ch.idsia.crema.utility.RandomUtil;
-import com.google.common.collect.Streams;
 import com.google.common.primitives.Doubles;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import org.apache.commons.cli.*;
-import org.apache.commons.math3.util.Pair;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static ch.idsia.crema.models.causal.RandomChainNonMarkovian.buildModel;
+import static ch.idsia.credici.model.predefined.RandomChainNonMarkovian.buildModel;
 
 
 public class RunExperiments {
@@ -138,23 +134,23 @@ public class RunExperiments {
             // Load the chain model
 
             if (modelName.equals("ChainMarkovian"))
-                model = RandomChainMarkovian.buildModel(N, endoVarSize, exoVarSize);
+                model = ch.idsia.credici.model.predefined.RandomChainMarkovian.buildModel(N, endoVarSize, exoVarSize);
             else if (modelName.equals("ChainNonMarkovian"))
-                model = RandomChainNonMarkovian.buildModel(N, endoVarSize, exoVarSize);
+                model = ch.idsia.credici.model.predefined.RandomChainNonMarkovian.buildModel(N, endoVarSize, exoVarSize);
             else if (modelName.equals("TerBinChainMarkovian"))
-                model = TerBinChainMarkovian.buildModel(N);
+                model = ch.idsia.credici.model.predefined.TerBinChainMarkovian.buildModel(N);
             else if (modelName.equals("TerBinChainNonMarkovian"))
-                model = TerBinChainNonMarkovian.buildModel(N);
+                model = ch.idsia.credici.model.predefined.TerBinChainNonMarkovian.buildModel(N);
             else if (modelName.equals("HMM-Markovian"))
-                model = RandomHMM.buildModel(true, N, endoVarSize, exoVarSize);
+                model = ch.idsia.credici.model.predefined.RandomHMM.buildModel(true, N, endoVarSize, exoVarSize);
             else if (modelName.equals("HMM-NonMarkovian"))
-                model = RandomHMM.buildModel(false, N, endoVarSize, exoVarSize);
+                model = ch.idsia.credici.model.predefined.RandomHMM.buildModel(false, N, endoVarSize, exoVarSize);
             else if (modelName.equals("RHMM-Markovian"))
-                model = RandomRevHMM.buildModel(true, N, endoVarSize, exoVarSize);
+                model = ch.idsia.credici.model.predefined.RandomRevHMM.buildModel(true, N, endoVarSize, exoVarSize);
             else if (modelName.equals("RHMM-NonMarkovian"))
-                model = RandomRevHMM.buildModel(false, N, endoVarSize, exoVarSize);
+                model = ch.idsia.credici.model.predefined.RandomRevHMM.buildModel(false, N, endoVarSize, exoVarSize);
             else if (modelName.equals("Squares-Markovian"))
-                model = RandomSquares.buildModel(true, N, endoVarSize, exoVarSize);
+                model = ch.idsia.credici.model.predefined.RandomSquares.buildModel(true, N, endoVarSize, exoVarSize);
             else if (modelName.equals("Squares-NonMarkovian"))
                 model = RandomSquares.buildModel(false, N, endoVarSize, exoVarSize);
             else

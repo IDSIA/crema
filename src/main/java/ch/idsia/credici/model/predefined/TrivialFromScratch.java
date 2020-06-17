@@ -1,7 +1,7 @@
-package ch.idsia.crema.models.causal;
+package ch.idsia.credici.model.predefined;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
+import ch.idsia.credici.model.StructuralCausalModel;
 
 
 

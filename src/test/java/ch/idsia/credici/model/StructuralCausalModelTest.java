@@ -1,7 +1,7 @@
-package ch.idsia.crema.model.graphical.specialized;
+package ch.idsia.credici.model;
 
+import ch.idsia.credici.model.StructuralCausalModel;
 import ch.idsia.crema.utility.ArraysUtil;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -76,7 +76,7 @@ public class StructuralCausalModelTest {
 
     @ParameterizedTest
     @MethodSource("addVariableParams")
-    void addVariable(StructuralCausalModel model,  int expected ) {
+    void addVariable(StructuralCausalModel model, int expected ) {
         assertEquals(model.addVariable(3, false),expected);
     }
 
@@ -90,7 +90,7 @@ public class StructuralCausalModelTest {
     }
     @ParameterizedTest
     @MethodSource("removeVariableParams")
-    void removeVariable(StructuralCausalModel model,  int var ) {
+    void removeVariable(StructuralCausalModel model, int var ) {
         model.removeVariable(var);
 
         assertFalse(ArraysUtil.contains(var, model.getVariables()));

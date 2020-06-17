@@ -1,18 +1,18 @@
-package ch.idsia.crema.models.causal;
+package ch.idsia.credici.model.predefined;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.causality.CausalInference;
-import ch.idsia.crema.inference.causality.CausalVE;
-import ch.idsia.crema.inference.causality.CredalCausalAproxLP;
-import ch.idsia.crema.inference.causality.CredalCausalVE;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
+import ch.idsia.credici.inference.CausalInference;
+import ch.idsia.credici.inference.CausalVE;
+import ch.idsia.credici.inference.CredalCausalAproxLP;
+import ch.idsia.credici.inference.CredalCausalVE;
+import ch.idsia.credici.model.StructuralCausalModel;
 import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 
-public class RandomRevHMM {
+public class RandomSquares {
 
     public static int PROB_DECIMALS = 2;
 
@@ -28,10 +28,12 @@ public class RandomRevHMM {
             X[i] = model.addVariable(endoSize);
             Y[i] = model.addVariable(endoSize);
 
-            model.addParent(X[i], Y[i]);
+            model.addParent(Y[i], X[i]);
 
-            if(i>0)
-                model.addParent(X[i], X[i-1]);
+            if(i>0) {
+                model.addParent(X[i], X[i - 1]);
+                model.addParent(Y[i], Y[i - 1]);
+            }
         }
 
         //add exogenous
@@ -39,18 +41,20 @@ public class RandomRevHMM {
         int step = 1;
         if (!markovian) step = 2;
         for (int i = 0; i < n; i += step) {
-            int u = model.addVariable(exoSize, true);
-            model.addParent(X[i], u);
-            if (!markovian && i + 1 < n) model.addParent(X[i + 1], u);
-        }
+            int ux = model.addVariable(exoSize, true);
+            int uy = model.addVariable(exoSize, true);
 
-        for(int i = 0; i<n; i++){
-            int u = model.addVariable(exoSize, true);
-            model.addParent(Y[i], u);
+            model.addParent(X[i], ux);
+            model.addParent(Y[i], uy);
+
+            if (!markovian && i + 1 < n) {
+                model.addParent(X[i + 1], ux);
+                model.addParent(Y[i + 1], uy);
+            }
+
         }
 
         model.fillWithRandomFactors(PROB_DECIMALS, false);
-
 
 
         return model;
@@ -61,7 +65,7 @@ public class RandomRevHMM {
 
 
     public static void main(String[] args) throws InterruptedException {
-        int n = 4;
+        int n = 3;
 
         RandomUtil.getRandom().setSeed(3702);
         //RandomUtil.getRandom().setSeed(1234);
@@ -74,7 +78,7 @@ public class RandomRevHMM {
 
         TIntIntHashMap evidence = new TIntIntHashMap();
         //evidence.put(X[2*n-1], 0);
-        evidence.put(5, 1);
+        evidence.put(4, 1);
 
 
         TIntIntHashMap intervention = new TIntIntHashMap();

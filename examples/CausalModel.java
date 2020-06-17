@@ -1,5 +1,5 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.specialized.StructuralCausalModel;
+import ch.idsia.credici.model.StructuralCausalModel;
 
 public class CausalModel {
     public static void main(String[] args) {
