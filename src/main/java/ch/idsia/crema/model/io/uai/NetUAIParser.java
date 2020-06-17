@@ -1,12 +1,13 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.inference.approxlp.Inference;
+import ch.idsia.crema.model.graphical.GenericSparseModel;
 import ch.idsia.crema.model.graphical.SparseModel;
 import org.springframework.util.Assert;
 
 import java.util.stream.IntStream;
 
-public abstract class NetUAIParser<T extends SparseModel> extends UAIParser<T> {
+public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIParser<T> {
 
     protected int numberOfVariables;
     protected int[] cardinalities;
