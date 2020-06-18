@@ -21,3 +21,7 @@ target/
 *_ig*
 *_old.py
 
+
+#docs
+*/docs/_build/*
+

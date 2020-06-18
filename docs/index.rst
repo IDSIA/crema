@@ -36,7 +36,6 @@ The main features of Crema are:
    :caption: Quick Start
    
    notes/getting30s
-   notes/gettingGuiding
    notes/requirements
    notes/installation
 
@@ -48,10 +47,9 @@ The main features of Crema are:
    
    notes/guideinference
    notes/cheatsheet
+   notes/markdownguide
 
 
-..   notes/guidevalidation
-..   notes/cheatsheet
 
 
 
@@ -83,14 +81,5 @@ The main features of Crema are:
    :language: python3
 
 
-
-
-
-
-.. image:: https://travis-ci.org/PGM-Lab/InferPy.svg?branch=master
-    :target: https://travis-ci.org/PGM-Lab/InferPy
-
-.. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
-    :target: https://opensource.org/licenses/Apache-2.0
 
 
