@@ -23,6 +23,7 @@ public class ExpectationMaximizationTest {
     @Test
     public void testModelLoading() throws InterruptedException {
 
+        // Build model
         model = new SparseModel<>();
 
         int Pr = model.addVariable(2);
@@ -41,9 +42,8 @@ public class ExpectationMaximizationTest {
         model.setFactor(Bt, bfBt);
         model.setFactor(Ut, bfUt);
 
-        MinFillOrdering mfo = new MinFillOrdering();
-        int[] elimSeq = mfo.apply(model);
 
+        // Define observations
         int yes = 0, no = 1, pos = 0, neg = 1;
         TIntIntMap[] observations = new TIntIntMap[]{
                 new TIntIntHashMap() {{
@@ -69,21 +69,9 @@ public class ExpectationMaximizationTest {
                 }},
         };
 
-        ExpectationMaximization em = new ExpectationMaximization(model, (model, query, obs) -> {
-            CutObserved co = new CutObserved();
-            GraphicalModel<BayesianFactor> coModel = co.execute(model, obs);
-
-            RemoveBarren rb = new RemoveBarren();
-            GraphicalModel<BayesianFactor> infModel = rb.execute(coModel, query, obs);
-            rb.filter(elimSeq);
-
-            FactorVariableElimination<BayesianFactor> fve = new FactorVariableElimination<>(elimSeq);
-            fve.setNormalize(true);
-
-            return fve.apply(infModel, query, obs);
-        }, observations);
-
+        ExpectationMaximization em = new ExpectationMaximization(model, observations);
         em.execute();
+
     }
 
 }
