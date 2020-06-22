@@ -9,6 +9,7 @@ import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
+import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
@@ -422,6 +423,79 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return new BayesianFactor(target, result, log);
 	}
 
+
+	/**
+	 * The specialized method that avoids the cast of the input variable.
+	 *
+	 * <p>
+	 * This implementation uses long values for strides, sizes and indices,
+	 * allowing for combined operations. Increasing the index is, for instance,
+	 * one single add instead of two. The values will contain in the Lower 32bit
+	 * this factor's values and in the upper 32 the parameter's ones. Given that
+	 * most architectures are 64 bit, this should give a tiny performance
+	 * improvement.
+	 * </p>
+	 *
+	 * @param factor
+	 * @return
+	 */
+	public BayesianFactor addition(BayesianFactor factor) {
+
+		// domains should be sorted
+		this.sortDomain();
+		factor = factor.copy();
+		factor.sortDomain();
+
+		final Strides target = domain.union(factor.domain);
+		final int length = target.getSize();
+
+		final int[] limits = new int[length];
+		final int[] assign = new int[length];
+
+		final long[] stride = new long[length];
+		final long[] reset = new long[length];
+
+		for (int vindex = 0; vindex < domain.getSize(); ++vindex) {
+			int offset = Arrays.binarySearch(target.getVariables(), domain.getVariables()[vindex]);
+			// if (offset >= 0) {
+			stride[offset] = domain.getStrides()[vindex];
+			// }
+		}
+
+		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
+			int offset = ArraysUtil.indexOf(factor.domain.getVariables()[vindex], target.getVariables());
+			// if (offset >= 0) {
+			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32l);
+			// }
+		}
+
+		for (int i = 0; i < length; ++i) {
+			limits[i] = target.getSizes()[i] - 1;
+			reset[i] = limits[i] * stride[i];
+		}
+
+		long idx = 0;
+		double[] result = new double[target.getCombinations()];
+
+
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.data[(int) (idx >>> 32l)];
+
+			for (int l = 0; l < length; ++l) {
+				if (assign[l] == limits[l]) {
+					assign[l] = 0;
+					idx -= reset[l];
+				} else {
+					++assign[l];
+					idx += stride[l];
+					break;
+				}
+			}
+		}
+
+		return new BayesianFactor(target, result, log);
+	}
+
 	/**
 	 * divide this factor by the provided one. This assumes that the domain of
 	 * the given factor is a subset of this one's.
@@ -486,9 +560,9 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		for (int m : ArraysUtil.removeAllFromSortedArray(domain.getVariables(), given)) {
 			div = div.marginalize(m);
 		}
-
 		return divide(div);
 	}
+
 
 
 	@Override
@@ -640,5 +714,13 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return out;
 	}
 
+
+	public static BayesianFactor getJoinDeterministic(Strides left_vars, TIntIntMap obs){
+		BayesianFactor f = new BayesianFactor(left_vars);
+		for(int index : left_vars.getCompatibleIndexes(obs)){
+			f.setValueAt(1,index);
+		}
+		return f;
+	}
 
 }

@@ -819,4 +819,32 @@ public final class Strides implements Domain {
 	}
 
 
+	public boolean isCompatible(int index, TIntIntMap obs){
+
+		int[] obsfiltered = IntStream.of(this.getVariables()).sorted()
+				.map(x -> {
+					if(obs.containsKey(x))
+						return obs.get(x);
+					else return -1;}).toArray();
+
+
+		int[] states = this.statesOf(index);
+
+		boolean compatible = true;
+		for(int i=0; i<this.getVariables().length; i++){
+			if(obsfiltered[i]>=0 && obsfiltered[i] != states[i]) {
+				compatible = false;
+				break;
+			}
+		}
+
+		return compatible;
+	}
+
+	public int[] getCompatibleIndexes(TIntIntMap obs){
+		return IntStream.range(0, this.getCombinations()).filter(i -> this.isCompatible(i, obs)).toArray();
+	}
+
+
+
 }

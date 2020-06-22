@@ -5,10 +5,12 @@ import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -23,54 +25,68 @@ public class ExpectationMaximizationTest {
     @Test
     public void testModelLoading() throws InterruptedException {
 
-        // Build model
-        model = new SparseModel<>();
 
-        int Pr = model.addVariable(2);
-        int Bt = model.addVariable(2);
-        int Ut = model.addVariable(2);
-
-        BayesianFactor bfPr = new BayesianFactor(model.getDomain(Pr), false);
-        BayesianFactor bfBt = new BayesianFactor(model.getDomain(Pr, Bt), false);
-        BayesianFactor bfUt = new BayesianFactor(model.getDomain(Pr, Ut), false);
-
-        bfPr.setData(new double[]{0.5, 0.5});
-        bfBt.setData(new double[]{0.5, 0.5, 0.5, 0.5});
-        bfUt.setData(new double[]{0.5, 0.5, 0.5, 0.5});
-
-        model.setFactor(Pr, bfPr);
-        model.setFactor(Bt, bfBt);
-        model.setFactor(Ut, bfUt);
+        // https://www.cse.ust.hk/bnbook/pdf/l07.h.pdf
+        BayesianNetwork model = new BayesianNetwork();
 
 
-        // Define observations
-        int yes = 0, no = 1, pos = 0, neg = 1;
-        TIntIntMap[] observations = new TIntIntMap[]{
-                new TIntIntHashMap() {{
-                    put(Bt, pos);
-                    put(Ut, pos);
-                }},
-                new TIntIntHashMap() {{
-                    put(Pr, yes);
-                    put(Bt, neg);
-                    put(Ut, pos);
-                }},
-                new TIntIntHashMap() {{
-                    put(Pr, yes);
-                    put(Bt, pos);
-                }},
-                new TIntIntHashMap() {{
-                    put(Pr, yes);
-                    put(Bt, pos);
-                    put(Ut, neg);
-                }},
-                new TIntIntHashMap() {{
-                    put(Bt, neg);
-                }},
+        for(int i=0;i<3;i++)
+            model.addVariable(2);
+
+        int[] X = model.getVariables();
+
+
+        model.addParent(X[1],X[0]);
+        model.addParent(X[2],X[1]);
+
+
+        model.setFactor(X[0], new BayesianFactor(model.getDomain(X[0]), new double[]{0.5,0.5}));
+        model.setFactor(X[1], new BayesianFactor(model.getDomain(X[1],X[0]), new double[]{2./3, 1./3, 1./3, 2./3}));
+        model.setFactor(X[2], new BayesianFactor(model.getDomain(X[2],X[1]), new double[]{2./3, 1./3, 1./3, 2./3}));
+
+
+
+        int[][] dataX = {
+                {0, 0, 0},
+                {1, 1, 1},
+                {0, -1, 0},
+                {1, -1, 1}
         };
 
-        ExpectationMaximization em = new ExpectationMaximization(model, observations);
-        em.execute();
+        TIntIntMap[] observations = new TIntIntMap[dataX.length];
+        for(int i=0; i<observations.length; i++) {
+            observations[i] = new TIntIntHashMap();
+            for(int j=0; j<dataX[i].length; j++) {
+                if(dataX[i][j]>=0)
+                    observations[i].put(X[j], dataX[i][j]);
+            }
+        }
+
+
+        ExpectationMaximization inf = new ExpectationMaximization(model);
+        inf.setRegularization(0.0);
+
+        inf.run(observations,1);
+
+
+
+        BayesianFactor post = inf.getPosterior().getFactor(X[0]); //[0.5, 0.5]
+        Assert.assertArrayEquals(post.getData(), new double[]{.5,.5}, 0);
+
+
+
+        post = inf.getPosterior().getFactor(X[1]).filter(X[0],0);
+        Assert.assertArrayEquals(post.getData(), new double[]{0.9,0.1}, 0);
+        post = inf.getPosterior().getFactor(X[1]).filter(X[0],1);
+        Assert.assertArrayEquals(post.getData(), new double[]{0.1,0.9}, 0);
+
+
+
+        post = inf.getPosterior().getFactor(X[2]).filter(X[1],0);
+        Assert.assertArrayEquals(post.getData(), new double[]{0.9,0.1}, 0);
+        post = inf.getPosterior().getFactor(X[2]).filter(X[1],1);
+        Assert.assertArrayEquals(post.getData(), new double[]{0.1,0.9}, 0);
+
 
     }
 
