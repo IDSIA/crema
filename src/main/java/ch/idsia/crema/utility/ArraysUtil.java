@@ -1,6 +1,5 @@
 package ch.idsia.crema.utility;
 
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.Strides;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Doubles;
@@ -12,7 +11,6 @@ import org.apache.commons.math3.util.Precision;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -552,20 +550,46 @@ public class ArraysUtil {
 	}
 
 	/**
+	 * Returns the dimensions of 2d matrix
+	 * @param matrix
+	 * @return - tuple of integers
+	 */
+
+	public static int[] getShape(int[][] matrix){
+		if(Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
+			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
+		return new int[] {matrix.length, matrix[0].length};
+	}
+
+	/**
 	 * Transpose of a 2d matrix
 	 * @param original
 	 * @return
 	 */
 	public static double[][] transpose(double[][] original){
-
 		int[] shape = getShape(original);
-
 		double[][] transposed = new double[shape[1]][shape[0]];
 		for(int i=0; i<shape[0]; i++)
 			for(int j=0; j<shape[1]; j++)
 				transposed[j][i] = original[i][j];
 
 		return  transposed;
+
+	}
+
+	/**
+	 * Transpose of a 2d matrix
+	 * @param original
+	 * @return
+	 */
+	public static int[][] transpose(int[][] original){
+		int[] shape = getShape(original);
+		int[][] transposed = new int[shape[1]][shape[0]];
+		for(int i=0; i<shape[0]; i++)
+			for(int j=0; j<shape[1]; j++)
+				transposed[j][i] = original[i][j];
+
+		return transposed;
 
 	}
 
@@ -870,6 +894,88 @@ public class ArraysUtil {
 	public static double[][] dropColumns(double[][] array, int... idx){
 		int[] idx_comp = IntStream.range(0,ArraysUtil.getShape(array)[1]).filter(i -> !ArraysUtil.contains(i,idx)).toArray();
 		return sliceColumns(array,idx_comp);
+	}
+
+
+
+	public static int ndim(Object array){
+		return ndimWithClass(array.getClass());
+	}
+
+	private static int ndimWithClass(Class array){
+		if(!array.getComponentType().getName().startsWith("["))
+			return 1;
+		return ndimWithClass(array.getComponentType())+1;
+	}
+
+	/**
+	 * Flatten a list containing a n-dimensional array of doubles
+	 * @param a
+	 * @return
+	 */
+	public static double[] flattenDoubles(List a)
+	{
+		int ndims = ArraysUtil.ndim(a.get(0));
+		if(ndims >1){
+
+			ListIterator it =  a.listIterator();
+			List aux = new ArrayList();
+
+			while (it.hasNext()) {
+				List sublist;
+				if (ndims >= 3) {
+					sublist = List.of((Object[][]) it.next());
+				} else {
+					sublist = List.of((double[][]) it.next());
+				}
+				aux.add(flattenDoubles(sublist));
+			}
+
+			a = aux;
+
+		}
+		double[] out = ((double[])a.get(0));
+		for(int i=1; i<a.size(); i++)
+			out = Doubles.concat(out, ((double[])a.get(i)));
+		return out;
+
+	}
+
+	/**
+	 * Flatten a list containing a n-dimensional array of integers
+	 * @param a
+	 * @return
+	 */
+	public static int[] flattenInts(List a)
+	{
+		int ndims = ArraysUtil.ndim(a.get(0));
+		if(ndims >1){
+
+			ListIterator it =  a.listIterator();
+			List aux = new ArrayList();
+
+			while (it.hasNext()) {
+				List sublist;
+				if (ndims >= 3) {
+					sublist = List.of((Object[][]) it.next());
+				} else {
+					sublist = List.of((int[][]) it.next());
+				}
+				aux.add(flattenInts(sublist));
+			}
+
+			a = aux;
+
+		}
+		int[] out = ((int[])a.get(0));
+		for(int i=1; i<a.size(); i++)
+			out = Ints.concat(out, ((int[])a.get(i)));
+		return out;
+
+	}
+	public static void main(String[] args) {
+		int[][][][] v = {{{{1, 2}, {3, 4}}}, {{{9, 2}, {8, 4}}}};
+		System.out.println(Arrays.toString(flattenInts(List.of(v)))) ;
 	}
 
 
