@@ -2,6 +2,7 @@ package ch.idsia.crema.utility;
 
 import ch.idsia.crema.model.Strides;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import gnu.trove.list.array.TIntArrayList;
@@ -421,6 +422,18 @@ public class ArraysUtil {
 	}
 
 
+	/**
+	 * Find the sorted difference of two non-sorted integer arrays.
+	 *
+	 * @param arr1 the first  array
+	 * @param arr2 the second  array
+	 * @return an array intersection of the first two
+	 */
+	public static int[] difference(int[] arr1, int[] arr2) {
+		return  IntStream.of(arr1).filter(y -> IntStream.of(arr2).noneMatch(x -> x == y)).toArray();
+	}
+
+
 
 	/**
 	 * Find the sorted intersection of two non-sorted integer arrays.
@@ -665,6 +678,31 @@ public class ArraysUtil {
 
 		return newdata;
 	}
+
+
+	/**
+	 * Given a vector representing a multidimensional array, swaps the axis.
+	 * @param data	- matrix to transform
+	 * @param oldSizes	- lengths of each axis
+	 * @return
+	 */
+	public static double[] changeEndian(double[] data, int[] oldSizes){
+
+		int N = oldSizes.length;
+		int[] newOrder = new int[N];
+		int[] newSizes = new int[N];
+		for(int i=0; i<N; i++) {
+			newOrder[i] = N - i - 1;
+			newSizes[i] = oldSizes[newOrder[i]];
+		}
+
+
+		return swapVectorStrides(data, newSizes, newOrder);
+
+	}
+
+
+
 
 	/**
 	 *	Given a 1d vector of doubles, transforms it in a list of

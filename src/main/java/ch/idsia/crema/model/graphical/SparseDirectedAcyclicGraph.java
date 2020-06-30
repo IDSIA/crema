@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -30,6 +31,12 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 
 	public void addVariable(int variable) {
 		super.addVertex(variable);
+	}
+
+	public int addVariable(){
+		int vid = IntStream.of(getVariables()).max().orElse(0) + 1;
+		super.addVertex(vid);
+		return vid;
 	}
 
 	@Override
@@ -73,6 +80,12 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 	public int[] getVariables(){
 		return Ints.toArray(this.vertexSet());
 	}
+
+	public boolean isLeaf(int variable){
+		return getParents(variable).length==0;
+	}
+
+	public boolean isBarren(int variable){ return getChildren(variable).length==0; }
 
 
 

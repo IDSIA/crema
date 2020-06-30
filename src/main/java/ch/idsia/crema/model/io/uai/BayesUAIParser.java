@@ -1,29 +1,28 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.user.credal.Vertex;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
-import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.stream.IntStream;
 
-public class VCredalUAIParser extends NetUAIParser<SparseModel>{
+public class BayesUAIParser extends NetUAIParser<BayesianNetwork>{
 
+    private double[][] probs;
 
-    private double[][][][] vertices = new double[numberOfVariables][][][];
-
-    public VCredalUAIParser(String file) throws FileNotFoundException {
-        TYPE = "V-CREDAL";
+    public BayesUAIParser(String file) throws FileNotFoundException {
+        TYPE = "BAYES";
         this.bufferedReader = initReader(file);
     }
 
-    public VCredalUAIParser(BufferedReader reader) {
-        TYPE = "V-CREDAL";
+    public BayesUAIParser(BufferedReader reader) {
+        TYPE = "BAYES";
         this.bufferedReader = reader;
     }
 
@@ -31,13 +30,13 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
     protected void processFile() {
         parseType();
         parseVariablesInfo();
-        parseDomains();
-        parseVertices();
+        parseDomainsLastIsHead();
+        parseCPTs();
     }
 
     @Override
-    protected SparseModel build() {
-        SparseModel model = new SparseModel();
+    protected BayesianNetwork build() {
+        BayesianNetwork model = new BayesianNetwork();
 
         // Add the variables
         for (int i = 0; i < numberOfVariables; i++) {
@@ -49,10 +48,17 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
             model.addParents(k, parents[k]);
         }
 
-        // Specifying the linear constraints for each variable
-        VertexFactor[] cpt = new VertexFactor[numberOfVariables];
+        // Build the bayesian Factor for each variable
+        BayesianFactor[] cpt = new BayesianFactor[numberOfVariables];
         for (int i = 0; i < numberOfVariables; i++) {
-            cpt[i] = new VertexFactor(model.getDomain(i), model.getDomain(parents[i]), vertices[i]);
+            // Build the domain with the head/left variable at the end
+            Strides dom = model.getDomain(parents[i]).concat(model.getDomain(i));
+
+            double data[] = probs[i];
+            if (parents[i].length>0)
+                data = ArraysUtil.changeEndian(probs[i], dom.getSizes());
+            cpt[i] = new BayesianFactor(dom, data);
+
         }
 
         model.setFactors(cpt);
@@ -65,35 +71,28 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
         super.sanityChecks();
     }
 
-    private void parseVertices(){
+    private void parseCPTs(){
 
-        // Parsing the a and b coefficient for each variable
-        vertices = new double[numberOfVariables][][][];
+        // Parse the probability values and store them in a 1D array
+        // for each factor
+
+        probs = new double[numberOfVariables][];
         for(int i=0; i<numberOfVariables;i++){
-            int parentComb = IntStream.of(parents[i]).map(p->cardinalities[p]).reduce((a,b)-> a*b).orElse(1);
-            vertices[i] = new double[parentComb][][];
-            for(int j=0;j<parentComb;j++){
-                int numVertices = popInteger()/cardinalities[i];
-                vertices[i][j]=new double[numVertices][];
-                for(int k=0; k<numVertices; k++){
-                    vertices[i][j][k] = new double[cardinalities[i]];
-                    for(int s=0; s<cardinalities[i]; s++){
-                        vertices[i][j][k][s] = popDouble();
-                    }
-                }
+            int numValues = popInteger();
+            probs[i] = new double[numValues];
+            for(int j=0;j<numValues;j++){
+                probs[i][j] = popDouble();
             }
-
         }
-
-
+        System.out.println();
     }
 
     public static void main(String[] args) throws IOException {
-        String fileName = "./models/simple-vcredal.uai"; // .cn File to open
-        SparseModel model = (SparseModel) UAIParser.open(fileName);
+        String fileName = "./models/simple-bayes.uai"; // .cn File to open
+        BayesianNetwork model = (BayesianNetwork) UAIParser.open(fileName);
 
         for(int x : model.getVariables()){
-            System.out.println(((VertexFactor)model.getFactor(x)));
+            System.out.println((model.getFactor(x)));
         }
 
     }

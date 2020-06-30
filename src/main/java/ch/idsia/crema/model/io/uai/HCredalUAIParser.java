@@ -29,7 +29,7 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
     protected void processFile() {
         parseType();
         parseVariablesInfo();
-        parseDomains();
+        parseDomainsFirstIsHead();
         parseCoefficients();
     }
 

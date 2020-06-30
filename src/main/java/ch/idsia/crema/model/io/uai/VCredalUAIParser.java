@@ -31,7 +31,7 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
     protected void processFile() {
         parseType();
         parseVariablesInfo();
-        parseDomains();
+        parseDomainsFirstIsHead();
         parseVertices();
     }
 

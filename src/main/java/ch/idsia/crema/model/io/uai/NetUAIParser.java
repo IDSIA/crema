@@ -5,6 +5,7 @@ import ch.idsia.crema.model.graphical.GenericSparseModel;
 import ch.idsia.crema.model.graphical.SparseModel;
 import org.springframework.util.Assert;
 
+import java.util.IllegalFormatException;
 import java.util.stream.IntStream;
 
 public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIParser<T> {
@@ -26,7 +27,7 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
         }
     }
 
-    protected void parseDomains(){
+    protected void parseDomainsFirstIsHead(){
         numberOfTables = popInteger();
 
         // Parsing the number of parents and the parents
@@ -35,6 +36,8 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
         for (int i = 0; i < numberOfTables; i++) {
             numberOfParents = popInteger() - 1;
             int left_var = popInteger();
+            if(parents[left_var] != null)
+                throw new IllegalArgumentException("Error: domain of factor associated to "+left_var+" is defined twice");
             parents[left_var] = new int[numberOfParents];
             for (int k = 0; k < numberOfParents; k++) {
                 parents[i][k] = popInteger();
@@ -42,6 +45,31 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
         }
 
     }
+
+
+
+    protected void parseDomainsLastIsHead(){
+        numberOfTables = popInteger();
+
+        // Parsing the number of parents and the parents
+        parents = new int[numberOfTables][];
+        int numberOfParents = 0;
+        for (int i = 0; i < numberOfTables; i++) {
+            numberOfParents = popInteger() - 1;
+
+            int[] parents_aux = new int[numberOfParents];
+            for (int k = 0; k < numberOfParents; k++){
+                parents_aux[k] = popInteger();
+            }
+
+            int left_var = popInteger();
+            if(parents[left_var] != null)
+                throw new IllegalArgumentException("Error: domain of factor associated to "+left_var+" is defined twice");
+            parents[left_var] = parents_aux;
+        }
+
+    }
+
 
     @Override
     protected void sanityChecks() {

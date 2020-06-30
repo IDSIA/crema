@@ -2,8 +2,11 @@ package ch.idsia.crema.model.io;
 
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.model.io.uai.UAIParser;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -24,7 +27,7 @@ public class UAIParserTest {
     public void init() throws IOException {
 
         String modelFolder = "./models/";
-        String[] names =  {"simple-hcredal.uai","simple-vcredal.uai"};
+        String[] names =  {"simple-hcredal.uai","simple-vcredal.uai", "simple-bayes.uai"};
 
         models = new HashMap<String,Object>();
         for(String name : names) {
@@ -58,6 +61,13 @@ public class UAIParserTest {
         SparseModel model = ((SparseModel)models.get(name));
         ((SeparateHalfspaceFactor)model.getFactor(0)).getRandomVertex(0);
 
+    }
+
+    @Test
+    void checkBayesNormalized(){
+        BayesianNetwork bnet = (BayesianNetwork) models.get("simple-bayes.uai");
+        Assert.assertArrayEquals(bnet.getFactor(1).marginalize(1).getData(),
+                new double[]{1.,1.,1.}, 0.0);
     }
 
 

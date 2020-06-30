@@ -36,6 +36,8 @@ public abstract class UAIParser<T extends  Object> {
             parsedObject = new HCredalUAIParser(buff).parse();
         }else if(type.equals("V-CREDAL")){
             parsedObject = new VCredalUAIParser(buff).parse();
+        }else if(type.equals("BAYES")){
+            parsedObject = new BayesUAIParser(buff).parse();
         }else{
             throw new IllegalArgumentException("Unknown type to be parsed");
         }
