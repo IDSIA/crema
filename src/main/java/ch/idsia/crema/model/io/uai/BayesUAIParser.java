@@ -9,6 +9,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Parser for Bayesian Networks in UAI format
+ *  @author Rafael Cabañas
+ */
+
+
 public class BayesUAIParser extends NetUAIParser<BayesianNetwork>{
 
     private double[][] probs;
@@ -86,7 +92,7 @@ public class BayesUAIParser extends NetUAIParser<BayesianNetwork>{
 
     public static void main(String[] args) throws IOException {
         String fileName = "./models/simple-bayes.uai"; // .cn File to open
-        BayesianNetwork model = (BayesianNetwork) UAIParser.open(fileName);
+        BayesianNetwork model = (BayesianNetwork) UAIParser.read(fileName);
 
         for(int x : model.getVariables()){
             System.out.println((model.getFactor(x)));

@@ -1,11 +1,18 @@
 package ch.idsia.crema.model.io.uai;
 
+import ch.idsia.crema.IO;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+/**
+ * Parser for evidence files in UAI format
+ *  @author Rafael Cabañas
+ */
+
 
 public class EvidUAIParser extends UAIParser<TIntIntMap[]> {
 
@@ -47,7 +54,8 @@ public class EvidUAIParser extends UAIParser<TIntIntMap[]> {
     }
 
     public static void main(String[] args) throws IOException {
-        TIntIntMap[] evidences = new EvidUAIParser("./models/simple.uai.evid").parse();
+        // .uai.do and .uai.evid are parsed so far in the same way
+        TIntIntMap[] evidences = (TIntIntMap[]) IO.read("./models/simple.uai.do");
 
         for(TIntIntMap ev : evidences)
             System.out.println(ev);

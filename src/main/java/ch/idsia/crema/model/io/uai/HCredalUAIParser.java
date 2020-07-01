@@ -9,6 +9,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Parser for H-CREDAL networks in UAI format
+ *  @author Rafael Cabañas
+ */
+
+
 public class HCredalUAIParser extends NetUAIParser<SparseModel>{
 
 
@@ -116,7 +122,7 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
 
     public static void main(String[] args) throws IOException {
         String fileName = "./models/simple-hcredal.uai";
-        SparseModel model = (SparseModel) UAIParser.open(fileName);
+        SparseModel model = (SparseModel) UAIParser.read(fileName);
 
         for (int i = 0; i < model.getVariables().length; i++) {
             System.out.println("Variable " + i);

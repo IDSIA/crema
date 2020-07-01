@@ -7,6 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Generic parser class for UAI format
+ *  @author Rafael Cabañas
+ */
 
 public abstract class UAIParser<T extends  Object> {
 
@@ -17,30 +21,37 @@ public abstract class UAIParser<T extends  Object> {
 
     protected String TYPE="";
 
-    public static Object open(String fileName) throws IOException {
+    public static Object read(String fileName) throws IOException {
         BufferedReader buff = initReader(fileName);
-
-        // Extract the type to know the required parser
-        String str = buff.readLine();
-        int i = str.indexOf(" ");
         String type = "";
-        if(i>0) type = str.substring(0,i);
-        else type = str;
 
-        // rest the buffer
-        buff = initReader(fileName);
-
-        // Parse the file
-        Object parsedObject = null;
-        if(type.equals("H-CREDAL")){
-            parsedObject = new HCredalUAIParser(buff).parse();
-        }else if(type.equals("V-CREDAL")){
-            parsedObject = new VCredalUAIParser(buff).parse();
-        }else if(type.equals("BAYES")){
-            parsedObject = new BayesUAIParser(buff).parse();
+        if(fileName.endsWith(".uai")) {
+            // Extract the type to know the required parser
+            String str = buff.readLine();
+            int i = str.indexOf(" ");
+            if (i > 0) type = str.substring(0, i);
+            else type = str;
+            // rest the buffer
+            buff = initReader(fileName);
+        } else if(fileName.endsWith(".uai.evid") || fileName.endsWith(".uai.do")){
+            type = "EVID";
         }else{
-            throw new IllegalArgumentException("Unknown type to be parsed");
+            throw new IllegalArgumentException("Unknown file extension");
         }
+
+            // Parse the file
+            Object parsedObject = null;
+            if (type.equals("H-CREDAL")) {
+                parsedObject = new HCredalUAIParser(buff).parse();
+            } else if (type.equals("V-CREDAL")) {
+                parsedObject = new VCredalUAIParser(buff).parse();
+            } else if (type.equals("BAYES")) {
+                parsedObject = new BayesUAIParser(buff).parse();
+            } else if (type.equals("EVID")){
+                parsedObject = new EvidUAIParser(buff).parse();
+            }else {
+                throw new IllegalArgumentException("Unknown type to be parsed");
+            }
 
         return parsedObject;
 

@@ -31,7 +31,7 @@ public class UAIParserTest {
 
         models = new HashMap<String,Object>();
         for(String name : names) {
-            models.put(name, UAIParser.open(modelFolder + name));
+            models.put(name, UAIParser.read(modelFolder + name));
         }
 
     }

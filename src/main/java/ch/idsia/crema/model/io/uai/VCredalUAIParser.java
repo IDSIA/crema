@@ -1,16 +1,17 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.user.credal.Vertex;
-import ch.idsia.crema.utility.ArraysUtil;
-import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.stream.IntStream;
+
+/**
+ * Parser for V-CREDAL networks in UAI format
+ *  @author Rafael Cabañas
+ */
 
 public class VCredalUAIParser extends NetUAIParser<SparseModel>{
 
@@ -90,7 +91,7 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
 
     public static void main(String[] args) throws IOException {
         String fileName = "./models/simple-vcredal.uai"; // .cn File to open
-        SparseModel model = (SparseModel) UAIParser.open(fileName);
+        SparseModel model = (SparseModel) UAIParser.read(fileName);
 
         for(int x : model.getVariables()){
             System.out.println(((VertexFactor)model.getFactor(x)));

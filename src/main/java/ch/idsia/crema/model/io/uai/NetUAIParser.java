@@ -1,12 +1,15 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.model.graphical.GenericSparseModel;
-import ch.idsia.crema.model.graphical.SparseModel;
 import org.springframework.util.Assert;
 
-import java.util.IllegalFormatException;
 import java.util.stream.IntStream;
+
+/**
+ * Generic Parser class for PGMs in UAI format
+ *  @author Rafael Cabañas
+ */
+
 
 public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIParser<T> {
 
