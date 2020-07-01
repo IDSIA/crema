@@ -924,6 +924,15 @@ public class ArraysUtil {
 		return out;
 	}
 
+	public static double[] slice(double[] array, int... idx){
+		return IntStream.of(idx).mapToDouble(i->array[i]).toArray();
+	}
+
+	public static int[] slice(int[] array, int... idx){
+		return IntStream.of(idx).map(i->array[i]).toArray();
+	}
+
+
 	public static double[][] dropRows(double[][] array, int... idx){
 		int[] idx_comp = IntStream.range(0,ArraysUtil.getShape(array)[0]).filter(i -> !ArraysUtil.contains(i,idx)).toArray();
 		return sliceRows(array,idx_comp);
@@ -934,6 +943,12 @@ public class ArraysUtil {
 		return sliceColumns(array,idx_comp);
 	}
 
+	public static int[] where(int[] arr, Predicate<Integer> cond){
+		return IntStream.range(0, arr.length).filter(i -> cond.test(arr[i])).toArray();
+	}
+	public static int[] where(double[] arr, Predicate<Double> cond){
+		return IntStream.range(0, arr.length).filter(i -> cond.test(arr[i])).toArray();
+	}
 
 
 	public static int ndim(Object array){
