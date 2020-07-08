@@ -1,6 +1,8 @@
 [![GitHub version](https://badge.fury.io/gh/idsia%2Fcrema.svg)](https://badge.fury.io/gh/idsia%2Fcrema)
 [![Build Status](https://travis-ci.org/IDSIA/crema.svg?branch=master)](https://travis-ci.org/IDSIA/crema)
-# CreMA
+
+
+<img src="./docs/_static/img/logo.png" alt="Crema" width="500"/>
 
 CreMA is a open-source java toolbox that provides multiple
 learning and inference algorithms for credal models.
@@ -62,7 +64,7 @@ Add the following code in the  pom.xml of your project:
         <dependency>
             <groupId>ch.idsia</groupId>
             <artifactId>crema</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.3</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
