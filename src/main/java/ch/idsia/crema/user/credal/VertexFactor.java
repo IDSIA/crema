@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Deprecated
 @XmlRootElement(name="separate-factor")
 public class VertexFactor {
 	

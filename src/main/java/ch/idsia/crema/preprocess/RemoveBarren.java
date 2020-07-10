@@ -38,6 +38,16 @@ public class RemoveBarren {
 		return copy;
 	}
 	
+	/**
+	 * Remove barren variable from the specified model.
+	 * 
+	 * @param model
+	 * @param query
+	 * @param evidence
+	 */
+	public void executeInline(GraphicalModel<?> model, int query, TIntIntMap evidence) {
+		executeInline(model, new int[] { query }, evidence.keys());
+	}
 	public void executeInline(GraphicalModel<?> model, int[] query, TIntIntMap evidence) {
 		executeInline(model, query, evidence.keys());
 	}
@@ -56,6 +66,12 @@ public class RemoveBarren {
 		// deleted is already sorted (as model.getVariables is sorted)
 	}
 
+	/** 
+	 * Update the evidence removing variable that where eliminated by the barren variables removal.
+	 * This operation is done inplace
+	 * 
+	 * @param evidence {@link TIntIntMap} the map of evidences to be updated
+	 */
 	public void filter(TIntIntMap evidence) {
 		for (int var : deleted) evidence.remove(var);
 	}

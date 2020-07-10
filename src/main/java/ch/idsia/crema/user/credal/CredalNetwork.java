@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import ch.idsia.crema.user.core.Variable;
 
+@Deprecated
 @XmlRootElement(name="cn")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CredalNetwork {
