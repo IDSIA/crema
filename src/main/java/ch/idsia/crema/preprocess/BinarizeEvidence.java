@@ -144,7 +144,7 @@ public class BinarizeEvidence {
 		data[offset] = 0;
 		data[conf + offset] = 1;
 
-		// create the factor not using log yet (should we?)
+		// create the factor 
 		BayesianFactor factor = new BayesianFactor(domain, data, log);
 		model.setFactor(id, factor);
 

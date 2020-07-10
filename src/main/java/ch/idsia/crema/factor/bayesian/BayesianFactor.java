@@ -18,10 +18,7 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 /**
- * Conversion of values to Log is hardcoded.
- * In the {@link ExplicitBayesianFactor} class
- * the conversion can be specified with an instance of {@link VertexOperation}.
- *
+ * BayesianFactor
  * @author david
  */
 public class BayesianFactor implements Factor<BayesianFactor> {
