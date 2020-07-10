@@ -708,6 +708,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	}
 
 
+	@Override
 	public BayesianFactor renameDomain(int... new_vars){
 		BayesianFactor out = new BayesianFactor(new Strides(new_vars, this.getDomain().getSizes()));
 		out.setData(this.getData());

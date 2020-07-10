@@ -2,10 +2,12 @@ package ch.idsia.crema.factor.credal.linear;
 
 import java.util.*;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
@@ -503,6 +505,34 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		return newConstraints;
 
 	}
+
+
+	/**
+	 * Replaces the IDs of the variables in the domain
+	 * @param new_vars
+	 * @return
+	 */
+
+	@Override
+	public SeparateHalfspaceFactor renameDomain(int... new_vars){
+
+		int[] leftIdx = IntStream.range(0, this.getDataDomain().getVariables().length).toArray();
+		int[] rightIdx = IntStream.range(this.getDataDomain().getVariables().length, new_vars.length).toArray();
+
+
+		Strides leftStrides = new Strides(
+				ArraysUtil.slice(new_vars, leftIdx),
+				ArraysUtil.slice(getDomain().getSizes(), leftIdx)
+		);
+
+		Strides rightStrides = new Strides(
+				ArraysUtil.slice(new_vars, rightIdx),
+				ArraysUtil.slice(getDomain().getSizes(), rightIdx)
+		);
+
+		return new SeparateHalfspaceFactor(leftStrides, rightStrides, this.getData());
+	}
+
 
 
 

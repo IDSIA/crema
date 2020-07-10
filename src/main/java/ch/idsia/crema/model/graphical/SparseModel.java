@@ -63,10 +63,7 @@ public class SparseModel<F extends GenericFactor> extends GenericSparseModel<F, 
 		return new_model;
 	}
 
-	@Override
-	public SparseModel intervention(int var, int state){
-		return (SparseModel)super.intervention(var, state);
-	}
+
 
 	@Override
 	public SparseModel observe(int var, int state){

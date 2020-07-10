@@ -73,4 +73,15 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	}
 
 
+	/**
+	 * Replaces the IDs of the variables in the domain
+	 * @param new_vars
+	 * @return
+	 */
+
+	public default F renameDomain(int... new_vars){
+		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+	}
+
+
 }

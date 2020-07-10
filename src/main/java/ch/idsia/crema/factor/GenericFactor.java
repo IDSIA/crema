@@ -24,4 +24,17 @@ public interface GenericFactor {
 	default GenericFactor get_deterministic(int var, int state){
 		throw new UnsupportedOperationException();
 	}
+
+
+	/**
+	 * Replaces the IDs of the variables in the domain
+	 * @param new_vars
+	 * @return
+	 */
+
+	public default GenericFactor renameDomain(int... new_vars){
+		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+	}
+
+
 }

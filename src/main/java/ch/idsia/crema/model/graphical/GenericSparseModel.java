@@ -335,39 +335,6 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 
 
 
-	public GenericSparseModel intervention(int var, int state){
-		GenericSparseModel do_model = this.copy();
-		// remove the parents
-		for(int v: this.getParents(var)){
-			do_model.removeParent(var, v);
-		}
-
-		// remove any variable that is now disconnected
-		for(int v: do_model.getVariables()) {
-			if(!do_model.areConnected(v,var))
-				do_model.removeVariable(v);
-		}
-
-		// Fix the value of the intervened variable
-		do_model.setFactor(var, this.getFactor(var).get_deterministic(var, state));
-		return do_model;
-	}
-
-
-	public GenericSparseModel counterfactual_do(int var, int state){
-		GenericSparseModel do_model = this.copy();
-		// remove the parents
-		for(int v: this.getParents(var)){
-			do_model.removeParent(var, v);
-		}
-
-		// Fix the value of the intervened variable
-		do_model.setFactor(var, this.getFactor(var).get_deterministic(var, state));
-		return do_model;
-	}
-
-
-
 	public GenericSparseModel observe(int var, int state){
 		GenericSparseModel obs_model = this.copy();
 		// Fix the value of the intervened variable

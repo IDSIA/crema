@@ -623,5 +623,33 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return f;
 	}
 
+	/**
+	 * Replaces the IDs of the variables in the domain
+	 * @param new_vars
+	 * @return
+	 */
+
+	@Override
+	public VertexFactor renameDomain(int... new_vars){
+
+		int[] leftIdx = IntStream.range(0, this.vertexDomain.getVariables().length).toArray();
+		int[] rightIdx = IntStream.range(this.vertexDomain.getVariables().length, new_vars.length).toArray();
+
+
+		Strides leftStrides = new Strides(
+				ArraysUtil.slice(new_vars, leftIdx),
+				ArraysUtil.slice(getDomain().getSizes(), leftIdx)
+		);
+
+		Strides rightStrides = new Strides(
+				ArraysUtil.slice(new_vars, rightIdx),
+				ArraysUtil.slice(getDomain().getSizes(), rightIdx)
+		);
+
+		VertexFactor out = new VertexFactor(leftStrides, rightStrides, this.getData());
+		return out;
+	}
+
+
 
 }
