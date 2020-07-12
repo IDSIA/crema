@@ -276,6 +276,18 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		return new LinearConstraintSet(data.get(offset));
 	}
 
+	/**
+	 * Modifies the linear problem at a given offset.
+	 * @param offset
+	 * @param constraints
+	 */
+	public void setLinearProblemAt(int offset, LinearConstraintSet constraints){
+		ArrayList<LinearConstraint> list = new ArrayList<LinearConstraint>();
+		for(LinearConstraint c : constraints.getConstraints())
+			list.add(c);
+		data.set(offset, list);
+	}
+
 
 
 	/**
@@ -534,7 +546,36 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 
+	/**
+	 * Retruns all the constraints
+	 * @param data
+	 */
+	public void setData(ArrayList<ArrayList<LinearConstraint>> data) {
+		this.data = data;
+	}
 
+
+	/**
+	 * Sorts the parents following the global variable order
+	 * @return
+	 */
+	@Override
+	public SeparateHalfspaceFactor sortParents() {
+		Strides oldLeft = getSeparatingDomain();
+		Strides newLeft = oldLeft.sort();
+		int parentComb = this.getSeparatingDomain().getCombinations();
+		IndexIterator it = oldLeft.getReorderedIterator(newLeft.getVariables());
+		int j;
+
+		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(getDataDomain(), newLeft);
+
+		// i -> j
+		for(int i=0; i<parentComb; i++ ){
+			j = it.next();
+			newFactor.setLinearProblemAt(j, getLinearProblemAt(i));
+		}
+		return newFactor;
+	}
 
 
 

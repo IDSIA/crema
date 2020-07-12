@@ -650,6 +650,24 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return out;
 	}
 
+	/**
+	 * Sorts the parents following the global variable order
+	 * @return
+	 */
+	@Override
+	public VertexFactor sortParents() {
 
-
+		Strides oldLeft = getSeparatingDomain();
+		Strides newLeft = oldLeft.sort();
+		int parentComb = this.getSeparatingDomain().getCombinations();
+		double[][][] newData = new double[parentComb][][];
+		IndexIterator it = oldLeft.getReorderedIterator(newLeft.getVariables());
+		int j;
+		// i -> j
+		for(int i=0; i<parentComb; i++ ){
+			j = it.next();
+			newData[j] = data[i];
+		}
+		return new VertexFactor(getDataDomain(), newLeft, newData);
+	}
 }

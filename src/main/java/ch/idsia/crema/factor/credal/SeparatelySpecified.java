@@ -2,6 +2,7 @@ package ch.idsia.crema.factor.credal;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.Strides;
+import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * A separately specified Factor has a for each possible 
@@ -40,5 +41,14 @@ public interface SeparatelySpecified<F extends SeparatelySpecified<F>> {
 	 * @return
 	 */
 	public F filter(int variable, int state);
+
+
+	/**
+	 * Sorts the parents following the global variable order
+	 * @return
+	 */
+	public default F sortParents(){
+		throw new NotImplementedException("sortParents not implemented");
+	}
 	
 }
