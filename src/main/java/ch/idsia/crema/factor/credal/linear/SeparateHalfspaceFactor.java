@@ -531,15 +531,17 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		int[] leftIdx = IntStream.range(0, this.getDataDomain().getVariables().length).toArray();
 		int[] rightIdx = IntStream.range(this.getDataDomain().getVariables().length, new_vars.length).toArray();
 
+		int[] sizes = Ints.concat(getDataDomain().getSizes(), getSeparatingDomain().getSizes());
+
 
 		Strides leftStrides = new Strides(
 				ArraysUtil.slice(new_vars, leftIdx),
-				ArraysUtil.slice(getDomain().getSizes(), leftIdx)
+				ArraysUtil.slice(sizes, leftIdx)
 		);
 
 		Strides rightStrides = new Strides(
 				ArraysUtil.slice(new_vars, rightIdx),
-				ArraysUtil.slice(getDomain().getSizes(), rightIdx)
+				ArraysUtil.slice(sizes, rightIdx)
 		);
 
 		return new SeparateHalfspaceFactor(leftStrides, rightStrides, this.getData());

@@ -635,15 +635,16 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		int[] leftIdx = IntStream.range(0, this.vertexDomain.getVariables().length).toArray();
 		int[] rightIdx = IntStream.range(this.vertexDomain.getVariables().length, new_vars.length).toArray();
 
+		int[] sizes = Ints.concat(getDataDomain().getSizes(), getSeparatingDomain().getSizes());
 
 		Strides leftStrides = new Strides(
 				ArraysUtil.slice(new_vars, leftIdx),
-				ArraysUtil.slice(getDomain().getSizes(), leftIdx)
+				ArraysUtil.slice(sizes, leftIdx)
 		);
 
 		Strides rightStrides = new Strides(
 				ArraysUtil.slice(new_vars, rightIdx),
-				ArraysUtil.slice(getDomain().getSizes(), rightIdx)
+				ArraysUtil.slice(sizes, rightIdx)
 		);
 
 		VertexFactor out = new VertexFactor(leftStrides, rightStrides, this.getData());
