@@ -574,7 +574,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		// i -> j
 		for(int i=0; i<parentComb; i++ ){
 			j = it.next();
-			newFactor.setLinearProblemAt(j, getLinearProblemAt(i));
+			newFactor.setLinearProblemAt(i, getLinearProblemAt(j));
 		}
 		return newFactor;
 	}

@@ -667,7 +667,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		// i -> j
 		for(int i=0; i<parentComb; i++ ){
 			j = it.next();
-			newData[j] = data[i];
+			newData[i] = data[j];
 		}
 		return new VertexFactor(getDataDomain(), newLeft, newData);
 	}
