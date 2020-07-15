@@ -17,6 +17,12 @@ import ch.javasoft.polco.adapter.Options;
 import ch.javasoft.polco.adapter.PolcoAdapter;
 import ch.javasoft.xml.config.XmlConfigException;
 
+/**
+ * Convert a linear inequalitites based representation of a credal set to a vertices based one. 
+ * 
+ * @author davidhuber
+ *
+ */
 public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, VertexFactor> {
 
 	@Override
@@ -110,9 +116,7 @@ public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, Ver
 
 		// lets use an iterator on the list to avoid contiuous access if list is
 		// nor random
-		int index = 0;
 		for (LinearConstraint constraint : input) {
-			double constant = 0;
 
 			if (constraint.getRelationship() == Relationship.GEQ || constraint.getRelationship() == Relationship.EQ) {
 				double[] data = new double[states + 1];

@@ -3,6 +3,11 @@ package ch.idsia.crema.model;
 import java.util.function.BiFunction;
 
 public interface Converter<From, To> extends BiFunction<From, Integer, To> {
+	
+	/**
+	 * Convert the specified object to the target type based on the provided variable.
+	 * If no variable is needed -1 can be provided. 
+	 */
 	@Override
 	public To apply(From s, Integer variable);
 	

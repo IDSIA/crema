@@ -2,7 +2,9 @@ package ch.idsia.crema.factor.convert;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;

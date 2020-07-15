@@ -26,6 +26,8 @@ import org.apache.commons.math3.optim.linear.Relationship;
  * A Separately specified Vertex based credal factor. TODO: Data is currenlty
  * not logged!
  * 
+ * Internal data is organized a
+ * 
  * @author david
  *
  */
@@ -35,6 +37,11 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	private Strides separatedDomain;
 	private Strides vertexDomain;
 
+	/** 
+	 * An multidimensional array containing the set of vertices for each conditioning/separation.
+	 * The first dimension is the conditioning, the second is the set, while the third the actual vertex values. 
+	 * Vertices are all of same size, while the sets may vari in numerosity between different conditionings. 
+	 */
 	private final double[][][] data;
 
 	public static boolean CONVEX_HULL_MARG = false;
@@ -64,7 +71,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		}
 
 		// check the relationship vector length
-		if(rel.length == 0) rel = new Relationship[] {Relationship.EQ};
+		if(rel.length == 0) rel = new Relationship[] { Relationship.EQ };
 		if(rel.length == 1) {
 			Relationship[] rel_aux = new Relationship[coefficients.length];
 			for(int i = 0; i< coefficients.length; i++)

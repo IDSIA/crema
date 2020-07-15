@@ -3,7 +3,10 @@ package ch.idsia.crema.model;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import java.util.Arrays;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.junit.jupiter.api.Test;
 
 import ch.idsia.crema.utility.IndexIterator;
 
@@ -19,6 +22,17 @@ public class StridesTest {
 		//int offset = domain.getPartialOffset(vars, states)
 		//IndexIterator iterator2 = domain.getIterator(filtered.getVariable()).offset(offset);
 
+	}
+	
+	@Test
+	public void invert() {
+		Strides domain = new Strides(new int[] { 0, 1 }, new int[] { 2, 3 });
+		int[] reorder = domain.getVariables().clone();
+		ArrayUtils.reverse(reorder);
+		
+		IndexIterator iter = domain.getReorderedIterator(reorder);
+		int[] order = iter.toArray();
+		assertArrayEquals(new int[] {0, 2, 4, 1, 3, 5}, order);
 	}
 	
 	
@@ -298,9 +312,5 @@ public class StridesTest {
 		assertEquals(s2.getCombinations(), s2.getStrideAt(s2.getSize()));
 	}
 
-	@Test
-	public void testGetReorderedIterator() {
-		//fail("Not yet implemented");
-	}
 
 }
