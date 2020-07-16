@@ -11,9 +11,16 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 public class CredalApproxLP<M extends GraphicalModel<? super Factor<?>>> implements Inference<M, IntervalFactor> {
-	
+
+
+	private M model;
+
+	public CredalApproxLP (M model){
+		this.model = model;
+	}
+
 	@Override
-	public IntervalFactor doQuery(M model, int target, TIntIntMap evidence) {
+	public IntervalFactor query(int target, TIntIntMap evidence) {
 	
 		CutObserved cutObserved = new CutObserved();
 		// run making a copy of the model

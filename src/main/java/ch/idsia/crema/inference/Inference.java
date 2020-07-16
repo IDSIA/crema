@@ -14,6 +14,5 @@ import gnu.trove.map.TIntIntMap;
  * @param <F> The actual Factor type
  */
 public interface Inference<M extends GraphicalModel<?>, F extends GenericFactor> {
-	
-	F doQuery(M model, int target, TIntIntMap evidence);
+	F query(int target, TIntIntMap evidence);
 }

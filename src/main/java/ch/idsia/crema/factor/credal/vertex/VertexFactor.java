@@ -12,6 +12,7 @@ import ch.idsia.crema.factor.credal.CredalFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.user.credal.Vertex;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
@@ -44,7 +45,6 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		this.vertexDomain = left;
 		data = new double[right.getCombinations()][][];
 	}
-
 	public VertexFactor(Strides left, Strides right, double[][][] data) {
 		this.separatedDomain = right;
 		this.vertexDomain = left;

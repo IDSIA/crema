@@ -11,7 +11,14 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 
 public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> implements Inference<M, VertexFactor> {
-	
+
+
+	private M model;
+
+	public CredalVariableElimination(M model){
+		this.model = model;
+	}
+
 	/** 
 	 * Query K(target|evidence) in the model provided to the constructor 
 	 * 
@@ -19,7 +26,8 @@ public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> i
 	 * @param evidence {@link TIntIntMap} a map of evidence in the form variable-state
 	 * @return
 	 */
-	public VertexFactor doQuery(M model, int target, TIntIntMap evidence) {
+
+	 public VertexFactor query(int target, TIntIntMap evidence) {
 		
 		CutObserved cutObserved = new CutObserved();
 		// run making a copy of the model
