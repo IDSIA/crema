@@ -1,21 +1,12 @@
 Getting Started
 ================
 
-Installation
------------------
 
-Install from command line
-
-.. code:: bash
-
-   $ [...]
+As a short introduction to Crema, let us consider the following code snippet, in which an
+credal network with 2 nodes is defined. Credal sets are specified by enumerating the
+extreme points or vertices. Finally, a conditional query is performed.
 
 
-For further details, check the `Installation <installation.html>`_ section.
+.. literalinclude:: ../../examples/docs/Starting.java
+   :language: java
 
-
-
-30 seconds to Crema
---------------------------
-
-TODO: add a very simple example

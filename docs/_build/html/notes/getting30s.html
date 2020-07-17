@@ -92,11 +92,7 @@
             
               <p class="caption"><span class="caption-text">Quick Start</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#seconds-to-crema">30 seconds to Crema</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="requirements.html#system">System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="requirements.html#package-dependencies">Package Dependencies</a></li>
@@ -215,17 +211,53 @@
 </style>
 <div class="section" id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Install from command line</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="o">[</span>...<span class="o">]</span>
+<p>As a short introduction to Crema, let us consider the following code snippet, in which an
+credal network with 2 nodes is defined. Credal sets are specified by enumerating the
+extreme points or vertices. Finally, a conditional query is performed.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">docs</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">ch.idsia.crema.factor.credal.vertex.VertexFactor</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">ch.idsia.crema.inference.ve.CredalVariableElimination</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">ch.idsia.crema.model.ObservationBuilder</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">ch.idsia.crema.model.Strides</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">ch.idsia.crema.model.graphical.SparseModel</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Starting</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">p</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">;</span>
+        <span class="kt">double</span> <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.0001</span><span class="p">;</span>
+
+        <span class="cm">/*  CN defined with vertex Factor  */</span>
+
+        <span class="c1">// Define the model (with vertex factors)</span>
+        <span class="n">SparseModel</span> <span class="n">model</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SparseModel</span><span class="p">();</span>
+        <span class="kt">int</span> <span class="n">A</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="na">addVariable</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">B</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="na">addVariable</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+        <span class="n">model</span><span class="p">.</span><span class="na">addParent</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">A</span><span class="p">);</span>
+
+        <span class="c1">// Define a credal set of the partent node</span>
+        <span class="n">VertexFactor</span> <span class="n">fu</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VertexFactor</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="na">getDomain</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">Strides</span><span class="p">.</span><span class="na">empty</span><span class="p">());</span>
+        <span class="n">fu</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]</span><span class="p">{</span><span class="mf">0.</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="n">p</span><span class="p">});</span>
+        <span class="n">fu</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]</span><span class="p">{</span><span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">p</span><span class="p">});</span>
+        <span class="n">model</span><span class="p">.</span><span class="na">setFactor</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">fu</span><span class="p">);</span>
+
+
+        <span class="c1">// Define the credal set of the child</span>
+        <span class="n">VertexFactor</span> <span class="n">fx</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VertexFactor</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="na">getDomain</span><span class="p">(</span><span class="n">B</span><span class="p">),</span> <span class="n">model</span><span class="p">.</span><span class="na">getDomain</span><span class="p">(</span><span class="n">A</span><span class="p">));</span>
+
+        <span class="n">fx</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]</span><span class="p">{</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,},</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">fx</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]</span><span class="p">{</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,},</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">fx</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]</span><span class="p">{</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,},</span> <span class="mi">2</span><span class="p">);</span>
+
+        <span class="n">model</span><span class="p">.</span><span class="na">setFactor</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">fx</span><span class="p">);</span>
+
+        <span class="c1">// Run exact inference</span>
+        <span class="n">CredalVariableElimination</span> <span class="n">inf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CredalVariableElimination</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+        <span class="n">inf</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">ObservationBuilder</span><span class="p">.</span><span class="na">observe</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
-</div>
-<p>For further details, check the <a class="reference external" href="installation.html">Installation</a> section.</p>
-</div>
-<div class="section" id="seconds-to-crema">
-<h2>30 seconds to Crema<a class="headerlink" href="#seconds-to-crema" title="Permalink to this headline">¶</a></h2>
-<p>TODO: add a very simple example</p>
 </div>
 </div>
 
