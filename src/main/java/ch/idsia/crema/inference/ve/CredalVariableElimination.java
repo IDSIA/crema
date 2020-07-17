@@ -12,7 +12,6 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> implements Inference<M, VertexFactor> {
 
-
 	private M model;
 
 	public CredalVariableElimination(M model){
