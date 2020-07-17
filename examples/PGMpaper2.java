@@ -50,8 +50,7 @@ public class PGMpaper2 {
         IntervalFactor res1 = (IntervalFactor) inf.query(b, ObservationBuilder.observe(a, 0));
         IntervalFactor res2 = (IntervalFactor) inf.query(b);
 
-        System.out.println(res1);
-        System.out.println(res2);
+
 
 
     }

@@ -44,10 +44,10 @@ The main features of Crema are:
    :includehidden:
    :maxdepth: 1
    :caption: Guides
-   
+
+   notes/modeldef
    notes/guideinference
-   notes/cheatsheet
-   notes/markdownguide
+   JavaDoc <https://idsia.github.io/credici/javadoc/>
 
 
 

@@ -36,8 +36,7 @@ public class PGMpaper {
         VertexFactor res1 = (VertexFactor) inf.query(b, ObservationBuilder.observe(a, 0));
         VertexFactor res2 = (VertexFactor) inf.query(a);
 
-        System.out.println(res1);
-        System.out.println(res2);
+        double[][][] vertices = res1.getData();
 
 
     }

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Guide to Approximate Inference &mdash; CreMA 1.0 documentation</title>
+  <title>Credal Inference &mdash; CreMA 1.0 documentation</title>
   
 
   
@@ -38,8 +38,8 @@
   <link rel="stylesheet" href="../_static/css/crema_theme.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="RST cheat sheet" href="cheatsheet.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="next" title="Contact and Support" href="contact.html" />
+    <link rel="prev" title="Model Definition" href="modeldef.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -102,21 +102,13 @@
 </ul>
 <p class="caption"><span class="caption-text">Guides</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Guide to Approximate Inference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#variational-inference">Variational Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modeldef.html">Model Definition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modeldef.html#credal-set-specification">Credal Set Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeldef.html#credal-network-specification">Credal Network Specification</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">RST cheat sheet</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html#subsection">Subsection</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cheatsheet.html#sub-subsection">Sub-subsection</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="markdownguide.html">Markdown entry</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="markdownguide.html#installation">Installation</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Credal Inference</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://idsia.github.io/credici/javadoc/">JavaDoc</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Other</span></p>
 <ul>
@@ -166,7 +158,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Guide to Approximate Inference</li>
+      <li>Credal Inference</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -209,10 +201,24 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="guide-to-approximate-inference">
-<h1>Guide to Approximate Inference<a class="headerlink" href="#guide-to-approximate-inference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="variational-inference">
-<h2>Variational Inference<a class="headerlink" href="#variational-inference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="credal-inference">
+<h1>Credal Inference<a class="headerlink" href="#credal-inference" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// set up the inference and run the queries</span>
+<span class="n">Inference</span> <span class="n">inf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CredalVariableElimination</span><span class="p">(</span><span class="n">cnet</span><span class="p">);</span>
+<span class="n">VertexFactor</span> <span class="n">res1</span> <span class="o">=</span> <span class="p">(</span><span class="n">VertexFactor</span><span class="p">)</span> <span class="n">inf</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">ObservationBuilder</span><span class="p">.</span><span class="na">observe</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+<span class="n">VertexFactor</span> <span class="n">res2</span> <span class="o">=</span> <span class="p">(</span><span class="n">VertexFactor</span><span class="p">)</span> <span class="n">inf</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">X0</span><span class="p">);</span>
+
+<span class="kt">double</span><span class="o">[][][]</span> <span class="n">vertices</span> <span class="o">=</span> <span class="n">res1</span><span class="p">.</span><span class="na">getData</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// set up the inference and run the queries</span>
+<span class="n">Inference</span> <span class="n">inf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CredalApproxLP</span><span class="p">(</span><span class="n">cnet</span><span class="p">);</span>
+<span class="n">IntervalFactor</span> <span class="n">res1</span> <span class="o">=</span> <span class="p">(</span><span class="n">IntervalFactor</span><span class="p">)</span> <span class="n">inf</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">ObservationBuilder</span><span class="p">.</span><span class="na">observe</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+<span class="n">IntervalFactor</span> <span class="n">res2</span> <span class="o">=</span> <span class="p">(</span><span class="n">IntervalFactor</span><span class="p">)</span> <span class="n">inf</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">X1</span><span class="p">);</span>
+
+<span class="kt">double</span><span class="o">[]</span> <span class="n">lbound</span> <span class="o">=</span> <span class="n">res1</span><span class="p">.</span><span class="na">getLower</span><span class="p">();</span>
+<span class="kt">double</span><span class="o">[]</span> <span class="n">ubound</span> <span class="o">=</span> <span class="n">res1</span><span class="p">.</span><span class="na">getUpper</span><span class="p">();</span>
+</pre></div>
 </div>
 </div>
 
@@ -224,10 +230,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="cheatsheet.html" class="btn btn-neutral float-right" title="RST cheat sheet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="contact.html" class="btn btn-neutral float-right" title="Contact and Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="modeldef.html" class="btn btn-neutral float-left" title="Model Definition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
