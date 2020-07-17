@@ -203,6 +203,9 @@
 </style>
 <div class="section" id="credal-inference">
 <h1>Credal Inference<a class="headerlink" href="#credal-inference" title="Permalink to this headline">¶</a></h1>
+<p>Crema provides exact and approximate inference algorithms over credal networks.
+For the exact one, create an object of class <code class="docutils literal notranslate"><span class="pre">CredalVariableElimination</span></code> and
+run the query. The result is an object of class VertexFactor.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// set up the inference and run the queries</span>
 <span class="n">Inference</span> <span class="n">inf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CredalVariableElimination</span><span class="p">(</span><span class="n">cnet</span><span class="p">);</span>
 <span class="n">VertexFactor</span> <span class="n">res1</span> <span class="o">=</span> <span class="p">(</span><span class="n">VertexFactor</span><span class="p">)</span> <span class="n">inf</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">ObservationBuilder</span><span class="p">.</span><span class="na">observe</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
@@ -211,6 +214,9 @@
 <span class="kt">double</span><span class="o">[][][]</span> <span class="n">vertices</span> <span class="o">=</span> <span class="n">res1</span><span class="p">.</span><span class="na">getData</span><span class="p">();</span>
 </pre></div>
 </div>
+<p>Approximate inference can be done by means of linear programming. For this, create
+the an object of class <code class="docutils literal notranslate"><span class="pre">CredalApproxLP</span></code> and then run the query. Note
+that the output is an <code class="docutils literal notranslate"><span class="pre">IntervalFactor</span></code>.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// set up the inference and run the queries</span>
 <span class="n">Inference</span> <span class="n">inf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CredalApproxLP</span><span class="p">(</span><span class="n">cnet</span><span class="p">);</span>
 <span class="n">IntervalFactor</span> <span class="n">res1</span> <span class="o">=</span> <span class="p">(</span><span class="n">IntervalFactor</span><span class="p">)</span> <span class="n">inf</span><span class="p">.</span><span class="na">query</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">ObservationBuilder</span><span class="p">.</span><span class="na">observe</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>

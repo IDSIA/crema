@@ -205,6 +205,10 @@
 <h1>Model Definition<a class="headerlink" href="#model-definition" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="credal-set-specification">
 <h2>Credal Set Specification<a class="headerlink" href="#credal-set-specification" title="Permalink to this headline">¶</a></h2>
+<p>For the definition of a credal set, the domains should be first specified.
+Discrete variable domains in Crema are managed with objects of class <code class="docutils literal notranslate"><span class="pre">Strides</span></code>.
+Then, for the definition of a credal set defined by its vertices, create an object
+of class <code class="docutils literal notranslate"><span class="pre">VertexFactor</span></code> as shown below.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Define the domains</span>
 <span class="n">Strides</span> <span class="n">strides_left</span> <span class="o">=</span> <span class="n">DomainBuilder</span><span class="p">.</span><span class="na">var</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="na">size</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="na">strides</span><span class="p">();</span>
 <span class="n">Strides</span> <span class="n">strides_right</span> <span class="o">=</span> <span class="n">Strides</span><span class="p">.</span><span class="na">empty</span><span class="p">();</span>
@@ -214,8 +218,10 @@
 <span class="c1">// define a marginal vertex factor</span>
 <span class="n">VertexFactor</span> <span class="n">f0</span> <span class="o">=</span> <span class="k">new</span> <span class="n">VertexFactor</span><span class="p">(</span><span class="n">strides_left</span><span class="p">,</span> <span class="n">strides_right</span><span class="p">);</span>
 <span class="n">f0</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]</span><span class="p">{</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">});</span>
+<span class="n">f0</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">});</span>
 </pre></div>
 </div>
+<p>Similarly, a conditional credal set can be define as shown in the following code.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// define a conditional vertex factor</span>
 <span class="n">strides_left</span> <span class="o">=</span> <span class="n">DomainBuilder</span><span class="p">.</span><span class="na">var</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">size</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">strides</span><span class="p">();</span>
 <span class="n">strides_right</span> <span class="o">=</span> <span class="n">DomainBuilder</span><span class="p">.</span><span class="na">var</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="na">size</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="na">strides</span><span class="p">();</span>
@@ -232,6 +238,8 @@
 <span class="n">f1</span><span class="p">.</span><span class="na">addVertex</span><span class="p">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]</span><span class="p">{</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">},</span> <span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
+<p>Crema also allows the specification of credal sets by defining
+its constraints. This is done with the class <code class="docutils literal notranslate"><span class="pre">SeparateHalfspaceFactor</span></code>.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">SeparateHalfspaceFactor</span> <span class="n">f0_constr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SeparateHalfspaceFactor</span><span class="p">(</span><span class="n">strides_left</span><span class="p">,</span> <span class="n">Strides</span><span class="p">.</span><span class="na">empty</span><span class="p">());</span>
 
 <span class="c1">// add constraints</span>
@@ -249,6 +257,8 @@
 </div>
 <div class="section" id="credal-network-specification">
 <h2>Credal Network Specification<a class="headerlink" href="#credal-network-specification" title="Permalink to this headline">¶</a></h2>
+<p>For defining a credal network, create an object of class <code class="docutils literal notranslate"><span class="pre">SparseModel</span></code>, specify
+the structure of the graph and associate the factors.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">// Define the structure</span>
 <span class="n">SparseModel</span> <span class="n">cnet</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SparseModel</span><span class="p">();</span>
 <span class="kt">int</span> <span class="n">X0</span> <span class="o">=</span> <span class="n">cnet</span><span class="p">.</span><span class="na">addVariable</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>

@@ -16,12 +16,14 @@ Crema: A Java Toolbox for Credal Models Algorithms
 
 |
 
+Crema (CREdal Models Algorithms) is an Java library for inference in credal networks. The main features of Crema are:
 
-Crema is an open-source toolbox written in Java for....
+* Provides a simple API for the definition of credal networks.
 
-The main features of Crema are:
+* CREMA embeds exact and approximate algorithms for credal inference.
 
-* Allows to make inference...
+* Models can be loaded and exported in UAI-based format for credal networks.
+
 
 
 .. .. toctree::
