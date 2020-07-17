@@ -1,9 +1,0 @@
-Requirements
-================
-
-
-System
------------------
-
-Package Dependencies
--------------------------
