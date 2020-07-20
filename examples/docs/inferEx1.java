@@ -9,7 +9,7 @@ import ch.idsia.crema.model.graphical.SparseModel;
 
 
 public class inferEx1 {
-public static void main(String[] args) {
+public static void main(String[] args) throws InterruptedException {
 
 // define the structure
 SparseModel cnet = new SparseModel();

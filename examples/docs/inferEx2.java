@@ -11,7 +11,7 @@ import org.apache.commons.math3.optim.linear.Relationship;
 
 
 public class inferEx2 {
-public static void main(String[] args) {
+public static void main(String[] args) throws InterruptedException {
 
 // define the structure
 SparseModel cnet = new SparseModel();

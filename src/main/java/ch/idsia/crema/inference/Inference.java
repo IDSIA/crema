@@ -15,8 +15,10 @@ import gnu.trove.map.hash.TIntIntHashMap;
  * @param <F> The actual Factor type
  */
 public interface Inference<M extends GraphicalModel<?>, F extends GenericFactor> {
-	F query(int target, TIntIntMap evidence);
-	default F query(int target) {
+	F query(int target, TIntIntMap evidence) throws InterruptedException;
+	default F query(int target) throws InterruptedException {
 		return query(target, new TIntIntHashMap());
 	}
+
+	M getInferenceModel(int target, TIntIntMap evidence);
 }
