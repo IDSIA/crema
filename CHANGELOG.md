@@ -1,3 +1,13 @@
+0.1.4
+===========
+
+- Common interface for inference algorithms.
+- Solved bugs at renaming and sort parents.
+- Bug at LP #23.
+- Documentation available.
+
+
+
 0.1.3
 ===========
 
