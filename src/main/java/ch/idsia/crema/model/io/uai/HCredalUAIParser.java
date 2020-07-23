@@ -1,8 +1,13 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.BufferedReader;
@@ -72,15 +77,20 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
                 double[][][] A = new double[par_comb][][];
                 double[][] b = new double[par_comb][];
 
+                // get a reordered iterator as UAI stores data with inverted variables compared to Crema
+                Strides dataDomain = reverseDomain(model.getDomain(model.getParents(i)));
+                IndexIterator iter = dataDomain.getReorderedIterator(model.getParents(i));
+                
                 for (int j = 0; j < par_comb; j++) {
+                	int jj = iter.next();
                     double[][] Aj = ArraysUtil.copyOfRange(A2d_full, j * varsize, (j + 1) * varsize, 1);
                     int[] to_drop = ArraysUtil.rowsWhereAllZeros(Aj);
                     Aj = ArraysUtil.dropRows(Aj, to_drop);
                     double[] bj = ArraysUtil.dropColumns(new double[][]{bCoeff[i]}, to_drop)[0];
-                    A[j] = Aj;
-                    b[j] = bj;
+                    A[jj] = Aj; // was A[j]
+                    b[jj] = bj;
                 }
-
+   
                 // build the factor
                 cpt[i] = new SeparateHalfspaceFactor(model.getDomain(i),
                         model.getDomain(model.getParents(i)),
@@ -94,7 +104,8 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
         return model;
     }
 
-    @Override
+
+	@Override
     protected void sanityChecks() {
         super.sanityChecks();
     }
