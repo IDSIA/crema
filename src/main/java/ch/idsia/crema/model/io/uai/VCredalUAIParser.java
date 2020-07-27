@@ -1,19 +1,24 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 /**
  * Parser for V-CREDAL networks in UAI format
  *  @author Rafael Cabañas
  */
 
-public class VCredalUAIParser extends NetUAIParser<SparseModel>{
+public class VCredalUAIParser extends NetUAIParser<SparseModel<VertexFactor>>{
 
 
     private double[][][][] vertices = new double[numberOfVariables][][][];
@@ -37,8 +42,8 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
     }
 
     @Override
-    protected SparseModel build() {
-        SparseModel model = new SparseModel();
+    protected SparseModel<VertexFactor> build() {
+        SparseModel<VertexFactor> model = new SparseModel<>();
 
         // Add the variables
         for (int i = 0; i < numberOfVariables; i++) {
@@ -52,7 +57,9 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
 
         // Specifying the linear constraints for each variable
         VertexFactor[] cpt = new VertexFactor[numberOfVariables];
+      
         for (int i = 0; i < numberOfVariables; i++) {
+        	
             cpt[i] = new VertexFactor(model.getDomain(i), model.getDomain(parents[i]), vertices[i]);
         }
 
@@ -73,13 +80,23 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel>{
         for(int i=0; i<numberOfVariables;i++){
             int parentComb = IntStream.of(parents[i]).map(p->cardinalities[p]).reduce((a,b)-> a*b).orElse(1);
             vertices[i] = new double[parentComb][][];
+            
+            int[] parent_list = ArraysUtil.reverse(parents[i]);
+            int[] sizes = ArraysUtil.at(cardinalities, parent_list);
+            
+            Strides dataDomain = new Strides(parent_list, sizes);
+            IndexIterator iter = dataDomain.getReorderedIterator(parents[i]);
+            
             for(int j=0;j<parentComb;j++){
+            	// here the sequential ordering is not correct! 
+            	int jj = iter.next();
+            	
                 int numVertices = popInteger()/cardinalities[i];
-                vertices[i][j]=new double[numVertices][];
+                vertices[i][jj]=new double[numVertices][];
                 for(int k=0; k<numVertices; k++){
-                    vertices[i][j][k] = new double[cardinalities[i]];
+                    vertices[i][jj][k] = new double[cardinalities[i]];
                     for(int s=0; s<cardinalities[i]; s++){
-                        vertices[i][j][k][s] = popDouble();
+                        vertices[i][jj][k][s] = popDouble();
                     }
                 }
             }

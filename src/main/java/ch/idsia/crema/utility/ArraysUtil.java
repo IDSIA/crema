@@ -19,29 +19,12 @@ import java.util.stream.Stream;
 
 public class ArraysUtil {
 
-	public static void reorder(double[] data, int[] order) {
-		for (int index = 0; index < order.length;++index) {
-			double o = data[order[index]];
-			data[order[index]]= data[index];
-			data[index] = o;
-		}
-	}
-
-	public static void reorder(int[] data, int[] order) {
-		for (int index = 0; index < order.length;++index) {
-			int o = data[order[index]];
-			data[order[index]]= data[index];
-			data[index] = o;
-		}
-	}
 
 	/**
 	 * Append element of second to the end of base and return the new array.
 	 *
-	 * @param base
-	 *            original items (Not Null)
-	 * @param second
-	 *            elements to be added to base (Not Null)
+	 * @param base   original items (Not Null)
+	 * @param second elements to be added to base (Not Null)
 	 * @return the new array with second appended to base
 	 */
 	public static int[] append(int[] base, int... second) {
@@ -54,10 +37,8 @@ public class ArraysUtil {
 	/**
 	 * Append element of second to the end of base and return the new array.
 	 *
-	 * @param base
-	 *            original items (Not Null)
-	 * @param second
-	 *            elements to be added to base (Not Null)
+	 * @param base   original items (Not Null)
+	 * @param second elements to be added to base (Not Null)
 	 * @return the new array with second appended to base
 	 */
 	public static double[] append(double[] base, double... second) {
@@ -70,10 +51,8 @@ public class ArraysUtil {
 	/**
 	 * Remove the element at the specified index from the base array.
 	 *
-	 * @param base
-	 *            original items (Not Null)
-	 * @param index
-	 *            the index of the element to be removed
+	 * @param base  original items (Not Null)
+	 * @param index the index of the element to be removed
 	 * @return the new array
 	 */
 	public static double[] remove(double[] base, int index) {
@@ -87,10 +66,8 @@ public class ArraysUtil {
 	/**
 	 * Remove the element at the specified index from the base array.
 	 *
-	 * @param base
-	 *            original items (Not Null)
-	 * @param index
-	 *            the index of the element to be removed
+	 * @param base  original items (Not Null)
+	 * @param index the index of the element to be removed
 	 * @return the new array
 	 */
 	public static int[] remove(int[] base, int index) {
@@ -104,10 +81,8 @@ public class ArraysUtil {
 	/**
 	 * Remove the element at the specified index from the base array.
 	 *
-	 * @param base
-	 *            original items (Not Null)
-	 * @param index
-	 *            the index of the element to be removed
+	 * @param base  original items (Not Null)
+	 * @param index the index of the element to be removed
 	 * @return the new array
 	 */
 	public static <T> T[] remove(T[] base, int index) {
@@ -117,13 +92,18 @@ public class ArraysUtil {
 		return result;
 	}
 
+	/** 
+	 * Non inline ordering of integer array
+	 * @param base int[] - the array to be sorted
+	 * @return int[] the sorted array
+	 */
 	public static int[] sort(int[] base) {
 		int[] copy = base.clone();
 		Arrays.sort(copy);
 		return copy;
 	}
 
-    private static class X {
+	private static class X {
 		public final int pos;
 		public final int val;
 
@@ -196,15 +176,12 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Compare two float arrays for almost equality. To be equal, each pair of
-	 * items of the arrays can differ at most by eps.
+	 * Compare two float arrays for almost equality. To be equal, each pair of items
+	 * of the arrays can differ at most by eps.
 	 *
-	 * @param one
-	 *            the first array
-	 * @param two
-	 *            the second array
-	 * @param eps
-	 *            the tollerance
+	 * @param one the first array
+	 * @param two the second array
+	 * @param eps the tollerance
 	 * @return true when the arrays are almost equal
 	 */
 	public static boolean almostEquals(float[] one, float[] two, float eps) {
@@ -226,12 +203,9 @@ public class ArraysUtil {
 	 * Compare two double arrays for almost equality. To be equal, each pair of
 	 * items of the arrays can differ at most by eps.
 	 *
-	 * @param one
-	 *            the first array (null is ok, NaN not!)
-	 * @param two
-	 *            the second array (null is ok, NaN not!)
-	 * @param eps
-	 *            the tolerance (0 is ok)
+	 * @param one the first array (null is ok, NaN not!)
+	 * @param two the second array (null is ok, NaN not!)
+	 * @param eps the tolerance (0 is ok)
 	 * @return true when the arrays are almost equal
 	 */
 	public static boolean almostEquals(double[] one, double[] two, double eps) {
@@ -255,13 +229,11 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * remove the element from the array assuming the array is sorted. The
-	 * removal is done keeping the ordering. The method returns the new array.
+	 * remove the element from the array assuming the array is sorted. The removal
+	 * is done keeping the ordering. The method returns the new array.
 	 *
-	 * @param array
-	 *            a sorted array (read-only)
-	 * @param element
-	 *            the element to be removed
+	 * @param array   a sorted array (read-only)
+	 * @param element the element to be removed
 	 * @return the new array or the original array if the element was not found
 	 */
 	public static int[] removeFromSortedArray(int[] array, int element) {
@@ -284,7 +256,8 @@ public class ArraysUtil {
 			// make the list smaller
 			int[] new_array = Arrays.copyOf(array, array.length - 1);
 			if (pos < new_array.length) {
-				//				System.out.println(array.length  +" "+(pos + 1)+" "+ new_array.length+" "+ pos+" "+ (array.length - 1));
+				// System.out.println(array.length +" "+(pos + 1)+" "+ new_array.length+" "+
+				// pos+" "+ (array.length - 1));
 				System.arraycopy(array, pos + 1, new_array, pos, array.length - pos - 1);
 			}
 
@@ -299,12 +272,10 @@ public class ArraysUtil {
 	 * containing the specified element. The original array is returned if the
 	 * element was already part of the array.
 	 *
-	 * @param array
-	 *            the sorted array
-	 * @param element
-	 *            the item to be added to the array
-	 * @return a new array containing the element or the original one if element
-	 *         is already present
+	 * @param array   the sorted array
+	 * @param element the item to be added to the array
+	 * @return a new array containing the element or the original one if element is
+	 *         already present
 	 */
 	public static int[] addToSortedArray(int[] array, int element) {
 		if (array == null || array.length == 0) {
@@ -333,8 +304,8 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Remove the elements from the array assuming both arrays are sorted and
-	 * not null
+	 * Remove the elements from the array assuming both arrays are sorted and not
+	 * null
 	 *
 	 * @param array
 	 * @param elements
@@ -369,6 +340,7 @@ public class ArraysUtil {
 
 	/**
 	 * Union of two sorted arrays.
+	 * 
 	 * @param arr1
 	 * @param arr2
 	 * @return
@@ -378,7 +350,7 @@ public class ArraysUtil {
 		final int s2 = arr2.length;
 
 		// size the target arrays assuming no overlap
-		final int max  = s1 + s2;
+		final int max = s1 + s2;
 		int[] arr_union = new int[max];
 
 		// (pt1) c1 and c2 are the positions in the two domains
@@ -386,14 +358,14 @@ public class ArraysUtil {
 		int c2 = 0;
 
 		int t = 0;
-		while(c1 < s1 && c2 < s2) {
+		while (c1 < s1 && c2 < s2) {
 			int v1 = arr1[c1];
 			int v2 = arr2[c2];
 
 			if (v1 < v2) {
 				arr_union[t] = v1;
 				c1++;
-			} else if(v1 > v2) {
+			} else if (v1 > v2) {
 				arr_union[t] = v2;
 				c2++;
 			} else {
@@ -404,7 +376,7 @@ public class ArraysUtil {
 			++t;
 		}
 
-		// (pt2) check if there is one domain not completely copied that can be 
+		// (pt2) check if there is one domain not completely copied that can be
 		// moved over in bulk.
 		if (c1 < s1) {
 			System.arraycopy(arr1, c1, arr_union, t, s1 - c1);
@@ -421,29 +393,26 @@ public class ArraysUtil {
 		return arr_union;
 	}
 
-
 	/**
 	 * Find the sorted difference of two non-sorted integer arrays.
 	 *
-	 * @param arr1 the first  array
-	 * @param arr2 the second  array
+	 * @param arr1 the first array
+	 * @param arr2 the second array
 	 * @return an array intersection of the first two
 	 */
 	public static int[] difference(int[] arr1, int[] arr2) {
-		return  IntStream.of(arr1).filter(y -> IntStream.of(arr2).noneMatch(x -> x == y)).toArray();
+		return IntStream.of(arr1).filter(y -> IntStream.of(arr2).noneMatch(x -> x == y)).toArray();
 	}
-
-
 
 	/**
 	 * Find the sorted intersection of two non-sorted integer arrays.
 	 *
-	 * @param arr1 the first  array
-	 * @param arr2 the second  array
+	 * @param arr1 the first array
+	 * @param arr2 the second array
 	 * @return an array intersection of the first two
 	 */
 	public static int[] intersection(int[] arr1, int[] arr2) {
-		return  IntStream.of(arr1).filter(y -> IntStream.of(arr2).anyMatch(x -> x == y)).toArray();
+		return IntStream.of(arr1).filter(y -> IntStream.of(arr2).anyMatch(x -> x == y)).toArray();
 	}
 
 	/**
@@ -458,7 +427,7 @@ public class ArraysUtil {
 		final int s2 = arr2.length;
 
 		// size the target arrays assuming no overlap
-		final int max  = FastMath.min(s1, s2);
+		final int max = FastMath.min(s1, s2);
 		int[] arr_union = new int[max];
 
 		// (pt1) c1 and c2 are the positions in the two arrays
@@ -466,13 +435,13 @@ public class ArraysUtil {
 		int c2 = 0;
 
 		int t = 0;
-		while(c1 < s1 && c2 < s2) {
+		while (c1 < s1 && c2 < s2) {
 			int v1 = arr1[c1];
 			int v2 = arr2[c2];
 
 			if (v1 < v2) {
 				c1++;
-			} else if(v1 > v2) {
+			} else if (v1 > v2) {
 				c2++;
 			} else {
 				arr_union[t++] = v1;
@@ -490,32 +459,32 @@ public class ArraysUtil {
 
 	/**
 	 * Union of 2 unsorted arrays without repetition
+	 * 
 	 * @param arr1
 	 * @param arr2
 	 * @return
 	 */
 
-	public static int[] unionSet(int[] arr1, int[] arr2){
-		return  Ints.toArray(ImmutableSet.copyOf(
-				Ints.asList(Ints.concat(arr1,arr2))
-		));
+	public static int[] unionSet(int[] arr1, int[] arr2) {
+		return Ints.toArray(ImmutableSet.copyOf(Ints.asList(Ints.concat(arr1, arr2))));
 	}
 
-
 	/**
-	 * Normalize an array by fixing the last value of the array so that it sums up to the target value.
-	 * @param arr array to normalize
+	 * Normalize an array by fixing the last value of the array so that it sums up
+	 * to the target value.
+	 * 
+	 * @param arr    array to normalize
 	 * @param target target sum value
-	 * @param eps tolerance threshold
+	 * @param eps    tolerance threshold
 	 */
 	public static void roundArrayToTarget(double[] arr, double target, double eps) {
 		double sum = Arrays.stream(arr).sum();
-		if(sum!=target)
-			if (Math.abs(sum-target)<eps)
-				if(sum>target)
-					arr[arr.length-1] -= (sum-target);
+		if (sum != target)
+			if (Math.abs(sum - target) < eps)
+				if (sum > target)
+					arr[arr.length - 1] -= (sum - target);
 				else
-					arr[arr.length-1] += (target-sum);
+					arr[arr.length - 1] += (target - sum);
 	}
 
 	/**
@@ -542,7 +511,7 @@ public class ArraysUtil {
 	 * @return the index in the array of the element, or -1
 	 */
 	public static int indexOf(int needle, int[] haystack) {
-		// TODO: use binary search?
+		// TODO: use binary search? if sorted!
 		for (int i = 0; i < haystack.length; i++) {
 			if (haystack[i] == needle)
 				return i;
@@ -552,54 +521,57 @@ public class ArraysUtil {
 
 	/**
 	 * Returns the dimensions of 2d matrix
+	 * 
 	 * @param matrix
 	 * @return - tuple of integers
 	 */
-
-	public static int[] getShape(double[][] matrix){
-		if(Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
+	public static int[] getShape(double[][] matrix) {
+		if (Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
 			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
-		return new int[] {matrix.length, matrix[0].length};
+		return new int[] { matrix.length, matrix[0].length };
 	}
 
 	/**
 	 * Returns the dimensions of 2d matrix
+	 * 
 	 * @param matrix
 	 * @return - tuple of integers
 	 */
 
-	public static int[] getShape(int[][] matrix){
-		if(Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
+	public static int[] getShape(int[][] matrix) {
+		if (Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
 			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
-		return new int[] {matrix.length, matrix[0].length};
+		return new int[] { matrix.length, matrix[0].length };
 	}
 
 	/**
 	 * Transpose of a 2d matrix
+	 * 
 	 * @param original
 	 * @return
 	 */
-	public static double[][] transpose(double[][] original){
+	public static double[][] transpose(double[][] original) {
 		int[] shape = getShape(original);
 		double[][] transposed = new double[shape[1]][shape[0]];
-		for(int i=0; i<shape[0]; i++)
-			for(int j=0; j<shape[1]; j++)
+		for (int i = 0; i < shape[0]; i++)
+			for (int j = 0; j < shape[1]; j++)
 				transposed[j][i] = original[i][j];
 
-		return  transposed;
+		return transposed;
 
 	}
 
 	/**
 	 * Transpose of a 2d matrix
+	 * 
 	 * @param original
 	 * @return
 	 */
-	public static int[][] transpose(int[][] original){
+	public static int[][] transpose(int[][] original) {
 		int[] shape = getShape(original);
 		int[][] transposed = new int[shape[1]][shape[0]];
-		for(int i=0; i<shape[0]; i++)
-			for(int j=0; j<shape[1]; j++)
+		for (int i = 0; i < shape[0]; i++)
+			for (int j = 0; j < shape[1]; j++)
 				transposed[j][i] = original[i][j];
 
 		return transposed;
@@ -608,70 +580,72 @@ public class ArraysUtil {
 
 	/**
 	 * Transforms a 1d vector into a 2d matrix
+	 * 
 	 * @param vector - vector to transform
-	 * @param shape - value of the 1st dimension or tuple with both of them.
+	 * @param shape  - value of the 1st dimension or tuple with both of them.
 	 * @return
 	 */
 	public static double[][] reshape2d(double[] vector, int... shape) {
 
-		if(shape.length==1)
-			shape = new int[]{shape[0], vector.length/shape[0]};
+		if (shape.length == 1)
+			shape = new int[] { shape[0], vector.length / shape[0] };
 
-		if(shape[0]*shape[1] != vector.length)
+		if (shape[0] * shape[1] != vector.length)
 			throw new IllegalArgumentException("ERROR: incompatible shapes");
-
 
 		List data = Doubles.asList(vector);
 		double[][] out = new double[shape[0]][shape[1]];
 
-		for(int i=0; i<shape[0]; i++){
-			double[] v = Doubles.toArray(data.subList(i*shape[1], (i+1)*shape[1]));
+		for (int i = 0; i < shape[0]; i++) {
+			double[] v = Doubles.toArray(data.subList(i * shape[1], (i + 1) * shape[1]));
 			out[i] = v;
 		}
 
 		return out;
 
 	}
+
 	/**
 	 * Transforms a 1d vector into a 2d matrix
+	 * 
 	 * @param vector - vector to transform
-	 * @param shape - fully-defined vector specifying the 3 new dimensions.
+	 * @param shape  - fully-defined vector specifying the 3 new dimensions.
 	 * @return
 	 */
 
 	public static double[][][] reshape3d(double[] vector, int[] shape) {
-        if(shape[0]*shape[1]*shape[2] != vector.length)
+		if (shape[0] * shape[1] * shape[2] != vector.length)
 			throw new IllegalArgumentException("ERROR: incompatible shapes");
 
 		double[][][] out = new double[shape[0]][][];
-		int step = shape[1]*shape[2];
-			for(int k=0; k<out.length;k++){
-			out[k] = reshape2d(Arrays.copyOfRange(vector, k*step, (k+1)*step), new int[]{shape[1],shape[2]});
+		int step = shape[1] * shape[2];
+		for (int k = 0; k < out.length; k++) {
+			out[k] = reshape2d(Arrays.copyOfRange(vector, k * step, (k + 1) * step), new int[] { shape[1], shape[2] });
 		}
 		return out;
 	}
 
 	/**
 	 * Given a vector representing a multidimensional array, swaps the axis.
-	 * @param data	- matrix to transform
-	 * @param sizes	- lengths of each axis
+	 * 
+	 * @param data     - matrix to transform
+	 * @param sizes    - lengths of each axis
 	 * @param newOrder - list of old axis in the new order.
 	 * @return
 	 */
-	public static double[] swapVectorStrides(double[] data, int[] sizes, int[] newOrder ){
+	public static double[] swapVectorStrides(double[] data, int[] sizes, int[] newOrder) {
 
-		int[] oldOrder = IntStream.range(0,sizes.length).toArray();
-		int[] newSizes = IntStream.range(0,sizes.length).map(i -> sizes[newOrder[i]]).toArray();
+		int[] oldOrder = IntStream.range(0, sizes.length).toArray();
+		int[] newSizes = IntStream.range(0, sizes.length).map(i -> sizes[newOrder[i]]).toArray();
 
 		Strides oldStrides = new Strides(oldOrder, sizes);
 		Strides newStrides = new Strides(newOrder, newSizes);
 
 		double[] newdata = new double[oldStrides.getCombinations()];
 
-
-		for(int offset=0; offset<newdata.length; offset++){
+		for (int offset = 0; offset < newdata.length; offset++) {
 			int[] oldStates = oldStrides.statesOf(offset);
-			int[] newStates = IntStream.range(0,sizes.length).map(i -> oldStates[newOrder[i]]).toArray();
+			int[] newStates = IntStream.range(0, sizes.length).map(i -> oldStates[newOrder[i]]).toArray();
 			int newOffset = newStrides.getOffset(newStates);
 			newdata[newOffset] = data[offset];
 		}
@@ -679,87 +653,84 @@ public class ArraysUtil {
 		return newdata;
 	}
 
-
 	/**
 	 * Given a vector representing a multidimensional array, swaps the axis.
-	 * @param data	- matrix to transform
-	 * @param oldSizes	- lengths of each axis
+	 * 
+	 * @param data     - matrix to transform
+	 * @param oldSizes - lengths of each axis
 	 * @return
 	 */
-	public static double[] changeEndian(double[] data, int[] oldSizes){
+	public static double[] changeEndian(double[] data, int[] oldSizes) {
 
 		int N = oldSizes.length;
 		int[] newOrder = new int[N];
 		int[] newSizes = new int[N];
-		for(int i=0; i<N; i++) {
+		for (int i = 0; i < N; i++) {
 			newOrder[i] = N - i - 1;
 			newSizes[i] = oldSizes[newOrder[i]];
 		}
-
 
 		return swapVectorStrides(data, newSizes, newOrder);
 
 	}
 
-
-
-
 	/**
-	 *	Given a 1d vector of doubles, transforms it in a list of
-	 *  tuples where the first element is the sequence number.
+	 * Given a 1d vector of doubles, transforms it in a list of tuples where the
+	 * first element is the sequence number.
+	 * 
 	 * @param vect
 	 * @param start
 	 * @return
 	 */
 
-	public static double[][] enumerate(double[] vect, int start){
-		return IntStream.range(0+start, vect.length+start)
-				.mapToObj(i -> new double[]{i, vect[i-start]})
-				.toArray(double[][]:: new);
+	public static double[][] enumerate(double[] vect, int start) {
+		return IntStream.range(0 + start, vect.length + start).mapToObj(i -> new double[] { i, vect[i - start] })
+				.toArray(double[][]::new);
 	}
 
 	/**
-	 *	Given a 1d vector of doubles, transforms it in a list of
-	 *  tuples where the first element is the sequence number.
+	 * Given a 1d vector of doubles, transforms it in a list of tuples where the
+	 * first element is the sequence number.
+	 * 
 	 * @param vect
 	 * @return
 	 */
-	public static double[][] enumerate(double[] vect){ return enumerate(vect,0);}
-
-	/**
-	 *	Generates a new vector without repeated values
-	 * @param arr
-	 * @return
-	 */
-	public static int[] unique(int[] arr){
-		return  Ints.toArray(ImmutableSet.copyOf(
-				Ints.asList(arr)
-		));
+	public static double[][] enumerate(double[] vect) {
+		return enumerate(vect, 0);
 	}
 
-
 	/**
-	 *	Generates a new vector without repeated values
+	 * Generates a new vector without repeated values
+	 * 
 	 * @param arr
 	 * @return
 	 */
-	public static double[] unique(double[] arr){
-		return  Doubles.toArray(ImmutableSet.copyOf(
-				Doubles.asList(arr)
-		));
+	public static int[] unique(int[] arr) {
+		return Ints.toArray(ImmutableSet.copyOf(Ints.asList(arr)));
+	}
+
+	/**
+	 * Generates a new vector without repeated values
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public static double[] unique(double[] arr) {
+		return Doubles.toArray(ImmutableSet.copyOf(Doubles.asList(arr)));
 	}
 
 	/**
 	 * Round all the values in a vector with a number of decimals.
+	 * 
 	 * @param arr
 	 * @param num_decimals
 	 * @return
 	 */
-	public static double[] round(double arr[], int num_decimals){
+	public static double[] round(double arr[], int num_decimals) {
 
 		double[] data = Arrays.copyOf(arr, arr.length);
 
-		for(int i=0; i<data.length; i++){
+		for (int i = 0; i < data.length; i++) {
 			data[i] = Precision.round(data[i], num_decimals);
 		}
 
@@ -768,22 +739,23 @@ public class ArraysUtil {
 
 	/**
 	 * Round non zero values such as the sum is equal to the target.
+	 * 
 	 * @param arr
 	 * @param target
 	 * @param num_decimals
 	 * @return
 	 */
-	public static double[] roundNonZerosToTarget(double[] arr, double target, int num_decimals){
+	public static double[] roundNonZerosToTarget(double[] arr, double target, int num_decimals) {
 
 		double[] data = Arrays.copyOf(arr, arr.length);
 
-		data = ArraysUtil.round(data,3);
+		data = ArraysUtil.round(data, 3);
 		BigDecimal sum = BigDecimal.valueOf(0.0);
-		for(int i=0; i<data.length; i++){
+		for (int i = 0; i < data.length; i++) {
 			sum = sum.add(BigDecimal.valueOf(data[i]));
 		}
-		for(int i=data.length-1; i>=0; i--){
-			if(data[i]!=0){
+		for (int i = data.length - 1; i >= 0; i--) {
+			if (data[i] != 0) {
 				sum = sum.subtract(BigDecimal.valueOf(data[i]));
 				data[i] = BigDecimal.valueOf(target).subtract(sum).doubleValue();
 				break;
@@ -794,97 +766,100 @@ public class ArraysUtil {
 
 	/**
 	 * Generates the latex source for representing a 2d array.
+	 * 
 	 * @param matrix
 	 * @return
 	 */
-	public static String toLatex(double[][] matrix){
+	public static String toLatex(double[][] matrix) {
 		String str = "";
-		for(int i=0; i<matrix.length; i++){
-			for(int j=0; j<matrix[i].length; j++){
-				str+=matrix[i][j];
-				if(j==matrix[i].length-1)
-					str+=" \\\\\n";
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = 0; j < matrix[i].length; j++) {
+				str += matrix[i][j];
+				if (j == matrix[i].length - 1)
+					str += " \\\\\n";
 				else
-					str+=" &";
+					str += " &";
 			}
 		}
 		return str;
 	}
 
 	/**
-	 * Given a latex code representing a 1d vector, this function obtains
-	 * the equivalent array of doubles.
+	 * Given a latex code representing a 1d vector, this function obtains the
+	 * equivalent array of doubles.
+	 * 
 	 * @param latexcode
 	 * @return
 	 */
 	public static double[] latexToDoubleVector(String latexcode) {
-		return  Stream.of(latexcode.split("&")).mapToDouble(s -> Double.valueOf(s)).toArray();
+		return Stream.of(latexcode.split("&")).mapToDouble(s -> Double.valueOf(s)).toArray();
 	}
 
 	/**
-	 * Given a latex code representing a 2d vector, this function obtains
-	 * the equivalent array of doubles.
+	 * Given a latex code representing a 2d vector, this function obtains the
+	 * equivalent array of doubles.
+	 * 
 	 * @param latexcode
 	 * @return
 	 */
 	public static double[][] latexToDoubleArray(String latexcode) {
-		return  Stream.of(latexcode.split("\\\\"))
-				.map(s -> latexToDoubleVector(s))
-				.toArray(double[][]::new);
+		return Stream.of(latexcode.split("\\\\")).map(s -> latexToDoubleVector(s)).toArray(double[][]::new);
 	}
 
 	/**
-	 * Given a latex code representing a 1d vector, this function obtains
-	 * the equivalent array of ints.
+	 * Given a latex code representing a 1d vector, this function obtains the
+	 * equivalent array of ints.
+	 * 
 	 * @param latexcode
 	 * @return
 	 */
 	public static int[] latexToIntVector(String latexcode) {
-		return  toIntVector(latexToDoubleVector(latexcode));
+		return toIntVector(latexToDoubleVector(latexcode));
 	}
 
 	/**
-	 * Given a latex code representing a 2d vector, this function obtains
-	 * the equivalent array of ints.
+	 * Given a latex code representing a 2d vector, this function obtains the
+	 * equivalent array of ints.
+	 * 
 	 * @param latexcode
 	 * @return
 	 */
 	public static int[][] latexToIntArray(String latexcode) {
-		return  toIntArray(latexToDoubleArray(latexcode));
+		return toIntArray(latexToDoubleArray(latexcode));
 	}
 
 	/**
 	 * cast a 1d array of doubles into one of ints
+	 * 
 	 * @param arr
 	 * @return
 	 */
-	public static int[] toIntVector(double[] arr){
-		return Arrays.stream(arr).mapToInt(v -> (int)v).toArray();
+	public static int[] toIntVector(double[] arr) {
+		return Arrays.stream(arr).mapToInt(v -> (int) v).toArray();
 	}
-
 
 	/**
 	 * cast a 2d array of doubles into one of ints
+	 * 
 	 * @param arr
 	 * @return
 	 */
-	public static int[][] toIntArray(double[][] arr){
+	public static int[][] toIntArray(double[][] arr) {
 		return Stream.of(arr).map(v -> toIntVector(v)).toArray(int[][]::new);
 	}
 
-
-	public static double[][] copyOfRange(double[][] original, int from, int to, int axis){
+	public static double[][] copyOfRange(double[][] original, int from, int to, int axis) {
 
 		double sliced[][] = null;
 
-		if(axis==0){
+		if (axis == 0) {
 			sliced = Arrays.copyOfRange(original, from, to);
-		} else if (axis==1){
+		} else if (axis == 1) {
 			sliced = new double[original.length][];
-			for(int i =0; i<original.length; i++){
+			for (int i = 0; i < original.length; i++) {
 				sliced[i] = Arrays.copyOfRange(original[i], from, to);
 			}
-		}else{
+		} else {
 			throw new IllegalArgumentException("axis cannot be greater than 1");
 		}
 
@@ -892,86 +867,88 @@ public class ArraysUtil {
 
 	}
 
-	public static double[][] filterRows(double[][] array, Predicate<double[]> cond){
-		//Predicate cond = v-> DoubleStream.of((double[]) v).anyMatch(x->x!=0);
-		return IntStream.range(0,array.length).mapToObj(i -> array[i]).filter(cond).toArray(double[][]::new);
+	public static double[][] filterRows(double[][] array, Predicate<double[]> cond) {
+		// Predicate cond = v-> DoubleStream.of((double[]) v).anyMatch(x->x!=0);
+		return IntStream.range(0, array.length).mapToObj(i -> array[i]).filter(cond).toArray(double[][]::new);
 	}
 
-	public static double[][] filterNonZeroRows(double[][] array){
-		Predicate<double[]> cond = v-> DoubleStream.of(v).anyMatch(x->x!=0);
+	public static double[][] filterNonZeroRows(double[][] array) {
+		Predicate<double[]> cond = v -> DoubleStream.of(v).anyMatch(x -> x != 0);
 		return filterRows(array, cond);
 	}
 
-	public static int[] rowsWhere(double[][] array, Predicate<double[]> cond){
-		return IntStream.range(0,array.length).filter(i->cond.test(array[i])).toArray();
+	public static int[] rowsWhere(double[][] array, Predicate<double[]> cond) {
+		return IntStream.range(0, array.length).filter(i -> cond.test(array[i])).toArray();
 	}
-	public static int[] rowsWhereAllZeros(double[][] array){
-		Predicate cond = v-> DoubleStream.of((double[]) v).allMatch(x->x==0);
+
+	public static int[] rowsWhereAllZeros(double[][] array) {
+		Predicate cond = v -> DoubleStream.of((double[]) v).allMatch(x -> x == 0);
 		return rowsWhere(array, cond);
 	}
 
-	public static double[][] sliceRows(double[][] array, int... idx){
-		return IntStream.of(idx).mapToObj(i->array[i]).toArray(double[][]::new);
+	public static double[][] sliceRows(double[][] array, int... idx) {
+		return IntStream.of(idx).mapToObj(i -> array[i]).toArray(double[][]::new);
 	}
 
-	public static double[][] sliceColumns(double[][] array, int... idx){
+	public static double[][] sliceColumns(double[][] array, int... idx) {
 		double[][] out = new double[array.length][idx.length];
-		for(int i=0;i<array.length;i++){
-			for(int j=0; j<idx.length; j++){
+		for (int i = 0; i < array.length; i++) {
+			for (int j = 0; j < idx.length; j++) {
 				out[i][j] = array[i][idx[j]];
 			}
 		}
 		return out;
 	}
 
-	public static double[] slice(double[] array, int... idx){
-		return IntStream.of(idx).mapToDouble(i->array[i]).toArray();
+	public static double[] slice(double[] array, int... idx) {
+		return IntStream.of(idx).mapToDouble(i -> array[i]).toArray();
 	}
 
-	public static int[] slice(int[] array, int... idx){
-		return IntStream.of(idx).map(i->array[i]).toArray();
+	public static int[] slice(int[] array, int... idx) {
+		return IntStream.of(idx).map(i -> array[i]).toArray();
 	}
 
-
-	public static double[][] dropRows(double[][] array, int... idx){
-		int[] idx_comp = IntStream.range(0,ArraysUtil.getShape(array)[0]).filter(i -> !ArraysUtil.contains(i,idx)).toArray();
-		return sliceRows(array,idx_comp);
+	public static double[][] dropRows(double[][] array, int... idx) {
+		int[] idx_comp = IntStream.range(0, ArraysUtil.getShape(array)[0]).filter(i -> !ArraysUtil.contains(i, idx))
+				.toArray();
+		return sliceRows(array, idx_comp);
 	}
 
-	public static double[][] dropColumns(double[][] array, int... idx){
-		int[] idx_comp = IntStream.range(0,ArraysUtil.getShape(array)[1]).filter(i -> !ArraysUtil.contains(i,idx)).toArray();
-		return sliceColumns(array,idx_comp);
+	public static double[][] dropColumns(double[][] array, int... idx) {
+		int[] idx_comp = IntStream.range(0, ArraysUtil.getShape(array)[1]).filter(i -> !ArraysUtil.contains(i, idx))
+				.toArray();
+		return sliceColumns(array, idx_comp);
 	}
 
-	public static int[] where(int[] arr, Predicate<Integer> cond){
+	public static int[] where(int[] arr, Predicate<Integer> cond) {
 		return IntStream.range(0, arr.length).filter(i -> cond.test(arr[i])).toArray();
 	}
-	public static int[] where(double[] arr, Predicate<Double> cond){
+
+	public static int[] where(double[] arr, Predicate<Double> cond) {
 		return IntStream.range(0, arr.length).filter(i -> cond.test(arr[i])).toArray();
 	}
 
-
-	public static int ndim(Object array){
+	public static int ndim(Object array) {
 		return ndimWithClass(array.getClass());
 	}
 
-	private static int ndimWithClass(Class array){
-		if(!array.getComponentType().getName().startsWith("["))
+	private static int ndimWithClass(Class array) {
+		if (!array.getComponentType().getName().startsWith("["))
 			return 1;
-		return ndimWithClass(array.getComponentType())+1;
+		return ndimWithClass(array.getComponentType()) + 1;
 	}
 
 	/**
 	 * Flatten a list containing a n-dimensional array of doubles
+	 * 
 	 * @param a
 	 * @return
 	 */
-	public static double[] flattenDoubles(List a)
-	{
+	public static double[] flattenDoubles(List a) {
 		int ndims = ArraysUtil.ndim(a.get(0));
-		if(ndims >1){
+		if (ndims > 1) {
 
-			ListIterator it =  a.listIterator();
+			ListIterator it = a.listIterator();
 			List aux = new ArrayList();
 
 			while (it.hasNext()) {
@@ -987,24 +964,24 @@ public class ArraysUtil {
 			a = aux;
 
 		}
-		double[] out = ((double[])a.get(0));
-		for(int i=1; i<a.size(); i++)
-			out = Doubles.concat(out, ((double[])a.get(i)));
+		double[] out = ((double[]) a.get(0));
+		for (int i = 1; i < a.size(); i++)
+			out = Doubles.concat(out, ((double[]) a.get(i)));
 		return out;
 
 	}
 
 	/**
 	 * Flatten a list containing a n-dimensional array of integers
+	 * 
 	 * @param a
 	 * @return
 	 */
-	public static int[] flattenInts(List a)
-	{
+	public static int[] flattenInts(List a) {
 		int ndims = ArraysUtil.ndim(a.get(0));
-		if(ndims >1){
+		if (ndims > 1) {
 
-			ListIterator it =  a.listIterator();
+			ListIterator it = a.listIterator();
 			List aux = new ArrayList();
 
 			while (it.hasNext()) {
@@ -1020,17 +997,39 @@ public class ArraysUtil {
 			a = aux;
 
 		}
-		int[] out = ((int[])a.get(0));
-		for(int i=1; i<a.size(); i++)
-			out = Ints.concat(out, ((int[])a.get(i)));
+		int[] out = ((int[]) a.get(0));
+		for (int i = 1; i < a.size(); i++)
+			out = Ints.concat(out, ((int[]) a.get(i)));
 		return out;
 
 	}
+
 	public static void main(String[] args) {
-		int[][][][] v = {{{{1, 2}, {3, 4}}}, {{{9, 2}, {8, 4}}}};
-		System.out.println(Arrays.toString(flattenInts(List.of(v)))) ;
+		int[][][][] v = { { { { 1, 2 }, { 3, 4 } } }, { { { 9, 2 }, { 8, 4 } } } };
+		System.out.println(Arrays.toString(flattenInts(List.of(v))));
 	}
 
+	/**
+	 * Helper method to index multiple items in one shot.
+	 * 
+	 * @param values
+	 * @param indices
+	 * @return
+	 */
+	public static int[] at(int[] values, int[] indices) {
+		return IntStream.of(indices).map(v -> values[v]).toArray();
+	}
+
+	/**
+	 * Non inline version of the Apache commons reverse methods
+	 * 
+	 * @param is
+	 * @return
+	 */
+	public static int[] reverse(int[] is) {
+		int[] rev = is.clone();
+		ArrayUtils.reverse(rev);
+		return rev;
+	}
 
 }
-
