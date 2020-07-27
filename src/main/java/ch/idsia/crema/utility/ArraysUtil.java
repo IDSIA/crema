@@ -272,6 +272,8 @@ public class ArraysUtil {
 	 * containing the specified element. The original array is returned if the
 	 * element was already part of the array.
 	 *
+	 * Expects a sorted array! Behaviours is rather unpredictable if array is not sorted.
+	 * 
 	 * @param array   the sorted array
 	 * @param element the item to be added to the array
 	 * @return a new array containing the element or the original one if element is
