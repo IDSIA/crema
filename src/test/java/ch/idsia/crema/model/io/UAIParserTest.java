@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.io;
 
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.model.io.uai.UAIParser;
@@ -21,54 +22,54 @@ import static org.junit.Assert.*;
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class UAIParserTest {
 
-    Map<String, Object> models;
+	Map<String, Object> models;
 
-    @BeforeAll
-    public void init() throws IOException {
+	@BeforeAll
+	public void init() throws IOException {
 
-        String modelFolder = "./models/";
-        String[] names =  {"simple-hcredal.uai","simple-vcredal.uai", "simple-bayes.uai"};
+		String modelFolder = "./models/";
+		String[] names = { "simple-hcredal.uai", "simple-vcredal.uai", "simple-bayes.uai" };
 
-        models = new HashMap<String,Object>();
-        for(String name : names) {
-            models.put(name, UAIParser.read(modelFolder + name));
-        }
+		models = new HashMap<String, Object>();
+		for (String name : names) {
+			models.put(name, UAIParser.read(modelFolder + name));
+		}
 
-    }
+	}
 
-    @ParameterizedTest
-    @CsvSource(value = {"simple-hcredal.uai:3","simple-vcredal.uai:3"}, delimiter = ':')
-    void numvars(String name, String num) {
+	@ParameterizedTest
+	@CsvSource(value = { "simple-hcredal.uai:3", "simple-vcredal.uai:3" }, delimiter = ':')
+	void numvars(String name, String num) {
 
-        System.out.println(models.get(name));
+		System.out.println(models.get(name));
 
-        assertEquals(
-                ((SparseModel)models.get(name)).getVariables().length,
-                Integer.parseInt(num)
-        );
-    }
-    @ParameterizedTest
-    @ValueSource(strings = {"simple-hcredal.uai","simple-vcredal.uai"})
-    void checkDomains(String name){
-        assertTrue(
-                ((SparseModel)models.get(name)).correctFactorDomains()
-        );
-    }
+		assertEquals(((SparseModel) models.get(name)).getVariables().length, Integer.parseInt(num));
+	}
 
-    @ParameterizedTest
-    @ValueSource(strings = {"simple-hcredal.uai"})
-    void checkLinearProg(String name){
-        SparseModel model = ((SparseModel)models.get(name));
-        ((SeparateHalfspaceFactor)model.getFactor(0)).getRandomVertex(0);
+	@ParameterizedTest
+	@ValueSource(strings = { "simple-hcredal.uai", "simple-vcredal.uai" })
+	void checkDomains(String name) {
+		assertTrue(((SparseModel) models.get(name)).correctFactorDomains());
+	}
 
-    }
+	@ParameterizedTest
+	@ValueSource(strings = { "simple-hcredal.uai" })
+	void checkLinearProg(String name) {
+		SparseModel model = ((SparseModel) models.get(name));
+		((SeparateHalfspaceFactor) model.getFactor(0)).getRandomVertex(0);
 
-    @Test
-    void checkBayesNormalized(){
-        BayesianNetwork bnet = (BayesianNetwork) models.get("simple-bayes.uai");
-        Assert.assertArrayEquals(bnet.getFactor(1).marginalize(1).getData(),
-                new double[]{1.,1.,1.}, 0.0);
-    }
+	}
 
+	@Test
+	void checkBayesNormalized() {
+		BayesianNetwork bnet = (BayesianNetwork) models.get("simple-bayes.uai");
+		Assert.assertArrayEquals(bnet.getFactor(1).marginalize(1).getData(), new double[] { 1., 1., 1. }, 0.0);
+	}
 
+	@Test
+	void testVmodel() throws IOException {
+		SparseModel model = (SparseModel) UAIParser.read("./models/simple-vcredal2.uai");
+		VertexFactor vfactor = (VertexFactor) model.getFactor(2);
+		assertEquals(0.6,  vfactor.getData()[1][0][0], 0.000001);
+	}
 }
