@@ -83,7 +83,7 @@ public class Marginal extends Manager {
 			int[] target = ArraysUtil.addToSortedArray(parent, free);
 			int[] all = ArraysUtil.addToSortedArray(target, x0);
 			
-			BayesianFactor f =calcMarginal(from, all);
+			BayesianFactor f = replaceZerosInMarginal(calcMarginal(from, all));
 			
 			BayesianFactor p = f; 
 			for (int aparent : ArraysUtil.removeAllFromSortedArray(all, parent)) {
