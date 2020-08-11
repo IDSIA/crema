@@ -75,7 +75,7 @@ public class Posterior extends Manager {
 			// all includes evidence
 			int[] all = ArraysUtil.addToSortedArray(target, evidence); 
 
-			BayesianFactor p_ep0 = tmp = replaceZerosInMarginal(calcMarginal(from, all));
+			BayesianFactor p_ep0 = tmp = calcMarginal(from, all);
 
 			// here we could use FactorUtils.marginal
 			BayesianFactor p_p = p_ep0;
@@ -103,7 +103,7 @@ public class Posterior extends Manager {
 			int[] target = ArraysUtil.addToSortedArray(parents, free);
 			int[] all = ArraysUtil.addToSortedArray(target, evidence);
 
-			BayesianFactor p_ep0 = tmp = replaceZerosInMarginal(calcMarginal(from, all));
+			BayesianFactor p_ep0 = tmp = calcMarginal(from, all);
 
 			// here we could use FactorUtils.marginal
 			BayesianFactor p_p = p_ep0;

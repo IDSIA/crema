@@ -37,7 +37,7 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel<VertexFactor>>{
     protected void processFile() {
         parseType();
         parseVariablesInfo();
-        parseDomainsFirstIsHead();
+        parseDomainsLastIsHead();
         parseVertices();
     }
 
@@ -55,7 +55,7 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel<VertexFactor>>{
             model.addParents(k, parents[k]);
         }
 
-        // Specifying the linear constraints for each variable
+        // Specifying the vertices
         VertexFactor[] cpt = new VertexFactor[numberOfVariables];
       
         for (int i = 0; i < numberOfVariables; i++) {
@@ -86,17 +86,16 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel<VertexFactor>>{
             
             Strides dataDomain = new Strides(parent_list, sizes);
             IndexIterator iter = dataDomain.getReorderedIterator(parents[i]);
-            
-            for(int j=0;j<parentComb;j++){
-            	// here the sequential ordering is not correct! 
-            	int jj = iter.next();
-            	
+            int j;
+
+            while(iter.hasNext()) {
+            	j = iter.next();
                 int numVertices = popInteger()/cardinalities[i];
-                vertices[i][jj]=new double[numVertices][];
+                vertices[i][j]=new double[numVertices][];
                 for(int k=0; k<numVertices; k++){
-                    vertices[i][jj][k] = new double[cardinalities[i]];
+                    vertices[i][j][k] = new double[cardinalities[i]];
                     for(int s=0; s<cardinalities[i]; s++){
-                        vertices[i][jj][k][s] = popDouble();
+                        vertices[i][j][k][s] = popDouble();
                     }
                 }
             }
@@ -107,7 +106,7 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel<VertexFactor>>{
     }
 
     public static void main(String[] args) throws IOException {
-        String fileName = "./models/simple-vcredal.uai"; // .cn File to open
+        String fileName = "./models/simple-vcredal2.uai";
         SparseModel model = (SparseModel) UAIParser.read(fileName);
 
         for(int x : model.getVariables()){
