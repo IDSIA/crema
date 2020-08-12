@@ -40,6 +40,6 @@ public abstract class NetUAIWriter<T extends GenericSparseModel> extends UAIWrit
 
     }
 
-    protected abstract void writeFactors();
+    protected abstract void writeFactors() throws IOException;
 
 }

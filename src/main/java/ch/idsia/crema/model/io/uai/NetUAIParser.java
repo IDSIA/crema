@@ -96,12 +96,5 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 
 	}
 
-	protected Strides reverseDomain(Strides domain) {
-		int[] vars = domain.getVariables().clone();
-		int[] sizes = domain.getSizes().clone();
-		ArrayUtils.reverse(vars);
-		ArrayUtils.reverse(sizes);
-		return new Strides(vars, sizes);
-	}
 
 }

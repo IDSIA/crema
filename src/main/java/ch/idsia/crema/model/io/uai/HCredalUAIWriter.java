@@ -1,10 +1,16 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.utility.ConstraintsUtil;
+import ch.idsia.crema.utility.IndexIterator;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
 
@@ -28,7 +34,45 @@ public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
     }
 
     @Override
-    protected void writeFactors(){
+    protected void writeFactors() throws IOException {
+        for(int v : target.getVariables()) {
+
+            SeparateHalfspaceFactor f = (SeparateHalfspaceFactor) target.getFactor(v);
+
+            println("");
+            // get a reordered iterator as UAI stores data with inverted variables compared to Crema
+            Strides paDomain = target.getDomain(target.getParents(v)).reverseDomain();
+            IndexIterator iter = paDomain.getReorderedIterator(target.getParents(v));
+
+            Collection<LinearConstraint> K = new ArrayList<>();
+
+            int paComb = paDomain.getCombinations();
+            int vSize = target.getSize(v);
+            int offset = 0;
+
+            // Transform constraints
+            int j = 0;
+            while(iter.hasNext()) {
+                j = iter.next();
+                Collection<LinearConstraint> Kj = HCredalUAIWriter.processConstraints(f.getLinearProblemAt(j).getConstraints());
+                System.out.println(offset);
+                Kj = ConstraintsUtil.expandCoeff(Kj, paComb*vSize, offset);
+                K.addAll(Kj);
+                offset += vSize;
+            }
+
+            // Write coefficients
+            println(paComb*vSize*K.size());
+            for(LinearConstraint c : K)
+                println(c.getCoefficients().toArray());
+            //Write values
+            println(K.size());
+            for(Object c : K)
+                print(((LinearConstraint)c).getValue());
+            println("");
+
+
+        }
 
     }
 
@@ -40,6 +84,13 @@ public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
         writeFactors();
     }
 
+
+    public static Collection<LinearConstraint> processConstraints(Collection<LinearConstraint> set){
+        return ConstraintsUtil.changeGEQtoLEQ(
+                    ConstraintsUtil.changeEQtoLEQ(
+                            ConstraintsUtil.removeNormalization(
+                                    ConstraintsUtil.removeNonNegative(set))));
+    }
 
 
     public static void main(String[] args) throws IOException {
@@ -57,9 +108,6 @@ public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
             if(writer!=null)
              writer.getWriter().close();
         }
-
-
-
 
     }
 

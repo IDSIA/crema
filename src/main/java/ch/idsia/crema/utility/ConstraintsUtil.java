@@ -114,4 +114,22 @@ public class ConstraintsUtil {
         }
     }
 
+    public static LinearConstraint expandCoeff(LinearConstraint c, int size, int offset) {
+
+        double[] newCoeff = new double[size];
+        double[] oldCoeff = c.getCoefficients().toArray();
+
+        System.arraycopy(oldCoeff, 0, newCoeff, offset, oldCoeff.length);
+
+        return new LinearConstraint(newCoeff, c.getRelationship(), c.getValue());
+    }
+
+    public static Collection<LinearConstraint> expandCoeff(Collection<LinearConstraint> set, int size, int offset){
+        Collection<LinearConstraint> newSet = new ArrayList();
+        for (LinearConstraint c : set) {
+            newSet.add(expandCoeff(c, size, offset));
+        }
+        return newSet;
+    }
+
 }

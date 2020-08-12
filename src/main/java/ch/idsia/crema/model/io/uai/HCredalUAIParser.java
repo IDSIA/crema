@@ -78,7 +78,7 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
                 double[][] b = new double[par_comb][];
 
                 // get a reordered iterator as UAI stores data with inverted variables compared to Crema
-                Strides dataDomain = reverseDomain(model.getDomain(model.getParents(i)));
+                Strides dataDomain = model.getDomain(model.getParents(i)).reverseDomain();
                 IndexIterator iter = dataDomain.getReorderedIterator(model.getParents(i));
                 
                 for (int j = 0; j < par_comb; j++) {

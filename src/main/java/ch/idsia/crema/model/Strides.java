@@ -846,5 +846,18 @@ public final class Strides implements Domain {
 	}
 
 
+	public static Strides reverseDomain(Strides domain) {
+		int[] vars = domain.getVariables().clone();
+		int[] sizes = domain.getSizes().clone();
+		ArrayUtils.reverse(vars);
+		ArrayUtils.reverse(sizes);
+		return new Strides(vars, sizes);
+	}
+
+	public Strides reverseDomain(){
+		return reverseDomain(this);
+	}
+
+
 
 }
