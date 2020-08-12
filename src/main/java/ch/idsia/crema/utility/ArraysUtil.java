@@ -1006,10 +1006,7 @@ public class ArraysUtil {
 
 	}
 
-	public static void main(String[] args) {
-		int[][][][] v = { { { { 1, 2 }, { 3, 4 } } }, { { { 9, 2 }, { 8, 4 } } } };
-		System.out.println(Arrays.toString(flattenInts(List.of(v))));
-	}
+
 
 	/**
 	 * Helper method to index multiple items in one shot.
@@ -1033,5 +1030,11 @@ public class ArraysUtil {
 		ArrayUtils.reverse(rev);
 		return rev;
 	}
+
+	public static boolean isOneHot(double[] arr) {
+		return where(arr, x -> x == 1).length == 1  &&
+				where(arr, x -> x == 0).length == arr.length-1;
+	}
+
 
 }

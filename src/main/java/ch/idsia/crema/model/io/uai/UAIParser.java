@@ -12,42 +12,42 @@ import java.io.IOException;
  *  @author Rafael Cabañas
  */
 
-public abstract class UAIParser<T extends  Object> {
+public abstract class UAIParser<T extends  Object> extends UAI {
 
     protected String[] elements = null;
     private int offset = 0;
     protected BufferedReader bufferedReader;
     private String parsedType="";
 
-    protected String TYPE="";
+    protected UAITypes TYPE;
 
     public static Object read(String fileName) throws IOException {
         BufferedReader buff = initReader(fileName);
-        String type = "";
+        UAITypes type = null;
 
         if(fileName.endsWith(".uai")) {
             // Extract the type to know the required parser
             String str = buff.readLine();
             int i = str.indexOf(" ");
-            if (i > 0) type = str.substring(0, i);
-            else type = str;
+            if (i > 0) type = UAITypes.valueOf(str.substring(0, i));
+            else type = UAITypes.valueOfLabel(str);
             // rest the buffer
             buff = initReader(fileName);
         } else if(fileName.endsWith(".uai.evid") || fileName.endsWith(".uai.do")){
-            type = "EVID";
+            type = UAITypes.EVID;
         }else{
             throw new IllegalArgumentException("Unknown file extension");
         }
 
             // Parse the file
             Object parsedObject = null;
-            if (type.equals("H-CREDAL")) {
+            if (type == UAITypes.HCREDAL) {
                 parsedObject = new HCredalUAIParser(buff).parse();
-            } else if (type.equals("V-CREDAL")) {
+            } else if (type == UAITypes.VCREDAL) {
                 parsedObject = new VCredalUAIParser(buff).parse();
-            } else if (type.equals("BAYES")) {
+            } else if (type == UAITypes.BAYES) {
                 parsedObject = new BayesUAIParser(buff).parse();
-            } else if (type.equals("EVID")){
+            } else if (type == UAITypes.EVID){
                 parsedObject = new EvidUAIParser(buff).parse();
             }else {
                 throw new IllegalArgumentException("Unknown type to be parsed");
@@ -92,7 +92,7 @@ public abstract class UAIParser<T extends  Object> {
     }
 
     protected void sanityChecks(){
-        Assert.isTrue(TYPE.equals(parsedType), "Wrong type "+parsedType+" instead of "+TYPE);
+        Assert.isTrue(TYPE.label.equals(parsedType), "Wrong type "+parsedType+" instead of "+TYPE);
     }
 
 

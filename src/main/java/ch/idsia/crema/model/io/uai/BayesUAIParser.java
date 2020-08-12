@@ -20,12 +20,12 @@ public class BayesUAIParser extends NetUAIParser<BayesianNetwork>{
     private double[][] probs;
 
     public BayesUAIParser(String file) throws FileNotFoundException {
-        TYPE = "BAYES";
+        TYPE = UAITypes.BAYES;
         this.bufferedReader = initReader(file);
     }
 
     public BayesUAIParser(BufferedReader reader) {
-        TYPE = "BAYES";
+        TYPE = UAITypes.BAYES;
         this.bufferedReader = reader;
     }
 

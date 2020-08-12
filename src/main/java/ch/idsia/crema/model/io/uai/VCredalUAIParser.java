@@ -24,12 +24,12 @@ public class VCredalUAIParser extends NetUAIParser<SparseModel<VertexFactor>>{
     private double[][][][] vertices = new double[numberOfVariables][][][];
 
     public VCredalUAIParser(String file) throws FileNotFoundException {
-        TYPE = "V-CREDAL";
+        TYPE = UAITypes.VCREDAL;
         this.bufferedReader = initReader(file);
     }
 
     public VCredalUAIParser(BufferedReader reader) {
-        TYPE = "V-CREDAL";
+        TYPE = UAITypes.VCREDAL;
         this.bufferedReader = reader;
     }
 

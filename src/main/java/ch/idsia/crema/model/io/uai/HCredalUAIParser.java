@@ -27,12 +27,12 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
     private double[][] bCoeff = new double[numberOfVariables][];
 
     public HCredalUAIParser(String file) throws FileNotFoundException {
-        TYPE = "H-CREDAL";
+        TYPE = UAITypes.HCREDAL;
         this.bufferedReader = initReader(file);
     }
 
     public HCredalUAIParser(BufferedReader reader) {
-        TYPE = "H-CREDAL";
+        TYPE = UAITypes.HCREDAL;
         this.bufferedReader = reader;
     }
 
@@ -139,8 +139,6 @@ public class HCredalUAIParser extends NetUAIParser<SparseModel>{
             System.out.println("Variable " + i);
             ((SeparateHalfspaceFactor) model.getFactor(i)).printLinearProblem();
         }
-
-
 
     }
 

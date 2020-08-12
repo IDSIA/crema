@@ -70,6 +70,6 @@ public class UAIParserTest {
 	void testVmodel() throws IOException {
 		SparseModel model = (SparseModel) UAIParser.read("./models/simple-vcredal2.uai");
 		VertexFactor vfactor = (VertexFactor) model.getFactor(2);
-		assertEquals(0.6,  vfactor.getData()[1][0][0], 0.000001);
+		assertEquals(0.3,  vfactor.getData()[1][0][0], 0.000001);
 	}
 }
