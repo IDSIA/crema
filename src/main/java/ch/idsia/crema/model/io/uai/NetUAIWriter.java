@@ -1,7 +1,6 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.model.graphical.GenericSparseModel;
-import com.google.common.primitives.Ints;
 
 import java.io.IOException;
 
@@ -18,22 +17,22 @@ public abstract class NetUAIWriter<T extends GenericSparseModel> extends UAIWrit
 
     protected void writeVariablesInfo() throws IOException {
         // Write the number of variables in the network
-        println(target.getVariables().length);
+        tofileln(target.getVariables().length);
         // Write the number of states of each variable
-        println(target.getSizes(target.getVariables()));
+        tofileln(target.getSizes(target.getVariables()));
     }
 
     protected void writeDomains() throws IOException {
 
         // Write the number of factors
-        println(target.getFactors().size());
+        tofileln(target.getFactors().size());
 
         // Add the factor domains with children at the end
         for(int v: target.getVariables()){
             int[] parents = target.getParents(v);
-            print(parents.length+1);
-            print(parents);
-            println(v);
+            tofile(parents.length+1);
+            tofile(parents);
+            tofileln(v);
 
         }
 

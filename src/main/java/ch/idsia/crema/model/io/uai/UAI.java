@@ -1,5 +1,8 @@
 package ch.idsia.crema.model.io.uai;
 
+import ch.idsia.crema.model.graphical.SparseModel;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +42,7 @@ public abstract class UAI {
 
 
     }
+
 
 
 

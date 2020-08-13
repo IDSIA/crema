@@ -1,5 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
+import ch.idsia.crema.model.graphical.SparseModel;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,6 +16,28 @@ public abstract class UAIWriter<T extends  Object> extends UAI {
 
     protected T target;
 
+
+    public static void write(Object target, String fileName) throws IOException {
+
+        UAIWriter writer = null;
+        try{
+            if(HCredalUAIWriter.isCompatible(target))
+                writer =  new HCredalUAIWriter((SparseModel) target, fileName);
+            else if(VCredalUAIWriter.isCompatible(target))
+                writer =  new VCredalUAIWriter((SparseModel) target, fileName);
+            else
+                throw new IllegalArgumentException("Unknown type to write");
+            writer.writeToFile();
+        }catch (Exception e){
+            if(writer!=null) writer.getWriter().close();
+            throw e;
+        }
+        if(writer!=null) writer.getWriter().close();
+    }
+
+
+
+
     public BufferedWriter initWriter(String file) throws IOException {
         return new BufferedWriter(new FileWriter(file));
     }
@@ -22,25 +46,25 @@ public abstract class UAIWriter<T extends  Object> extends UAI {
         return writer;
     }
 
-    protected void print(String s) throws IOException {
+    protected void tofile(String s) throws IOException {
         writer.write(s);
     }
-    protected void print(double... values) throws IOException {
-        print(DoubleStream.of(values).mapToObj(v -> v+" ").collect(Collectors.joining()));
+    protected void tofile(double... values) throws IOException {
+        tofile(DoubleStream.of(values).mapToObj(v -> v+" ").collect(Collectors.joining()));
     }
-    protected void print(int... values) throws IOException {
-        print(IntStream.of(values).mapToObj(v -> v+" ").collect(Collectors.joining()));
+    protected void tofile(int... values) throws IOException {
+        tofile(IntStream.of(values).mapToObj(v -> v+" ").collect(Collectors.joining()));
     }
 
 
-    protected void println(String s) throws IOException {
+    protected void tofileln(String s) throws IOException {
         writer.write(s+"\n");
     }
-    protected void println(double... values) throws IOException {
-        println(DoubleStream.of(values).mapToObj(v -> v+" ").collect(Collectors.joining()));
+    protected void tofileln(double... values) throws IOException {
+        tofileln(DoubleStream.of(values).mapToObj(v -> v+" ").collect(Collectors.joining()));
     }
-    protected void println(int... values) throws IOException {
-        println(IntStream.of(values).mapToObj(v -> v+" ").collect(Collectors.joining()));
+    protected void tofileln(int... values) throws IOException {
+        tofileln(IntStream.of(values).mapToObj(v -> v+" ").collect(Collectors.joining()));
     }
 
     public void writeToFile() throws IOException {
@@ -49,11 +73,16 @@ public abstract class UAIWriter<T extends  Object> extends UAI {
     }
 
     public void writeType() throws IOException {
-        println(this.TYPE.label);
+        tofileln(this.TYPE.label+" ");
     }
 
     protected abstract void sanityChecks();
     protected abstract void writeTarget() throws IOException;
+
+    protected static boolean isCompatible(Object object){
+        throw new IllegalStateException(
+                "isCompatible hasn't been set up in the subclass");
+    }
 
 
 

@@ -1,10 +1,9 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.IO;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 
@@ -13,17 +12,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
+public class VCredalUAIWriter extends NetUAIWriter<SparseModel>{
 
-    public HCredalUAIWriter(SparseModel target, String file) throws IOException {
+    public VCredalUAIWriter(SparseModel target, String file) throws IOException {
         this.target = target;
-        TYPE = UAITypes.HCREDAL;
+        TYPE = UAITypes.VCREDAL;
         this.writer = initWriter(file);
 
     }
-    public HCredalUAIWriter(SparseModel target, BufferedWriter writer){
+    public VCredalUAIWriter(SparseModel target, BufferedWriter writer){
         this.target = target;
-        TYPE = UAITypes.HCREDAL;
+        TYPE = UAITypes.VCREDAL;
         this.writer = writer;
     }
 
@@ -39,7 +38,7 @@ public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
     protected void writeFactors() throws IOException {
         for(int v : target.getVariables()) {
 
-            SeparateHalfspaceFactor f = (SeparateHalfspaceFactor) target.getFactor(v);
+            VertexFactor f = (VertexFactor) target.getFactor(v);
 
             tofileln("");
             // get a reordered iterator as UAI stores data with inverted variables compared to Crema
@@ -50,28 +49,15 @@ public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
 
             int paComb = paDomain.getCombinations();
             int vSize = target.getSize(v);
-            int offset = 0;
 
             // Transform constraints
-            int j = 0;
             while(iter.hasNext()) {
-                j = iter.next();
-                Collection<LinearConstraint> Kj = HCredalUAIWriter.processConstraints(f.getLinearProblemAt(j).getConstraints());
-                Kj = ConstraintsUtil.expandCoeff(Kj, paComb*vSize, offset);
-                K.addAll(Kj);
-                offset += vSize;
+                int j = iter.next();
+                double[][] vertex = f.getVerticesAt(j);
+                tofileln(vertex.length*vSize);
+                for(int k = 0; k<vertex.length; k++)
+                    tofileln(vertex[k]);
             }
-
-            // Write coefficients
-            tofileln(paComb*vSize*K.size());
-            for(LinearConstraint c : K)
-                tofileln(c.getCoefficients().toArray());
-            //Write values
-            tofileln(K.size());
-            for(Object c : K)
-                tofile(((LinearConstraint)c).getValue());
-            tofileln("");
-
         }
 
     }
@@ -85,12 +71,6 @@ public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
     }
 
 
-    public static Collection<LinearConstraint> processConstraints(Collection<LinearConstraint> set){
-        return ConstraintsUtil.changeGEQtoLEQ(
-                    ConstraintsUtil.changeEQtoLEQ(
-                            ConstraintsUtil.removeNormalization(
-                                    ConstraintsUtil.removeNonNegative(set))));
-    }
 
 
     protected static boolean isCompatible(Object object){
@@ -99,14 +79,14 @@ public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
             return false;
 
         for(int v : ((SparseModel) object).getVariables())
-            if(!(((SparseModel) object).getFactor(v) instanceof  SeparateHalfspaceFactor))
+            if(!(((SparseModel) object).getFactor(v) instanceof VertexFactor))
                 return false;
         return true;
     }
 
 
     public static void main(String[] args) throws IOException {
-        String fileName = "./models/simple-hcredal";
+        String fileName = "./models/simple-vcredal_";
 
         SparseModel model;
 
