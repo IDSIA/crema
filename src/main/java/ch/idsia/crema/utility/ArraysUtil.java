@@ -1036,5 +1036,27 @@ public class ArraysUtil {
 				where(arr, x -> x == 0).length == arr.length-1;
 	}
 
+	public static double[] replace(double[] arr, Predicate pred, double replacement){
+		double[] out = Arrays.copyOf(arr, arr.length);
+		for(int i: where(out, pred))
+			out[i] = replacement;
+		return out;
+	}
+
+	public static double[] replace(double[] arr, double val, double replacement){
+		Predicate<Double> cond = x -> x == val;
+		return replace(arr, cond, replacement);
+	}
+	public static int[] replace(int[] arr, Predicate pred, int replacement){
+		int[] out = Arrays.copyOf(arr, arr.length);
+		for(int i: where(out, pred))
+			out[i] = replacement;
+		return out;
+	}
+	public static int[] replace(int[] arr, int val, int replacement){
+		Predicate<Integer> cond = x -> x == val;
+		return replace(arr, cond, replacement);
+	}
+
 
 }

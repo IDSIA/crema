@@ -404,6 +404,17 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
     }
 
 
+    public SeparateHalfspaceFactor removeNonNegativeConstraints() {
+        SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+        for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
+            newFactor.setLinearProblemAt(i,
+                    ConstraintsUtil.removeNonNegative(this.getLinearProblemAt(i).getConstraints())
+            );
+        }
+        return newFactor;
+    }
+
+
     /**
      * Replaces the IDs of the variables in the domain
      *

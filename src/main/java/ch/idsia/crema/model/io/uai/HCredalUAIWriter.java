@@ -4,6 +4,7 @@ import ch.idsia.crema.IO;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
@@ -12,6 +13,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Predicate;
 
 public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
 
@@ -65,11 +67,11 @@ public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
             // Write coefficients
             tofileln(paComb*vSize*K.size());
             for(LinearConstraint c : K)
-                tofileln(c.getCoefficients().toArray());
+                tofileln(ArraysUtil.replace(c.getCoefficients().toArray(), -0.0, 0.0));
             //Write values
             tofileln(K.size());
-            for(Object c : K)
-                tofile(((LinearConstraint)c).getValue());
+            for(LinearConstraint c : K)
+                tofile(ArraysUtil.replace(new double[]{c.getValue()}, -0.0, 0.0));
             tofileln("");
 
         }

@@ -27,7 +27,7 @@ public abstract class UAIParser<T extends  Object> extends UAI {
 
         if(fileName.endsWith(".uai")) {
             // Extract the type to know the required parser
-            String str = buff.readLine();
+            String str = buff.readLine().replaceAll("[ \\t\\n]+","");
             int i = str.indexOf(" ");
             if (i > 0) type = UAITypes.valueOf(str.substring(0, i));
             else type = UAITypes.valueOfLabel(str);
