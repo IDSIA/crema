@@ -415,6 +415,18 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
     }
 
 
+    public SeparateHalfspaceFactor mergeCompatible() {
+        SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+        for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
+            newFactor.setLinearProblemAt(i,
+                    ConstraintsUtil.mergeCompatible(this.getLinearProblemAt(i).getConstraints())
+            );
+        }
+        return newFactor;
+    }
+
+
+
     /**
      * Replaces the IDs of the variables in the domain
      *
