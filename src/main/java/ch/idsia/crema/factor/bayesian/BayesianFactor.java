@@ -722,10 +722,16 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	}
 
 
-	public void replace(double value, double replacement){
+	public void replaceInLine(double value, double replacement){
 		for(int i=0; i<getData().length; i++)
 			if(getData()[i] == value)
 				getData()[i] = replacement;
+	}
+
+	public BayesianFactor replace(double value, double replacement){
+		BayesianFactor f = this.copy();
+		f.replaceInLine(value, replacement);
+		return f;
 	}
 
 }

@@ -134,7 +134,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 
 	public static BayesianFactor replaceZerosInMarginal(BayesianFactor f){
 		BayesianFactor out = f.copy();
-		out.replace(0, EPS);
+		out.replaceInLine(0, EPS);
 		return out.normalize();
 	}
 }

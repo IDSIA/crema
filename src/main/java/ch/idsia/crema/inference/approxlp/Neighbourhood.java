@@ -44,7 +44,7 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 		TIntObjectHashMap<BayesianFactor> factors = new TIntObjectHashMap<>();
 		for (int var : model.getVariables()) {
 			// lets assume the model has factors for all variables!
-			BayesianFactor r = random(model.getFactor(var));
+			BayesianFactor r = random(model.getFactor(var)).replace(0.0, Inference.EPS);
 			factors.put(var, r);
 		}
 		return new Solution(factors, Double.NaN);

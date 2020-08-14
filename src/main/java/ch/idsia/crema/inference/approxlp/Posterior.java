@@ -170,6 +170,9 @@ public class Posterior extends Manager {
 		solution = new BayesianFactor(solution.getDomain(), solution.isLog());
 		solution.setData(solver.getVertex());
 
+		//replaces 0.0 values in solution
+		solution.replaceInLine(0.0, Inference.EPS);
+
 		doing.setValues(solution);
 		doing.setScore(solver.getValue());
 		

@@ -50,8 +50,8 @@ public class PosteriorTest {
 		Inference inf = new Inference();
 		IntervalFactor ifact = inf.query(bmodel, X0, evidence);
 
-//		assertArrayEquals(new double[] { 0.07 / 0.43, 0.32 / 0.46 }, ifact.getLower(), 0.00000000001);
-//		assertArrayEquals(new double[] { 0.14 / 0.46, 0.36 / 0.43 }, ifact.getUpper(), 0.00000000001);
+//		assertArrayEquals(new double[] { 0.07 / 0.43, 0.32 / 0.46 }, ifact.getLower(), 0.001);
+//		assertArrayEquals(new double[] { 0.14 / 0.46, 0.36 / 0.43 }, ifact.getUpper(), 0.001);
 		
 		
 		ApproxLP2 a2 = new ApproxLP2();
@@ -97,8 +97,8 @@ public class PosteriorTest {
 		Inference inf = new Inference();
 		IntervalFactor ifact = inf.query(model, X0, evidence);
 
-		assertArrayEquals(new double[] { 0.6279069767434073, 0.16964285714332666 }, ifact.getLower(), 0.00000000001);
-		assertArrayEquals(new double[] { 0.8303571428566734, 0.37209302325659266 }, ifact.getUpper(), 0.00000000001);
+		assertArrayEquals(new double[] { 0.6279069767434073, 0.16964285714332666 }, ifact.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.8303571428566734, 0.37209302325659266 }, ifact.getUpper(), 0.001);
 	}
 
 	@Test
@@ -125,8 +125,8 @@ public class PosteriorTest {
 		Inference inf = new Inference();
 		IntervalFactor ifact = inf.query(model, X0, evidence);
 
-		assertArrayEquals(new double[] { 0.21212121212087243, 0.23529411764741176, 0.277777777778395 }, ifact.getLower(), 0.00000000001);
-		assertArrayEquals(new double[] { 0.4117647058825294, 0.48484848484822773, 0.48275862069158587 }, ifact.getUpper(), 0.00000000001);
+		assertArrayEquals(new double[] { 0.21212121212087243, 0.23529411764741176, 0.277777777778395 }, ifact.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.4117647058825294, 0.48484848484822773, 0.48275862069158587 }, ifact.getUpper(), 0.001);
 	}
 
 	@Test
@@ -159,8 +159,8 @@ public class PosteriorTest {
 		Inference inf = new Inference();
 		IntervalFactor ifact = inf.query(model, X0, evidence);
 
-		assertArrayEquals(new double[] { 0.24424778761090626, 0.6765799256506011 }, ifact.getLower(), 0.00000000001);
-		assertArrayEquals(new double[] { 0.3234200743493989, 0.7557522123890937 }, ifact.getUpper(), 0.00000000001);
+		assertArrayEquals(new double[] { 0.24424778761090626, 0.6765799256506011 }, ifact.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.3234200743493989, 0.7557522123890937 }, ifact.getUpper(), 0.001);
 	}
 
 	@Test
@@ -198,8 +198,8 @@ public class PosteriorTest {
 		Inference inference = new Inference();
 		IntervalFactor factor = inference.query(model, n3, ev);
 
-		assertArrayEquals(new double[] { 0.22188969645147497, 0.7781103035492434 }, factor.getLower(), 0.000000000001);
-		assertArrayEquals(new double[] { 0.22188969645147497, 0.7781103035492434 }, factor.getUpper(), 0.000000000001);
+		assertArrayEquals(new double[] { 0.22188969645147497, 0.7781103035492434 }, factor.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.22188969645147497, 0.7781103035492434 }, factor.getUpper(), 0.001);
 	}
 
 	@Test
@@ -243,8 +243,8 @@ public class PosteriorTest {
 		Inference inference = new Inference();
 		IntervalFactor factor = inference.query(model, n3, ev);
 
-		assertArrayEquals(new double[] { 0.22050585639124004, 0.6383476227590834 }, factor.getLower(), 0.000000000001);
-		assertArrayEquals(new double[] { 0.3616523772409166, 0.7794941436087599 }, factor.getUpper(), 0.000000000001);
+		assertArrayEquals(new double[] { 0.22050585639124004, 0.6383476227590834 }, factor.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.3616523772409166, 0.7794941436087599 }, factor.getUpper(), 0.001);
 
 		inference = new Inference();
 		
@@ -253,8 +253,8 @@ public class PosteriorTest {
 		// no need to update n1 as we use the sparse model
 		factor = inference.query(model, n1, ev);
 
-		assertArrayEquals(new double[] { 0.24827348066293425, 0.20153743315534500, 0.3076654443861050 }, factor.getLower(), 0.000000000001);
-		assertArrayEquals(new double[] { 0.48011911017679076, 0.36128775834693705, 0.5276243093920449 }, factor.getUpper(), 0.000000000001);
+		assertArrayEquals(new double[] { 0.24827348066293425, 0.20153743315534500, 0.3076654443861050 }, factor.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.48011911017679076, 0.36128775834693705, 0.5276243093920449 }, factor.getUpper(), 0.001);
 	}
 	
 	/**
@@ -313,8 +313,8 @@ public class PosteriorTest {
 		Inference inference = new Inference();
 		IntervalFactor factor = inference.query(model, n3, ev);
 
-		assertArrayEquals(new double[] { 0.09702615320599722, 0.5996234703482123 }, factor.getLower(), 0.000000000001);
-		assertArrayEquals(new double[] { 0.4003765296517877, 0.9029738467940027 }, factor.getUpper(), 0.000000000001);
+		assertArrayEquals(new double[] { 0.09702615320599722, 0.5996234703482123 }, factor.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.4003765296517877, 0.9029738467940027 }, factor.getUpper(), 0.001);
 
 		inference = new Inference();
 		
@@ -323,8 +323,8 @@ public class PosteriorTest {
 		// no need to update n1 as we use the sparse model
 		factor = inference.query(model, n1, ev);
 
-		assertArrayEquals(new double[] { 0.23845184770432107, 0.1682985757886567, 0.28836654178948645 }, factor.getLower(), 0.000000000001);
-		assertArrayEquals(new double[] { 0.5354735898541261, 0.3697586787464407, 0.5279955207164615 }, factor.getUpper(), 0.000000000001);
+		assertArrayEquals(new double[] { 0.23845184770432107, 0.1682985757886567, 0.28836654178948645 }, factor.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.5354735898541261, 0.3697586787464407, 0.5279955207164615 }, factor.getUpper(), 0.001);
 	}
 	
 	
@@ -407,8 +407,8 @@ public class PosteriorTest {
 		Inference inference = new Inference();
 		IntervalFactor factor = inference.query(model, n3, ev);
 
-		assertArrayEquals(new double[] { 0.09702615320599722, 0.5996234703482123 }, factor.getLower(), 0.000000000001);
-		assertArrayEquals(new double[] { 0.4003765296517877, 0.9029738467940027 }, factor.getUpper(), 0.000000000001);
+		assertArrayEquals(new double[] { 0.09702615320599722, 0.5996234703482123 }, factor.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.4003765296517877, 0.9029738467940027 }, factor.getUpper(), 0.001);
 
 		
 		inference = new Inference();
@@ -416,7 +416,7 @@ public class PosteriorTest {
 		// no need to update n1 as we use the sparse model
 		factor = inference.query(model, n1, ev);
 
-		assertArrayEquals(new double[] { 0.23845184770432107, 0.1682985757886567, 0.28836654178948645 }, factor.getLower(), 0.000000000001);
-		assertArrayEquals(new double[] { 0.5354735898541261, 0.3697586787464407, 0.5279955207164615 }, factor.getUpper(), 0.000000000001);
+		assertArrayEquals(new double[] { 0.23845184770432107, 0.1682985757886567, 0.28836654178948645 }, factor.getLower(), 0.001);
+		assertArrayEquals(new double[] { 0.5354735898541261, 0.3697586787464407, 0.5279955207164615 }, factor.getUpper(), 0.001);
 	}
 }
