@@ -1,5 +1,6 @@
 package ch.idsia.crema.model.io.uai;
 
+import ch.idsia.crema.model.io.TypesIO;
 import org.springframework.util.Assert;
 
 import java.io.BufferedReader;
@@ -12,18 +13,18 @@ import java.io.IOException;
  *  @author Rafael Cabañas
  */
 
-public abstract class UAIParser<T extends  Object> extends UAI {
+public abstract class UAIParser<T extends  Object> {
 
     protected String[] elements = null;
     private int offset = 0;
     protected BufferedReader bufferedReader;
     private String parsedType="";
 
-    protected UAITypes TYPE;
+    protected TypesIO TYPE;
 
     public static Object read(String fileName) throws IOException {
         BufferedReader buff = initReader(fileName);
-        UAITypes type = null;
+        TypesIO type = null;
 
         if(fileName.endsWith(".uai")) {
             // Extract the type to know the required parser
@@ -92,7 +93,7 @@ public abstract class UAIParser<T extends  Object> extends UAI {
     }
 
     protected void sanityChecks(){
-        Assert.isTrue(TYPE.label.equals(parsedType), "Wrong type "+parsedType+" instead of "+TYPE);
+        Assert.isTrue(TYPE.getLabel().equals(parsedType), "Wrong type "+parsedType+" instead of "+TYPE);
     }
 
 
