@@ -26,20 +26,10 @@ public class CredalApproxLP<M extends GraphicalModel<? super Factor<?>>> impleme
 
     @Override
     public M getInferenceModel(int target, TIntIntMap evidence) {
-
-        CutObserved cutObserved = new CutObserved();
-        // run making a copy of the model
-        M infModel = cutObserved.execute(model, evidence);
-
         // preprocessing
-        RemoveBarren removeBarren2 = new RemoveBarren();
-        M infModel2 = (M) removeBarren2
-                .execute(new CutObservedSepHalfspace().execute((SparseModel) infModel, evidence), target, evidence);
-
-
         RemoveBarren removeBarren = new RemoveBarren();
-        // no more need to make a copy of the model
-        removeBarren.executeInline(infModel, target, evidence);
+        M infModel = (M) removeBarren
+                .execute(new CutObservedSepHalfspace().execute((SparseModel) model, evidence), target, evidence);
 
         return infModel;
     }

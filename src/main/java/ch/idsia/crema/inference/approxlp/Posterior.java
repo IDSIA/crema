@@ -15,6 +15,7 @@ import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 import java.util.Arrays;
+import java.util.stream.DoubleStream;
 
 public class Posterior extends Manager {
 
@@ -152,6 +153,11 @@ public class Posterior extends Manager {
 			
 			numerator = p_0epj.getData();
 		}
+
+		if(DoubleStream.of(numerator).anyMatch(x -> Double.isNaN(x)))
+			throw new IllegalStateException("Numerator in the LinearFractionalSolver contains NaN values.");
+		if(DoubleStream.of(numerator).anyMatch(x -> Double.isNaN(x)))
+			throw new IllegalStateException("Denominator in the LinearFractionalSolver contains NaN values.");
 
 		LinearFractionalSolver solver = createSolver(free);
 		try {

@@ -14,6 +14,23 @@ public class ConstraintsUtil {
     public static Collection<LinearConstraint> perturbZeroConstraints(Collection<LinearConstraint> set, double eps) {
         Collection<LinearConstraint> newSet = new ArrayList();
         for (LinearConstraint c : set) {
+
+
+            if (c.getRelationship() == Relationship.EQ && c.getValue() == 0 && eps > 0) {
+                //LinearConstraint c1 = new LinearConstraint(c.getCoefficients().toArray(), Relationship.GEQ, 0.0);
+                LinearConstraint c2 = new LinearConstraint(c.getCoefficients().toArray(), Relationship.EQ, eps);
+                //newSet.add(c1);
+                newSet.add(c2);
+            } else if (c.getRelationship() == Relationship.GEQ && c.getValue() == 0 && eps > 0) {
+                LinearConstraint c1 = new LinearConstraint(c.getCoefficients().toArray(), Relationship.GEQ, eps);
+                newSet.add(c1);
+            } else {
+                newSet.add(c);
+            }
+
+
+          /*
+
             if (c.getValue() == 0 && eps > 0) {
                 if(c.getRelationship() == Relationship.EQ) {
                     LinearConstraint c1 = new LinearConstraint(c.getCoefficients().toArray(), Relationship.GEQ, 0.0);
@@ -21,7 +38,7 @@ public class ConstraintsUtil {
                     newSet.add(c1);
                     newSet.add(c2);
                     //    }else if(c.getRelationship() == Relationship.GEQ){
-                }else{
+                } else{
                     LinearConstraint c1 = new LinearConstraint(c.getCoefficients().toArray(), Relationship.GEQ, eps);
                     newSet.add(c1);
             //    }else{
@@ -29,9 +46,14 @@ public class ConstraintsUtil {
             //        newSet.add(c1);
             }
 
+
+
+
         }else{
                 newSet.add(c);
             }
+
+           */
         }
         return newSet;
     }
