@@ -25,7 +25,7 @@ public abstract class NetUAIWriter<T extends GenericSparseModel> extends UAIWrit
     protected void writeDomains() throws IOException {
 
         // Write the number of factors
-        tofileln(target.getFactors().size());
+        tofileln(target.getVariables().length);
 
         // Add the factor domains with children at the end
         for(int v: target.getVariables()){

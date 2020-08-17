@@ -23,15 +23,12 @@ public abstract class UAIParser<T extends  Object> {
     protected TypesIO TYPE;
 
     public static Object read(String fileName) throws IOException {
-        BufferedReader buff = initReader(fileName);
+        BufferedReader buff = null;
         TypesIO type = null;
 
         if(fileName.endsWith(".uai")) {
             // Extract the type to know the required parser
-            String str = buff.readLine().replaceAll("[ \\t\\n]+","");
-            int i = str.indexOf(" ");
-            if (i > 0) type = UAITypes.valueOf(str.substring(0, i));
-            else type = UAITypes.valueOfLabel(str);
+            type = UAITypes.valueOfLabel(getIOTypeStr(fileName));
             // rest the buffer
             buff = initReader(fileName);
         } else if(fileName.endsWith(".uai.evid") || fileName.endsWith(".uai.do")){
@@ -39,22 +36,52 @@ public abstract class UAIParser<T extends  Object> {
         }else{
             throw new IllegalArgumentException("Unknown file extension");
         }
+        Object parsedObject = null;
 
-            // Parse the file
-            Object parsedObject = null;
-            if (type == UAITypes.HCREDAL) {
-                parsedObject = new HCredalUAIParser(buff).parse();
-            } else if (type == UAITypes.VCREDAL) {
-                parsedObject = new VCredalUAIParser(buff).parse();
-            } else if (type == UAITypes.BAYES) {
-                parsedObject = new BayesUAIParser(buff).parse();
-            } else if (type == UAITypes.EVID){
-                parsedObject = new EvidUAIParser(buff).parse();
-            }else {
-                throw new IllegalArgumentException("Unknown type to be parsed");
+            try{
+                // Parse the file
+                if (type == UAITypes.HCREDAL) {
+                    parsedObject = new HCredalUAIParser(buff).parse();
+                } else if (type == UAITypes.VCREDAL) {
+                    parsedObject = new VCredalUAIParser(buff).parse();
+                } else if (type == UAITypes.BAYES) {
+                    parsedObject = new BayesUAIParser(buff).parse();
+                } else if (type == UAITypes.EVID){
+                    parsedObject = new EvidUAIParser(buff).parse();
+                }else {
+                    throw new IllegalArgumentException("Unknown type to be parsed");
+                }
+            }catch (Exception e){
+                buff.close();
+                throw e;
             }
 
         return parsedObject;
+
+    }
+
+    public void closeReader() throws IOException {
+        if(this.bufferedReader != null)
+            this.bufferedReader.close();
+    }
+
+
+    public static String getIOTypeStr(String fileName) throws IOException {
+
+        BufferedReader buff = initReader(fileName);
+        String type = null;
+
+        try {
+            // Extract the type to know the required parser
+            String str = buff.readLine().replaceAll("[ \\t\\n]+", "");
+            int i = str.indexOf(" ");
+            if (i > 0) type = str.substring(0, i);
+            else type = str;
+        }catch (Exception e) {
+            buff.close();
+            throw e;
+        }
+        return type;
 
     }
 

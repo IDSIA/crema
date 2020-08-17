@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.io.TypesIO;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,7 +13,7 @@ import java.util.stream.IntStream;
 public abstract class UAIWriter<T extends  Object> {
 
     protected BufferedWriter writer;
-    protected UAITypes TYPE;
+    protected TypesIO TYPE;
 
     protected T target;
 
@@ -73,7 +74,7 @@ public abstract class UAIWriter<T extends  Object> {
     }
 
     public void writeType() throws IOException {
-        tofileln(this.TYPE.label+" ");
+        tofileln(this.TYPE.getLabel()+" ");
     }
 
     protected abstract void sanityChecks();

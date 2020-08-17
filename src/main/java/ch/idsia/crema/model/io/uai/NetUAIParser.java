@@ -18,8 +18,10 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 
 	protected int numberOfVariables;
 	protected int[] cardinalities;
-	int numberOfTables;
-	int[][] parents;
+	protected int numberOfTables;
+	protected int[][] parents;
+
+
 
 	// todo: this assume that variables take consecutive ids from 0
 	protected void parseVariablesInfo() {
@@ -95,6 +97,23 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 		}
 
 	}
+
+
+	public int getNumberOfVariables() {
+		return numberOfVariables;
+	}
+	public int[] getCardinalities() {
+		return cardinalities;
+	}
+
+	public int getNumberOfTables() {
+		return numberOfTables;
+	}
+
+	public int[][] getParents() {
+		return parents;
+	}
+
 
 
 }

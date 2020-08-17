@@ -15,7 +15,9 @@ import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * BayesianFactor
@@ -732,6 +734,38 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		BayesianFactor f = this.copy();
 		f.replaceInLine(value, replacement);
 		return f;
+	}
+
+
+	public boolean isDeterministic(int... given){
+
+		if(!DoubleStream.of(this.getData()).allMatch(x -> x==0.0 || x==1.0))
+			return false;
+
+		int[] left = ArraysUtil.difference(this.getDomain().getVariables(), given);
+
+		BayesianFactor f = this;
+		for(int v: left){
+			f = f.marginalize(v);
+		}
+
+		if(!DoubleStream.of(f.getData()).allMatch(x->x==1.0))
+			return false;
+		return true;
+
+	}
+
+	public int[] getAssignments(int... given){
+
+		int[] left = ArraysUtil.difference(this.getDomain().getVariables(), given);
+		int leftSize = IntStream.of(left).map(v -> this.getDomain().getCardinality(v)).reduce(1, (a,b) -> a*b);
+		int rightCombinations = this.getData().length / leftSize;
+
+		BayesianFactor f = this.reorderDomain(Ints.concat(left, given));
+
+		double[][] data = ArraysUtil.reshape2d(f.getData(), rightCombinations, leftSize);
+		return Ints.concat(Stream.of(data).map(v -> ArraysUtil.where(v, x->x!=0.0)).toArray(int[][]::new));
+
 	}
 
 }
