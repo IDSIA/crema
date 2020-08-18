@@ -2,6 +2,7 @@ package ch.idsia.crema.inference.ve;
 
 import ch.idsia.crema.factor.FactorUtil;
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
@@ -11,6 +12,8 @@ import ch.idsia.crema.inference.ve.order.OrderingStrategy;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operation;
+import ch.idsia.crema.utility.ArraysUtil;
+import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
@@ -114,6 +117,9 @@ public class VariableElimination<F extends GenericFactor> implements JoinInferen
 	 * @return
 	 */
 	public F run(int... query) {
+		// variables should be sorted
+		query = ArraysUtil.sort(query);
+
 		FactorQueue<F> queue = new FactorQueue<>(sequence);
 		queue.addAll(factors);
 		boolean normalize = false;
@@ -151,6 +157,41 @@ public class VariableElimination<F extends GenericFactor> implements JoinInferen
 		setEvidence(observations);
 		setFactors(model.getFactors());
 		return run(query);
+	}
+
+		public F conditionalQuery(int target, int... conditioning) {
+			return conditionalQuery(new int[]{target}, conditioning);
+		}
+
+		public F conditionalQuery(int[] target, int... conditioning) {
+
+		TIntIntMap evid = this.evidence;
+		this.evidence = null;
+
+		if(evid == null)
+			evid = new TIntIntHashMap();
+
+		conditioning = ArraysUtil.unique(Ints.concat(conditioning, evid.keys()));
+
+		// Computes the join
+		BayesianFactor numerator = (BayesianFactor) run(Ints.concat(target, conditioning));
+
+		BayesianFactor denomintor = numerator;
+		for(int v: target){
+			if(ArraysUtil.contains(v, conditioning))
+				throw new IllegalArgumentException("Variable "+v+" cannot be in target and conditioning set");
+			denomintor = denomintor.marginalize(v);
+		}
+
+		// Conditional probability
+		BayesianFactor cond = numerator.divide(denomintor);
+
+		// Sets evidence
+		for(int v: evid.keys())
+			cond = cond.filter(v, evid.get(v));
+
+		this.evidence = evid;
+		return (F) cond;
 	}
 
 	public static void main(String[] a) {
