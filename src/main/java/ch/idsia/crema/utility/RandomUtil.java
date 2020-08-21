@@ -88,6 +88,10 @@ public class RandomUtil {
         RandomUtil.random = random;
     }
 
+    public static void setRandomSeed(long seed){
+        setRandom(new Random(seed));
+    }
+
     public static Random getRandom() {
         return random;
     }

@@ -2,6 +2,7 @@ package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.model.Domain;
+import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.vertex.*;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -767,5 +768,29 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return Ints.concat(Stream.of(data).map(v -> ArraysUtil.where(v, x->x!=0.0)).toArray(int[][]::new));
 
 	}
+
+	/**
+	 * Creates a new model with the same structure but with random probability values
+	 * @param model
+	 * @param num_decimals
+	 * @param zero_allowed
+	 * @param variables
+	 * @return
+	 */
+	public static GraphicalModel<BayesianFactor> randomModel(GraphicalModel<BayesianFactor> model, int num_decimals,
+													  boolean zero_allowed, int... variables){
+		GraphicalModel<BayesianFactor> rmodel = model.copy();
+
+		if(variables.length == 0)
+			variables = rmodel.getVariables();
+
+		for(int v: variables){
+			BayesianFactor f = random(rmodel.getDomain(v), rmodel.getDomain(rmodel.getParents(v)), num_decimals, zero_allowed);
+			rmodel.setFactor(v, f);
+		}
+
+		return rmodel;
+	}
+
 
 }

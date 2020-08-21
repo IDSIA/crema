@@ -9,8 +9,7 @@ import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
-import ch.idsia.crema.utility.IndexIterator;
-import com.google.common.primitives.Ints;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -26,27 +25,20 @@ import java.util.stream.IntStream;
 public class ExpectationMaximization {
 
     private final JoinInference<BayesianFactor, BayesianFactor> inferenceEngine;
-    private GraphicalModel<BayesianFactor> model;
+
+    private final GraphicalModel<BayesianFactor> priorModel;
+
+    private GraphicalModel<BayesianFactor> posteriorModel;
 
     private double regularization = 0.00001;
 
-    public ExpectationMaximization(GraphicalModel<BayesianFactor> model,
-                                   JoinInference<BayesianFactor, BayesianFactor> inferenceEngine, boolean inline) {
+    private boolean inline = false;
 
-        this.inferenceEngine = inferenceEngine;
-
-        if(!inline)
-            this.model = model.copy();
-        else
-            this.model = model;
-
-
-    }
 
     public ExpectationMaximization(GraphicalModel<BayesianFactor> model,
                                    JoinInference<BayesianFactor, BayesianFactor> inferenceEngine) {
-        this(model,inferenceEngine,false);
-
+        this.inferenceEngine = inferenceEngine;
+        this.priorModel = model;
     }
 
 
@@ -75,26 +67,28 @@ public class ExpectationMaximization {
 
     private TIntObjectMap<BayesianFactor> expectation(TIntIntMap[] observations) throws InterruptedException {
 
+        initModel();
+
         TIntObjectMap<BayesianFactor> counts = new TIntObjectHashMap<>();
-        for (int variable : model.getVariables()) {
-            counts.put(variable, new BayesianFactor(model.getFactor(variable).getDomain(), false));
+        for (int variable : posteriorModel.getVariables()) {
+            counts.put(variable, new BayesianFactor(posteriorModel.getFactor(variable).getDomain(), false));
         }
 
         for (TIntIntMap observation : observations) {
 
-            for (int var : model.getVariables()) {
+            for (int var : posteriorModel.getVariables()) {
 
-                int[] relevantVars = ArraysUtil.addToSortedArray(model.getParents(var), var);
+                int[] relevantVars = ArraysUtil.addToSortedArray(posteriorModel.getParents(var), var);
                 int[] hidden =  IntStream.of(relevantVars).filter(x -> !observation.containsKey(x)).toArray();
                 int[] obsVars = IntStream.of(relevantVars).filter(x -> observation.containsKey(x)).toArray();
 
 
                 if(hidden.length>0){
                     // Case with missing data
-                    BayesianFactor phidden_obs = inferenceEngine.apply(model, hidden, observation);
+                    BayesianFactor phidden_obs = inferenceEngine.apply(posteriorModel, hidden, observation);
                     if(obsVars.length>0)
                         phidden_obs = phidden_obs.combine(
-                                BayesianFactor.getJoinDeterministic(model.getDomain(obsVars), observation));
+                                BayesianFactor.getJoinDeterministic(posteriorModel.getDomain(obsVars), observation));
 
                     counts.put(var, counts.get(var).addition(phidden_obs));
                 }else{
@@ -111,7 +105,7 @@ public class ExpectationMaximization {
     }
 
     private void maximization(TIntObjectMap<BayesianFactor> counts){
-        for (int var : model.getVariables()) {
+        for (int var : posteriorModel.getVariables()) {
             BayesianFactor countVar = counts.get(var);
 
             if(regularization>0.0)
@@ -119,7 +113,7 @@ public class ExpectationMaximization {
                     counts.get(var).setValueAt(counts.get(var).getValue(k)+regularization, k);
 
             BayesianFactor f = countVar.divide(counts.get(var).marginalize(var));
-            model.setFactor(var, f);
+            posteriorModel.setFactor(var, f);
         }
     }
 
@@ -133,19 +127,30 @@ public class ExpectationMaximization {
 
     }
 
-
-    public GraphicalModel<BayesianFactor> getPosterior() {
-        return model;
+    private void initModel(){
+        if(!inline)
+            this.posteriorModel = priorModel.copy();
+        else
+            this.posteriorModel = priorModel;
     }
 
-    public void setRegularization(double regularization) {
+    public GraphicalModel<BayesianFactor> getPosterior() {
+        return posteriorModel;
+    }
+
+    public ExpectationMaximization setRegularization(double regularization) {
         this.regularization = regularization;
+        return this;
     }
 
     public double getRegularization() {
         return regularization;
     }
 
+    public ExpectationMaximization setInline(boolean inline) {
+        this.inline = inline;
+        return this;
+    }
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -162,7 +167,6 @@ public class ExpectationMaximization {
 
         model.addParent(X[1],X[0]);
         model.addParent(X[2],X[1]);
-
 
         model.setFactor(X[0], new BayesianFactor(model.getDomain(X[0]), new double[]{0.5,0.5}));
         model.setFactor(X[1], new BayesianFactor(model.getDomain(X[1],X[0]), new double[]{2./3, 1./3, 1./3, 2./3}));
@@ -188,10 +192,15 @@ public class ExpectationMaximization {
         }
 
 
+        //RandomUtil.setRandomSeed(222);
+        //model = (BayesianNetwork) BayesianFactor.randomModel(model, 4, false);
+
+
         ExpectationMaximization inf = new ExpectationMaximization(model);
         inf.setRegularization(0.0);
+        inf.setInline(false);
 
-        inf.run(observations,1);
+        inf.run(observations,100);
 
 
         System.out.println("Posterior:");

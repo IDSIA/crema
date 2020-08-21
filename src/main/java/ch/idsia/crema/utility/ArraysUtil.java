@@ -1058,5 +1058,17 @@ public class ArraysUtil {
 		return replace(arr, cond, replacement);
 	}
 
+	public static boolean equals(int[] arr1, int[] arr2, boolean sort, boolean unique){
+		if(unique){
+			arr1 = unique(arr1);
+			arr2 = unique(arr2);
+		}
+		if(sort){
+			arr1 = sort(arr1);
+			arr2 = sort(arr2);
+		}
+
+		return Arrays.equals(arr1, arr2);
+	}
 
 }
