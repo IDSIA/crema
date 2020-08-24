@@ -3,6 +3,9 @@ package ch.idsia.crema.model;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.hash.TIntIntHashMap;
 
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
+
 public class ObservationBuilder extends TIntIntHashMap {
 	private int vars[];
 	
@@ -24,6 +27,20 @@ public class ObservationBuilder extends TIntIntHashMap {
 		}
 
 		return observaitons;
+	}
+
+	public static ObservationBuilder[] observe(String[] vars, double[][] data) {
+		return observe(Stream.of(vars).mapToInt(v -> Integer.valueOf(v)).toArray(), data);
+	}
+	public static ObservationBuilder[] observe(int[] vars, double[][] data) {
+		ObservationBuilder[] obs = new ObservationBuilder[data.length];
+		for(int i=0; i<data.length; i++) {
+			int[] valid = ArraysUtil.where(data[i], x -> !Double.isNaN(x));
+			obs[i] = ObservationBuilder.observe(
+					ArraysUtil.slice(vars, valid),
+					DoubleStream.of(ArraysUtil.slice(data[i], valid)).mapToInt(v -> (int) v).toArray()
+			);
+		}
 	}
 
 

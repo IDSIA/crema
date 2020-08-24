@@ -922,11 +922,16 @@ public class ArraysUtil {
 		return sliceColumns(array, idx_comp);
 	}
 
+
 	public static int[] where(int[] arr, Predicate<Integer> cond) {
 		return IntStream.range(0, arr.length).filter(i -> cond.test(arr[i])).toArray();
 	}
 
 	public static int[] where(double[] arr, Predicate<Double> cond) {
+		return IntStream.range(0, arr.length).filter(i -> cond.test(arr[i])).toArray();
+	}
+
+	public static int[] where(String[] arr, Predicate<String> cond) {
 		return IntStream.range(0, arr.length).filter(i -> cond.test(arr[i])).toArray();
 	}
 
