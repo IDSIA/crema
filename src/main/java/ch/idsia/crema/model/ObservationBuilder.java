@@ -41,6 +41,7 @@ public class ObservationBuilder extends TIntIntHashMap {
 					DoubleStream.of(ArraysUtil.slice(data[i], valid)).mapToInt(v -> (int) v).toArray()
 			);
 		}
+		return obs;
 	}
 
 
