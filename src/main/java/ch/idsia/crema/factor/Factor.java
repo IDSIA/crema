@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operable;
 import com.google.common.primitives.Ints;
@@ -83,5 +84,9 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 		throw new java.lang.UnsupportedOperationException("Not supported yet.");
 	}
 
+
+	public default ObservationBuilder sample(){
+		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+	}
 
 }

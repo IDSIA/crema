@@ -3,6 +3,7 @@ package ch.idsia.crema.factor.bayesian;
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.model.Domain;
 import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.vertex.*;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -790,6 +791,22 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		}
 
 		return rmodel;
+	}
+
+	/**
+	 * Get a sample from this factor. In case of more than one variable in the the domain, the probabilities
+	 * are normalized and hence the factor is considered to be a joint distribution.
+	 * @return
+	 */
+	@Override
+	public ObservationBuilder sample(){
+		double[] probs = this.getData();
+		if(this.getDomain().getVariables().length>1){
+			double sum = DoubleStream.of(probs).sum();
+			probs = DoubleStream.of(probs).map(p -> p/sum).toArray();
+		}
+		return this.getDomain().observationOf(RandomUtil.sampleCategorical(probs));
+
 	}
 
 

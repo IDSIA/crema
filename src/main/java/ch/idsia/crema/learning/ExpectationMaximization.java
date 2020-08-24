@@ -34,6 +34,8 @@ public class ExpectationMaximization {
 
     private boolean inline = false;
 
+    private boolean verbose = false;
+
 
     public ExpectationMaximization(GraphicalModel<BayesianFactor> model,
                                    JoinInference<BayesianFactor, BayesianFactor> inferenceEngine) {
@@ -66,8 +68,6 @@ public class ExpectationMaximization {
 
 
     private TIntObjectMap<BayesianFactor> expectation(TIntIntMap[] observations) throws InterruptedException {
-
-        initModel();
 
         TIntObjectMap<BayesianFactor> counts = new TIntObjectHashMap<>();
         for (int variable : posteriorModel.getVariables()) {
@@ -109,8 +109,10 @@ public class ExpectationMaximization {
             BayesianFactor countVar = counts.get(var);
 
             if(regularization>0.0)
-                for(int k=0; k<countVar.getData().length;k++)
-                    counts.get(var).setValueAt(counts.get(var).getValue(k)+regularization, k);
+                for(int k=0; k<countVar.getData().length;k++) {
+                    double eps = regularization * posteriorModel.getFactor(var).getValue(k);
+                    counts.get(var).setValueAt(counts.get(var).getValue(k) + eps, k);
+                }
 
             BayesianFactor f = countVar.divide(counts.get(var).marginalize(var));
             posteriorModel.setFactor(var, f);
@@ -118,12 +120,25 @@ public class ExpectationMaximization {
     }
 
     public void run(TIntIntMap[] observations, int iterations) throws InterruptedException {
+
+        initModel();
+
         for(int i=0; i<iterations; i++) {
+
+            if(verbose){
+                if(i % 10 == 0)
+                    System.out.print("\n"+i+" iterations ");
+                else
+                    System.out.print(".");
+            }
+
             // E-stage
             TIntObjectMap<BayesianFactor> counts = expectation(observations);
             // M-stage
             maximization(counts);
+
         }
+        System.out.print("\n");
 
     }
 
@@ -149,6 +164,15 @@ public class ExpectationMaximization {
 
     public ExpectationMaximization setInline(boolean inline) {
         this.inline = inline;
+        return this;
+    }
+
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public ExpectationMaximization setVerbose(boolean verbose) {
+        this.verbose = verbose;
         return this;
     }
 
@@ -199,8 +223,9 @@ public class ExpectationMaximization {
         ExpectationMaximization inf = new ExpectationMaximization(model);
         inf.setRegularization(0.0);
         inf.setInline(false);
+        inf.setVerbose(true);
 
-        inf.run(observations,100);
+        inf.run(observations,1);
 
 
         System.out.println("Posterior:");

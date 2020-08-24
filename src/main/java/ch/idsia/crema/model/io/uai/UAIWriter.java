@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.model.io.TypesIO;
 
 import java.io.BufferedWriter;
@@ -26,6 +27,8 @@ public abstract class UAIWriter<T extends  Object> {
                 writer =  new HCredalUAIWriter((SparseModel) target, fileName);
             else if(VCredalUAIWriter.isCompatible(target))
                 writer =  new VCredalUAIWriter((SparseModel) target, fileName);
+            else if(BayesUAIWriter.isCompatible(target))
+                writer = new BayesUAIWriter((BayesianNetwork) target, fileName);
             else
                 throw new IllegalArgumentException("Unknown type to write");
             writer.writeToFile();

@@ -3,6 +3,10 @@ package ch.idsia.crema.model.graphical.specialized;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.GenericSparseModel;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
+import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
+
+import java.util.Iterator;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -31,6 +35,20 @@ public class BayesianNetwork extends GenericSparseModel<BayesianFactor, SparseDi
 		}
 
 		return copy;
+	}
+
+	public TIntIntMap sample(){
+		TIntIntMap obs = new TIntIntHashMap();
+		Iterator it = this.getNetwork().iterator();
+		while(it.hasNext()){
+			int v = (int) it.next();
+			BayesianFactor f = this.getFactor(v).copy();
+			for(int pa : this.getParents(v)){
+				f = f.filter(pa, obs.get(pa));
+			}
+			obs.putAll(f.sample());
+		}
+		return obs;
 	}
 
 

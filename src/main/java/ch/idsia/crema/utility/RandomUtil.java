@@ -6,6 +6,7 @@ import com.google.common.primitives.Ints;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.DoubleStream;
 
 
 public class RandomUtil {
@@ -81,6 +82,40 @@ public class RandomUtil {
         List dataList =  Ints.asList(data);
         Collections.shuffle(dataList, random);
         return Ints.toArray(dataList);
+    }
+
+
+    public static int[] sampleMultinomial(int numCounts, double[] probs){
+
+        int num_decimals = DoubleStream.of(probs)
+                .mapToInt(p ->Double.toString(p).split("\\.")[1].length())
+                .max().orElse(10);
+
+        int[] bounds = DoubleStream.of(probs).mapToInt(p -> (int) (p*Math.pow(10, num_decimals))).toArray();
+
+        int acc = 0;
+        for (int i = 0; i < bounds.length; i++) {
+            acc += bounds[i];
+            bounds[i] = acc;
+        }
+
+        int S[] = RandomUtil.sampleUniform(numCounts, (int) Math.pow(10, num_decimals), false);
+
+        int[] counts = new int[probs.length];
+
+        for(int s: S) {
+            for (int i = 0; i < bounds.length; i++) {
+                if (s < bounds[i]) {
+                    counts[i]++;
+                    break;
+                }
+            }
+        }
+        return counts;
+    }
+
+    public static int sampleCategorical(double[] probs){
+        return  ArraysUtil.where(sampleMultinomial(1, probs), x -> x==1)[0];
     }
 
 

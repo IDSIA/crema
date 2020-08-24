@@ -200,6 +200,14 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		return vid;
 	}
 
+	public int addVariable(int vid, int size){
+		if(vid>max) max = vid;
+		max++;
+		this.cardinalities.put(vid, size);
+		network.addVariable(vid, size);
+		return vid;
+	}
+
 
 	@Override
 	public void removeParent(int variable, int parent) {
@@ -444,6 +452,7 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		int[] ances_pa = Ints.concat(IntStream.of(pa).mapToObj(this::getAncestors).toArray(int[][]::new));
 		return ArraysUtil.unique(Ints.concat(pa, ances_pa));
 	}
+
 
 
 

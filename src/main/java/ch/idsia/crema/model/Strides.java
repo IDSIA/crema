@@ -164,6 +164,11 @@ public final class Strides implements Domain {
 		return result;
 	}
 
+	public ObservationBuilder observationOf(int offset){
+		return ObservationBuilder.observe(this.getVariables(), this.statesOf(offset));
+	}
+
+
 	/**
 	 * Get the offset of the specified variable states using the strides of this
 	 * object.
