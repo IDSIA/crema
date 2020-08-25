@@ -34,6 +34,10 @@ public class ArraysUtil {
 		return result;
 	}
 
+	public static int[] preAppend(int[] base, int... second) {
+		return append(second, base);
+	}
+
 	/**
 	 * Append element of second to the end of base and return the new array.
 	 *
@@ -48,13 +52,30 @@ public class ArraysUtil {
 		return result;
 	}
 
-	/**
-	 * Remove the element at the specified index from the base array.
-	 *
-	 * @param base  original items (Not Null)
-	 * @param index the index of the element to be removed
-	 * @return the new array
-	 */
+	public static double[] preAppend(double[] base, double... second) {
+		return append(second, base);
+	}
+
+	public static String[] append(String[] base, String... second){
+		String[] result = new String[base.length + second.length];
+		System.arraycopy(base, 0, result, 0, base.length);
+		System.arraycopy(second, 0, result, base.length, second.length);
+		return result;
+	}
+
+	public static String[] preAppend(String[] base, String... second) {
+		return append(second, base);
+	}
+
+
+
+		/**
+         * Remove the element at the specified index from the base array.
+         *
+         * @param base  original items (Not Null)
+         * @param index the index of the element to be removed
+         * @return the new array
+         */
 	public static double[] remove(double[] base, int index) {
 		int new_size = base.length - 1;
 		double[] result = new double[new_size];
