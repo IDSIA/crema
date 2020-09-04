@@ -64,7 +64,7 @@ public class WriterCSV {
         return this;
     }
 
-    public WriterCSV setVarNames(String[] varnames){
+    public WriterCSV setVarNames(String... varnames){
         this.varnames = varnames;
         return this;
     }

@@ -1,6 +1,7 @@
 package ch.idsia.crema.model;
 
 import ch.idsia.crema.utility.ArraysUtil;
+import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.stream.DoubleStream;
@@ -68,5 +69,34 @@ public class ObservationBuilder extends TIntIntHashMap {
 	private ObservationBuilder(int[] keys, int[] values) {
 		super(keys, values);
 	}
+
+
+	public static int[] getVariables(TIntIntMap[] obs) {
+		int[] variables = new int[]{};
+		for (TIntIntMap o : obs)
+			variables = ArraysUtil.unionSet(variables, o.keys());
+		return variables;
+	}
+
+	public static double[][] toDoubles(TIntIntMap[] obs, int... variables) {
+		if(variables.length==0)
+		    variables = getVariables(obs);
+		double[][] dataOut = new double[obs.length][variables.length];
+		for(int i=0; i<obs.length; i++){
+			for(int j=0; j<variables.length; j++){
+				if(obs[i].containsKey(variables[j]))
+					dataOut[i][j] = obs[i].get(variables[j]);
+				else
+					dataOut[i][j] = Double.NaN;
+			}
+		}
+		return dataOut;
+	}
+
+	public static ObservationBuilder[] filter(ObservationBuilder[] obs, int... variables){
+		return ObservationBuilder.observe(variables, ObservationBuilder.toDoubles(obs, variables));
+	}
+
+
 
 }

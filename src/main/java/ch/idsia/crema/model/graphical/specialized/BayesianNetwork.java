@@ -3,6 +3,7 @@ package ch.idsia.crema.model.graphical.specialized;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.GenericSparseModel;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
+import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
@@ -37,7 +38,8 @@ public class BayesianNetwork extends GenericSparseModel<BayesianFactor, SparseDi
 		return copy;
 	}
 
-	public TIntIntMap sample(){
+	public TIntIntMap sample(int... vars){
+
 		TIntIntMap obs = new TIntIntHashMap();
 		Iterator it = this.getNetwork().iterator();
 		while(it.hasNext()){
@@ -48,6 +50,15 @@ public class BayesianNetwork extends GenericSparseModel<BayesianFactor, SparseDi
 			}
 			obs.putAll(f.sample());
 		}
+
+		if(vars.length==0)
+			vars = this.getVariables();
+
+
+		for(int v:obs.keys())
+			if(!ArraysUtil.contains(v, vars))
+				obs.remove(v);
+
 		return obs;
 	}
 

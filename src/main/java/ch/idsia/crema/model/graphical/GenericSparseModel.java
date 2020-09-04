@@ -454,7 +454,11 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	}
 
 
-
+	public String toString() {
+		StringBuilder str = new StringBuilder("");
+		str.append(this.getFactors());
+		return str.toString()+"\n";
+	}
 
 
 }

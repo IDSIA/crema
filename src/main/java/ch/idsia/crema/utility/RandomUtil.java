@@ -91,7 +91,7 @@ public class RandomUtil {
                 .mapToInt(p ->Double.toString(p).split("\\.")[1].length())
                 .max().orElse(10);
 
-        int[] bounds = DoubleStream.of(probs).mapToInt(p -> (int) (p*Math.pow(10, num_decimals))).toArray();
+        int[] bounds = DoubleStream.of(probs).mapToInt(p -> (int) (Math.round(p*Math.pow(10, num_decimals)))).toArray();
 
         int acc = 0;
         for (int i = 0; i < bounds.length; i++) {

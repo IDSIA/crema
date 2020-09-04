@@ -810,4 +810,12 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	}
 
 
+	public BayesianFactor scalarMultiply(double k) {
+		BayesianFactor f = this.copy();
+		for (int i = 0; i < f.getData().length; i++) {
+			f.setValueAt(f.getValueAt(i) * k, i);
+		}
+		return f;
+	}
+
 }

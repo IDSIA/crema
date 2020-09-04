@@ -91,6 +91,8 @@ public class ExpectationMaximization {
                                 BayesianFactor.getJoinDeterministic(posteriorModel.getDomain(obsVars), observation));
 
                     counts.put(var, counts.get(var).addition(phidden_obs));
+                    if(Double.isNaN(counts.get(var).getData()[0]))
+                        System.out.println();
                 }else{
                     //fully-observable case
                     for(int index : counts.get(var).getDomain().getCompatibleIndexes(observation)){
@@ -108,13 +110,14 @@ public class ExpectationMaximization {
         for (int var : posteriorModel.getVariables()) {
             BayesianFactor countVar = counts.get(var);
 
-            if(regularization>0.0)
-                for(int k=0; k<countVar.getData().length;k++) {
-                    double eps = regularization * posteriorModel.getFactor(var).getValue(k);
-                    counts.get(var).setValueAt(counts.get(var).getValue(k) + eps, k);
-                }
+            if(regularization>0.0) {
 
-            BayesianFactor f = countVar.divide(counts.get(var).marginalize(var));
+                BayesianFactor reg = posteriorModel.getFactor(var).scalarMultiply(regularization);
+                countVar = countVar.addition(reg);
+
+            }
+
+            BayesianFactor f = countVar.divide(countVar.marginalize(var));
             posteriorModel.setFactor(var, f);
         }
     }
