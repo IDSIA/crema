@@ -9,7 +9,6 @@ import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
-import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -35,6 +34,8 @@ public class ExpectationMaximization {
     private boolean inline = false;
 
     private boolean verbose = false;
+
+    private int[] trainableVars = null;
 
 
     public ExpectationMaximization(GraphicalModel<BayesianFactor> model,
@@ -76,7 +77,7 @@ public class ExpectationMaximization {
 
         for (TIntIntMap observation : observations) {
 
-            for (int var : posteriorModel.getVariables()) {
+            for (int var : trainableVars) {
 
                 int[] relevantVars = ArraysUtil.addToSortedArray(posteriorModel.getParents(var), var);
                 int[] hidden =  IntStream.of(relevantVars).filter(x -> !observation.containsKey(x)).toArray();
@@ -107,7 +108,7 @@ public class ExpectationMaximization {
     }
 
     private void maximization(TIntObjectMap<BayesianFactor> counts){
-        for (int var : posteriorModel.getVariables()) {
+        for (int var : trainableVars) {
             BayesianFactor countVar = counts.get(var);
 
             if(regularization>0.0) {
@@ -124,7 +125,7 @@ public class ExpectationMaximization {
 
     public void run(TIntIntMap[] observations, int iterations) throws InterruptedException {
 
-        initModel();
+        init();
 
         for(int i=0; i<iterations; i++) {
 
@@ -145,11 +146,15 @@ public class ExpectationMaximization {
 
     }
 
-    private void initModel(){
+    private void init(){
         if(!inline)
             this.posteriorModel = priorModel.copy();
         else
             this.posteriorModel = priorModel;
+
+        if(trainableVars == null)
+            trainableVars = posteriorModel.getVariables();
+
     }
 
     public GraphicalModel<BayesianFactor> getPosterior() {
@@ -177,6 +182,15 @@ public class ExpectationMaximization {
     public ExpectationMaximization setVerbose(boolean verbose) {
         this.verbose = verbose;
         return this;
+    }
+
+    public ExpectationMaximization setTrainableVars(int[] trainableVars) {
+        this.trainableVars = trainableVars;
+        return this;
+    }
+
+    public int[] getTrainableVars() {
+        return trainableVars;
     }
 
     public static void main(String[] args) throws InterruptedException {
