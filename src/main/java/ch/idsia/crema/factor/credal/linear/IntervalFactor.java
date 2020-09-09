@@ -2,7 +2,11 @@ package ch.idsia.crema.factor.credal.linear;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
+import ch.idsia.crema.factor.convert.BayesianToInterval;
+import ch.idsia.crema.user.credal.Interval;
+import ch.idsia.crema.utility.ArraysUtil;
 import org.apache.commons.math3.linear.OpenMapRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
@@ -201,5 +205,53 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 		String str =  "P(" + Arrays.toString(getDataDomain().getVariables()) + " | " +Arrays.toString(getSeparatingDomain().getVariables()) +")" ;
 		str+="\n\t"+Arrays.toString(lower[0]) + "\n\t" + Arrays.toString(upper[0]);
 		return str;
+	}
+
+	public double[][] getDataLower() {
+		return lower;
+	}
+
+	public double[][] getDataUpper() {
+		return upper;
+	}
+
+	/**
+	 * Merges the bounds with another interval factor
+	 * @param f
+	 * @return
+	 */
+	private IntervalFactor merge(IntervalFactor f){
+		if(!ArraysUtil.equals(this.getDomain().getVariables(), f.getDomain().getVariables(), true, true))
+			throw new IllegalArgumentException("Inconsistent domains");
+
+		double[][] lbounds = Stream.of(this.getDataLower()).map(double[]::clone).toArray(double[][]::new);
+		double[][] ubounds =  Stream.of(this.getDataUpper()).map(double[]::clone).toArray(double[][]::new);
+
+		for(int i = 0; i<f.getDataDomain().getCombinations(); i++){
+			for(int j = 0; j<f.getSeparatingDomain().getCombinations(); j++){
+				lbounds[i][j] = Math.min(lbounds[i][j], f.getDataLower()[i][j]);
+				ubounds[i][j] = Math.max(ubounds[i][j], f.getDataUpper()[i][j]);
+			}
+		}
+
+		return new IntervalFactor(f.getDataDomain(), f.getSeparatingDomain(), lbounds, ubounds);
+	}
+
+
+	/**
+	 * Merges the bounds with other interval factors
+	 * @param factors
+	 * @return
+	 */
+	public IntervalFactor merge(IntervalFactor... factors){
+		if(factors.length == 1)
+			return merge(factors[0]);
+
+		IntervalFactor out = this;
+
+		for(IntervalFactor f : factors)
+			out = out.merge(f);
+
+		return out;
 	}
 }
