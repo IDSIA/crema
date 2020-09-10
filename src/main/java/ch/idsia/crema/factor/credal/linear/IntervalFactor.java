@@ -227,8 +227,8 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 		double[][] lbounds = Stream.of(this.getDataLower()).map(double[]::clone).toArray(double[][]::new);
 		double[][] ubounds =  Stream.of(this.getDataUpper()).map(double[]::clone).toArray(double[][]::new);
 
-		for(int i = 0; i<f.getDataDomain().getCombinations(); i++){
-			for(int j = 0; j<f.getSeparatingDomain().getCombinations(); j++){
+		for(int i = 0; i<f.getSeparatingDomain().getCombinations(); i++){
+			for(int j = 0; j<f.getDataDomain().getCombinations(); j++){
 				lbounds[i][j] = Math.min(lbounds[i][j], f.getDataLower()[i][j]);
 				ubounds[i][j] = Math.max(ubounds[i][j], f.getDataUpper()[i][j]);
 			}
@@ -253,5 +253,9 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 			out = out.merge(f);
 
 		return out;
+	}
+
+	public static IntervalFactor mergeBounds(IntervalFactor... factors) {
+		return factors[0].merge(factors);
 	}
 }

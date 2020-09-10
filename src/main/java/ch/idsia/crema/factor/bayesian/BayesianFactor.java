@@ -5,6 +5,7 @@ import ch.idsia.crema.model.Domain;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.model.vertex.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
@@ -735,6 +736,14 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	public BayesianFactor replace(double value, double replacement){
 		BayesianFactor f = this.copy();
 		f.replaceInLine(value, replacement);
+		return f;
+	}
+
+	public BayesianFactor replaceNaN(double replacement){
+		BayesianFactor f = this.copy();
+		for(int i=0; i<f.getData().length; i++)
+			if(Double.isNaN(f.getData()[i]))
+				f.getData()[i] = replacement;
 		return f;
 	}
 

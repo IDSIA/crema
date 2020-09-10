@@ -4,14 +4,19 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.convert.BayesianToVertex;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.CredalFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
+import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.user.credal.Vertex;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
@@ -671,4 +676,60 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		}
 		return new VertexFactor(getDataDomain(), newLeft, newData);
 	}
+
+
+	private VertexFactor merge(VertexFactor f){
+		double[][][] vertices = new double[f.getSeparatingDomain().getCombinations()][][];
+		for(int i=0; i<f.getSeparatingDomain().getCombinations(); i++){
+			double[][] v1 = this.getVerticesAt(i);
+			double[][] v2 = f.getVerticesAt(i);
+			vertices[i] = ArraysUtil.reshape2d(
+					Doubles.concat(Doubles.concat(v1), Doubles.concat(v2)),
+					v1.length + v2.length);
+		}
+		return new VertexFactor(f.getDataDomain(), f.getSeparatingDomain(), vertices);
+	}
+
+	public VertexFactor merge(VertexFactor... factors){
+		if(factors.length == 1)
+			return merge(factors[0]);
+		VertexFactor out = this;
+		for(VertexFactor f : factors)
+			out = out.merge(f);
+		return out;
+	}
+
+	public static VertexFactor mergeVertices(VertexFactor... factors){
+		if(factors.length == 0)
+			throw new IllegalArgumentException("wrong number of factors");
+		else if(factors.length == 1)
+			return factors[0].copy();
+		return factors[0].merge(IntStream.range(1,factors.length).mapToObj(i->factors[i]).toArray(VertexFactor[]::new));
+	}
+
+	/**
+	 * Build a credal network from a set of precise models
+	 * @param models
+	 * @return
+	 */
+	public static SparseModel buildModel(BayesianNetwork... models) {
+
+		for (int i = 1; i < models.length; i++) {
+			if (!ArraysUtil.equals(models[0].getVariables(), models[i].getVariables(), true, true))
+				throw new IllegalArgumentException("Inconsistent domains");
+		}
+		SparseModel vmodel = new SparseModel();
+		for (int v : models[0].getVariables())
+			vmodel.addVariable(v);
+		for (int v : vmodel.getVariables()) {
+			vmodel.addParents(v, models[0].getParents(v));
+			vmodel.setFactor(v,
+					VertexFactor.mergeVertices(Stream.of(models)
+							.map(m -> new BayesianToVertex().apply(m.getFactor(v), v))
+							.toArray(VertexFactor[]::new)).convexHull(true));
+		}
+		return vmodel;
+	}
+
+
 }
