@@ -712,7 +712,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	 * @param models
 	 * @return
 	 */
-	public static SparseModel buildModel(BayesianNetwork... models) {
+	public static SparseModel buildModel(boolean convexHull, BayesianNetwork... models) {
 
 		for (int i = 1; i < models.length; i++) {
 			if (!ArraysUtil.equals(models[0].getVariables(), models[i].getVariables(), true, true))
@@ -723,10 +723,14 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 			vmodel.addVariable(v);
 		for (int v : vmodel.getVariables()) {
 			vmodel.addParents(v, models[0].getParents(v));
-			vmodel.setFactor(v,
-					VertexFactor.mergeVertices(Stream.of(models)
-							.map(m -> new BayesianToVertex().apply(m.getFactor(v), v))
-							.toArray(VertexFactor[]::new)).convexHull(true));
+
+			VertexFactor f = VertexFactor.mergeVertices(Stream.of(models)
+					.map(m -> new BayesianToVertex().apply(m.getFactor(v), v))
+					.toArray(VertexFactor[]::new));
+			if(convexHull)
+				f = f.convexHull(true);
+
+			vmodel.setFactor(v, f);
 		}
 		return vmodel;
 	}

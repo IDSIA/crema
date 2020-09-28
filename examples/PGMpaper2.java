@@ -1,3 +1,4 @@
+import ch.idsia.crema.IO;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
@@ -9,9 +10,11 @@ import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.SparseModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
+import java.io.IOException;
+
 
 public class PGMpaper2 {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
 
         // define the structure
         SparseModel cnet = new SparseModel();
@@ -49,6 +52,9 @@ public class PGMpaper2 {
 
         cnet.setFactor(a, fa);
 
+
+        IO.write(cnet, "./models/pgm-hcredal.uai");
+
         // set up the inference and run the queries
         Inference inf = new CredalApproxLP(cnet);
         IntervalFactor res1 = (IntervalFactor) inf.query(b, ObservationBuilder.observe(a, 0));
@@ -60,3 +66,4 @@ public class PGMpaper2 {
 
     }
 }
+

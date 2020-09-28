@@ -142,7 +142,6 @@ public class ExpectationMaximization {
             maximization(counts);
 
         }
-        System.out.print("\n");
 
     }
 

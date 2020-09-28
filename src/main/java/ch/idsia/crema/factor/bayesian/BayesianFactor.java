@@ -17,6 +17,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -826,5 +827,33 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		}
 		return f;
 	}
+
+
+	/**
+	 * Combine this factor with the provided one and return the
+	 * result as a new factor.
+	 *
+	 * @param factors
+	 * @return
+	 */
+	 public static BayesianFactor combineAll(BayesianFactor... factors){
+		if(factors.length<1)
+			throw new IllegalArgumentException("wrong number of factors");
+		else if(factors.length==1)
+			return factors[0].copy();
+
+		BayesianFactor out = factors[0];
+		for(int i=1; i<factors.length; i++){
+			out = out.combine(factors[i]);
+		}
+		return out;
+
+	}
+
+	public static BayesianFactor combineAll(Collection<BayesianFactor> factors){
+		return combineAll(factors.toArray(BayesianFactor[]::new));
+	}
+
+
 
 }

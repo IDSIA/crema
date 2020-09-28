@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -300,6 +301,7 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		return factors.get(variable);
 	}
 
+
 	@Override
 	public void setFactor(int variable, F factor) {
 		int[] vars = factor.getDomain().getVariables();
@@ -323,6 +325,12 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	public Collection<F> getFactors() {
 		return factors.valueCollection();
 	}
+
+
+	public Collection<F>  getFactors(int... variables) {
+		return IntStream.of(variables).mapToObj(v->factors.get(v)).collect(Collectors.toList());
+	}
+
 
 	@Override
 	public void setFactors(F[] factors) {
