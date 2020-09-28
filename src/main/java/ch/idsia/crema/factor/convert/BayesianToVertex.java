@@ -6,6 +6,7 @@ import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.Converter;
 import ch.idsia.crema.model.Strides;
 import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Ints;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class BayesianToVertex implements Converter<BayesianFactor, VertexFactor>
 		Strides left = Strides.as(var, cpt.getDomain().getCardinality(var));
 		Strides right = cpt.getDomain().remove(var);
 		VertexFactor factor = new VertexFactor(left, right);
+		cpt = cpt.reorderDomain(Ints.concat(left.getVariables(), right.getVariables()));
 		int left_var_size = cpt.getDomain().getCardinality(var);
 		List cpt_data = Doubles.asList(cpt.getData());
 
