@@ -8,6 +8,8 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.Iterator;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -38,6 +40,10 @@ public class BayesianNetwork extends GenericSparseModel<BayesianFactor, SparseDi
 		return copy;
 	}
 
+
+	public TIntIntMap[] samples(int N, int... vars) {
+		return IntStream.range(0, N).mapToObj(i -> sample()).toArray(TIntIntMap[]::new);
+	}
 	public TIntIntMap sample(int... vars){
 
 		TIntIntMap obs = new TIntIntHashMap();
@@ -62,6 +68,14 @@ public class BayesianNetwork extends GenericSparseModel<BayesianFactor, SparseDi
 		return obs;
 	}
 
+
+
+	public double[] logProb(TIntIntMap[] data) {
+		return IntStream.of(this.getVariables()).mapToDouble(v -> this.getFactor(v).logProb(data, v)).toArray();
+	}
+	public double sumLogProb(TIntIntMap[] data) {
+		return DoubleStream.of(this.logProb(data)).sum();
+	}
 
 
 

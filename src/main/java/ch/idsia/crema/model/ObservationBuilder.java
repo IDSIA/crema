@@ -4,7 +4,9 @@ import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
+import java.util.Arrays;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ObservationBuilder extends TIntIntHashMap {
@@ -93,8 +95,14 @@ public class ObservationBuilder extends TIntIntHashMap {
 		return dataOut;
 	}
 
-	public static ObservationBuilder[] filter(ObservationBuilder[] obs, int... variables){
+	public static ObservationBuilder[] filter(TIntIntMap[] obs, int... variables){
 		return ObservationBuilder.observe(variables, ObservationBuilder.toDoubles(obs, variables));
+	}
+
+	public static TIntIntMap[] filter(TIntIntMap[] data, int[] keys, int[] vals){
+		return Stream.of(data)
+				.filter(d -> Arrays.equals(IntStream.of(keys).map(k -> d.get(k)).toArray(), vals))
+				.toArray(TIntIntMap[]::new);
 	}
 
 

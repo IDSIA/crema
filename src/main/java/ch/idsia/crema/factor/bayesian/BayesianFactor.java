@@ -18,6 +18,7 @@ import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -852,6 +853,64 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 	public static BayesianFactor combineAll(Collection<BayesianFactor> factors){
 		return combineAll(factors.toArray(BayesianFactor[]::new));
+	}
+
+
+	public BayesianFactor[] getMarginalFactors(int leftVar){
+		Strides left = Strides.as(leftVar, this.getDomain().getCardinality(leftVar));
+		Strides right = this.getDomain().remove(leftVar);
+
+		BayesianFactor cpt = this.reorderDomain(Ints.concat(left.getVariables(), right.getVariables()));
+		int leftVarSize = cpt.getDomain().getCardinality(leftVar);
+		List cpt_data = Doubles.asList(cpt.getData());
+
+		BayesianFactor[] factors = new BayesianFactor[right.getCombinations()];
+
+		for(int i=0; i<right.getCombinations(); i++){
+			double[] v = Doubles.toArray(cpt_data.subList(i*leftVarSize, (i+1)*leftVarSize));
+			factors[i] = new BayesianFactor(cpt.getDomain().intersection(leftVar), v);
+		}
+
+		return factors;
+	}
+
+	public double logProb(TIntIntMap[] data, int leftVar){
+
+		double logprob = 0;
+
+		int[] datavars = ObservationBuilder.getVariables(data);
+		int[] vars = this.getDomain().getVariables();
+		if(ArraysUtil.difference(vars, datavars).length>1)
+			throw new IllegalArgumentException("Wrong variables in data");
+
+		if(!ArraysUtil.contains(leftVar, vars))
+			throw new IllegalArgumentException("Wrong left variable");
+
+		// filter data to variables in the current factor
+		data = ObservationBuilder.filter(data, this.getDomain().getVariables());
+
+		if(vars.length>1){
+
+			Strides rightDomain = this.getDomain().remove(leftVar);
+			BayesianFactor[] factors = this.getMarginalFactors(leftVar);
+
+			for(int i=0; i<rightDomain.getCombinations(); i++){
+				TIntIntMap[] data_i = ObservationBuilder.filter(data, rightDomain.getVariables(), rightDomain.statesOf(i));
+				logprob += factors[i].logProb(data_i, leftVar);
+			}
+
+		}else{
+			double[] observations = Doubles.concat(ObservationBuilder.toDoubles(data, leftVar));
+			int numStates = this.getDomain().getSizeAt(0);
+			int[] M = IntStream.range(0,numStates)
+					.map(i -> (int) DoubleStream.of(observations)
+							.filter(x->x==i).count()).toArray();
+			for(int i=0; i<numStates; i++)
+				logprob += Math.log(this.getData()[i]) * M[i];
+		}
+
+		return logprob;
+
 	}
 
 
