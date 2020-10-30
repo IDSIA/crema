@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToInterval;
 import ch.idsia.crema.user.credal.Interval;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
+import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.linear.OpenMapRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
@@ -257,5 +260,23 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 
 	public static IntervalFactor mergeBounds(IntervalFactor... factors) {
 		return factors[0].merge(factors);
+	}
+
+	public boolean isInside(BayesianFactor f){
+		IndexIterator it = f.getDomain().getReorderedIterator(this.getDomain().getVariables());
+
+		double[] lbounds = Doubles.concat(this.getDataLower());
+		double[] ubounds = Doubles.concat(this.getDataUpper());
+
+		for(int i = 0; i<lbounds.length; i++){
+			int j = it.next();
+			double pl = lbounds[i];
+			double pu = ubounds[i];
+			double q = f.getValueAt(j);
+
+			if (q<pl || q>pu)
+				return false;
+		}
+		return true;
 	}
 }

@@ -592,6 +592,19 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		}
 	}
 
+	public double KLdivergence(BayesianFactor approx){
+		IndexIterator it = approx.getDomain().getReorderedIterator(this.getDomain().getVariables());
+		double kl = 0;
+		for(int i = 0; i<this.getData().length; i++){
+			int j = it.next();
+			double p = this.getValueAt(i);
+			double q = approx.getValueAt(j);
+
+			kl += p * (Math.log(p)  -  Math.log(q));
+		}
+		return kl;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(domain);

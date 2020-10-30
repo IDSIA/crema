@@ -63,7 +63,7 @@ public class ExpectationMaximizationTest {
         }
 
 
-        ExpectationMaximization inf = new ExpectationMaximization(model);
+        FrequentistEM inf = new FrequentistEM(model);
         inf.setRegularization(0.0);
 
         inf.run(observations,1);
