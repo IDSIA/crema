@@ -2,18 +2,17 @@ package ch.idsia.crema.learning;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.JoinInference;
-import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
-import ch.idsia.crema.preprocess.CutObserved;
-import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.stream.IntStream;
 
 public class FrequentistEM extends DiscreteEM<FrequentistEM> {
@@ -40,9 +39,9 @@ public class FrequentistEM extends DiscreteEM<FrequentistEM> {
     }
 
 
-    protected void stepPrivate(TIntIntMap[] observations) throws InterruptedException {
+    protected void stepPrivate(Collection stepArgs) throws InterruptedException {
         // E-stage
-        TIntObjectMap<BayesianFactor> counts = expectation(observations);
+        TIntObjectMap<BayesianFactor> counts = expectation((TIntIntMap[]) stepArgs.toArray(TIntIntMap[]::new));
         // M-stage
         maximization(counts);
 
@@ -173,7 +172,7 @@ public class FrequentistEM extends DiscreteEM<FrequentistEM> {
                         .setInline(false)
                         .setVerbose(true);
 
-        inf.run(observations,100);
+        inf.run(Arrays.asList(observations),100);
 
 
         System.out.println("Posterior:");

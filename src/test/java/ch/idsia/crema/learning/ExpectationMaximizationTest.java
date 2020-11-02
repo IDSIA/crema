@@ -13,6 +13,8 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
@@ -66,7 +68,7 @@ public class ExpectationMaximizationTest {
         FrequentistEM inf = new FrequentistEM(model);
         inf.setRegularization(0.0);
 
-        inf.run(observations,1);
+        inf.run(Arrays.asList(observations),1);
 
 
 

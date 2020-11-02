@@ -17,6 +17,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -53,18 +54,18 @@ public abstract class ExpectationMaximization<F extends Factor, M extends Expect
 
     protected abstract  TIntObjectMap<F> expectation(TIntIntMap[] observations) throws InterruptedException;
 
-    protected abstract void stepPrivate(TIntIntMap[] observations) throws InterruptedException;
+    protected abstract void stepPrivate(Collection stepArgs) throws InterruptedException;
 
-    public void step(TIntIntMap[] observations) throws InterruptedException {
-        stepPrivate(observations);
+    public void step(Collection stepArgs) throws InterruptedException {
+        stepPrivate(stepArgs);
         performedIterations++;
         if(recordIntermediate)
-            intermediateModels.add(posteriorModel.copy());
+            addIntermediateModels(posteriorModel);
 
     }
 
 
-    public void run(TIntIntMap[] observations, int iterations) throws InterruptedException {
+    public void run(Collection stepArgs, int iterations) throws InterruptedException {
         init();
         for(int i=1; i<=iterations; i++) {
             if(verbose){
@@ -73,7 +74,7 @@ public abstract class ExpectationMaximization<F extends Factor, M extends Expect
                 else
                     System.out.print(".");
             }
-            step(observations);
+            step(stepArgs);
             if(stopAtConvergence && !updated)
                 break;
 
@@ -91,7 +92,7 @@ public abstract class ExpectationMaximization<F extends Factor, M extends Expect
 
         if(recordIntermediate) {
             intermediateModels = new ArrayList<GraphicalModel<F>>();
-            intermediateModels.add(priorModel.copy());
+            addIntermediateModels(priorModel);
         }
 
     }
@@ -155,6 +156,32 @@ public abstract class ExpectationMaximization<F extends Factor, M extends Expect
 
     public int getPerformedIterations() {
         return performedIterations;
+    }
+
+
+    public double getKlthreshold() {
+        return klthreshold;
+    }
+
+    public JoinInference<F, F> getInferenceEngine() {
+        return inferenceEngine;
+    }
+
+    public M setInferenceEngine(JoinInference<F, F> inferenceEngine) {
+        this.inferenceEngine = inferenceEngine;
+        return (M) this;
+    }
+
+    protected void addIntermediateModels(GraphicalModel<F> model) {
+        this.intermediateModels.add(model.copy());
+    }
+
+    protected void setPerformedIterations(int performedIterations) {
+        this.performedIterations = performedIterations;
+    }
+
+    protected void setUpdated(boolean updated) {
+        this.updated = updated;
     }
 
 }
