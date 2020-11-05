@@ -21,8 +21,6 @@ public class FrequentistEM extends DiscreteEM<FrequentistEM> {
 
     private TIntObjectMap<BayesianFactor> counts;
 
-
-
     public FrequentistEM(GraphicalModel<BayesianFactor> model,
                                    JoinInference<BayesianFactor, BayesianFactor> inferenceEngine) {
         this.inferenceEngine = inferenceEngine;
@@ -184,6 +182,7 @@ public class FrequentistEM extends DiscreteEM<FrequentistEM> {
         System.out.println("--");
         System.out.println(inf.getPosterior().getFactor(X[2]).filter(X[1],0)); // [0.9, 0.1]
         System.out.println(inf.getPosterior().getFactor(X[2]).filter(X[1],1)); // [0.1, 0.9]
+
 
     }
 

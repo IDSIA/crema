@@ -1,7 +1,7 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 
-
+import java.util.Arrays;
 
 
 public class BNdefinition {
@@ -42,6 +42,12 @@ public class BNdefinition {
         model.setFactors(f);
 
         System.out.println(model);
+
+        for(int x: model.getVariables()){
+            for(int y: model.getChildren(x)){
+                System.out.print("("+x+"-->"+y+")");
+            }
+        }
 
     }
 }

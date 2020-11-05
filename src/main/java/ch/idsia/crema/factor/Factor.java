@@ -5,6 +5,9 @@ import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operable;
 import com.google.common.primitives.Ints;
+import gnu.trove.impl.hash.TIntIntHash;
+import gnu.trove.map.hash.TIntIntHashMap;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Collection;
 
@@ -25,7 +28,25 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * @return
 	 */
 	public F filter(int variable, int state);
-	
+
+	/**
+	 * <p>
+	 * Filter the factor by selecting only the values where the specified
+	 * variable is in the specified state.
+	 * </p>
+	 *
+	 * <p>
+	 * Can return this if the variables are not part of the domain of the factor.
+	 * </p>
+	 *
+	 * @param obs
+	 * @return
+	 */
+	public default F filter(TIntIntHashMap obs){
+		throw new NotImplementedException("Not Implemented yet");
+	}
+
+
 	/** 
 	 * Combine this factor with the provided one and return the 
 	 * result as a new factor.

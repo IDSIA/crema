@@ -88,7 +88,17 @@ public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, De
 	public boolean isBarren(int variable){ return getChildren(variable).length==0; }
 
 
+	public int[] markovBlanket(int v){
 
+		int[] paCh = Ints.concat(IntStream.of(this.getChildren(v))
+								.mapToObj(c -> getParents(c))
+								.toArray(int[][]::new));
+
+		paCh = IntStream.of(paCh).filter(x->x!=v).toArray();
+
+		return ArraysUtil.unique(Ints.concat(this.getParents(v), this.getChildren(v), paCh));
+
+	}
 
 
 

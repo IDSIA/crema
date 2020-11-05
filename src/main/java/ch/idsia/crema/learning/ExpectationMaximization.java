@@ -51,9 +51,6 @@ public abstract class ExpectationMaximization<F extends Factor, M extends Expect
 
     protected double klthreshold = 0.0;
 
-
-    protected abstract  TIntObjectMap<F> expectation(TIntIntMap[] observations) throws InterruptedException;
-
     protected abstract void stepPrivate(Collection stepArgs) throws InterruptedException;
 
     public void step(Collection stepArgs) throws InterruptedException {
