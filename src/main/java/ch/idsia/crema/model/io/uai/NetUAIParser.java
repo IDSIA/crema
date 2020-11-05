@@ -1,16 +1,13 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.graphical.GenericSparseModel;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.util.Assert;
+import org.junit.Assert;
 
 import java.util.stream.IntStream;
 
 /**
  * Generic Parser class for PGMs in UAI format
- * 
+ *
  * @author Rafael Cabañas
  */
 
@@ -20,7 +17,6 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 	protected int[] cardinalities;
 	protected int numberOfTables;
 	protected int[][] parents;
-
 
 
 	// todo: this assume that variables take consecutive ids from 0
@@ -40,7 +36,7 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 
 		// Parsing the number of parents and the parents
 		parents = new int[numberOfTables][];
-		int numberOfParents = 0;
+		int numberOfParents;
 		for (int i = 0; i < numberOfTables; i++) {
 			numberOfParents = popInteger() - 1;
 			int left_var = popInteger();
@@ -60,7 +56,7 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 
 		// Parsing the number of parents and the parents
 		parents = new int[numberOfTables][];
-		int numberOfParents = 0;
+		int numberOfParents;
 		for (int i = 0; i < numberOfTables; i++) {
 			numberOfParents = popInteger() - 1;
 
@@ -75,7 +71,6 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 						"Error: domain of factor associated to " + left_var + " is defined twice");
 			parents[left_var] = parents_aux;
 		}
-
 	}
 
 	@Override
@@ -83,25 +78,24 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 		super.sanityChecks();
 
 		// Specific sanity checks for SparseModels
-		Assert.isTrue(numberOfVariables == numberOfTables,
-				"Wrong number of tables (" + numberOfTables + ") and variables (" + numberOfVariables + ")");
+		Assert.assertEquals("Wrong number of tables (" + numberOfTables + ") and variables (" + numberOfVariables + ")",
+				numberOfVariables, numberOfTables);
 
-		Assert.isTrue(IntStream.of(cardinalities).allMatch(c -> c > 1), "Wrong cardinalities");
+		Assert.assertTrue("Wrong cardinalities",
+				IntStream.of(cardinalities).allMatch(c -> c > 1));
 
 		for (int i = 0; i < parents.length; i++) {
 			for (int j = 0; j < parents[i].length; j++) {
-				Assert.isTrue(parents[i][j] >= 0 || parents[i][j] < numberOfVariables);
-				Assert.isTrue(parents[i][j] != i);
-
+				Assert.assertTrue(parents[i][j] >= 0 || parents[i][j] < numberOfVariables);
+				Assert.assertTrue(parents[i][j] != i);
 			}
 		}
-
 	}
-
 
 	public int getNumberOfVariables() {
 		return numberOfVariables;
 	}
+
 	public int[] getCardinalities() {
 		return cardinalities;
 	}
@@ -113,7 +107,5 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 	public int[][] getParents() {
 		return parents;
 	}
-
-
 
 }
