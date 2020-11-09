@@ -15,7 +15,7 @@ Crema can be easily included at any maven project. For this, add the following c
     <dependencies>
         <dependency>
             <groupId>ch.idsia</groupId>
-            <artifactId>Crema</artifactId>
+            <artifactId>crema</artifactId>
             <version>0.1.4</version>
             <scope>compile</scope>
         </dependency>
