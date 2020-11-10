@@ -6,11 +6,11 @@
 - EM abstract class.
 - Operations for calculating the log-likelihood.
 - Static method combineAll at BayesianFactor.
-- Improved ObservationBuilder
-- CSV support #18
-- Bayes writer in UAI format #26
-- VCREDAL HCREDAL writers 
-- VE conditionalQuery
+- Improved ObservationBuilder.
+- CSV support #18.
+- Bayes writer in UAI format #26.
+- VCREDAL HCREDAL writers. 
+- VE conditionalQuery.
 - Builder of a CN from a set of precise BNs.
 
 
