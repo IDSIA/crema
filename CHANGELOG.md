@@ -1,3 +1,20 @@
+0.1.5
+===========
+
+- fixed #33, #32, #30.
+- BayesianFactor.filter method accepts a TIntIntHashMap for specifying the states of the variables.
+- EM abstract class.
+- Operations for calculating the log-likelihood.
+- Static method combineAll at BayesianFactor.
+- Improved ObservationBuilder.
+- CSV support #18.
+- Bayes writer in UAI format #26.
+- VCREDAL HCREDAL writers. 
+- VE conditionalQuery.
+- Builder of a CN from a set of precise BNs.
+
+
+
 0.1.4
 ===========
 
