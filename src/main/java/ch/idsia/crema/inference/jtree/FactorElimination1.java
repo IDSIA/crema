@@ -39,6 +39,9 @@ public class FactorElimination1 implements SingleInference<BayesianFactor, Bayes
 		// while S has more than one factor
 		while (S.size() > 1) {
 			BayesianFactor fi = findFi(S, fr);
+			if (fi == null)
+				continue;
+
 			TIntSet V = variablesInFiNotInS(fi, S);
 			BayesianFactor fj = S.remove(S.size() - 1);
 
@@ -83,7 +86,7 @@ public class FactorElimination1 implements SingleInference<BayesianFactor, Bayes
 		// loops from the end
 		for (int i = S.size() - 1; i >= 0; i--) {
 			BayesianFactor f = S.get(i);
-			if (!S.equals(Fr)) {
+			if (!f.equals(Fr)) {
 				S.remove(i);
 				return f;
 			}

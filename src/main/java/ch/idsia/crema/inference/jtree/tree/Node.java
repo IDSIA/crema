@@ -11,12 +11,12 @@ import java.util.Set;
  * Date:    06.02.2018 14:29
  */
 public class Node {
-	private int index;
+	private final int index;
 
 	private BayesianFactor factor;
 
-	private Set<Integer> neighbour = new HashSet<>();
-	private Set<Node> incoming = new HashSet<>();
+	private final Set<Integer> neighbour = new HashSet<>();
+	private final Set<Node> incoming = new HashSet<>();
 
 	public Node(int index) {
 		this.index = index;

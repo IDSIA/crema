@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.jtree.algorithm;
 
-import ch.idsia.crema.inference.jtree.BayesianNetworks;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.FindCliques;
 import ch.idsia.crema.inference.jtree.algorithm.join.JoinGraphBuilder;
@@ -11,9 +12,11 @@ import ch.idsia.crema.inference.jtree.algorithm.triangulation.MinDegreeOrdering;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate;
 import ch.idsia.crema.inference.jtree.algorithm.updating.MessagePassing;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Set;
@@ -24,43 +27,35 @@ import java.util.stream.IntStream;
  * Project: CreMA
  * Date:    12.02.2018 14:52
  */
-public class AlgorithmTest {
+public class MessagePassingTest {
+	BayesianNetwork bn;
+	BayesianFactor[] factors;
+
+	@Before
+	public void setUp() {
+		// given: a Bayesian Network BN
+		BayesianNetworkContainer bns = BayesianNetworkContainer.aSimpleBayesianNetwork();
+		bn = bns.network;
+		factors = bns.factors;
+	}
 
 	@Test
-	public void moralizeAndTriangulate() {
-		// Given: a Bayesian Network BN
-//		BayesianNetworks bn = BayesianNetworks.junctionTreeTheoryExample();
-		BayesianNetworks bn = BayesianNetworks.junctionTreePropagationTheoryExample();
-
-		// Moralize
+	public void testCliquesALgorithm() {
+		// moralization step
 		Moralize m = new Moralize();
-		m.setModel(bn.network.getNetwork());
-		// obtaining a domain graph G for BN (moral graph)
+		m.setInput(bn.getNetwork());
 		SparseUndirectedGraph moralGraph = m.exec();
 
-//		assert (moralGraph.getEdge(0, 1) != null);
-//		assert (moralGraph.getEdge(4, 5) != null);
-//		assert (moralGraph.getEdge(5, 6) != null);
-//		assert (moralGraph.getEdge(6, 7) != null);
-
-		// Triangulate
+		// triangulation step
 		Triangulate t = new MinDegreeOrdering();
-		t.setModel(moralGraph);
-		// obtaining a triangulated graph for G
+		t.setInput(moralGraph);
 		SparseUndirectedGraph triangulated = t.exec();
-
-//		assert (triangulated.edgeSet().size() == moralGraph.edgeSet().size() + 2);
-//		assert (triangulated.vertexSet().size() == moralGraph.vertexSet().size());
 
 		// Find cliques
 		FindCliques fc = new FindCliques();
 		fc.setModel(triangulated);
-		fc.setSequence(t.getSequence());
+		fc.setSequence(t.getEliminationSequence());
 		Set<Clique> cliques = fc.exec();
-
-//		assert (cliques.size() == 5);
-//		assert (cliques.stream().max(Comparator.comparingInt(x -> x.getVariables().length)).get().getVariables().length == 4);
-//		assert (cliques.stream().min(Comparator.comparingInt(x -> x.getVariables().length)).get().getVariables().length == 3);
 
 		// Build Join Graph
 		JoinGraphBuilder jgb = new JoinGraphBuilder();
@@ -75,7 +70,7 @@ public class AlgorithmTest {
 
 		// now we are ready to perform a belief updating by message passing
 		MessagePassing mp = new MessagePassing();
-		IntStream.range(0, bn.factors.length).forEach(i -> mp.addFactor(i, bn.factors[i]));
+		IntStream.range(0, factors.length).forEach(i -> mp.addFactor(i, factors[i]));
 		mp.setModel(joinTree);
 		mp.setEvidence(new TIntIntHashMap());
 		mp.exec();

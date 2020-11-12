@@ -6,10 +6,9 @@ import ch.idsia.crema.inference.jtree.tree.EliminationTree;
 import ch.idsia.crema.model.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -50,17 +49,7 @@ public class FactorElimination implements Updating<BayesianFactor, BayesianFacto
 		tree.distribute();
 
 		// foreach node i compute joint marginal Pr(Ci, e)
-
-		List<BayesianFactor> factors = new ArrayList<>();
-
-		for (int i : query) {
-			// TODO
-			BayesianFactor Pr = tree.compute(i);
-			factors.add(Pr);
-			System.out.println(i + " " + Arrays.toString(Pr.getData()));
-		}
-
-		return factors;
+		return Arrays.stream(query).mapToObj(i -> tree.compute(i)).collect(Collectors.toList());
 	}
 
 	@Override

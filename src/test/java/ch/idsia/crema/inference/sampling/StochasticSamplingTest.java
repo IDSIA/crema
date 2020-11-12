@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.jtree.BayesianNetworks;
+import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
 import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import org.junit.Before;
 
@@ -19,7 +19,7 @@ public class StochasticSamplingTest {
 
 	@Before
 	public void setUp() {
-		BayesianNetworks BN = BayesianNetworks.mix5Variables();
+		BayesianNetworkContainer BN = BayesianNetworkContainer.mix5Variables();
 
 		model = BN.network;
 	}

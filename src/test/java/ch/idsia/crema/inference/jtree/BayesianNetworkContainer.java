@@ -17,13 +17,13 @@ import java.util.Random;
  * <p>
  * This utility class contains a number of ready to use bayesian networks taken from books, examples or other sources.
  */
-public class BayesianNetworks {
+public class BayesianNetworkContainer {
 
 	public BayesianNetwork network;
 	public BayesianFactor[] factors;
 	public int[] variables;
 
-	private BayesianNetworks(BayesianNetwork network, BayesianFactor[] factors, int... variables) {
+	private BayesianNetworkContainer(BayesianNetwork network, BayesianFactor[] factors, int... variables) {
 		this.network = network;
 		this.factors = factors;
 		this.variables = variables;
@@ -34,7 +34,7 @@ public class BayesianNetworks {
 	 *
 	 * @return a BN
 	 */
-	public static BayesianNetworks binary11Variables() {
+	public static BayesianNetworkContainer binary11Variables() {
 		BayesianNetwork model = new BayesianNetwork();
 
 		int A, B, C, D, E, F, G, H, I, J, K;
@@ -84,7 +84,7 @@ public class BayesianNetworks {
 		f[K] = new BayesianFactor(model.getDomain(G, H, K));
 		f[K].setData(new int[]{K, G, H}, new double[]{.4, .6, .8, .2, .5, .5, .7, .3});
 
-		return new BayesianNetworks(model, f, A, B, C, D, E, F, G, H, I, J, K);
+		return new BayesianNetworkContainer(model, f, A, B, C, D, E, F, G, H, I, J, K);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class BayesianNetworks {
 	 *
 	 * @return a BN
 	 */
-	public static BayesianNetworks mix5Variables() {
+	public static BayesianNetworkContainer mix5Variables() {
 		BayesianNetwork model = new BayesianNetwork();
 		BayesianFactor[] f = new BayesianFactor[5];
 
@@ -127,7 +127,7 @@ public class BayesianNetworks {
 
 		model.setFactors(f);
 
-		return new BayesianNetworks(model, f, A, B, C, D, E);
+		return new BayesianNetworkContainer(model, f, A, B, C, D, E);
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class BayesianNetworks {
 	 * @param p    parents for each node
 	 * @return a BN
 	 */
-	public static BayesianNetworks random(long seed, int n, int p) {
+	public static BayesianNetworkContainer random(long seed, int n, int p) {
 		Random random = new Random(seed);
 
 		BayesianNetwork model = new BayesianNetwork();
@@ -170,7 +170,7 @@ public class BayesianNetworks {
 				}
 			}
 
-			for (; doubles.size() < Math.pow(2, ints.size()); ) {
+			while (doubles.size() < Math.pow(2, ints.size())) {
 				double y = random.nextDouble();
 				doubles.add(y);
 				doubles.add(1 - y);
@@ -186,10 +186,10 @@ public class BayesianNetworks {
 
 		model.setFactors(f);
 
-		return new BayesianNetworks(model, f, vars.toArray());
+		return new BayesianNetworkContainer(model, f, vars.toArray());
 	}
 
-	public static BayesianNetworks junctionTreeTheoryExample() {
+	public static BayesianNetworkContainer junctionTreeTheoryExample() {
 
 		BayesianNetwork model = new BayesianNetwork();
 		int A = model.addVariable(2); // 1
@@ -211,23 +211,29 @@ public class BayesianNetworks {
 
 		BayesianFactor[] f = new BayesianFactor[8];
 
-		return new BayesianNetworks(model, f, A, B, C, D, E, F, G, H);
+		return new BayesianNetworkContainer(model, f, A, B, C, D, E, F, G, H);
 	}
 
-	public static BayesianNetworks junctionTreePropagationTheoryExample() {
+	/**
+	 * This model is based on "Modeling and Reasoning with BN", Jensen, p.110, Fig. 4.1 "A simple Bayesian network BN".
+	 *
+	 * @return A simple Bayesian network BN
+	 */
+	public static BayesianNetworkContainer aSimpleBayesianNetwork() {
 
 		BayesianNetwork model = new BayesianNetwork();
-		int A1 = model.addVariable(2); // A1
-		int A2 = model.addVariable(2); // A2
+		int A1 = model.addVariable(2);
+		int A2 = model.addVariable(2);
+		int A3 = model.addVariable(2);
+		int A4 = model.addVariable(2);
+		int A5 = model.addVariable(2);
+		int A6 = model.addVariable(2);
+
 		model.addParent(A2, A1);
-		int A3 = model.addVariable(2); // A3
 		model.addParent(A3, A1);
-		int A4 = model.addVariable(2); // A4
 		model.addParent(A4, A2);
-		int A5 = model.addVariable(2); // A5
 		model.addParent(A5, A2);
 		model.addParent(A5, A3);
-		int A6 = model.addVariable(2); // A6
 		model.addParent(A6, A3);
 
 		BayesianFactor[] f = new BayesianFactor[6];
@@ -245,6 +251,6 @@ public class BayesianNetworks {
 		f[A6] = new BayesianFactor(model.getDomain(A6, A3));
 		f[A6].setData(new int[]{A3, A6}, new double[]{.4, .6, .5, .5});
 
-		return new BayesianNetworks(model, f, A1, A2, A3, A4, A5, A6);
+		return new BayesianNetworkContainer(model, f, A1, A2, A3, A4, A5, A6);
 	}
 }

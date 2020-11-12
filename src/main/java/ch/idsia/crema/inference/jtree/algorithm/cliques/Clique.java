@@ -13,6 +13,10 @@ public class Clique {
 
 	private int[] variables;
 
+	protected Clique() {
+
+	}
+
 	/**
 	 * Creates a new Clique from a sorted array of variables.
 	 *
@@ -57,7 +61,7 @@ public class Clique {
 
 	@Override
 	public String toString() {
-		return "{" + Arrays.toString(variables) + "}";
+		return "Clique" + Arrays.toString(variables);
 	}
 
 	@Override

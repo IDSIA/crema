@@ -688,7 +688,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return BayesianFactor.deterministic(left, Strides.empty(), assignment);
 	}
 
-	public BayesianFactor get_deterministic(int var, int assignment){
+	public BayesianFactor getDeterministic(int var, int assignment){
 		return BayesianFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
 

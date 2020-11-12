@@ -1,11 +1,11 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.model.graphical.GenericSparseModel;
+import ch.idsia.crema.model.graphical.GenericGraphicalModel;
 
 import java.io.IOException;
 
 
-public abstract class NetUAIWriter<T extends GenericSparseModel> extends UAIWriter<T>{
+public abstract class NetUAIWriter<T extends GenericGraphicalModel> extends UAIWriter<T>{
     @Override
     protected void sanityChecks() {
         // Check model consistency

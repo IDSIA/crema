@@ -5,6 +5,8 @@ import ch.idsia.crema.model.graphical.SparseModel;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
@@ -49,7 +51,7 @@ public class FactorElimination1Test {
 
 		BayesianFactor q = fe.FE1(C);
 
-		assert (q.getData()[0] <= .376 + eps );
-		assert (q.getData()[1] <= .624 + eps );
+		assertTrue(q.getData()[0] <= .376 + eps);
+		assertTrue(q.getData()[1] <= .624 + eps);
 	}
 }

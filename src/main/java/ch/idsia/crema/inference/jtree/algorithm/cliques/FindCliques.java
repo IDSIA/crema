@@ -23,8 +23,7 @@ public class FindCliques {
 	private Set<Clique> cliques;
 
 	/**
-	 * @param model a triangulated graph produced by the
-	 *              {@link ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate} algorithm.
+	 * @param model a triangulated graph produced by the {@link ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate} algorithm.
 	 */
 	public void setModel(SparseUndirectedGraph model) {
 		this.model = model;
@@ -45,8 +44,7 @@ public class FindCliques {
 	}
 
 	/**
-	 * Explore the given triangulated graph searching for all the {@link Clique}s found using the given elimination
-	 * sequence.
+	 * Explore the given triangulated graph searching for all the {@link Clique}s found using the given elimination sequence.
 	 *
 	 * @return a set of {@link Clique}s found by the algorithm
 	 */

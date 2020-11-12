@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
  */
 @XmlRootElement(name = "model")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SparseModel<F extends GenericFactor> extends GenericSparseModel<F, SparseList> implements GraphicalModel<F> {
+public class SparseModel<F extends GenericFactor> extends GenericGraphicalModel<F, SparseList> implements GraphicalModel<F> {
 
 	/**
 	 * Create the directed model using the specified network implementation.

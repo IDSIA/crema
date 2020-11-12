@@ -29,7 +29,7 @@ import java.util.stream.IntStream;
  * Project: CreMA
  * Date:    12.02.2018 10:48
  */
-public class GenericSparseModel<F extends GenericFactor, G extends Graph> implements GraphicalModel<F> {
+public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> implements GraphicalModel<F> {
 
 
 	@XmlTransient
@@ -56,10 +56,10 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	/**
 	 * Create the directed model using the specified network implementation.
 	 *
-	 * @param method
+	 * @param network the network implementation to use
 	 */
-	public GenericSparseModel(G method) {
-		network = method;
+	public GenericGraphicalModel(G network) {
+		this.network = network;
 		cardinalities = new TIntIntHashMap();
 		factors = new TIntObjectHashMap<>();
 
@@ -75,7 +75,7 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public GenericSparseModel<F, G> copy() {
+	public GenericGraphicalModel<F, G> copy() {
 //		Graph graph = network.copy();
 //		SparseModel<F> new_model = new SparseModel<>(graph);
 //		new_model.domainChanger = domainChanger;
@@ -105,11 +105,11 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 	 * @return the new model
 	 */
 	@SuppressWarnings("unchecked")
-	public <R extends GenericFactor> GenericSparseModel<R, G> convert(BiFunction<F, Integer, R> converter) {
+	public <R extends GenericFactor> GenericGraphicalModel<R, G> convert(BiFunction<F, Integer, R> converter) {
 		NullChange<R> changer = new NullChange<>();
 
 		Graph graph = network.copy();
-		GenericSparseModel<R, G> new_model = new GenericSparseModel<>((G) graph);
+		GenericGraphicalModel<R, G> new_model = new GenericGraphicalModel<>((G) graph);
 		new_model.domainChanger = changer;
 		new_model.cardinalityChanger = changer;
 
@@ -201,14 +201,13 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		return vid;
 	}
 
-	public int addVariable(int vid, int size){
-		if(vid>max) max = vid;
+	public int addVariable(int vid, int size) {
+		if (vid > max) max = vid;
 		max++;
 		this.cardinalities.put(vid, size);
 		network.addVariable(vid, size);
 		return vid;
 	}
-
 
 	@Override
 	public void removeParent(int variable, int parent) {
@@ -252,7 +251,7 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		int[] variables = getVariables();
 
 		// TODO: stream or TIntArray?
-		// Arrays.stream(variables).filter(v -> getParents(v).length == 0).toArray()
+//		return Arrays.stream(variables).filter(v -> getParents(v).length == 0).toArray();
 
 		TIntArrayList list = new TIntArrayList();
 		for (int variable : variables) {
@@ -301,14 +300,12 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		return factors.get(variable);
 	}
 
-
 	@Override
 	public void setFactor(int variable, F factor) {
 		int[] vars = factor.getDomain().getVariables();
 		int index = ArrayUtils.indexOf(vars, variable);
-
-
 		int[] parents = ArraysUtil.remove(vars, index);
+
 		addParents(variable, parents);
 
 		factors.put(variable, factor);
@@ -326,11 +323,9 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		return factors.valueCollection();
 	}
 
-
-	public Collection<F>  getFactors(int... variables) {
-		return IntStream.of(variables).mapToObj(v->factors.get(v)).collect(Collectors.toList());
+	public Collection<F> getFactors(int... variables) {
+		return IntStream.of(variables).mapToObj(v -> factors.get(v)).collect(Collectors.toList());
 	}
-
 
 	@Override
 	public void setFactors(F[] factors) {
@@ -349,23 +344,22 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 		}
 	}
 
-
-
-	public GenericSparseModel observe(int var, int state){
-		GenericSparseModel obs_model = this.copy();
+	@SuppressWarnings("unchecked")
+	public GenericGraphicalModel<F, G> observe(int var, int state) {
+		GenericGraphicalModel<F, G> observedModel = this.copy();
 		// Fix the value of the intervened variable
-		obs_model.setFactor(var, this.getFactor(var).get_deterministic(var, state));
-		return obs_model;
+		observedModel.setFactor(var, (F) this.getFactor(var).getDeterministic(var, state));
+		return observedModel;
 	}
-
 
 	/**
 	 * Determines if the factor domains match with the structure of the DAG.
+	 *
 	 * @return
 	 */
-	public boolean correctFactorDomains(){
+	public boolean correctFactorDomains() {
 		return IntStream.of(this.getVariables())
-					.allMatch(v -> Arrays.equals(
+				.allMatch(v -> Arrays.equals(
 						ArraysUtil.sort(this.getFactor(v).getDomain().getVariables()),
 						ArraysUtil.sort(ArrayUtils.add(this.getParents(v), v))
 				));
@@ -373,100 +367,102 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph> implem
 
 	/**
 	 * Determines if the factor domains match with the structure of the DAG.
-	 * @return
+	 *
+	 * @return true if the network is correct, otherwise false
 	 */
-	public boolean inspectFactorDomains(){
-
+	public boolean inspectFactorDomains() {
 		boolean correct = true;
-		for(int v : this.getVariables()){
+
+		for (int v : this.getVariables()) {
 			int[] d1 = ArraysUtil.sort(this.getFactor(v).getDomain().getVariables());
 			int[] d2 = ArraysUtil.sort(ArrayUtils.add(this.getParents(v), v));
 
-			if(!Arrays.equals(d1,d2)){
-				System.out.println("Error in "+v+":");
-				System.out.println("factor domain: "+Arrays.toString(d1));
-				System.out.println("factor in net:  "+Arrays.toString(d2));
-				correct=false;
-
+			if (!Arrays.equals(d1, d2)) {
+				System.out.println("Error in " + v + ":");
+				System.out.println("factor domain: " + Arrays.toString(d1));
+				System.out.println("factor in net:  " + Arrays.toString(d2));
+				correct = false;
 			}
 		}
-		return correct;
 
+		return correct;
 	}
 
 	/**
 	 * Returns an array with the parents of a variable and the variable itself.
-	 * @param var
-	 * @return
+	 *
+	 * @param variable source variable
+	 * @return an array with all the parents of the variable, then the variable itself
 	 */
-	public int[] getVariableAndParents(int var){
-		return ArrayUtils.add(this.getParents(var), var);
+	public int[] getVariableAndParents(int variable) {
+		return ArrayUtils.add(this.getParents(variable), variable);
 	}
 
-
 	/**
-	 * Retruns an array with the isolated variables (without parents and children)
-	 * @return
+	 * Returns an array with the isolated variables (without parents and children)
+	 *
+	 * @return an array of all the isolated variables
 	 */
 	public int[] getDisconnected() {
 		return IntStream.of(this.getVariables())
-				.filter( v -> this.getParents(v).length == 0 && this.getChildren(v).length == 0)
+				.filter(v -> this.getParents(v).length == 0 && this.getChildren(v).length == 0)
 				.toArray();
 	}
 
 	/**
-	 * Check if there is a path (without considereing the link directions) between 2 nodes
-	 * @param node1
-	 * @param node2
-	 * @return
+	 * Check if there is a path (without considering the link directions) between 2 nodes.
+	 *
+	 * @param node1 start node
+	 * @param node2 end node
+	 * @return true if there exist a path between the two nodes, otherwise false
 	 */
-
 	public boolean areConnected(int node1, int node2) {
 		return areConnected(node1, node2, new int[]{});
 	}
 
-	private boolean areConnected(int node1, int node2, int[] visited){
+	private boolean areConnected(int node1, int node2, int[] visited) {
 		int[] neighbours = Ints.concat(this.getChildren(node1), this.getParents(node1));
 
-		if(Ints.asList(neighbours).contains(node2))
+		if (Ints.asList(neighbours).contains(node2))
 			return true;
 
-
-		for(int v : neighbours)
-			if(!Ints.asList(visited).contains(v) && this.areConnected(v, node2, Ints.concat(visited, new int[]{node1})))
+		for (int v : neighbours)
+			if (!Ints.asList(visited).contains(v) && this.areConnected(v, node2, Ints.concat(visited, new int[]{node1})))
 				return true;
 
 		return false;
 	}
 
-
-
-	public int[] getDescendants(int variable){
+	public int[] getDescendants(int variable) {
 		int[] ch = getChildren(variable);
 
-		if(ch.length==0)
+		if (ch.length == 0)
 			return ch;
 
 		int[] desc_ch = Ints.concat(IntStream.of(ch).mapToObj(this::getDescendants).toArray(int[][]::new));
 		return ArraysUtil.unique(Ints.concat(ch, desc_ch));
 	}
 
-	public int[] getAncestors(int variable){
+	public int[] getAncestors(int variable) {
 		int[] pa = getParents(variable);
 
-		if(pa.length==0)
+		if (pa.length == 0)
 			return pa;
 
 		int[] ances_pa = Ints.concat(IntStream.of(pa).mapToObj(this::getAncestors).toArray(int[][]::new));
 		return ArraysUtil.unique(Ints.concat(pa, ances_pa));
 	}
 
-
+	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder("");
-		str.append(this.getFactors());
-		return str.toString()+"\n";
-	}
+		StringBuilder sb = new StringBuilder();
+		sb.append("GSM\n");
 
+		for (F f : this.getFactors()) {
+			sb.append("\t").append(f.toString()).append("\n");
+		}
+
+		return sb.toString();
+	}
 
 }

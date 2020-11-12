@@ -564,7 +564,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	 * @return
 	 */
 
-	public VertexFactor get_deterministic(int var, int assignment){
+	public VertexFactor getDeterministic(int var, int assignment){
 		return VertexFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
 

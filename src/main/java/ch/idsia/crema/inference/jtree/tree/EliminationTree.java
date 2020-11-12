@@ -22,7 +22,7 @@ import java.util.*;
  */
 public class EliminationTree {
 
-	private class DKey {
+	private static class DKey {
 		int i, j;
 
 		DKey(int i, int j) {
@@ -52,17 +52,17 @@ public class EliminationTree {
 	}
 
 	// i -> nodes connected to i
-	private Map<Integer, Set<Integer>> neighbour = new HashMap<>();
+	private final Map<Integer, Set<Integer>> neighbour = new HashMap<>();
 	// i -> factor for i
-	private Map<Integer, BayesianFactor> factors = new HashMap<>();
+	private final Map<Integer, BayesianFactor> factors = new HashMap<>();
 	// [i, j] -> message from i to j
-	private Map<DKey, BayesianFactor> M = new HashMap<>();
+	private final Map<DKey, BayesianFactor> M = new HashMap<>();
 
 	// in and out are referred to the current root node
 	private Map<Integer, List<Integer>> edgesOut = new HashMap<>();
 	private Map<Integer, List<Integer>> edgesIn = new HashMap<>();
 
-	private TIntSet vars = new TIntHashSet();
+	private final TIntSet vars = new TIntHashSet();
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
@@ -76,7 +76,7 @@ public class EliminationTree {
 	 */
 	public void addNode(int i, BayesianFactor factor) {
 		factors.put(i, factor);
-//		phis.put(i, factor);
+//		this.put(i, factor);
 		vars.addAll(vars(i));
 	}
 

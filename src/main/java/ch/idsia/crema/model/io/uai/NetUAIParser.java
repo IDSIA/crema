@@ -1,6 +1,6 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.model.graphical.GenericSparseModel;
+import ch.idsia.crema.model.graphical.GenericGraphicalModel;
 import org.junit.Assert;
 
 import java.util.stream.IntStream;
@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
  * @author Rafael Cabañas
  */
 
-public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIParser<T> {
+public abstract class NetUAIParser<T extends GenericGraphicalModel> extends UAIParser<T> {
 
 	protected int numberOfVariables;
 	protected int[] cardinalities;

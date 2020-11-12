@@ -20,7 +20,7 @@ public class FactorEliminationTest {
 
 	@Before
 	public void setUp() {
-		BayesianNetworks bn = BayesianNetworks.mix5Variables();
+		BayesianNetworkContainer bn = BayesianNetworkContainer.mix5Variables();
 		BayesianFactor[] f = bn.factors;
 
 		int A = bn.variables[0];

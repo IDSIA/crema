@@ -373,7 +373,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
      * @return
      */
 
-    public SeparateHalfspaceFactor get_deterministic(int var, int assignment) {
+    public SeparateHalfspaceFactor getDeterministic(int var, int assignment) {
         return SeparateHalfspaceFactor.deterministic(this.getDomain().intersection(var), assignment);
     }
 

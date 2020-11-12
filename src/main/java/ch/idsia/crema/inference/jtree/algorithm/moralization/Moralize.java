@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.moralization;
 
+import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
 
@@ -8,7 +9,7 @@ import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
  * Project: CreMA
  * Date:    12.02.2018 11:11
  */
-public class Moralize {
+public class Moralize implements Algorithm<SparseDirectedAcyclicGraph, SparseUndirectedGraph> {
 
 	private SparseDirectedAcyclicGraph model;
 	private SparseUndirectedGraph moralized;
@@ -16,14 +17,16 @@ public class Moralize {
 	/**
 	 * @param model the model to moralize
 	 */
-	public void setModel(SparseDirectedAcyclicGraph model) {
+	@Override
+	public void setInput(SparseDirectedAcyclicGraph model) {
 		this.model = model;
 	}
 
 	/**
 	 * @return the last moralized graph found
 	 */
-	public SparseUndirectedGraph getMoralized() {
+	@Override
+	public SparseUndirectedGraph getOutput() {
 		return moralized;
 	}
 
@@ -33,6 +36,7 @@ public class Moralize {
 	 *
 	 * @return a moralized {@link SparseUndirectedGraph}
 	 */
+	@Override
 	public SparseUndirectedGraph exec() {
 		if (model == null) throw new IllegalArgumentException("No model available");
 
