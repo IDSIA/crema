@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.join;
 
+import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -12,31 +13,33 @@ import java.util.Set;
  * Project: CreMA
  * Date:    13.02.2018 15:49
  */
-public class JoinGraphBuilder {
-
-	private Graph<Clique, DefaultWeightedEdge> model;
+public class JoinGraphBuilder implements Algorithm<Set<Clique>, Graph<Clique, DefaultWeightedEdge>> {
 
 	private Set<Clique> cliques;
+	private Graph<Clique, DefaultWeightedEdge> model;
 
 	/**
 	 * @param cliques the cliques to work on
 	 */
-	public void setCliques(Set<Clique> cliques) {
+	@Override
+	public void setInput(Set<Clique> cliques) {
 		this.cliques = cliques;
 	}
 
 	/**
 	 * @return the last computed join graph
 	 */
-	public Graph<Clique, DefaultWeightedEdge> getModel() {
+	@Override
+	public Graph<Clique, DefaultWeightedEdge> getOutput() {
 		return model;
 	}
 
 	/**
-	 * Builds a join graph over the cliques given in input using the {@link #setCliques(Set)} method.
+	 * Builds a join graph over the cliques given in input using the {@link #setInput(Set)} method.
 	 *
 	 * @return a join graph where the weights of the edges are the number of element in commons between two cliques
 	 */
+	@Override
 	public Graph<Clique, DefaultWeightedEdge> exec() {
 		if (cliques == null) throw new IllegalArgumentException("No cliques available");
 

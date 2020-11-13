@@ -46,10 +46,10 @@ public class FindCliquesTest {
 	public void testFindingCliquesAlgorithm() {
 		// Find cliques
 		FindCliques fc = new FindCliques();
-		fc.setModel(graph);
+		fc.setInput(graph);
 		fc.setSequence(eliminationSequence);
 		Set<Clique> cliques = fc.exec();
-		
+
 		assertEquals(5, cliques.size());
 		assertEquals(4, cliques.stream().max(
 				Comparator.comparingInt(x -> x.getVariables().length)).orElseGet(Clique::new).getVariables().length

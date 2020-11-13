@@ -1,7 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
 import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
-import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -19,9 +18,7 @@ public abstract class Triangulate implements Algorithm<SparseUndirectedGraph, Sp
 
 	protected SparseUndirectedGraph model;
 	protected SparseUndirectedGraph triangulated;
-
-	// elimination sequence
-	protected List<Integer> sequence;
+	protected List<Integer> eliminationSequence;
 
 	/**
 	 * @param model the moralized graph to apply triangulation
@@ -39,7 +36,7 @@ public abstract class Triangulate implements Algorithm<SparseUndirectedGraph, Sp
 	 * @return the last found elimination sequence
 	 */
 	public int[] getEliminationSequence() {
-		return sequence.stream().mapToInt(x -> x).toArray();
+		return eliminationSequence.stream().mapToInt(x -> x).toArray();
 	}
 
 	/**

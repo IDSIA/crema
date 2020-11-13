@@ -40,7 +40,7 @@ public class MessagePassingTest {
 	}
 
 	@Test
-	public void testCliquesAlgorithm() {
+	public void testMessagePassingAlgorithm() {
 		// moralization step
 		Moralize m = new Moralize();
 		m.setInput(bn.getNetwork());
@@ -53,18 +53,18 @@ public class MessagePassingTest {
 
 		// Find cliques
 		FindCliques fc = new FindCliques();
-		fc.setModel(triangulated);
+		fc.setInput(triangulated);
 		fc.setSequence(t.getEliminationSequence());
 		Set<Clique> cliques = fc.exec();
 
 		// Build Join Graph
 		JoinGraphBuilder jgb = new JoinGraphBuilder();
-		jgb.setCliques(cliques);
+		jgb.setInput(cliques);
 		Graph<Clique, DefaultWeightedEdge> joinGraph = jgb.exec();
 
 		// Find maximal spanning tree
 		JoinTreeBuilder jtb = new JoinTreeBuilderKruskal();
-		jtb.setModel(joinGraph);
+		jtb.setInput(joinGraph);
 		Graph<Clique, DefaultWeightedEdge> joinTree = jtb.exec();
 
 		// now we are ready to perform a belief updating by message passing

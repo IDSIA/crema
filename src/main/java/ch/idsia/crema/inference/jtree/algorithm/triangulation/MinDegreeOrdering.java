@@ -39,7 +39,7 @@ public class MinDegreeOrdering extends Triangulate {
 		// we are working with a "destructive" algorithm, so we make a copy of the current graph
 		final SparseUndirectedGraph copy = model.copy();
 		triangulated = new SparseUndirectedGraph();
-		sequence = new ArrayList<>();
+		eliminationSequence = new ArrayList<>();
 
 		// loop until we remove all the nodes from the graph
 		while (!copy.vertexSet().isEmpty()) {
@@ -73,7 +73,7 @@ public class MinDegreeOrdering extends Triangulate {
 			// add current node to triangulated
 			triangulated.addVertex(v);
 			// add vertex to sequence
-			sequence.add(v);
+			eliminationSequence.add(v);
 
 			if (c > 1) {
 				// cardinality 2 or more: check if we have an edge that connect v to 2 nodes in the neighbourhood

@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.cliques;
 
+import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.set.TIntSet;
@@ -14,7 +15,7 @@ import java.util.Set;
  * Project: CreMA
  * Date:    13.02.2018 11:40
  */
-public class FindCliques {
+public class FindCliques implements Algorithm<SparseUndirectedGraph, Set<Clique>> {
 
 	private SparseUndirectedGraph model;
 
@@ -25,7 +26,8 @@ public class FindCliques {
 	/**
 	 * @param model a triangulated graph produced by the {@link ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate} algorithm.
 	 */
-	public void setModel(SparseUndirectedGraph model) {
+	@Override
+	public void setInput(SparseUndirectedGraph model) {
 		this.model = model;
 	}
 
@@ -39,7 +41,8 @@ public class FindCliques {
 	/**
 	 * @return the last computed cliques
 	 */
-	public Set<Clique> getCliques() {
+	@Override
+	public Set<Clique> getOutput() {
 		return cliques;
 	}
 
@@ -48,6 +51,7 @@ public class FindCliques {
 	 *
 	 * @return a set of {@link Clique}s found by the algorithm
 	 */
+	@Override
 	public Set<Clique> exec() {
 		if (sequence == null) throw new IllegalArgumentException("No elimination sequence available.");
 		if (model == null) throw new IllegalArgumentException("No model is available");

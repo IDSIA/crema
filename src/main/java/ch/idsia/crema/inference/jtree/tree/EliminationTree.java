@@ -22,6 +22,8 @@ import java.util.*;
  */
 public class EliminationTree {
 
+	// TODO: maybe considering use the Graph interface also for trees?
+
 	private static class DKey {
 		int i, j;
 

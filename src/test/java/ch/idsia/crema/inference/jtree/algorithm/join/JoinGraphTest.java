@@ -63,7 +63,7 @@ public class JoinGraphTest {
 	@Test
 	public void testJoinGraphBuilder() {
 		JoinGraphBuilder jgb = new JoinGraphBuilder();
-		jgb.setCliques(cliques);
+		jgb.setInput(cliques);
 		Graph<Clique, DefaultWeightedEdge> graph = jgb.exec();
 
 		assertEquals(5, graph.vertexSet().size());
@@ -75,11 +75,11 @@ public class JoinGraphTest {
 	@Test
 	public void testJoinTreeWithKruskal() {
 		JoinGraphBuilder jgb = new JoinGraphBuilder();
-		jgb.setCliques(cliques);
+		jgb.setInput(cliques);
 		Graph<Clique, DefaultWeightedEdge> graph = jgb.exec();
 
 		JoinTreeBuilder jtb = new JoinTreeBuilderKruskal();
-		jtb.setModel(graph);
+		jtb.setInput(graph);
 		Graph<Clique, DefaultWeightedEdge> tree = jtb.exec();
 
 		assertEquals(5, tree.vertexSet().size());
@@ -91,11 +91,11 @@ public class JoinGraphTest {
 	@Test
 	public void testJoinTreeWithPrim() {
 		JoinGraphBuilder jgb = new JoinGraphBuilder();
-		jgb.setCliques(cliques);
+		jgb.setInput(cliques);
 		Graph<Clique, DefaultWeightedEdge> graph = jgb.exec();
 
 		JoinTreeBuilder jtb = new JoinTreeBuilderPrim();
-		jtb.setModel(graph);
+		jtb.setInput(graph);
 		Graph<Clique, DefaultWeightedEdge> tree = jtb.exec();
 
 		assertEquals(5, tree.vertexSet().size());

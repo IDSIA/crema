@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.join;
 
+import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm;
@@ -11,7 +12,7 @@ import org.jgrapht.graph.SimpleWeightedGraph;
  * Project: CreMA
  * Date:    14.02.2018 09:29
  */
-public abstract class JoinTreeBuilder {
+public abstract class JoinTreeBuilder implements Algorithm<Graph<Clique, DefaultWeightedEdge>, Graph<Clique, DefaultWeightedEdge>> {
 
 	private Graph<Clique, DefaultWeightedEdge> model;
 	private Graph<Clique, DefaultWeightedEdge> joinTree;
@@ -19,14 +20,16 @@ public abstract class JoinTreeBuilder {
 	/**
 	 * @param model the model produced by a {@link JoinGraphBuilder}
 	 */
-	public void setModel(Graph<Clique, DefaultWeightedEdge> model) {
+	@Override
+	public void setInput(Graph<Clique, DefaultWeightedEdge> model) {
 		this.model = model;
 	}
 
 	/**
 	 * @return the last computed join tree
 	 */
-	public Graph<Clique, DefaultWeightedEdge> getJoinTree() {
+	@Override
+	public Graph<Clique, DefaultWeightedEdge> getOutput() {
 		return joinTree;
 	}
 
@@ -36,6 +39,7 @@ public abstract class JoinTreeBuilder {
 	 *
 	 * @return a graph containing the maximal spanning tree over the cliques of the original model
 	 */
+	@Override
 	public Graph<Clique, DefaultWeightedEdge> exec() {
 		if (model == null) throw new IllegalArgumentException("No model available");
 
