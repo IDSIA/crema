@@ -40,7 +40,7 @@ public class MessagePassingTest {
 	}
 
 	@Test
-	public void testCliquesALgorithm() {
+	public void testCliquesAlgorithm() {
 		// moralization step
 		Moralize m = new Moralize();
 		m.setInput(bn.getNetwork());
@@ -63,7 +63,6 @@ public class MessagePassingTest {
 		Graph<Clique, DefaultWeightedEdge> joinGraph = jgb.exec();
 
 		// Find maximal spanning tree
-//		JoinTreeBuilder jtb = new JoinTreeBuilderPrim();
 		JoinTreeBuilder jtb = new JoinTreeBuilderKruskal();
 		jtb.setModel(joinGraph);
 		Graph<Clique, DefaultWeightedEdge> joinTree = jtb.exec();
@@ -74,7 +73,5 @@ public class MessagePassingTest {
 		mp.setModel(joinTree);
 		mp.setEvidence(new TIntIntHashMap());
 		mp.exec();
-
-		System.out.println();
 	}
 }
