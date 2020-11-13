@@ -1,13 +1,14 @@
 package ch.idsia.crema.inference.jtree.algorithm.updating;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
+import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTree;
+import ch.idsia.crema.inference.jtree.algorithm.junction.Separator;
 import ch.idsia.crema.utility.VertexPair;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +18,15 @@ import java.util.Map;
  * Project: CreMA
  * Date:    14.02.2018 10:03
  */
-public class MessagePassing {
+/*
+ * TODO:
+ *  This class is intended as an updater class, it does not hav a real "output" since it is just the same as the input
+ *  but with updated internal parameters. It could be interesting implementing some transformer/updater interface
+ *  instead of using the Algorithm<F, R> interface.
+ */
+public class MessagePassing implements Algorithm<JunctionTree, JunctionTree> {
 
-	private Graph<Clique, DefaultWeightedEdge> model;
+	private JunctionTree model;
 
 	private Map<Integer, BayesianFactor> factors = new HashMap<>();
 
@@ -27,8 +34,14 @@ public class MessagePassing {
 
 	private Map<VertexPair<Clique>, Separator> separators = new HashMap<>();
 
-	public void setModel(Graph<Clique, DefaultWeightedEdge> model) {
+	@Override
+	public void setInput(JunctionTree model) {
 		this.model = model;
+	}
+
+	@Override
+	public JunctionTree getOutput() {
+		return model;
 	}
 
 	public void addFactor(Integer i, BayesianFactor factor) {
@@ -43,25 +56,22 @@ public class MessagePassing {
 		this.evidence = evidence;
 	}
 
-	public void exec() {
+	@Override
+	public JunctionTree exec() {
 		if (model == null) throw new IllegalArgumentException("No model available");
 		if (factors == null) throw new IllegalArgumentException("No factors available");
 
-		// build junction tree
 		separators = new HashMap<>();
-		for (DefaultWeightedEdge edge : model.edgeSet()) {
-			Clique source = model.getEdgeSource(edge);
-			Clique target = model.getEdgeTarget(edge);
-			Separator S = new Separator(source, target);
-			separators.put(new VertexPair<>(source, target), S);
-			separators.put(new VertexPair<>(target, source), S);
+		for (Separator S : model.edgeSet()) {
+			separators.put(new VertexPair<>(S.getSource(), S.getTarget()), S);
+			separators.put(new VertexPair<>(S.getTarget(), S.getSource()), S);
 		}
 
-		// collect messages towards a root
+		// collect messages towards a root // TODO: root can be variable
 		Clique j = model.vertexSet().iterator().next();
 
 		// collect messages from incoming messages
-		for (DefaultWeightedEdge edge : model.edgesOf(j)) {
+		for (Separator edge : model.edgesOf(j)) {
 			Clique source = model.getEdgeSource(edge);
 			Clique target = model.getEdgeTarget(edge);
 
@@ -73,7 +83,7 @@ public class MessagePassing {
 
 		// distribute message from root to nodes
 		VertexPair<Clique> key;
-		for (DefaultWeightedEdge outEdge : model.edgesOf(j)) {
+		for (Separator outEdge : model.edgesOf(j)) {
 			Clique source = model.getEdgeSource(outEdge);
 			Clique target = model.getEdgeTarget(outEdge);
 
@@ -81,7 +91,7 @@ public class MessagePassing {
 
 			BayesianFactor phi = phi(j);
 
-			for (DefaultWeightedEdge inEdge : model.edgesOf(j)) {
+			for (Separator inEdge : model.edgesOf(j)) {
 				Clique inSource = model.getEdgeSource(inEdge);
 				Clique inTarget = model.getEdgeTarget(inEdge);
 
@@ -102,6 +112,8 @@ public class MessagePassing {
 			// distribute the message M(root,j) to node j
 			distribute(j, i, Mij);
 		}
+
+		return model;
 	}
 
 	/**
@@ -113,7 +125,7 @@ public class MessagePassing {
 		// collect phi(j)
 		BayesianFactor phi = phi(j);
 
-		for (DefaultWeightedEdge edge : model.edgesOf(j)) {
+		for (Separator edge : model.edgesOf(j)) {
 			Clique source = model.getEdgeSource(edge);
 			Clique target = model.getEdgeTarget(edge);
 
@@ -148,7 +160,7 @@ public class MessagePassing {
 		BayesianFactor phi = phi(i).combine(Mki);
 
 		// if we have nodes that need the message from this node i
-		for (DefaultWeightedEdge edge : model.edgesOf(i)) {
+		for (Separator edge : model.edgesOf(i)) {
 			Clique source = model.getEdgeSource(edge);
 			Clique target = model.getEdgeTarget(edge);
 

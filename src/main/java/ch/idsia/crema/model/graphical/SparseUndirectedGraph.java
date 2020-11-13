@@ -17,6 +17,7 @@ public class SparseUndirectedGraph extends SimpleGraph<Integer, DefaultEdge> {
 	public SparseUndirectedGraph copy() {
 		SparseUndirectedGraph copy = new SparseUndirectedGraph();
 
+		// TODO: edge is not copied correctly!
 		this.vertexSet().forEach(copy::addVertex);
 		this.edgeSet().forEach(edge -> copy.addEdge(this.getEdgeSource(edge), this.getEdgeTarget(edge)));
 

@@ -9,10 +9,10 @@ import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
  * Project: CreMA
  * Date:    12.02.2018 11:11
  */
-public class Moralize implements Algorithm<SparseDirectedAcyclicGraph, SparseUndirectedGraph> {
+public class Moralize implements Algorithm<SparseDirectedAcyclicGraph, MoralGraph> {
 
 	private SparseDirectedAcyclicGraph model;
-	private SparseUndirectedGraph moralized;
+	private MoralGraph moralized;
 
 	/**
 	 * @param model the model to moralize
@@ -26,7 +26,7 @@ public class Moralize implements Algorithm<SparseDirectedAcyclicGraph, SparseUnd
 	 * @return the last moralized graph found
 	 */
 	@Override
-	public SparseUndirectedGraph getOutput() {
+	public MoralGraph getOutput() {
 		return moralized;
 	}
 
@@ -37,10 +37,10 @@ public class Moralize implements Algorithm<SparseDirectedAcyclicGraph, SparseUnd
 	 * @return a moralized {@link SparseUndirectedGraph}
 	 */
 	@Override
-	public SparseUndirectedGraph exec() {
+	public MoralGraph exec() {
 		if (model == null) throw new IllegalArgumentException("No model available");
 
-		moralized = new SparseUndirectedGraph();
+		moralized = new MoralGraph();
 
 		// add all the vertices to the new graph
 		model.vertexSet().forEach(moralized::addVertex);

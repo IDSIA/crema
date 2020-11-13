@@ -4,23 +4,19 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.FindCliques;
-import ch.idsia.crema.inference.jtree.algorithm.join.JoinGraphBuilder;
-import ch.idsia.crema.inference.jtree.algorithm.join.JoinTreeBuilder;
 import ch.idsia.crema.inference.jtree.algorithm.join.JoinTreeBuilderKruskal;
+import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTreeBuilder;
+import ch.idsia.crema.inference.jtree.algorithm.junction.Separator;
 import ch.idsia.crema.inference.jtree.algorithm.moralization.Moralize;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.MinDegreeOrdering;
-import ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate;
-import ch.idsia.crema.inference.jtree.algorithm.updating.MessagePassing;
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
-import gnu.trove.map.hash.TIntIntHashMap;
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Set;
-import java.util.stream.IntStream;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -40,38 +36,31 @@ public class MessagePassingTest {
 	}
 
 	@Test
+	@SuppressWarnings("rawtypes")
 	public void testMessagePassingAlgorithm() {
-		// moralization step
-		Moralize m = new Moralize();
-		m.setInput(bn.getNetwork());
-		SparseUndirectedGraph moralGraph = m.exec();
+		List<Algorithm> stages = Arrays.asList(
+				// moralization step
+				new Moralize(),
+				// triangulation step
+				new MinDegreeOrdering(),
+				// find cliques
+				new FindCliques(),
+				// Find maximal spanning tree
+				new JoinTreeBuilderKruskal(),
+				// JunctionTree
+				new JunctionTreeBuilder()
+		);
 
-		// triangulation step
-		Triangulate t = new MinDegreeOrdering();
-		t.setInput(moralGraph);
-		SparseUndirectedGraph triangulated = t.exec();
-
-		// Find cliques
-		FindCliques fc = new FindCliques();
-		fc.setInput(triangulated);
-		fc.setSequence(t.getEliminationSequence());
-		Set<Clique> cliques = fc.exec();
-
-		// Build Join Graph
-		JoinGraphBuilder jgb = new JoinGraphBuilder();
-		jgb.setInput(cliques);
-		Graph<Clique, DefaultWeightedEdge> joinGraph = jgb.exec();
-
-		// Find maximal spanning tree
-		JoinTreeBuilder jtb = new JoinTreeBuilderKruskal();
-		jtb.setInput(joinGraph);
-		Graph<Clique, DefaultWeightedEdge> joinTree = jtb.exec();
+		Pipe<SparseDirectedAcyclicGraph, Graph<Clique, Separator>> pipeline = new Pipe<>(stages);
+		pipeline.setInput(bn.getNetwork());
+		Graph<Clique, Separator> junctionTree = pipeline.exec();
 
 		// now we are ready to perform a belief updating by message passing
-		MessagePassing mp = new MessagePassing();
-		IntStream.range(0, factors.length).forEach(i -> mp.addFactor(i, factors[i]));
-		mp.setModel(joinTree);
-		mp.setEvidence(new TIntIntHashMap());
-		mp.exec();
+		// TODO
+//		MessagePassing mp = new MessagePassing();
+//		IntStream.range(0, factors.length).forEach(i -> mp.addFactor(i, factors[i]));
+//		mp.setModel(joinTree);
+//		mp.setEvidence(new TIntIntHashMap());
+//		mp.exec();
 	}
 }

@@ -20,7 +20,7 @@ public class JoinTreeBuilderKruskal extends JoinTreeBuilder {
 	 * @return the maximal spanning tree found
 	 */
 	@Override
-	protected SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> getMaximalSpanningTree(Graph<Clique, DefaultWeightedEdge> model) {
+	protected SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> getMaximalSpanningTree(JoinTree model) {
 		KruskalMinimumSpanningTree<Clique, DefaultWeightedEdge> pst = new KruskalMinimumSpanningTree<>(model);
 
 		return pst.getSpanningTree();

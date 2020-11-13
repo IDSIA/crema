@@ -1,11 +1,7 @@
 package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
 import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-
-import java.util.List;
+import ch.idsia.crema.inference.jtree.algorithm.moralization.MoralGraph;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -14,21 +10,20 @@ import java.util.List;
  * <p>
  * Base class to support multiple triangulation algorithm, such as {@link MinDegreeOrdering}.
  */
-public abstract class Triangulate implements Algorithm<SparseUndirectedGraph, SparseUndirectedGraph> {
+public abstract class Triangulate implements Algorithm<MoralGraph, TriangulatedGraph> {
 
-	protected SparseUndirectedGraph model;
-	protected SparseUndirectedGraph triangulated;
-	protected List<Integer> eliminationSequence;
+	protected MoralGraph model;
+	protected TriangulatedGraph triangulated;
 
 	/**
 	 * @param model the moralized graph to apply triangulation
 	 */
 	@Override
-	public void setInput(SparseUndirectedGraph model) {
+	public void setInput(MoralGraph model) {
 		this.model = model;
 	}
 
-	public SparseUndirectedGraph getOutput() {
+	public TriangulatedGraph getOutput() {
 		return triangulated;
 	}
 
@@ -36,15 +31,15 @@ public abstract class Triangulate implements Algorithm<SparseUndirectedGraph, Sp
 	 * @return the last found elimination sequence
 	 */
 	public int[] getEliminationSequence() {
-		return eliminationSequence.stream().mapToInt(x -> x).toArray();
+		return triangulated.getEliminationSequence();
 	}
 
 	/**
-	 * @return the last computed triangulated graph
+	 * @return the triangulated model
 	 */
-	public Graph<Integer, DefaultEdge> getTriangulated() {
+	public TriangulatedGraph getTriangulated() {
 		return triangulated;
 	}
 
-	public abstract SparseUndirectedGraph exec();
+	public abstract TriangulatedGraph exec();
 }

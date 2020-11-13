@@ -1,13 +1,13 @@
 package ch.idsia.crema.inference.jtree.algorithm.cliques;
 
 import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
+import ch.idsia.crema.inference.jtree.algorithm.triangulation.TriangulatedGraph;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 import org.jgrapht.graph.DefaultEdge;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -15,20 +15,20 @@ import java.util.Set;
  * Project: CreMA
  * Date:    13.02.2018 11:40
  */
-public class FindCliques implements Algorithm<SparseUndirectedGraph, Set<Clique>> {
+public class FindCliques implements Algorithm<TriangulatedGraph, CliqueSet> {
 
 	private SparseUndirectedGraph model;
+	private CliqueSet cliques;
 
 	private int[] sequence;
-
-	private Set<Clique> cliques;
 
 	/**
 	 * @param model a triangulated graph produced by the {@link ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate} algorithm.
 	 */
 	@Override
-	public void setInput(SparseUndirectedGraph model) {
+	public void setInput(TriangulatedGraph model) {
 		this.model = model;
+		this.sequence = model.getEliminationSequence();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class FindCliques implements Algorithm<SparseUndirectedGraph, Set<Clique>
 	 * @return the last computed cliques
 	 */
 	@Override
-	public Set<Clique> getOutput() {
+	public CliqueSet getOutput() {
 		return cliques;
 	}
 
@@ -52,12 +52,12 @@ public class FindCliques implements Algorithm<SparseUndirectedGraph, Set<Clique>
 	 * @return a set of {@link Clique}s found by the algorithm
 	 */
 	@Override
-	public Set<Clique> exec() {
+	public CliqueSet exec() {
 		if (sequence == null) throw new IllegalArgumentException("No elimination sequence available.");
 		if (model == null) throw new IllegalArgumentException("No model is available");
 
 		SparseUndirectedGraph copy = model.copy();
-		cliques = new HashSet<>();
+		cliques = new CliqueSet();
 
 		// follow the elimination sequence
 		for (int v : sequence) {

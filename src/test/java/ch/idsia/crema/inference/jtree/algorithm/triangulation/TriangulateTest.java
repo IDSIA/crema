@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
+import ch.idsia.crema.inference.jtree.algorithm.moralization.MoralGraph;
 import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,12 +13,12 @@ import static org.junit.Assert.assertEquals;
  * Date:    12.11.2020 13:50
  */
 public class TriangulateTest {
-	SparseUndirectedGraph graph;
+	MoralGraph graph;
 
 	@Before
 	public void setUp() {
 		// Source: Jensen, p.119, Fig. 4.10 a)
-		graph = new SparseUndirectedGraph();
+		graph = new MoralGraph();
 
 		graph.addVertex(0);
 		graph.addVertex(1);

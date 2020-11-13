@@ -2,60 +2,82 @@ package ch.idsia.crema.inference.jtree.algorithm.join;
 
 import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
-import org.jgrapht.Graph;
+import ch.idsia.crema.inference.jtree.algorithm.cliques.CliqueSet;
+import ch.idsia.crema.inference.jtree.algorithm.cliques.FindCliques;
 import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleWeightedGraph;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    14.02.2018 09:29
  */
-public abstract class JoinTreeBuilder implements Algorithm<Graph<Clique, DefaultWeightedEdge>, Graph<Clique, DefaultWeightedEdge>> {
+public abstract class JoinTreeBuilder implements Algorithm<CliqueSet, JoinTree> {
 
-	private Graph<Clique, DefaultWeightedEdge> model;
-	private Graph<Clique, DefaultWeightedEdge> joinTree;
+	private CliqueSet cliques;
+	private JoinTree joinTree;
 
 	/**
-	 * @param model the model produced by a {@link JoinGraphBuilder}
+	 * @param model the model produced by a {@link FindCliques}
 	 */
 	@Override
-	public void setInput(Graph<Clique, DefaultWeightedEdge> model) {
-		this.model = model;
+	public void setInput(CliqueSet model) {
+		this.cliques = model;
 	}
 
 	/**
 	 * @return the last computed join tree
 	 */
 	@Override
-	public Graph<Clique, DefaultWeightedEdge> getOutput() {
+	public JoinTree getOutput() {
 		return joinTree;
 	}
 
 	/**
 	 * Builds a join tree using the maximal spanning tree found in the model. The Type of algorithm to use is determined
-	 * by the implementation of {@link #getMaximalSpanningTree(Graph)}.
+	 * by the implementation of {@link #getMaximalSpanningTree(JoinTree)}.
 	 *
 	 * @return a graph containing the maximal spanning tree over the cliques of the original model
 	 */
 	@Override
-	public Graph<Clique, DefaultWeightedEdge> exec() {
-		if (model == null) throw new IllegalArgumentException("No model available");
+	public JoinTree exec() {
+		if (cliques == null) throw new IllegalArgumentException("No model available");
 
-		joinTree = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+		JoinTree slack = new JoinTree();
+
+		// add new clique to graph
+		cliques.forEach(slack::addVertex);
+
+		for (Clique clique : cliques) {
+			// search for other cliques with same variables
+			for (Clique other : cliques) {
+				if (clique.equals(other)) continue;
+
+				// find how many variables are in common
+				int[] intersection = clique.intersection(other);
+
+				// if we have an intersection...
+				if (intersection.length > 0) {
+					DefaultWeightedEdge edge = slack.addEdge(clique, other);
+					// ...and a new edge, add it to the model with the size of intersection as weight
+					if (edge != null)
+						slack.setEdgeWeight(edge, -intersection.length);
+				}
+			}
+		}
 
 		// apply the maximal spanning tree algorithm
-		SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> maximalSpanningTree = getMaximalSpanningTree(model);
+		SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> maximalSpanningTree = getMaximalSpanningTree(slack);
 
 		// add all the cliques from the original model to the join tree
-		model.vertexSet().forEach(v -> joinTree.addVertex(v));
+		joinTree = new JoinTree();
+		slack.vertexSet().forEach(v -> joinTree.addVertex(v));
 
 		// iterate over the maximal spanning tree and add all the edges to the join tree
 		for (DefaultWeightedEdge edge : maximalSpanningTree) {
-			Clique source = model.getEdgeSource(edge);
-			Clique target = model.getEdgeTarget(edge);
-			double weight = model.getEdgeWeight(edge);
+			Clique source = joinTree.getEdgeSource(edge);
+			Clique target = joinTree.getEdgeTarget(edge);
+			double weight = joinTree.getEdgeWeight(edge);
 			joinTree.addEdge(source, target, edge);
 			joinTree.setEdgeWeight(edge, weight);
 		}
@@ -68,5 +90,5 @@ public abstract class JoinTreeBuilder implements Algorithm<Graph<Clique, Default
 	 *
 	 * @return the maximal spanning tree found
 	 */
-	abstract SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> getMaximalSpanningTree(Graph<Clique, DefaultWeightedEdge> model);
+	abstract SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> getMaximalSpanningTree(JoinTree model);
 }

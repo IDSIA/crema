@@ -19,7 +19,7 @@ public class JoinTreeBuilderPrim extends JoinTreeBuilder {
 	 * @return the maximal spanning tree found
 	 */
 	@Override
-	protected SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> getMaximalSpanningTree(Graph<Clique, DefaultWeightedEdge> model) {
+	protected SpanningTreeAlgorithm.SpanningTree<DefaultWeightedEdge> getMaximalSpanningTree(JoinTree model) {
 		PrimMinimumSpanningTree<Clique, DefaultWeightedEdge> pst = new PrimMinimumSpanningTree<>(model);
 
 		return pst.getSpanningTree();

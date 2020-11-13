@@ -21,7 +21,7 @@ public class MinDegreeOrdering extends Triangulate {
 	 * @return a triangulated {@link SparseUndirectedGraph}
 	 */
 	@Override
-	public SparseUndirectedGraph exec() {
+	public TriangulatedGraph exec() {
 		if (model == null) throw new IllegalArgumentException("No model available");
 
 		/*
@@ -38,8 +38,8 @@ public class MinDegreeOrdering extends Triangulate {
 
 		// we are working with a "destructive" algorithm, so we make a copy of the current graph
 		final SparseUndirectedGraph copy = model.copy();
-		triangulated = new SparseUndirectedGraph();
-		eliminationSequence = new ArrayList<>();
+		triangulated = new TriangulatedGraph();
+		List<Integer> eliminationSequence = new ArrayList<>();
 
 		// loop until we remove all the nodes from the graph
 		while (!copy.vertexSet().isEmpty()) {
@@ -90,6 +90,8 @@ public class MinDegreeOrdering extends Triangulate {
 
 			updateModels(copy, triangulated, v, edges);
 		}
+
+		triangulated.setEliminationSequence(eliminationSequence.stream().mapToInt(x -> x).toArray());
 
 		return triangulated;
 	}

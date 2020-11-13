@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.jtree.algorithm.updating;
+package ch.idsia.crema.inference.jtree.algorithm.junction;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
@@ -14,17 +14,33 @@ public class Separator {
 
 	private int[] variables;
 
-	private Clique source;
-	private Clique target;
+	private final Clique source;
+	private final Clique target; // separator is always between two cliques
 
 	private BayesianFactor messageFromSource;
 	private BayesianFactor messageFromTarget;
 
+
 	public Separator(Clique source, Clique target) {
 		this.source = source;
 		this.target = target;
-
 		variables = source.intersection(target);
+	}
+
+	public Clique getSource() {
+		return source;
+	}
+
+	public Clique getTarget() {
+		return target;
+	}
+
+	public void setVariables(int[] variables) {
+		this.variables = variables;
+	}
+
+	public int[] getVariables() {
+		return variables;
 	}
 
 	public void setMessage(Clique from, BayesianFactor message) {
@@ -40,12 +56,8 @@ public class Separator {
 		return messageFromTarget;
 	}
 
-	public int[] getVariables() {
-		return variables;
-	}
-
 	@Override
 	public String toString() {
-		return "S{" + source + ", " + target + "}: " + Arrays.toString(variables);
+		return "S{" + Arrays.toString(variables) + "}";
 	}
 }

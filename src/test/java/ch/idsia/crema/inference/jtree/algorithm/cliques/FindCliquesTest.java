@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.cliques;
 
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.inference.jtree.algorithm.triangulation.TriangulatedGraph;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -16,13 +16,13 @@ import static org.junit.Assert.*;
  * Date:    12.11.2020 14:13
  */
 public class FindCliquesTest {
-	SparseUndirectedGraph graph;
+	TriangulatedGraph graph;
 	int[] eliminationSequence;
 
 	@Before
 	public void setUp() {
 		// source: Jensen, p. 123, Fig 4.14
-		graph = new SparseUndirectedGraph();
+		graph = new TriangulatedGraph();
 		int A = 0, B = 1, C = 2, D = 3, E = 4, F = 5, G = 6, H = 7, I = 8, J = 9;
 		int[] vertices = {A, B, C, D, E, F, G, H, I, J};
 		int[][] edges = {
