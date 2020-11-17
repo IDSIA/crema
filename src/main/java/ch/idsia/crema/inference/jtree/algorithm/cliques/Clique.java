@@ -50,6 +50,17 @@ public class Clique {
 	}
 
 	/**
+	 * Checks if this {@link Clique} contains, between its variables, the given variable.
+	 *
+	 * @param variable variable to search for
+	 * @return true if the variable is found, false otherwise
+	 */
+	public boolean contains(int variable) {
+		int i = Arrays.binarySearch(variables, variable);
+		return i >= 0;
+	}
+
+	/**
 	 * Computes the intersection between the variables of this clique and another one.
 	 *
 	 * @param other another clique

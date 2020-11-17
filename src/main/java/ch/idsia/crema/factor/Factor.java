@@ -3,7 +3,7 @@ package ch.idsia.crema.factor;
 import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operable;
-import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Collection;
@@ -39,7 +39,7 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * @param obs
 	 * @return
 	 */
-	default F filter(TIntIntHashMap obs) {
+	default F filter(TIntIntMap obs) {
 		throw new NotImplementedException("Not Implemented yet");
 	}
 
@@ -93,7 +93,8 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 */
 	default F marginalize(int... variables) {
 		if (variables.length < 1)
-			throw new IllegalArgumentException("wrong number of variables");
+//			throw new IllegalArgumentException("wrong number of variables");
+			return (F) this;
 
 		F out = (F) this;
 		for (int v : variables) {

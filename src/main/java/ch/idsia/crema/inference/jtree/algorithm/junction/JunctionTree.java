@@ -13,4 +13,8 @@ public class JunctionTree extends SimpleWeightedGraph<Clique, Separator> {
 	public JunctionTree() {
 		super(Separator.class);
 	}
+
+	public boolean addEdge(Separator s) {
+		return super.addEdge(s.getSource(), s.getTarget(), s);
+	}
 }

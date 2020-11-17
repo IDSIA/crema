@@ -5,17 +5,17 @@ import ch.idsia.crema.model.Domain;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
-import ch.idsia.crema.model.vertex.*;
+import ch.idsia.crema.model.vertex.Collector;
+import ch.idsia.crema.model.vertex.Filter;
+import ch.idsia.crema.model.vertex.LogMarginal;
+import ch.idsia.crema.model.vertex.Marginal;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
@@ -279,10 +279,11 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 * @param obs
 	 * @return
 	 */
-	public BayesianFactor filter(TIntIntHashMap obs){
+	public BayesianFactor filter(TIntIntMap obs){
 		BayesianFactor f = this.copy();
 		for(int v : obs.keys())
-			f = f.filter(v, obs.get(v));
+			if (ArraysUtil.contains(v, f.getDomain().getVariables()))
+				f = f.filter(v, obs.get(v));
 		return f;
 	}
 
@@ -636,7 +637,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 
 
-	public BayesianFactor fixPrecission(int num_decimals, int... left_vars){
+	public BayesianFactor fixPrecision(int num_decimals, int... left_vars){
 
 		Strides left = this.getDomain().intersection(left_vars);
 		Strides right = this.getDomain().remove(left);

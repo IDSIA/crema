@@ -251,6 +251,8 @@ public class BayesianNetworkContainer {
 		f[A6] = new BayesianFactor(model.getDomain(A6, A3));
 		f[A6].setData(new int[]{A3, A6}, new double[]{.4, .6, .5, .5});
 
+		model.setFactors(f);
+
 		return new BayesianNetworkContainer(model, f, A1, A2, A3, A4, A5, A6);
 	}
 }

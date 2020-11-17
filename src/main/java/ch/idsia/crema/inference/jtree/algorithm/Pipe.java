@@ -11,7 +11,7 @@ import java.util.List;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class Pipe<F, R> implements Algorithm<F, R> {
 
-	List<Algorithm> stages = new ArrayList<>();
+	protected List<Algorithm> stages = new ArrayList<>();
 	private Object input;
 	private Object output;
 
