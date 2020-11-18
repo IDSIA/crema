@@ -60,7 +60,7 @@ public class BeliefPropagationTest {
 
 	@Test
 	public void testPropagationQuery() {
-		BeliefPropagation bp = new BeliefPropagation(model);
+		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(model);
 		BayesianFactor factor = bp.fullPropagation();
 
 		assertEquals(factor, factors[A0]);
@@ -90,9 +90,10 @@ public class BeliefPropagationTest {
 
 		model.setFactors(factors);
 
-		BeliefPropagation bp = new BeliefPropagation(model);
+		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(model);
 
 		// P(A0):
+		bp.clearEvidence();
 		System.out.println("P(A0):              " + bp.collectingEvidence(A0));
 
 		// P(A0 | A1=0)

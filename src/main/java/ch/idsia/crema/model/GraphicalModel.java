@@ -2,6 +2,7 @@ package ch.idsia.crema.model;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.change.DomainChange;
+import gnu.trove.map.TIntObjectMap;
 
 // FIXME: #removeParent should accept a lambda
 public interface GraphicalModel<F extends GenericFactor> extends Model<F> {
@@ -14,8 +15,9 @@ public interface GraphicalModel<F extends GenericFactor> extends Model<F> {
 
 	/**
 	 * May NOT return NULL for valid variables!
+	 *
 	 * @param variable
-	 * @return 
+	 * @return
 	 */
 	int[] getParents(int variable);
 
@@ -26,7 +28,9 @@ public interface GraphicalModel<F extends GenericFactor> extends Model<F> {
 	int[] getLeaves();
 
 	F getFactor(int variable);
-	
+
+	TIntObjectMap<F> getFactorsMap();
+
 	void setFactor(int variable, F factor);
 
 	@Override

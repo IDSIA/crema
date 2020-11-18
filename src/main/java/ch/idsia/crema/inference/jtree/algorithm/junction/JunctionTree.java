@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.junction;
 
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import org.jgrapht.graph.SimpleWeightedGraph;
 
@@ -8,13 +9,13 @@ import org.jgrapht.graph.SimpleWeightedGraph;
  * Project: crema
  * Date:    13.11.2020 17:36
  */
-public class JunctionTree extends SimpleWeightedGraph<Clique, Separator> {
+public class JunctionTree<F extends Factor<F>> extends SimpleWeightedGraph<Clique, Separator<F>> {
 
 	public JunctionTree() {
-		super(Separator.class);
+		super(Separator::new);
 	}
 
-	public boolean addEdge(Separator s) {
+	public boolean addEdge(Separator<F> s) {
 		return super.addEdge(s.getSource(), s.getTarget(), s);
 	}
 }

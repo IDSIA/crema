@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.updating;
 
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.jtree.algorithm.Pipe;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.FindCliques;
 import ch.idsia.crema.inference.jtree.algorithm.join.JoinTreeBuilderKruskal;
@@ -16,7 +17,7 @@ import java.util.Arrays;
  * Project: crema
  * Date:    16.11.2020 18:22
  */
-public class GraphToJunctionTreePipe extends Pipe<SparseDirectedAcyclicGraph, JunctionTree> {
+public class GraphToJunctionTreePipe<F extends Factor<F>> extends Pipe<SparseDirectedAcyclicGraph, JunctionTree<F>> {
 
 	public GraphToJunctionTreePipe() {
 		this.stages = Arrays.asList(
@@ -29,7 +30,7 @@ public class GraphToJunctionTreePipe extends Pipe<SparseDirectedAcyclicGraph, Ju
 				// Find maximal spanning tree
 				new JoinTreeBuilderKruskal(),
 				// JunctionTree
-				new JunctionTreeBuilder()
+				new JunctionTreeBuilder<F>()
 		);
 	}
 }

@@ -1,11 +1,11 @@
 package ch.idsia.crema.inference.jtree.algorithm.updating;
 
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTree;
 import ch.idsia.crema.inference.jtree.algorithm.junction.Separator;
+import ch.idsia.crema.model.graphical.GenericGraphicalModel;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
@@ -22,18 +22,18 @@ import java.util.stream.Stream;
  * Project: CreMA
  * Date:    14.02.2018 10:03
  */
-public class BeliefPropagation {
+public class BeliefPropagation<F extends Factor<F>> {
 
 	private final SparseDirectedAcyclicGraph network;
-	private final TIntObjectMap<BayesianFactor> factors;
+	private final TIntObjectMap<F> factors;
 
-	JunctionTree junctionTree;
+	JunctionTree<F> junctionTree;
 
 	private boolean fullyPropagated = false;
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
-	public BeliefPropagation(BayesianNetwork bn) {
+	public BeliefPropagation(GenericGraphicalModel<F, SparseDirectedAcyclicGraph> bn) {
 		this.network = bn.getNetwork();
 		this.factors = bn.getFactorsMap();
 		init();
@@ -43,7 +43,7 @@ public class BeliefPropagation {
 	 * Builds the {@link JunctionTree} required for the algorithm.
 	 */
 	public void init() {
-		GraphToJunctionTreePipe pipeline = new GraphToJunctionTreePipe();
+		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
 		pipeline.setInput(network);
 		junctionTree = pipeline.exec();
 		fullyPropagated = false;
@@ -75,8 +75,8 @@ public class BeliefPropagation {
 	 * @param variable variable to query
 	 * @return the marginal probability of the given query
 	 */
-	public BayesianFactor query(int variable) {
-		BayesianFactor f;
+	public F query(int variable) {
+		F f;
 
 		if (!fullyPropagated)
 			f = collectingEvidence(variable);
@@ -94,12 +94,12 @@ public class BeliefPropagation {
 	 *
 	 * @return the marginalized probability of the query node.
 	 */
-	public BayesianFactor fullPropagation() {
+	public F fullPropagation() {
 		checks();
 
 		Integer variable = network.vertexSet().iterator().next();
 
-		BayesianFactor f = collectingEvidence(variable);
+		F f = collectingEvidence(variable);
 		distributingEvidence(variable);
 
 		return f;
@@ -111,13 +111,13 @@ public class BeliefPropagation {
 	 * @param variable the variable to consider the root node
 	 * @return the new root variable of the network
 	 */
-	public BayesianFactor collectingEvidence(int variable) {
+	public F collectingEvidence(int variable) {
 		checks();
 
 		Clique root = getRoot(variable);
 
 		// collect messages
-		Stream<BayesianFactor> psis = junctionTree.edgesOf(root).stream()
+		Stream<F> psis = junctionTree.edgesOf(root).stream()
 				.map(edge -> {
 					Clique source = junctionTree.getEdgeSource(edge);
 					Clique target = junctionTree.getEdgeTarget(edge);
@@ -127,11 +127,11 @@ public class BeliefPropagation {
 					return collect(/* from */ i, /* to */root);
 				});
 
-		Stream<BayesianFactor> phis = Stream.of(phi(root));
+		Stream<F> phis = Stream.of(phi(root));
 
 		// combine by potential
-		BayesianFactor f = Stream.concat(phis, psis)
-				.reduce(BayesianFactor::combine)
+		F f = Stream.concat(phis, psis)
+				.reduce(F::combine)
 				.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
 
 		// marginalize out what is not needed
@@ -149,7 +149,7 @@ public class BeliefPropagation {
 		checks();
 
 		Clique root = getRoot(variable);
-		BayesianFactor phi = phi(root);
+		F phi = phi(root);
 
 		junctionTree.outgoingEdgesOf(root).forEach(edge -> {
 			Clique source = junctionTree.getEdgeSource(edge);
@@ -157,8 +157,8 @@ public class BeliefPropagation {
 
 			Clique i = root == source ? target : source;
 
-			Separator S = junctionTree.getEdge(i, root);
-			BayesianFactor Mij = project(phi, S);
+			Separator<F> S = junctionTree.getEdge(i, root);
+			F Mij = project(phi, S);
 
 			// distribute the message M(root,j) to node j
 			distribute(root, i, Mij);
@@ -178,11 +178,11 @@ public class BeliefPropagation {
 	 * @param k to this node
 	 * @return the message Mjk
 	 */
-	private BayesianFactor collect(Clique j, Clique k) {
+	private F collect(Clique j, Clique k) {
 		// collect phi(j)
-		BayesianFactor phi = phi(j);
+		F phi = phi(j);
 
-		for (Separator edge : junctionTree.edgesOf(j)) {
+		for (Separator<F> edge : junctionTree.edgesOf(j)) {
 			Clique source = junctionTree.getEdgeSource(edge);
 			Clique target = junctionTree.getEdgeTarget(edge);
 
@@ -192,14 +192,14 @@ public class BeliefPropagation {
 			// ignore messages inbound from k
 			if (i.equals(k)) continue;
 
-			BayesianFactor Mij = collect(i, j);
+			F Mij = collect(i, j);
 
 			phi.combine(Mij);
 		}
 
 		// compute the message by projecting phi over the separator(i, j)
-		Separator S = junctionTree.getEdge(j, k);
-		BayesianFactor Mjk = project(phi, S);
+		Separator<F> S = junctionTree.getEdge(j, k);
+		F Mjk = project(phi, S);
 		S.setMessage(j, Mjk);
 
 		return Mjk;
@@ -210,13 +210,13 @@ public class BeliefPropagation {
 	 * @param i   to this node
 	 * @param Mki the message Mki
 	 */
-	private void distribute(Clique k, Clique i, BayesianFactor Mki) {
+	private void distribute(Clique k, Clique i, F Mki) {
 		junctionTree.getEdge(k, i).setMessage(k, Mki);
 
-		BayesianFactor phi = phi(i).combine(Mki);
+		F phi = phi(i).combine(Mki);
 
 		// if we have nodes that need the message from this node i
-		for (Separator edge : junctionTree.edgesOf(i)) {
+		for (Separator<F> edge : junctionTree.edgesOf(i)) {
 			Clique source = junctionTree.getEdgeSource(edge);
 			Clique target = junctionTree.getEdgeTarget(edge);
 
@@ -225,7 +225,7 @@ public class BeliefPropagation {
 			// ignore message outgoing to k
 			if (j.equals(k)) continue;
 
-			BayesianFactor Mij = project(phi, junctionTree.getEdge(i, j));
+			F Mij = project(phi, junctionTree.getEdge(i, j));
 
 			distribute(i, j, Mij);
 		}
@@ -235,13 +235,13 @@ public class BeliefPropagation {
 	 * Compute the potential phi of a given {@link Clique}. Evidence is considered there.
 	 *
 	 * @param clique input clique
-	 * @return a {@link BayesianFactor} which is a combination of all the factors and the evidences included in the Clique
+	 * @return a {@link F} which is a combination of all the factors and the evidences included in the Clique
 	 */
-	private BayesianFactor phi(Clique clique) {
-		BayesianFactor factor = IntStream.of(clique.getVariables())
+	private F phi(Clique clique) {
+		F factor = IntStream.of(clique.getVariables())
 				.mapToObj(factors::get)
-				.reduce(BayesianFactor::combine)
-				.orElseThrow(() -> new IllegalStateException("Empty BayesianFactor after reduce"));
+				.reduce(F::combine)
+				.orElseThrow(() -> new IllegalStateException("Empty F after reduce"));
 
 		return factor.filter(evidence);
 	}
@@ -251,9 +251,9 @@ public class BeliefPropagation {
 	 *
 	 * @param phi input potential
 	 * @param S   separator to consider
-	 * @return a marginalized and normalized {@link BayesianFactor}
+	 * @return a marginalized and normalized {@link F}
 	 */
-	private BayesianFactor project(BayesianFactor phi, Separator S) {
+	private F project(F phi, Separator<F> S) {
 		int[] ints = Arrays.stream(phi.getDomain().getVariables())
 				.filter(x -> ArraysUtil.contains(x, S.getVariables()))
 				.toArray();

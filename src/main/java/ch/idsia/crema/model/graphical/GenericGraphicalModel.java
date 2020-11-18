@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.NoSuchVariableException;
 import ch.idsia.crema.model.Strides;
@@ -298,6 +299,11 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 	@Override
 	public F getFactor(int variable) {
 		return factors.get(variable);
+	}
+
+	@Override
+	public TIntObjectMap<F> getFactorsMap() {
+		return this.factors;
 	}
 
 	@Override

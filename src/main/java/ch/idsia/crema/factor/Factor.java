@@ -1,5 +1,6 @@
 package ch.idsia.crema.factor;
 
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operable;
@@ -111,6 +112,13 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * @return
 	 */
 	F divide(F factor);
+
+	/**
+	 * Factor normalization.
+	 */
+	default F normalize(int... given) {
+		throw new NotImplementedException("Not Implemented yet");
+	}
 
 	/**
 	 * Static method that builds a deterministic factor (values can only be ones or zeros).

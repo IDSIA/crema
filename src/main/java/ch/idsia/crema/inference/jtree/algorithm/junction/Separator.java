@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.junction;
 
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 
 import java.util.Arrays;
@@ -10,15 +10,15 @@ import java.util.Arrays;
  * Project: CreMA
  * Date:    14.02.2018 10:25
  */
-public class Separator {
+public class Separator<F extends Factor<F>> {
 
 	private int[] variables;
 
 	private final Clique source;
 	private final Clique target; // separator is always between two cliques
 
-	private BayesianFactor messageFromSource;
-	private BayesianFactor messageFromTarget;
+	private F messageFromSource;
+	private F messageFromTarget;
 
 
 	public Separator(Clique source, Clique target) {
@@ -43,14 +43,14 @@ public class Separator {
 		return variables;
 	}
 
-	public void setMessage(Clique from, BayesianFactor message) {
+	public void setMessage(Clique from, F message) {
 		if (from.equals(source))
 			messageFromSource = message;
 		else
 			messageFromTarget = message;
 	}
 
-	public BayesianFactor getMessage(Clique from) {
+	public F getMessage(Clique from) {
 		if (from.equals(source))
 			return messageFromSource;
 		return messageFromTarget;

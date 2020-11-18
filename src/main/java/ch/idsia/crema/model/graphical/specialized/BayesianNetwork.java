@@ -21,10 +21,6 @@ import java.util.stream.IntStream;
  */
 public class BayesianNetwork extends GenericGraphicalModel<BayesianFactor, SparseDirectedAcyclicGraph> {
 
-	public TIntObjectMap<BayesianFactor> getFactorsMap() {
-		return this.factors;
-	}
-
 	/**
 	 * Create the directed model using the specified network implementation.
 	 */

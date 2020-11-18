@@ -584,6 +584,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 * Factor normalization
 	 *
 	 */
+	@Override
 	public BayesianFactor normalize(int... given) {
 		BayesianFactor div = this;
 		for (int m : ArraysUtil.removeAllFromSortedArray(domain.getVariables(), given)) {

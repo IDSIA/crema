@@ -1,7 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.join;
 
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
-import org.jgrapht.Graph;
 import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm;
 import org.jgrapht.alg.spanning.PrimMinimumSpanningTree;
 import org.jgrapht.graph.DefaultWeightedEdge;
