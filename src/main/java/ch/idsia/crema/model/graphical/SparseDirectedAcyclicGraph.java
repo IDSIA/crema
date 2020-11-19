@@ -2,15 +2,11 @@ package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Ints;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 
-import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Author:  Claudio "Dna" Bonesana

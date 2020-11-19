@@ -580,21 +580,6 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return new BayesianFactor(domain, result, log);
 	}
 
-	/**
-	 * Factor normalization
-	 *
-	 */
-	@Override
-	public BayesianFactor normalize(int... given) {
-		BayesianFactor div = this;
-		for (int m : ArraysUtil.removeAllFromSortedArray(domain.getVariables(), given)) {
-			div = div.marginalize(m);
-		}
-		return divide(div);
-	}
-
-
-
 	@Override
 	public String toString() {
 		return "P(" + Arrays.toString(domain.getVariables()) + ") "+Arrays.toString(this.getData());

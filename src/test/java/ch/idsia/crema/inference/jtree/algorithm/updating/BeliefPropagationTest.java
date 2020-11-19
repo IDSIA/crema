@@ -1,6 +1,10 @@
 package ch.idsia.crema.inference.jtree.algorithm.updating;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.symbolic.PriorFactor;
+import ch.idsia.crema.factor.symbolic.SymbolicFactor;
+import ch.idsia.crema.model.graphical.Graph;
+import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
@@ -60,7 +64,7 @@ public class BeliefPropagationTest {
 
 	@Test
 	public void testPropagationQuery() {
-		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(model);
+		BeliefPropagation<BayesianFactor, Graph> bp = new BeliefPropagation<>(model);
 		BayesianFactor factor = bp.fullPropagation();
 
 		assertEquals(factor, factors[A0]);
@@ -121,5 +125,33 @@ public class BeliefPropagationTest {
 		obs.put(A2, 1);
 		bp.setEvidence(obs);
 		System.out.println("P(A0 | A1=1, A2=1): " + bp.collectingEvidence(A0));
+	}
+
+	@Test
+	public void testPropagationSymbolic() {
+		SparseModel<SymbolicFactor> m = new SparseModel<>();
+		int A = m.addVariable(2);
+		int B = m.addVariable(2);
+		int C = m.addVariable(2);
+
+		m.addParent(A, C);
+		m.addParent(B, C);
+
+		BayesianFactor fAC = new BayesianFactor(m.getDomain(A));
+		BayesianFactor fBC = new BayesianFactor(m.getDomain(B));
+		BayesianFactor fC = new BayesianFactor(m.getDomain(C));
+
+		PriorFactor pAC = new PriorFactor(fAC);
+		PriorFactor pBC = new PriorFactor(fBC);
+		PriorFactor pC = new PriorFactor(fC);
+
+		m.setFactor(A, pAC);
+		m.setFactor(B, pBC);
+		m.setFactor(C, pC);
+
+		BeliefPropagation<SymbolicFactor> bp = new BeliefPropagation<>(m);
+		SymbolicFactor factor = bp.fullPropagation();
+
+		System.out.println(factor);
 	}
 }

@@ -5,7 +5,7 @@ import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTree;
 import ch.idsia.crema.inference.jtree.algorithm.junction.Separator;
 import ch.idsia.crema.model.graphical.GenericGraphicalModel;
-import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
+import ch.idsia.crema.model.graphical.Graph;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  */
 public class BeliefPropagation<F extends Factor<F>> {
 
-	private final SparseDirectedAcyclicGraph network;
+	private final Graph graph;
 	private final TIntObjectMap<F> factors;
 
 	JunctionTree<F> junctionTree;
@@ -33,9 +33,9 @@ public class BeliefPropagation<F extends Factor<F>> {
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
-	public BeliefPropagation(GenericGraphicalModel<F, SparseDirectedAcyclicGraph> bn) {
-		this.network = bn.getNetwork();
-		this.factors = bn.getFactorsMap();
+	public BeliefPropagation(GenericGraphicalModel<F, Graph> ggm) {
+		this.graph = ggm.getNetwork();
+		this.factors = ggm.getFactorsMap();
 		init();
 	}
 
@@ -44,7 +44,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 */
 	public void init() {
 		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
-		pipeline.setInput(network);
+		pipeline.setInput(graph);
 		junctionTree = pipeline.exec();
 		fullyPropagated = false;
 	}
@@ -97,7 +97,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	public F fullPropagation() {
 		checks();
 
-		Integer variable = network.vertexSet().iterator().next();
+		Integer variable = graph.vertexSet().iterator().next();
 
 		F f = collectingEvidence(variable);
 		distributingEvidence(variable);
@@ -168,7 +168,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	}
 
 	private void checks() {
-		if (network == null) throw new IllegalArgumentException("No network available");
+		if (graph == null) throw new IllegalArgumentException("No network available");
 		if (factors == null) throw new IllegalArgumentException("No factors available");
 		if (junctionTree == null) throw new IllegalStateException("No JunctionTree available");
 	}

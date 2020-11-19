@@ -1,9 +1,9 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operable;
+import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -102,7 +102,6 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 			out = out.marginalize(v);
 		}
 		return out;
-
 	}
 
 	/**
@@ -117,7 +116,11 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * Factor normalization.
 	 */
 	default F normalize(int... given) {
-		throw new NotImplementedException("Not Implemented yet");
+		F div = (F) this;
+		for (int m : ArraysUtil.removeAllFromSortedArray(getDomain().getVariables(), given)) {
+			div = div.marginalize(m);
+		}
+		return divide(div);
 	}
 
 	/**

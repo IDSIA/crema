@@ -1,7 +1,6 @@
 package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.NoSuchVariableException;
 import ch.idsia.crema.model.Strides;

@@ -5,7 +5,6 @@ import ch.idsia.crema.model.graphical.GenericGraphicalModel;
 import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.stream.DoubleStream;
