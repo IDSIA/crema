@@ -3,10 +3,6 @@
         xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
         version="2.1">
     <java-types>
-        <java-type name="ch.idsia.crema.model.graphical.SparseList">
-            <xml-root-element/>
-            <xml-type prop-order=""/>
-        </java-type>
         <java-type name="ch.idsia.crema.factor.bayesian.InlineBayesian">
             <xml-root-element/>
             <java-attributes>

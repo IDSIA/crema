@@ -23,28 +23,28 @@ import java.util.stream.IntStream;
  */
 @XmlRootElement(name = "model")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class SparseModel<F extends GenericFactor> extends GenericSparseModel<F, SparseList> implements GraphicalModel<F> {
+public class SparseModel<F extends GenericFactor> extends GenericSparseModel<F, SparseDirectedAcyclicGraph> {
 
 	/**
 	 * Create the directed model using the specified network implementation.
 	 *
-	 * @param method {@link Graph} implementation to use
+	 * @param method implementation to use
 	 */
-	public SparseModel(SparseList method) {
+	public SparseModel(SparseDirectedAcyclicGraph method) {
 		super(method);
 	}
 
 	/**
-	 * Creates the directed model using a {@link SparseList} as implementation of the network.
+	 * Creates the directed model using a {@link SparseDirectedAcyclicGraph} as implementation of the network.
 	 */
 	public SparseModel() {
-		super(new SparseList());
+		super(new SparseDirectedAcyclicGraph());
 	}
 
 	public <R extends GenericFactor> SparseModel<R> convert(BiFunction<F, Integer, R> converter) {
 		NullChange<R> changer = new NullChange<>();
 
-		SparseList graph = network.copy();
+		SparseDirectedAcyclicGraph graph = network.copy();
 		SparseModel<R> new_model = new SparseModel<>(graph);
 		new_model.domainChanger = changer;
 		new_model.cardinalityChanger = changer;
@@ -63,29 +63,23 @@ public class SparseModel<F extends GenericFactor> extends GenericSparseModel<F, 
 		return new_model;
 	}
 
-
-
 	@Override
-	public SparseModel observe(int var, int state){
-		return (SparseModel)super.observe(var, state);
+	public SparseModel<F> observe(int var, int state) {
+		return (SparseModel<F>) super.observe(var, state);
 	}
 
-
-	public BayesianNetwork sampleVertex(){
+	public BayesianNetwork sampleVertex() {
 		BayesianNetwork bnet = new BayesianNetwork();
 		bnet.addVariables(this.getVariables());
-		for(int v: this.getVariables()){
-			bnet.addParents(v,this.getParents(v));
-			bnet.setFactor(v,((VertexFactor)this.getFactor(v)).sampleVertex());
+		for (int v : this.getVariables()) {
+			bnet.addParents(v, this.getParents(v));
+			bnet.setFactor(v, ((VertexFactor) this.getFactor(v)).sampleVertex());
 		}
 		return bnet;
 	}
 
-	public BayesianNetwork[] sampleVertex(int num){
-		return IntStream.range(0,num).mapToObj(i->this.sampleVertex()).toArray(BayesianNetwork[]::new);
+	public BayesianNetwork[] sampleVertex(int num) {
+		return IntStream.range(0, num).mapToObj(i -> this.sampleVertex()).toArray(BayesianNetwork[]::new);
 	}
-
-
-
 
 }

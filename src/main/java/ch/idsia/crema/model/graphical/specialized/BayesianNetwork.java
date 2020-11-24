@@ -7,7 +7,6 @@ import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
-import java.util.Iterator;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
@@ -27,12 +26,12 @@ public class BayesianNetwork extends GenericSparseModel<BayesianFactor, SparseDi
 	public BayesianNetwork() {
 		super(new SparseDirectedAcyclicGraph());
 	}
-	
-	public BayesianNetwork copy(){
 
+	public BayesianNetwork copy() {
 		BayesianNetwork copy = new BayesianNetwork();
+
 		copy.addVariables(this.getSizes(this.getVariables()));
-		for (int v : copy.getVariables()){
+		for (int v : copy.getVariables()) {
 			copy.addParents(v, this.getParents(v));
 			copy.setFactor(v, this.getFactor(v).copy());
 		}
@@ -40,44 +39,37 @@ public class BayesianNetwork extends GenericSparseModel<BayesianFactor, SparseDi
 		return copy;
 	}
 
-
 	public TIntIntMap[] samples(int N, int... vars) {
 		return IntStream.range(0, N).mapToObj(i -> sample()).toArray(TIntIntMap[]::new);
 	}
-	public TIntIntMap sample(int... vars){
 
+	public TIntIntMap sample(int... vars) {
 		TIntIntMap obs = new TIntIntHashMap();
-		Iterator it = this.getNetwork().iterator();
-		while(it.hasNext()){
-			int v = (int) it.next();
-			BayesianFactor f = this.getFactor(v).copy();
-			for(int pa : this.getParents(v)){
+		for (Integer integer : this.getNetwork()) {
+			BayesianFactor f = this.getFactor(integer).copy();
+			for (int pa : this.getParents(integer)) {
 				f = f.filter(pa, obs.get(pa));
 			}
 			obs.putAll(f.sample());
 		}
 
-		if(vars.length==0)
+		if (vars.length == 0)
 			vars = this.getVariables();
 
-
-		for(int v:obs.keys())
-			if(!ArraysUtil.contains(v, vars))
+		for (int v : obs.keys())
+			if (!ArraysUtil.contains(v, vars))
 				obs.remove(v);
 
 		return obs;
 	}
 
 
-
 	public double[] logProb(TIntIntMap[] data) {
 		return IntStream.of(this.getVariables()).mapToDouble(v -> this.getFactor(v).logProb(data, v)).toArray();
 	}
+
 	public double sumLogProb(TIntIntMap[] data) {
 		return DoubleStream.of(this.logProb(data)).sum();
 	}
-
-
-
 
 }
