@@ -40,8 +40,10 @@ extensions = ['sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'sphinx.ext.autodoc',
     'sphinxcontrib.napoleon',
-    'nbsphinx',
-    'recommonmark',]
+ #   'nbsphinx',
+ "sphinx.ext.graphviz",
+    'recommonmark',
+    ]
 
 
 # Napoleon settings
@@ -217,3 +219,7 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
+
+
+
+graphviz_dot="C:\\Program Files\\Graphviz\\bin\\dot.exe"

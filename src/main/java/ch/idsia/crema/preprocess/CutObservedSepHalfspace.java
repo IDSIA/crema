@@ -26,22 +26,25 @@ public class CutObservedSepHalfspace {
      * @param evidence a collection of instantiations containing variable - state
      *                 pairs
      */
-    public void executeInplace(GraphicalModel model, TIntIntMap evidence) {
-        int size = evidence.size();
+    public void executeInplace(final GraphicalModel model, final TIntIntMap evidence) {
+        final int size = evidence.size();
 
-        TIntIntIterator iterator = evidence.iterator();
+        final TIntIntIterator iterator = evidence.iterator();
         for (int o = 0; o < size; ++o) {
             iterator.advance();
             final int observed = iterator.key();
             final int state = iterator.value();
 
-            //int[] affected = Ints.concat(model.getChildren(observed), new int[]{observed});
+            // int[] affected = Ints.concat(model.getChildren(observed), new
+            // int[]{observed});
 
-            int[] affected  = model.getChildren(observed);
+            final int[] affected = model.getChildren(observed);
 
-            for (int variable : affected) {
-                SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor)model.getFactor(variable)).filter(observed, state);
-                if(variable != observed) model.removeParent(variable, observed);
+            for (final int variable : affected) {
+                final SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor) model.getFactor(variable))
+                        .filter(observed, state);
+                if (variable != observed)
+                    model.removeParent(variable, observed);
                 model.setFactor(variable, new_factor);
 
             }
@@ -56,10 +59,10 @@ public class CutObservedSepHalfspace {
      * @param evidence a collection of instantiations containing variable - state
      *                 pairs
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public SparseModel execute(SparseModel model, TIntIntMap evidence) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public SparseModel execute(final SparseModel model, final TIntIntMap evidence) {
 
-        SparseModel copy = (SparseModel)model.copy();
+        final SparseModel copy = (SparseModel) model.copy();
         executeInplace(copy, evidence);
         return copy;
     }
