@@ -3,11 +3,9 @@ package ch.idsia.crema.model.io;
 import java.io.FileInputStream;
 import java.util.Arrays;
 
-import org.junit.Test;
-
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.model.io.bif.XMLBIFParser;
 
