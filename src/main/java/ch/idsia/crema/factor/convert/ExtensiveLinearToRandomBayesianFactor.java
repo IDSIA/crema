@@ -6,7 +6,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
-import ch.idsia.crema.model.Converter;
+import ch.idsia.crema.core.Converter;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.commons.Simplex;
 // FIXME rename

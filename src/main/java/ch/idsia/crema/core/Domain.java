@@ -1,4 +1,4 @@
-package ch.idsia.crema.model;
+package ch.idsia.crema.core;
 
 
 public interface Domain {
@@ -8,16 +8,16 @@ public interface Domain {
 	 * @param variable
 	 * @return
 	 */
-	public int getCardinality(int variable);
+	int getCardinality(int variable);
 
 	/**
 	 * <p>Get the cardinality of the variable at the specified offset in the domain.</p>
-	 * <p>This method is usually used with the result of {@link indexOf}.</p>
+	 * <p>This method is usually used with the result of {@link #indexOf}.</p>
 	 *  
 	 * @param index
 	 * @return
 	 */
-	public int getSizeAt(int index);
+	int getSizeAt(int index);
 
 	/**
 	 * Find the location/offset of a variable in the domain.
@@ -25,7 +25,7 @@ public interface Domain {
 	 * @param variable
 	 * @return
 	 */
-	public int indexOf(int variable);
+	int indexOf(int variable);
 	
 	/**
 	 * Check if the specified variable is present in the domain
@@ -33,28 +33,28 @@ public interface Domain {
 	 * @param variable
 	 * @return 
 	 */
-	public boolean contains(int variable);
+	boolean contains(int variable);
 
 	/**
 	 * The vector of variables in this domain. 
 	 * Please read-only!
 	 * @return
 	 */
-	public int[] getVariables();
+	int[] getVariables();
 	
 	/** 
 	 * Get all the cardinalities of the variables in the domain.
 	 * 
 	 * @return
 	 */
-	public int[] getSizes();
+	int[] getSizes();
 	
 	/**
 	 * Get the number of variables in the domain.
 	 * 
 	 * @return
 	 */
-	public int getSize();
+	int getSize();
 	
 	/**
 	 * Notify the domain that a variable has been removed. Prior to remove a variable the model will 
@@ -65,5 +65,5 @@ public interface Domain {
 	 * 
 	 * @param variable
 	 */
-	public void removed(int variable);
+	void removed(int variable);
 }

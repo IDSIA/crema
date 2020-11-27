@@ -6,7 +6,7 @@ import java.util.Arrays;
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.vertex.Collector;
 import ch.idsia.crema.model.vertex.Filter;
 import ch.idsia.crema.model.vertex.LogMarginal;

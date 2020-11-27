@@ -9,7 +9,7 @@ import java.util.ServiceLoader;
 import org.apache.commons.math3.util.Pair;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.model.Converter;
+import ch.idsia.crema.core.Converter;
 
 /**
  * TODO should we use dependency injection?

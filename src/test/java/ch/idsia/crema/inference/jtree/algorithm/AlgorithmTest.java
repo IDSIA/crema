@@ -10,7 +10,7 @@ import ch.idsia.crema.inference.jtree.algorithm.moralization.Moralize;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.MinDegreeOrdering;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate;
 import ch.idsia.crema.inference.jtree.algorithm.updating.MessagePassing;
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.inference.jtree.UndirectedGraph;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -34,9 +34,9 @@ public class AlgorithmTest {
 
 		// Moralize
 		Moralize m = new Moralize();
-		m.setModel(bn.network.getNetwork());
+		m.setModel(bn.network);
 		// obtaining a domain graph G for BN (moral graph)
-		SparseUndirectedGraph moralGraph = m.exec();
+		UndirectedGraph moralGraph = m.exec();
 
 //		assert (moralGraph.getEdge(0, 1) != null);
 //		assert (moralGraph.getEdge(4, 5) != null);
@@ -47,7 +47,7 @@ public class AlgorithmTest {
 		Triangulate t = new MinDegreeOrdering();
 		t.setModel(moralGraph);
 		// obtaining a triangulated graph for G
-		SparseUndirectedGraph triangulated = t.exec();
+		UndirectedGraph triangulated = t.exec();
 
 //		assert (triangulated.edgeSet().size() == moralGraph.edgeSet().size() + 2);
 //		assert (triangulated.vertexSet().size() == moralGraph.vertexSet().size());

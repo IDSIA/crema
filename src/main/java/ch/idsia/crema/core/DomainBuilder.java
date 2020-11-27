@@ -1,4 +1,4 @@
-package ch.idsia.crema.model;
+package ch.idsia.crema.core;
 
 public class DomainBuilder extends SimpleDomain {
 

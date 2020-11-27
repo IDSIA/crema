@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.sepolyve.SePolyVE;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -22,7 +22,7 @@ public class SmallDebugPolyVE {
 
 	public void miniTest() {
 
-		SparseModel<VertexFactor> model = new SparseModel<>();		
+		DAGModel<VertexFactor> model = new DAGModel<>();		
 		int[] nodes = new int[2];
 		Strides[] domain = new Strides[2];
 		for(int i=0;i<2;i++){
@@ -41,7 +41,7 @@ public class SmallDebugPolyVE {
 			model.setFactor(nodes[i],K[i]);}
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(nodes[1],0);
-		SparseModel<VertexFactor> model2 = new RemoveBarren().execute(model,nodes[0],evidence);
+		DAGModel<VertexFactor> model2 = new RemoveBarren().execute(model,nodes[0],evidence);
 		//System.out.println(new DotSerialize().run(model2));		
 		SePolyVE ve = new SePolyVE();
 		VertexFactor factor = ve.run(model2,nodes[0],evidence);

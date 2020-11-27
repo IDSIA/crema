@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.Converter;
+import ch.idsia.crema.core.Converter;
 
 /**
  * Convert from {@link VertexFactor} to {@link IntervalFactor}

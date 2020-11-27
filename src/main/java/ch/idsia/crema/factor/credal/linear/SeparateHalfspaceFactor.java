@@ -1,24 +1,16 @@
 package ch.idsia.crema.factor.credal.linear;
 
 import java.util.*;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import ch.idsia.crema.factor.convert.HalfspaceToVertex;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
-import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
-import jdk.jshell.spi.ExecutionControl;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 
-import ch.idsia.crema.model.Strides;
-
-import javax.sound.sampled.Line;
+import ch.idsia.crema.core.Strides;
 
 /**
  * A separately specified Credal factor that has a list of linear constrains for each

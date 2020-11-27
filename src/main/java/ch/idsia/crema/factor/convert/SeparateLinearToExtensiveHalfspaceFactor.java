@@ -11,8 +11,8 @@ import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
 import ch.idsia.crema.factor.credal.linear.ExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.Converter;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.IndexIterator;
 
 

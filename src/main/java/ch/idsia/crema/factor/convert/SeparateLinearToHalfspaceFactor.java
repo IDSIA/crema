@@ -8,7 +8,7 @@ import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.Converter;
+import ch.idsia.crema.core.Converter;
 
 public class SeparateLinearToHalfspaceFactor implements Converter<SeparateLinearFactor, SeparateHalfspaceFactor> {
 

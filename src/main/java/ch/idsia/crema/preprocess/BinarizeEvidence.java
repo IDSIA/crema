@@ -7,8 +7,8 @@ import java.util.List;
 
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.core.Strides;
 import gnu.trove.map.TIntIntMap;
 
 /**

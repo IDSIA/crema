@@ -3,7 +3,7 @@ package ch.idsia.crema.factor.credal.vertex.algebra;
 import java.util.Arrays;
 
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.math.Operation;
 import ch.idsia.crema.model.vertex.Collector;
 import ch.idsia.crema.model.vertex.Filter;

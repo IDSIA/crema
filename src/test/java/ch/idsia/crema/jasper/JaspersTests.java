@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultExtensiveAlgebra;
-import ch.idsia.crema.model.DomainBuilder;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.DomainBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.solver.commons.Simplex;
 
 public class JaspersTests {

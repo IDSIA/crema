@@ -1,11 +1,8 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.ObservationBuilder;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.ObservationBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.math.Operable;
-import com.google.common.primitives.Ints;
-import gnu.trove.impl.hash.TIntIntHash;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.NotImplementedException;
 

@@ -3,6 +3,7 @@ package ch.idsia.crema.model;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import ch.idsia.crema.core.Strides;
 import org.junit.Assert;
 import org.junit.Test;
 

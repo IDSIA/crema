@@ -1,6 +1,7 @@
-package ch.idsia.crema.model;
+package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.model.Model;
 import ch.idsia.crema.model.change.DomainChange;
 
 // FIXME: #removeParent should accept a lambda
@@ -31,4 +32,10 @@ public interface GraphicalModel<F extends GenericFactor> extends Model<F> {
 
 	@Override
 	GraphicalModel<F> copy();
+
+	default void addParents(int k, int[] parent){
+		for (int p : parent) {
+			addParent(k, p);
+		}
+	}
 }

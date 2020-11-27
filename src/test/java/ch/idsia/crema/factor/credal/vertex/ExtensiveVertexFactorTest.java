@@ -7,8 +7,8 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultExtensiveAlgebra;
-import ch.idsia.crema.model.DomainBuilder;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.DomainBuilder;
+import ch.idsia.crema.core.Strides;
 
 public class ExtensiveVertexFactorTest {
 

@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.cliques;
 
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.inference.jtree.UndirectedGraph;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class FindCliques {
 
-	private SparseUndirectedGraph model;
+	private UndirectedGraph model;
 
 	private int[] sequence;
 
@@ -26,7 +26,7 @@ public class FindCliques {
 	 * @param model a triangulated graph produced by the
 	 *              {@link ch.idsia.crema.inference.jtree.algorithm.triangulation.Triangulate} algorithm.
 	 */
-	public void setModel(SparseUndirectedGraph model) {
+	public void setModel(UndirectedGraph model) {
 		this.model = model;
 	}
 
@@ -54,7 +54,7 @@ public class FindCliques {
 		if (sequence == null) throw new IllegalArgumentException("No elimination sequence available.");
 		if (model == null) throw new IllegalArgumentException("No model is available");
 
-		SparseUndirectedGraph copy = model.copy();
+		UndirectedGraph copy = model.copy();
 		cliques = new HashSet<>();
 
 		// follow the elimination sequence

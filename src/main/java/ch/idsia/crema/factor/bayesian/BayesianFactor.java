@@ -1,11 +1,10 @@
 package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.model.Domain;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.ObservationBuilder;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.core.Domain;
+import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.core.ObservationBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.vertex.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
@@ -15,7 +14,6 @@ import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;

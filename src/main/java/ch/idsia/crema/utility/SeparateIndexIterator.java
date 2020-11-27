@@ -1,6 +1,6 @@
 package ch.idsia.crema.utility;
 
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 import gnu.trove.iterator.TIntIntIterator;
 
 /**

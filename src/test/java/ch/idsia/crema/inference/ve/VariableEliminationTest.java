@@ -8,7 +8,7 @@ import org.apache.commons.math3.util.MathArrays;
 import org.junit.Test;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.DomainBuilder;
+import ch.idsia.crema.core.DomainBuilder;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 public class VariableEliminationTest {

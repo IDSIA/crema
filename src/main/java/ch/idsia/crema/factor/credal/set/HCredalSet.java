@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 
 public class HCredalSet extends AbstractSet {
 	private LinearConstraintSet problem;

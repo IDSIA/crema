@@ -3,8 +3,7 @@ package ch.idsia.crema.learning;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.JoinInference;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
-import ch.idsia.crema.learning.ExpectationMaximization;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 

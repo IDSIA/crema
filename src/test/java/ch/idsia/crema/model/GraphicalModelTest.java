@@ -3,25 +3,26 @@ package ch.idsia.crema.model;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import ch.idsia.crema.core.Strides;
 import org.junit.Test;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.DAGModel;
 
 public class GraphicalModelTest {
 
 	@Test
 	public void testAddStateNullChange() {
-		SparseModel<BayesianFactor> model = new SparseModel<BayesianFactor>();
+		DAGModel<BayesianFactor> model = new DAGModel<BayesianFactor>();
 		model.addVariable(2);
 		model.addVariable(2);
 		model.addParent(1, 0);
-		
+
 		Strides strides = model.getDomain(0, 1);
 		BayesianFactor f = new BayesianFactor(strides, new double[strides.getCombinations()], false);
 		model.setFactor(1, f);
-		
+
 		// we have the null change manager installed by default
 		model.addState(0);
 		assertEquals(null, model.getFactor(1));
@@ -29,8 +30,8 @@ public class GraphicalModelTest {
 
 	@Test
 	public void testAlessandro() {
-		
-		SparseModel<VertexFactor> model = new SparseModel<VertexFactor>();
+
+		DAGModel<VertexFactor> model = new DAGModel<VertexFactor>();
 		int v1 = model.addVariable(3);
 		int v2 = model.addVariable(3);
 		int v3 = model.addVariable(3);
@@ -73,15 +74,15 @@ public class GraphicalModelTest {
 		//model.setFactor(v3, f3);
 
 		//ch.idsia.crema.factor.credal.vertex.algebra.DefaultAlgebra a = new ch.idsia.crema.factor.credal.vertex.algebra.DefaultAlgebra();
-	
+
 		// we have the null change manager installed by default
 		//assertEquals(null, model.getFactor(1));
 	}
 
-	
+
 	@Test
 	public void testRemoveState() {
-		SparseModel<BayesianFactor> model = new SparseModel<BayesianFactor>();
+		DAGModel<BayesianFactor> model = new DAGModel<BayesianFactor>();
 
 		model.addVariable(2);
 		model.addVariable(2);
@@ -100,17 +101,17 @@ public class GraphicalModelTest {
 		model.removeVariable(0);
 
 		// in this model factors are updated inline!!!
-		assertArrayEquals(new int[] { 1, 3 }, factor.getDomain().getVariables());
+		assertArrayEquals(new int[]{1, 3}, factor.getDomain().getVariables());
 
 		// since 0 was deleted the variable of the factor is 2
-		assertArrayEquals(new int[] { 1, 3 }, model.getFactor(3).getDomain().getVariables());
+		assertArrayEquals(new int[]{1, 3}, model.getFactor(3).getDomain().getVariables());
 
 	}
 
 	@Test
 	public void testRemoveVariable() {
-		SparseModel<BayesianFactor> model = new SparseModel<BayesianFactor>();
-		
+		DAGModel<BayesianFactor> model = new DAGModel<BayesianFactor>();
+
 		model.addVariable(2);
 		model.addVariable(2);
 		model.addVariable(2);
@@ -128,8 +129,8 @@ public class GraphicalModelTest {
 		model.removeVariable(0);
 
 		// in this model factors are updated inline!!!
-		assertArrayEquals(new int[] { 1, 3 }, factor.getDomain().getVariables());
-		assertArrayEquals(new int[] { 1, 3 }, model.getFactor(3).getDomain().getVariables());
+		assertArrayEquals(new int[]{1, 3}, factor.getDomain().getVariables());
+		assertArrayEquals(new int[]{1, 3}, model.getFactor(3).getDomain().getVariables());
 	}
 
 	@Test

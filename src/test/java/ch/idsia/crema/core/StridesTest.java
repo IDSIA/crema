@@ -1,8 +1,10 @@
-package ch.idsia.crema.model;
+package ch.idsia.crema.core;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import ch.idsia.crema.core.DomainBuilder;
+import ch.idsia.crema.core.Strides;
 import org.junit.Test;
 
 import ch.idsia.crema.utility.IndexIterator;

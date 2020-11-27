@@ -3,7 +3,7 @@ package ch.idsia.crema.factor.convert;
 import ch.idsia.credo.entropy.MaximumEntropy;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.model.Converter;
+import ch.idsia.crema.core.Converter;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 

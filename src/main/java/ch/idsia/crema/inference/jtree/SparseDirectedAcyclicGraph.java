@@ -1,4 +1,4 @@
-package ch.idsia.crema.model.graphical;
+package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Ints;
@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
  * Project: CreMA
  * Date:    12.02.2018 10:08
  */
-public class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, DefaultEdge> {
+class SparseDirectedAcyclicGraph extends DirectedAcyclicGraph<Integer, DefaultEdge> {
 
 
 	public SparseDirectedAcyclicGraph() {

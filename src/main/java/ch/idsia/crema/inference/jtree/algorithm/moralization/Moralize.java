@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.jtree.algorithm.moralization;
 
-import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.inference.jtree.UndirectedGraph;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -10,39 +11,39 @@ import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
  */
 public class Moralize {
 
-	private SparseDirectedAcyclicGraph model;
-	private SparseUndirectedGraph moralized;
+	private BayesianNetwork model;
+	private UndirectedGraph moralized;
 
 	/**
 	 * @param model the model to moralize
 	 */
-	public void setModel(SparseDirectedAcyclicGraph model) {
+	public void setModel(BayesianNetwork model) {
 		this.model = model;
 	}
 
 	/**
 	 * @return the last moralized graph found
 	 */
-	public SparseUndirectedGraph getMoralized() {
+	public UndirectedGraph getMoralized() {
 		return moralized;
 	}
 
 	/**
-	 * Convert a {@link SparseDirectedAcyclicGraph} into a {@link SparseUndirectedGraph} using the moralization
+	 * Convert a {@link DAGModel} into a {@link UndirectedGraph} using the moralization
 	 * algorithm over the given model.
 	 *
-	 * @return a moralized {@link SparseUndirectedGraph}
+	 * @return a moralized {@link UndirectedGraph}
 	 */
-	public SparseUndirectedGraph exec() {
+	public UndirectedGraph exec() {
 		if (model == null) throw new IllegalArgumentException("No model available");
 
-		moralized = new SparseUndirectedGraph();
+		moralized = new UndirectedGraph();
 
 		// add all the vertices to the new graph
-		model.vertexSet().forEach(moralized::addVertex);
+		model.getNetwork().vertexSet().forEach(moralized::addVertex);
 
 		// apply moralization
-		model.vertexSet().forEach(v -> {
+		model.getNetwork().vertexSet().forEach(v -> {
 			for (int parent : model.getParents(v)) {
 				// keep existing edges
 				moralized.addEdge(parent, v);

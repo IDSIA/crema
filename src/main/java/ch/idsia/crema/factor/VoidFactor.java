@@ -2,7 +2,7 @@ package ch.idsia.crema.factor;
 
 import java.util.Arrays;
 
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 
 public class VoidFactor implements Factor<VoidFactor> {
 

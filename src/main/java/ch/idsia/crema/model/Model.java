@@ -1,5 +1,6 @@
 package ch.idsia.crema.model;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 
 import java.util.Collection;

@@ -10,31 +10,31 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import ch.idsia.crema.model.graphical.DAGModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 
 /**
  * parser for the XMLBIF format (<a href=
  * "http://www.cs.cmu.edu/~fgcozman/Research/InterchangeFormat/">http://www.cs.cmu.edu/~fgcozman/Research/InterchangeFormat/</a>)
- * 
- * @author huber
  *
+ * @author huber
  */
 public class XMLBIFParser {
 
 	/**
 	 * load the variables from the DOM and return a Name - ID mapping
-	 * 
+	 *
 	 * @param model
 	 * @param document
 	 * @return
 	 */
-	private Map<String, Integer> loadVariables(SparseModel<BayesianFactor> model, Document document) {
+	private Map<String, Integer> loadVariables(GraphicalModel<BayesianFactor> model, Document document) {
 		NodeList variables = document.getElementsByTagName("VARIABLE");
 		HashMap<String, Integer> vars = new HashMap<>();
 
@@ -59,18 +59,18 @@ public class XMLBIFParser {
 
 	/**
 	 * Load the model from the provided stream.
-	 * 
+	 *
 	 * @param stream
 	 * @return
 	 * @throws SAXException
 	 * @throws IOException
 	 * @throws ParserConfigurationException
 	 */
-	public SparseModel<BayesianFactor> parse(InputStream stream)
+	public GraphicalModel<BayesianFactor> parse(InputStream stream)
 			throws SAXException, IOException, ParserConfigurationException {
 		// load document
 		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
-		SparseModel<BayesianFactor> model = new SparseModel<>();
+		GraphicalModel<BayesianFactor> model = new DAGModel<>();
 
 		// load variables
 		Map<String, Integer> variables = loadVariables(model, document);
@@ -96,11 +96,11 @@ public class XMLBIFParser {
 					conditionong.add(variables.get(text));
 				} else if ("TABLE".equals(tag)) {
 					String[] params = text.split("\\s");
-					table = Arrays.stream(params).mapToDouble(x -> Double.parseDouble(x)).toArray();
+					table = Arrays.stream(params).mapToDouble(Double::parseDouble).toArray();
 				}
 			}
 
-			int[] parents = conditionong.stream().mapToInt(x -> (int) x).toArray();
+			int[] parents = conditionong.stream().mapToInt(x -> x).toArray();
 			int[] sorted = Arrays.copyOf(parents, parents.length + 1);
 			System.arraycopy(parents, 0, sorted, 1, parents.length);
 			sorted[0] = variable;

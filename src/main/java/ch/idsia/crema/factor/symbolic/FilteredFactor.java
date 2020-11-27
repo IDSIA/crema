@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor.symbolic;
 
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 
 public class FilteredFactor extends SymbolicFactor {
 	private int variable; 

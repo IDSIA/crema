@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.approxlp2;
 
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 import ch.idsia.crema.factor.GenericFactor;
@@ -7,7 +8,6 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.commons.Simplex;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -23,7 +23,7 @@ public class Marginal extends Manager {
 	private static final double BAD = Double.NaN;
 	private SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
-	public Marginal(SparseModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state) {
+	public Marginal(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state) {
 		super(model, dir, x0, x0state);
 	}
 	

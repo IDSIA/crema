@@ -5,7 +5,7 @@ import java.util.Map;
 
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.precondition.NetworkReduction;
 import ch.idsia.crema.search.impl.DepthFirst;
 import ch.idsia.crema.search.impl.Utils;

@@ -8,7 +8,7 @@ import org.junit.Test;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.DomainBuilder;
+import ch.idsia.crema.core.DomainBuilder;
 
 public class SeparateToExtensive {
 	@Test

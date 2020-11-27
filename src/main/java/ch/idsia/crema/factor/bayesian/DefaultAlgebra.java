@@ -2,7 +2,7 @@ package ch.idsia.crema.factor.bayesian;
 
 import java.util.Arrays;
 
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.math.Operation;
 import ch.idsia.crema.model.vertex.Collector;
 import ch.idsia.crema.model.vertex.Filter;
@@ -115,7 +115,8 @@ public class DefaultAlgebra implements Operation<BayesianFactor> {
 	 * improvement.
 	 * </p>
 	 * 
-	 * @param factor
+	 * @param one
+	 * @param two
 	 * @return
 	 */
 	@Override
@@ -181,7 +182,8 @@ public class DefaultAlgebra implements Operation<BayesianFactor> {
 	 * divide this factor by the provided one. This assumes that the domain of
 	 * the given factor is a subset of this one's.
 	 * 
-	 * @param factor
+	 * @param one
+	 * @param two
 	 * @return
 	 */
 	public BayesianFactor divide(final BayesianFactor one, final BayesianFactor two) {

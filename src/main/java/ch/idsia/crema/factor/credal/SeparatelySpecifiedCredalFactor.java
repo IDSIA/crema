@@ -1,10 +1,8 @@
 package ch.idsia.crema.factor.credal;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.set.CredalSet;
-import ch.idsia.crema.model.Strides;
 
 /**
  * A separately specified credal set where there is a set of something for each instantiation
@@ -12,7 +10,6 @@ import ch.idsia.crema.model.Strides;
  * 
  * @author huber
  */
-@XmlRootElement(name="sscf")
 public class SeparatelySpecifiedCredalFactor<S extends CredalSet> implements GenericFactor, SeparatelySpecified<SeparatelySpecifiedCredalFactor<S>> {
 	private Strides left, right;
 	

@@ -10,7 +10,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearFractionalSolver;
 import ch.idsia.crema.solver.commons.FractionalSolver;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -23,7 +23,7 @@ public class Posterior extends Manager {
 
 	private TIntIntMap evidence;
 	
-	public Posterior(SparseModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state, TIntIntMap evidence) {
+	public Posterior(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state, TIntIntMap evidence) {
 		super(model, dir, x0, x0state);
 		this.evidence = evidence;
 	}

@@ -2,8 +2,7 @@ package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.IO;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
-import ch.idsia.crema.model.io.TypesIO;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Ints;
 

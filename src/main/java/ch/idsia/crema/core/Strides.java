@@ -1,4 +1,4 @@
-package ch.idsia.crema.model;
+package ch.idsia.crema.core;
 
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
@@ -69,9 +69,9 @@ public final class Strides implements Domain {
 	 * Creates a stride with a single variable excluded. Note that the variable
 	 * must not be missing in the provided domain.
 	 *
-	 * @deprecated please use {@link Strides#removeAt(Strides, int...)
 	 * @param domain
-	 * @param var
+	 * @param offset
+	 * @deprecated please use {@link Strides#removeAt(int...)}
 	 */
 	@Deprecated
 	public Strides(Strides domain, int offset) {
@@ -164,10 +164,9 @@ public final class Strides implements Domain {
 		return result;
 	}
 
-	public ObservationBuilder observationOf(int offset){
+	public ObservationBuilder observationOf(int offset) {
 		return ObservationBuilder.observe(this.getVariables(), this.statesOf(offset));
 	}
-
 
 	/**
 	 * Get the offset of the specified variable states using the strides of this
@@ -234,7 +233,7 @@ public final class Strides implements Domain {
 	 * Create an iterator over an enlarged domain but with same strides and
 	 * sizes.
 	 *
-	 * @param over
+	 * @param targetDomain
 	 * @return
 	 */
 	@Deprecated
@@ -268,11 +267,8 @@ public final class Strides implements Domain {
 	 * Create an iterator over an smaller domain with same strides and sizes and
 	 * 1 (one) variable set to a specific state.
 	 *
-	 * @param variable
-	 *            the variable
-	 * @param state
-	 *            the desired state
-	 *
+	 * @param variable the variable
+	 * @param state    the desired state
 	 * @return an iterator
 	 */
 	@Deprecated
@@ -297,12 +293,9 @@ public final class Strides implements Domain {
 	 * Create an iterator over an smaller domain with same strides and sizes and
 	 * some variables set to specific states.
 	 *
-	 * @param vars
-	 *            ordered list of variables that the states are for (MUST EXIST
-	 *            IN DOMAIN).
-	 * @param states
-	 *            list of states for the variable in variables
-	 *
+	 * @param vars   ordered list of variables that the states are for (MUST EXIST
+	 *               IN DOMAIN).
+	 * @param states list of states for the variable in variables
 	 * @return an iterator
 	 */
 	public IndexIterator getFiteredIndexIterator(final int[] vars, final int[] states) {
@@ -353,8 +346,7 @@ public final class Strides implements Domain {
 	 * Get an IndexIterator for this stride object with a different order for
 	 * the variables.
 	 *
-	 * @param unsorted_vars
-	 *            - int[] the new order for the variables
+	 * @param unsorted_vars - int[] the new order for the variables
 	 * @return an iterator
 	 */
 	public IndexIterator getReorderedIterator(int[] unsorted_vars) {
@@ -375,8 +367,7 @@ public final class Strides implements Domain {
 	 * Get an IndexIterator for this stride object with a different order for
 	 * the variables. Alias of intersection.
 	 *
-	 * @param unsorted_vars
-	 *            int[] - the new order for the variables
+	 * @param someVars int[] - the new order for the variables
 	 * @return an iterator
 	 */
 	public Strides retain(int[] someVars) {
@@ -390,8 +381,7 @@ public final class Strides implements Domain {
 	 * own strides. Variables do not necessarily have to be part of this domain.
 	 * Convenience method that calls the {@link Strides#remove(int...)}
 	 *
-	 * @param toremove
-	 *            Strides - the domain to be removed from the first domain
+	 * @param toremove Strides - the domain to be removed from the first domain
 	 * @return the new, possibly smaller, domain
 	 */
 	public Strides remove(Strides toremove) {
@@ -402,7 +392,6 @@ public final class Strides implements Domain {
 	 * Remove some variable from this domain. The returned domain will have his
 	 * own strides. Variables do not necessarily have to be part of "domain".
 	 *
-	 * @param domain
 	 * @param toremove
 	 * @return
 	 */
@@ -456,8 +445,7 @@ public final class Strides implements Domain {
 	 * Create a new Strides object result of the intersection of this domain
 	 * with the given one.
 	 *
-	 * @param domain2
-	 *            another domain
+	 * @param domain2 another domain
 	 * @return the intersection of domain1 and domain2
 	 */
 	public Strides intersection(Strides domain2) {
@@ -468,8 +456,7 @@ public final class Strides implements Domain {
 	 * Create a domain resulting from the intersection of this domain and the
 	 * variables domain2.
 	 *
-	 * @param domain2
-	 *            int[] - the second domain as a sorted array of variables
+	 * @param domain2 int[] - the second domain as a sorted array of variables
 	 * @return a new {@link Strides} instance intersection of the two domains
 	 */
 	public Strides intersection(int... domain2) {
@@ -525,7 +512,6 @@ public final class Strides implements Domain {
 	 * added to the union in bulk (pt2 in code).
 	 * </p>
 	 *
-	 * @param domain1
 	 * @param domain2
 	 * @return
 	 */
@@ -587,41 +573,38 @@ public final class Strides implements Domain {
 
 	/**
 	 * Concatenate 2 strides
-	 * @param left
+	 *
 	 * @param right
 	 * @return
 	 */
-	public Strides concat(Strides right){
+	public Strides concat(Strides right) {
 		Strides left = this;
 
-		int[] strides_left = new int[left.getSize()*2];
-		int[] strides_right = new int[right.getSize()*2];
+		int[] strides_left = new int[left.getSize() * 2];
+		int[] strides_right = new int[right.getSize() * 2];
 
-		for(int i=0; i<left.getSize(); i++){
+		for (int i = 0; i < left.getSize(); i++) {
 			int v = left.getVariables()[i];
-			strides_left[i*2] = v;
-			strides_left[i*2+1] = left.getCardinality(v);
+			strides_left[i * 2] = v;
+			strides_left[i * 2 + 1] = left.getCardinality(v);
 		}
 
-		for(int i=0; i<right.getSize(); i++){
+		for (int i = 0; i < right.getSize(); i++) {
 			int v = right.getVariables()[i];
-			strides_right[i*2] = v;
-			strides_right[i*2+1] = right.getCardinality(v);
+			strides_right[i * 2] = v;
+			strides_right[i * 2 + 1] = right.getCardinality(v);
 
 		}
 
-		return Strides.as(Ints.concat(strides_left,strides_right));
+		return Strides.as(Ints.concat(strides_left, strides_right));
 
 	}
-
-
-
 
 	/**
 	 * Creates a stride with one or more variables excluded. Note that the
 	 * variable must not be missing in the provided domain.
 	 *
-	 * @param offsets
+	 * @param offset
 	 */
 	public Strides removeAt(int... offset) {
 		int tsize = this.size - offset.length;
@@ -646,7 +629,7 @@ public final class Strides implements Domain {
 	/**
 	 * Get an iterator of this domain with the specified variables lock in state
 	 * 0.
-	 *
+	 * <p>
 	 * Convenience method when the target domain is this domain. same as calling
 	 * getIterator(this, locked);
 	 *
@@ -666,10 +649,8 @@ public final class Strides implements Domain {
 	 * fixed at zero. This allows us to keep them in the target domain while not
 	 * moving.
 	 *
-	 * @param str
-	 *            the target domain
-	 * @param locked
-	 *            the that should be locked
+	 * @param str    the target domain
+	 * @param locked the that should be locked
 	 * @return
 	 */
 	public IndexIterator getIterator(Strides str, int... locked) {
@@ -690,16 +671,16 @@ public final class Strides implements Domain {
 					// not locked
 					new_strides[target] = this.strides[source];
 				} else { // var was locked so lock actually matched target so we
-							// move lock
+					// move lock
 					++lock;
 				}
 				++source; // in any case we move the source pointer
 			} // else {
-				// source var is greater than target (var is not found in this
-				// domain)
-				// so no need to copy strides, we can leave them at the default
-				// value of 0
-				// }
+			// source var is greater than target (var is not found in this
+			// domain)
+			// so no need to copy strides, we can leave them at the default
+			// value of 0
+			// }
 		}
 
 		return new IndexIterator(new_strides, str.getSizes(), 0, str.getCombinations());
@@ -732,7 +713,6 @@ public final class Strides implements Domain {
 	}
 
 
-
 	/**
 	 * Define a stride as a sequence of variable/size pairs
 	 */
@@ -742,6 +722,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * Helper to allow concatenation of var().add().add()
+	 *
 	 * @param var
 	 * @param size
 	 * @return
@@ -782,12 +763,13 @@ public final class Strides implements Domain {
 
 	/**
 	 * Return a new Stride sorted by the variables.
+	 *
 	 * @return
 	 */
 	public Strides sort() {
-		int[] order = IntStream.range(0, size).boxed().sorted((a, b)->Strides.this.variables[a] - Strides.this.variables[b]).mapToInt(x->x).toArray();
-		int[] variables = Arrays.stream(order).map(x->Strides.this.variables[x]).toArray();
-		int[] sizes = Arrays.stream(order).map(x->Strides.this.sizes[x]).toArray();
+		int[] order = IntStream.range(0, size).boxed().sorted((a, b) -> Strides.this.variables[a] - Strides.this.variables[b]).mapToInt(x -> x).toArray();
+		int[] variables = Arrays.stream(order).map(x -> Strides.this.variables[x]).toArray();
+		int[] sizes = Arrays.stream(order).map(x -> Strides.this.sizes[x]).toArray();
 		return new Strides(variables, sizes);
 	}
 
@@ -797,15 +779,15 @@ public final class Strides implements Domain {
 		for (int var : observation.keys()) {
 			int index = indexOf(var);
 			if (index >= 0) {
-			    states[index] = observation.get(var);
-            }
+				states[index] = observation.get(var);
+			}
 		}
 
-        int offset = getOffset(states);
-        IndexIterator it = getIterator(domain, ArraysUtil.sort(observation.keys()));
-        it.offset(offset);
+		int offset = getOffset(states);
+		IndexIterator it = getIterator(domain, ArraysUtil.sort(observation.keys()));
+		it.offset(offset);
 
-        return it;
+		return it;
 	}
 
 
@@ -817,27 +799,28 @@ public final class Strides implements Domain {
 	 * @return boolean variable indicating the compatibility.
 	 */
 	public boolean isConsistentWith(Strides other) {
-		for( int v : this.intersection(other).getVariables())
-			if(this.getCardinality(v) != other.getCardinality(v))
+		for (int v : this.intersection(other).getVariables())
+			if (this.getCardinality(v) != other.getCardinality(v))
 				return false;
 		return true;
 	}
 
 
-	public boolean isCompatible(int index, TIntIntMap obs){
+	public boolean isCompatible(int index, TIntIntMap obs) {
 
 		int[] obsfiltered = IntStream.of(this.getVariables()).sorted()
 				.map(x -> {
-					if(obs.containsKey(x))
+					if (obs.containsKey(x))
 						return obs.get(x);
-					else return -1;}).toArray();
+					else return -1;
+				}).toArray();
 
 
 		int[] states = this.statesOf(index);
 
 		boolean compatible = true;
-		for(int i=0; i<this.getVariables().length; i++){
-			if(obsfiltered[i]>=0 && obsfiltered[i] != states[i]) {
+		for (int i = 0; i < this.getVariables().length; i++) {
+			if (obsfiltered[i] >= 0 && obsfiltered[i] != states[i]) {
 				compatible = false;
 				break;
 			}
@@ -846,7 +829,7 @@ public final class Strides implements Domain {
 		return compatible;
 	}
 
-	public int[] getCompatibleIndexes(TIntIntMap obs){
+	public int[] getCompatibleIndexes(TIntIntMap obs) {
 		return IntStream.range(0, this.getCombinations()).filter(i -> this.isCompatible(i, obs)).toArray();
 	}
 
@@ -859,10 +842,8 @@ public final class Strides implements Domain {
 		return new Strides(vars, sizes);
 	}
 
-	public Strides reverseDomain(){
+	public Strides reverseDomain() {
 		return reverseDomain(this);
 	}
-
-
 
 }

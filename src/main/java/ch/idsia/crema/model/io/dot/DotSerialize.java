@@ -1,6 +1,6 @@
 package ch.idsia.crema.model.io.dot;
 
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 
 public class DotSerialize {
 	public String run(GraphicalModel<?> gm) {

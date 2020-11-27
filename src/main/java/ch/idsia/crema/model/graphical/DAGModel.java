@@ -1,9 +1,8 @@
 package ch.idsia.crema.model.graphical;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.NoSuchVariableException;
-import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.change.CardinalityChange;
 import ch.idsia.crema.model.change.DomainChange;
 import ch.idsia.crema.model.change.NullChange;
@@ -16,10 +15,9 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import org.apache.commons.lang3.ArrayUtils;
-import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.BiFunction;
@@ -30,20 +28,22 @@ import java.util.stream.IntStream;
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    12.02.2018 10:48
+ * <p>
+ * A specific {@link GraphicalModel}.
+ * </p>
  */
-public class GenericSparseModel<F extends GenericFactor, G extends Graph<Integer, DefaultEdge>> implements GraphicalModel<F> {
+public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 
-
-	@XmlTransient
 	protected DomainChange<F> domainChanger;
 
-	@XmlTransient
 	protected CardinalityChange<F> cardinalityChanger;
 
-	@XmlTransient
 	protected int max = 0;
 
-	protected G network;
+	/**
+	 *
+	 */
+	protected DirectedAcyclicGraph<Integer, DefaultEdge> network;
 
 	/**
 	 * The number of states/cardinalities of a variable
@@ -57,11 +57,9 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph<Integer
 
 	/**
 	 * Create the directed model using the specified network implementation.
-	 *
-	 * @param method network model to use
 	 */
-	public GenericSparseModel(G method) {
-		network = method;
+	public DAGModel() {
+		network = new DirectedAcyclicGraph<>(DefaultEdge.class);
 		cardinalities = new TIntIntHashMap();
 		factors = new TIntObjectHashMap<>();
 
@@ -71,15 +69,19 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph<Integer
 		cardinalityChanger = changer;
 	}
 
-	public G getNetwork() {
+	public DirectedAcyclicGraph<Integer, DefaultEdge> getNetwork() {
 		return network;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public GenericSparseModel<F, G> copy() {
-		// lets use convert to make the copy
-		return this.convert((f, v) -> (F) f.copy());
+	public DAGModel<F> copy() {
+		final DAGModel<F> copy = new DAGModel<>();
+		copy.network = new DirectedAcyclicGraph<>(DefaultEdge.class);
+
+		network.vertexSet().forEach(v -> copy.network.addVertex(v));
+		network.edgeSet().forEach(e -> copy.network.addEdge(network.getEdgeSource(e), network.getEdgeTarget(e)));
+
+		return copy;
 	}
 
 	/**
@@ -90,11 +92,14 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph<Integer
 	 *                  and return a new factor
 	 * @return the new model
 	 */
-	public <R extends GenericFactor> GenericSparseModel<R, G> convert(BiFunction<F, Integer, R> converter) {
+	public <R extends GenericFactor> DAGModel<R> convert(BiFunction<F, Integer, R> converter) {
 		NullChange<R> changer = new NullChange<>();
 
-		G graph = null;// network.copy(); // FIXME
-		GenericSparseModel<R, G> new_model = new GenericSparseModel<>(graph);
+		DAGModel<R> new_model = new DAGModel<>();
+
+		network.vertexSet().forEach(v -> new_model.network.addVertex(v));
+		network.edgeSet().forEach(e -> new_model.network.addEdge(network.getEdgeSource(e), network.getEdgeTarget(e)));
+
 		new_model.domainChanger = changer;
 		new_model.cardinalityChanger = changer;
 
@@ -235,7 +240,7 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph<Integer
 	public int[] getChildren(int variable) {
 		return network.outgoingEdgesOf(variable)
 				.stream()
-				.map(e -> network.getEdgeSource(e))
+				.map(e -> network.getEdgeTarget(e))
 				.mapToInt(x -> x)
 				.toArray();
 	}
@@ -341,8 +346,8 @@ public class GenericSparseModel<F extends GenericFactor, G extends Graph<Integer
 	}
 
 	@SuppressWarnings("unchecked")
-	public GenericSparseModel<F, G> observe(int var, int state) {
-		GenericSparseModel<F, G> obs_model = this.copy();
+	public DAGModel<F> observe(int var, int state) {
+		DAGModel<F> obs_model = this.copy();
 		// Fix the value of the intervened variable
 		obs_model.setFactor(var, (F) this.getFactor(var).get_deterministic(var, state));
 		return obs_model;

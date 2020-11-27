@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.inference.jtree.UndirectedGraph;
 import ch.idsia.crema.utility.VertexPair;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 public class MinDegreeOrdering extends Triangulate {
 
 	/**
-	 * Apply the Min-Degree-Ordering algorithm to a moralized {@link SparseUndirectedGraph} in order to find an
+	 * Apply the Min-Degree-Ordering algorithm to a moralized {@link UndirectedGraph} in order to find an
 	 * elimination sequence and triangulate the input model.
 	 *
-	 * @return a triangulated {@link SparseUndirectedGraph}
+	 * @return a triangulated {@link UndirectedGraph}
 	 */
 	@Override
-	public SparseUndirectedGraph exec() {
+	public UndirectedGraph exec() {
 		if (model == null) throw new IllegalArgumentException("No model available");
 
 		/*
@@ -37,8 +37,8 @@ public class MinDegreeOrdering extends Triangulate {
 		 */
 
 		// we are working with a "destructive" algorithm, so we make a copy of the current graph
-		final SparseUndirectedGraph copy = model.copy();
-		triangulated = new SparseUndirectedGraph();
+		final UndirectedGraph copy = model.copy();
+		triangulated = new UndirectedGraph();
 		sequence = new ArrayList<>();
 
 		// loop until we remove all the nodes from the graph
@@ -94,7 +94,7 @@ public class MinDegreeOrdering extends Triangulate {
 		return triangulated;
 	}
 
-	private void updateModels(SparseUndirectedGraph in, SparseUndirectedGraph out, Integer v, Set<DefaultEdge> edges) {
+	private void updateModels(UndirectedGraph in, UndirectedGraph out, Integer v, Set<DefaultEdge> edges) {
 		Set<VertexPair<Integer>> toRemove = new HashSet<>();
 
 		for (DefaultEdge edge : edges) {
