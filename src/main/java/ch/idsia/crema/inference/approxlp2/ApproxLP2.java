@@ -1,20 +1,19 @@
 package ch.idsia.crema.inference.approxlp2;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.impl.GreedyWithRandomRestart;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ApproxLP2 {
 
-	public IntervalFactor query(SparseModel<? extends GenericFactor> model, int query) throws InterruptedException {
+	public IntervalFactor query(GraphicalModel<? extends GenericFactor> model, int query) throws InterruptedException {
 		return query(model, query, new TIntIntHashMap());
 	}
 
@@ -35,7 +34,7 @@ public class ApproxLP2 {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public IntervalFactor query(SparseModel<?> model, int query, TIntIntMap evidence) throws InterruptedException {
+	public IntervalFactor query(GraphicalModel<?> model, int query, TIntIntMap evidence) throws InterruptedException {
 		int states = model.getSize(query);
 
 		double[] lowers = new double[states];
@@ -66,7 +65,7 @@ public class ApproxLP2 {
 		return result;
 	}
 
-	private double runSearcher(SparseModel<? extends GenericFactor> model, Manager objective)
+	private double runSearcher(GraphicalModel<? extends GenericFactor> model, Manager objective)
 			throws InterruptedException {
 
 		Neighbourhood neighbourhood = new Neighbourhood(model);

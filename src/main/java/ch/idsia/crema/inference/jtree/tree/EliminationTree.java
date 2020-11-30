@@ -1,8 +1,8 @@
 package ch.idsia.crema.inference.jtree.tree;
 
+import ch.idsia.crema.core.DomainBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.DomainBuilder;
-import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;

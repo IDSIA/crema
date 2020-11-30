@@ -1,8 +1,8 @@
 package ch.idsia.crema.model.io.uai;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.io.BufferedReader;

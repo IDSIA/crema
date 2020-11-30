@@ -1,14 +1,13 @@
 package ch.idsia.crema.factor.convert;
 
-import java.util.ArrayList;
-
+import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.Converter;
+import java.util.ArrayList;
 
 public class SeparateLinearToHalfspaceFactor implements Converter<SeparateLinearFactor, SeparateHalfspaceFactor> {
 

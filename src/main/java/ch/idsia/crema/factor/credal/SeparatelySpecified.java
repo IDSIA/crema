@@ -1,7 +1,7 @@
 package ch.idsia.crema.factor.credal;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.model.Strides;
 import org.apache.commons.lang3.NotImplementedException;
 
 /**

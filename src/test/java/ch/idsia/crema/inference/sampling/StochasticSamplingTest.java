@@ -2,7 +2,7 @@ package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import org.junit.Before;
 
 import java.util.Arrays;

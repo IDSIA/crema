@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.ve;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.FactorUtil;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
@@ -9,8 +10,7 @@ import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.factor.symbolic.serialize.NLSerializer;
 import ch.idsia.crema.inference.JoinInference;
 import ch.idsia.crema.inference.ve.order.OrderingStrategy;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.math.Operation;
 import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Ints;

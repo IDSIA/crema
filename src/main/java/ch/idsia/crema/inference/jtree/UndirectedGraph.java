@@ -1,4 +1,4 @@
-package ch.idsia.crema.model.graphical;
+package ch.idsia.crema.inference.jtree;
 
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
@@ -8,14 +8,15 @@ import org.jgrapht.graph.SimpleGraph;
  * Project: CreMA
  * Date:    12.02.2018 13:32
  */
-public class SparseUndirectedGraph extends SimpleGraph<Integer, DefaultEdge> {
+// TODO: move into JTree or remove
+public class UndirectedGraph extends SimpleGraph<Integer, DefaultEdge> {
 
-	public SparseUndirectedGraph() {
+	public UndirectedGraph() {
 		super(DefaultEdge.class);
 	}
 
-	public SparseUndirectedGraph copy() {
-		SparseUndirectedGraph copy = new SparseUndirectedGraph();
+	public UndirectedGraph copy() {
+		UndirectedGraph copy = new UndirectedGraph();
 
 		// TODO: edge is not copied correctly!
 		this.vertexSet().forEach(copy::addVertex);

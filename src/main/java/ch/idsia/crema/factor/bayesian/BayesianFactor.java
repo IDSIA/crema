@@ -1,10 +1,10 @@
 package ch.idsia.crema.factor.bayesian;
 
+import ch.idsia.crema.core.Domain;
+import ch.idsia.crema.core.ObservationBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.model.Domain;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.ObservationBuilder;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.vertex.Collector;
 import ch.idsia.crema.model.vertex.Filter;
 import ch.idsia.crema.model.vertex.LogMarginal;

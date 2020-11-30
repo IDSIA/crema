@@ -1,5 +1,6 @@
 package ch.idsia.crema.model;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 
 import java.util.Collection;
@@ -78,7 +79,7 @@ public interface Model<F extends GenericFactor> {
      *
      * @param variables the array (vararg) of variables we are interested in
      * @return an array of the same size of variables containing their size
-     * @see {@link SimpleModel.getSize}
+     * @see {@link Model.getSize}
      */
     int[] getSizes(int... variables);
 

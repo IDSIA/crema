@@ -6,7 +6,7 @@ import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.NeighbourhoodFunction;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.TIntObjectHashMap;

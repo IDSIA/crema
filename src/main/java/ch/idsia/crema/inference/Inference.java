@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 

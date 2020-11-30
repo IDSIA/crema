@@ -5,7 +5,7 @@ import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
@@ -25,7 +25,7 @@ public class LWSvsVE {
 
 	private BayesianNetwork model;
 
-	private Random random = new Random(42);
+	private final Random random = new Random(42);
 
 	private static final int e = 5;
 	private static final int m = 1000;

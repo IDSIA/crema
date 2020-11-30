@@ -1,17 +1,11 @@
 package ch.idsia.crema.factor.credal.vertex.algebra;
 
-import java.util.Arrays;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
-import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.math.Operation;
-import ch.idsia.crema.model.vertex.Collector;
-import ch.idsia.crema.model.vertex.Filter;
-import ch.idsia.crema.model.vertex.LogMarginal;
-import ch.idsia.crema.model.vertex.LogVertexOperation;
-import ch.idsia.crema.model.vertex.Marginal;
-import ch.idsia.crema.model.vertex.SimpleVertexOperation;
-import ch.idsia.crema.model.vertex.VertexOperation;
+import ch.idsia.crema.model.vertex.*;
+
+import java.util.Arrays;
 
 public class DefaultExtensiveAlgebra implements Operation<ExtensiveVertexFactor> {
 	

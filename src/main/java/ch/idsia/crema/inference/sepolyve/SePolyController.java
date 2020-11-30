@@ -1,16 +1,10 @@
 package ch.idsia.crema.inference.sepolyve;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.CombinationsIterator;
@@ -18,6 +12,8 @@ import ch.idsia.crema.utility.hull.LPConvexHull;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
+
+import java.util.*;
 
 public class SePolyController extends SearchOperation {
 	private TIntObjectMap<List<VertexFactor>> queue;

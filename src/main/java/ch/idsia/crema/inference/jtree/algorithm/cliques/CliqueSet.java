@@ -1,5 +1,7 @@
 package ch.idsia.crema.inference.jtree.algorithm.cliques;
 
+import ch.idsia.crema.inference.jtree.algorithm.triangulation.TriangulatedGraph;
+
 import java.util.HashSet;
 
 /**
@@ -8,4 +10,14 @@ import java.util.HashSet;
  * Date:    13.11.2020 17:22
  */
 public class CliqueSet extends HashSet<Clique> {
+
+	private TriangulatedGraph model;
+
+	public TriangulatedGraph getModel() {
+		return model;
+	}
+
+	public void setModel(TriangulatedGraph network) {
+		this.model = network;
+	}
 }

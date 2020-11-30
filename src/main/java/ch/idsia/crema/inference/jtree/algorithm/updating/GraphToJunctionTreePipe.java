@@ -8,7 +8,8 @@ import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTree;
 import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTreeBuilder;
 import ch.idsia.crema.inference.jtree.algorithm.moralization.Moralize;
 import ch.idsia.crema.inference.jtree.algorithm.triangulation.MinDegreeOrdering;
-import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 
 import java.util.Arrays;
 
@@ -17,7 +18,7 @@ import java.util.Arrays;
  * Project: crema
  * Date:    16.11.2020 18:22
  */
-public class GraphToJunctionTreePipe<F extends Factor<F>> extends Pipe<SparseDirectedAcyclicGraph, JunctionTree<F>> {
+public class GraphToJunctionTreePipe<F extends Factor<F>> extends Pipe<DirectedAcyclicGraph<Integer, DefaultEdge>, JunctionTree<F>> {
 
 	public GraphToJunctionTreePipe() {
 		this.stages = Arrays.asList(

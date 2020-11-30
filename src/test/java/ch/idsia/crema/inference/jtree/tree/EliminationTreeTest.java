@@ -2,7 +2,7 @@ package ch.idsia.crema.inference.jtree.tree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.jtree.FactorElimination2;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class EliminationTreeTest {
 	@Before
 	public void setUp() {
 		// This model is based on "Modeling and Reasoning with BN", Dawiche, p.155
-		SparseModel<BayesianFactor> model = new SparseModel<>();
+		DAGModel<BayesianFactor> model = new DAGModel<>();
 
 		// Winter?
 		A = model.addVariable(2);

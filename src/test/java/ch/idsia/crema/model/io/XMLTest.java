@@ -1,19 +1,10 @@
 package ch.idsia.crema.model.io;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
 import org.junit.Test;
-
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.user.credal.VertexSet;
 
 public class XMLTest {
 	@Test
-	public void test() throws JAXBException {
+	public void test() {
 /*	todo: fix this test
 
 JAXBContext context = JAXBContext.newInstance(VertexSet.class);
@@ -39,10 +30,7 @@ marshall.setProperty(Marshaller.JAXB_ENCODING, "application/json");
 
 //		marshall.marshal(vs, System.out);
 
-
  */
 	}
-	
-	
-	
+
 }

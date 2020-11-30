@@ -1,13 +1,13 @@
 package ch.idsia.crema.model.graphical;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.model.GraphicalModel;
 import ch.idsia.crema.model.NoSuchVariableException;
-import ch.idsia.crema.model.Strides;
 import ch.idsia.crema.model.change.CardinalityChange;
 import ch.idsia.crema.model.change.DomainChange;
 import ch.idsia.crema.model.change.NullChange;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.GraphUtil;
 import com.google.common.primitives.Ints;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.list.array.TIntArrayList;
@@ -16,8 +16,9 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import org.apache.commons.lang3.ArrayUtils;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.BiFunction;
@@ -28,20 +29,22 @@ import java.util.stream.IntStream;
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    12.02.2018 10:48
+ * <p>
+ * A specific {@link GraphicalModel}.
+ * </p>
  */
-public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> implements GraphicalModel<F> {
+public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 
-
-	@XmlTransient
 	protected DomainChange<F> domainChanger;
 
-	@XmlTransient
 	protected CardinalityChange<F> cardinalityChanger;
 
-	@XmlTransient
 	protected int max = 0;
 
-	protected G network;
+	/**
+	 *
+	 */
+	protected DirectedAcyclicGraph<Integer, DefaultEdge> network;
 
 	/**
 	 * The number of states/cardinalities of a variable
@@ -55,11 +58,9 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 
 	/**
 	 * Create the directed model using the specified network implementation.
-	 *
-	 * @param network the network implementation to use
 	 */
-	public GenericGraphicalModel(G network) {
-		this.network = network;
+	public DAGModel() {
+		network = new DirectedAcyclicGraph<>(DefaultEdge.class);
 		cardinalities = new TIntIntHashMap();
 		factors = new TIntObjectHashMap<>();
 
@@ -69,31 +70,34 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 		cardinalityChanger = changer;
 	}
 
-	public G getNetwork() {
+	@SuppressWarnings("unchecked")
+	public DAGModel(DAGModel<F> original) {
+		network = new DirectedAcyclicGraph<>(DefaultEdge.class);
+		cardinalities = new TIntIntHashMap();
+		factors = new TIntObjectHashMap<>();
+
+		domainChanger = original.domainChanger;
+		cardinalityChanger = original.cardinalityChanger;
+
+		max = original.max;
+
+		// copy network
+		GraphUtil.copy(original.network, network);
+
+		// copy factors
+		for (int v : original.getVariables()) {
+			F f = original.getFactor(v);
+			this.setFactor(v, (F) f.copy());
+		}
+	}
+
+	public DirectedAcyclicGraph<Integer, DefaultEdge> getNetwork() {
 		return network;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public GenericGraphicalModel<F, G> copy() {
-//		Graph graph = network.copy();
-//		SparseModel<F> new_model = new SparseModel<>(graph);
-//		new_model.domainChanger = domainChanger;
-//		new_model.cardinalityChanger = cardinalityChanger;
-//
-//		new_model.cardinalities = new TIntIntHashMap(this.cardinalities);
-//		new_model.factors = new TIntObjectHashMap<>(factors.size());
-//		new_model.max = this.max;
-//
-//		TIntObjectIterator<F> iterator = this.factors.iterator();
-//		while (iterator.hasNext()) {
-//			iterator.advance();
-//			new_model.factors.put(iterator.key(), (F) iterator.value().copy());
-//		}
-//		return new_model;
-
-		// lets use convert to make the copy
-		return this.convert((f, v) -> (F) f.copy());
+	public DAGModel<F> copy() {
+		return new DAGModel<>(this);
 	}
 
 	/**
@@ -104,27 +108,27 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 	 *                  and return a new factor
 	 * @return the new model
 	 */
-	@SuppressWarnings("unchecked")
-	public <R extends GenericFactor> GenericGraphicalModel<R, G> convert(BiFunction<F, Integer, R> converter) {
+	public <R extends GenericFactor> DAGModel<R> convert(BiFunction<F, Integer, R> converter) {
 		NullChange<R> changer = new NullChange<>();
+		DAGModel<R> newModel = new DAGModel<>();
 
-		Graph graph = network.copy();
-		GenericGraphicalModel<R, G> new_model = new GenericGraphicalModel<>((G) graph);
-		new_model.domainChanger = changer;
-		new_model.cardinalityChanger = changer;
+		GraphUtil.copy(network, newModel.network);
 
-		new_model.cardinalities = new TIntIntHashMap(this.cardinalities);
-		new_model.factors = new TIntObjectHashMap<>(factors.size());
-		new_model.max = this.max;
+		newModel.domainChanger = changer;
+		newModel.cardinalityChanger = changer;
+
+		newModel.cardinalities = new TIntIntHashMap(this.cardinalities);
+		newModel.factors = new TIntObjectHashMap<>(factors.size());
+		newModel.max = this.max;
 
 		TIntObjectIterator<F> iterator = this.factors.iterator();
 		while (iterator.hasNext()) {
 			iterator.advance();
-			R new_factor = converter.apply(iterator.value(), iterator.key());
-			new_model.factors.put(iterator.key(), new_factor);
+			R newFactor = converter.apply(iterator.value(), iterator.key());
+			newModel.factors.put(iterator.key(), newFactor);
 		}
 
-		return new_model;
+		return newModel;
 	}
 
 	@Override
@@ -190,14 +194,14 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 
 		cardinalities.remove(variable);
 		factors.remove(variable);
-		network.removeVariable(variable);
+		network.removeVertex(variable);
 	}
 
 	@Override
 	public int addVariable(int size) {
 		int vid = max++;
 		this.cardinalities.put(vid, size);
-		network.addVariable(vid, size);
+		network.addVertex(vid);
 		return vid;
 	}
 
@@ -205,7 +209,7 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 		if (vid > max) max = vid;
 		max++;
 		this.cardinalities.put(vid, size);
-		network.addVariable(vid, size);
+		network.addVertex(vid);
 		return vid;
 	}
 
@@ -215,7 +219,7 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 		F new_factor = domainChanger.remove(factor, parent);
 		if (factor != new_factor)
 			factors.put(variable, new_factor);
-		network.removeLink(parent, variable);
+		network.removeEdge(parent, variable);
 	}
 
 	@Override
@@ -224,7 +228,7 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 		F new_factor = change.remove(factor, parent);
 		if (factor != new_factor)
 			factors.put(variable, new_factor);
-		network.removeLink(parent, variable);
+		network.removeEdge(parent, variable);
 	}
 
 	@Override
@@ -233,17 +237,25 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 		F new_factor = domainChanger.add(factor, parent);
 		if (factor != new_factor)
 			factors.put(variable, new_factor);
-		network.addLink(parent, variable);
+		network.addEdge(parent, variable);
 	}
 
 	@Override
 	public int[] getParents(int variable) {
-		return network.getParents(variable);
+		return network.incomingEdgesOf(variable)
+				.stream()
+				.map(e -> network.getEdgeSource(e))
+				.mapToInt(x -> x)
+				.toArray();
 	}
 
 	@Override
 	public int[] getChildren(int variable) {
-		return network.getChildren(variable);
+		return network.outgoingEdgesOf(variable)
+				.stream()
+				.map(e -> network.getEdgeTarget(e))
+				.mapToInt(x -> x)
+				.toArray();
 	}
 
 	@Override
@@ -251,7 +263,7 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 		int[] variables = getVariables();
 
 		// TODO: stream or TIntArray?
-//		return Arrays.stream(variables).filter(v -> getParents(v).length == 0).toArray();
+		// Arrays.stream(variables).filter(v -> getParents(v).length == 0).toArray()
 
 		TIntArrayList list = new TIntArrayList();
 		for (int variable : variables) {
@@ -300,17 +312,12 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 		return factors.get(variable);
 	}
 
-	@Override
-	public TIntObjectMap<F> getFactorsMap() {
-		return this.factors;
-	}
 
 	@Override
 	public void setFactor(int variable, F factor) {
 		int[] vars = factor.getDomain().getVariables();
 		int index = ArrayUtils.indexOf(vars, variable);
 		int[] parents = ArraysUtil.remove(vars, index);
-
 		addParents(variable, parents);
 
 		factors.put(variable, factor);
@@ -350,11 +357,11 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 	}
 
 	@SuppressWarnings("unchecked")
-	public GenericGraphicalModel<F, G> observe(int var, int state) {
-		GenericGraphicalModel<F, G> observedModel = this.copy();
+	public DAGModel<F> observe(int var, int state) {
+		DAGModel<F> obs_model = this.copy();
 		// Fix the value of the intervened variable
-		observedModel.setFactor(var, (F) this.getFactor(var).getDeterministic(var, state));
-		return observedModel;
+		obs_model.setFactor(var, (F) this.getFactor(var).getDeterministic(var, state));
+		return obs_model;
 	}
 
 	/**
@@ -373,7 +380,7 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 	/**
 	 * Determines if the factor domains match with the structure of the DAG.
 	 *
-	 * @return true if the network is correct, otherwise false
+	 * @return
 	 */
 	public boolean inspectFactorDomains() {
 		boolean correct = true;
@@ -387,26 +394,26 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 				System.out.println("factor domain: " + Arrays.toString(d1));
 				System.out.println("factor in net:  " + Arrays.toString(d2));
 				correct = false;
+
 			}
 		}
-
 		return correct;
 	}
 
 	/**
 	 * Returns an array with the parents of a variable and the variable itself.
 	 *
-	 * @param variable source variable
-	 * @return an array with all the parents of the variable, then the variable itself
+	 * @param var
+	 * @return
 	 */
-	public int[] getVariableAndParents(int variable) {
-		return ArrayUtils.add(this.getParents(variable), variable);
+	public int[] getVariableAndParents(int var) {
+		return ArrayUtils.add(this.getParents(var), var);
 	}
 
 	/**
-	 * Returns an array with the isolated variables (without parents and children)
+	 * Retruns an array with the isolated variables (without parents and children)
 	 *
-	 * @return an array of all the isolated variables
+	 * @return
 	 */
 	public int[] getDisconnected() {
 		return IntStream.of(this.getVariables())
@@ -415,11 +422,11 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 	}
 
 	/**
-	 * Check if there is a path (without considering the link directions) between 2 nodes.
+	 * Check if there is a path (without considereing the link directions) between 2 nodes
 	 *
-	 * @param node1 start node
-	 * @param node2 end node
-	 * @return true if there exist a path between the two nodes, otherwise false
+	 * @param node1
+	 * @param node2
+	 * @return
 	 */
 	public boolean areConnected(int node1, int node2) {
 		return areConnected(node1, node2, new int[]{});
@@ -458,16 +465,8 @@ public class GenericGraphicalModel<F extends GenericFactor, G extends Graph> imp
 		return ArraysUtil.unique(Ints.concat(pa, ances_pa));
 	}
 
-	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("GSM\n");
-
-		for (F f : this.getFactors()) {
-			sb.append("\t").append(f.toString()).append("\n");
-		}
-
-		return sb.toString();
+		return "" + this.getFactors() + "\n";
 	}
 
 }

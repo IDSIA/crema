@@ -1,6 +1,6 @@
 package ch.idsia.crema.search.impl;
 
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;

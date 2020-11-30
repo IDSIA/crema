@@ -1,22 +1,11 @@
 package ch.idsia.crema.inference.jtree.algorithm.updating;
 
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
-import ch.idsia.crema.inference.jtree.algorithm.join.JoinTree;
-import ch.idsia.crema.inference.jtree.algorithm.join.JoinTreeBuilderKruskal;
-import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTree;
-import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTreeBuilder;
-import ch.idsia.crema.inference.jtree.algorithm.moralization.MoralGraph;
-import ch.idsia.crema.inference.jtree.algorithm.moralization.Moralize;
-import ch.idsia.crema.inference.jtree.algorithm.triangulation.MinDegreeOrdering;
-import ch.idsia.crema.inference.jtree.algorithm.triangulation.TriangulatedGraph;
-import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
-import ch.idsia.crema.model.io.dot.DotSerialize;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -27,12 +16,12 @@ public class GraphToJunctionTreePipeTest {
 
 	@Test
 	@Ignore
-	public void testPipelineToDot() throws IOException {
+	public void testPipelineToDot() {
 		// given: a Bayesian Network BN
 		BayesianNetworkContainer bns = BayesianNetworkContainer.aSimpleBayesianNetwork();
-		SparseDirectedAcyclicGraph bn = bns.network.getNetwork();
+		DirectedAcyclicGraph<Integer, DefaultEdge> bn = bns.network.getNetwork();
 
-		GraphToJunctionTreePipe pipe = new GraphToJunctionTreePipe();
+		GraphToJunctionTreePipe<BayesianFactor> pipe = new GraphToJunctionTreePipe<>();
 		pipe.setInput(bn);
 		pipe.exec();
 

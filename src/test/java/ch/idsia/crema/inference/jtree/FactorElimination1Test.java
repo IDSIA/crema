@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.DAGModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class FactorElimination1Test {
 
-	private SparseModel<BayesianFactor> model;
+	private DAGModel<BayesianFactor> model;
 
 	private int A, B, C;
 
@@ -25,7 +25,7 @@ public class FactorElimination1Test {
 	 */
 	@Before
 	public void setUp() {
-		model = new SparseModel<>();
+		model = new DAGModel<>();
 		BayesianFactor[] f = new BayesianFactor[3];
 
 		A = model.addVariable(2);

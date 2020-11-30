@@ -1,29 +1,17 @@
 package ch.idsia.crema.model.io;
 
-import ch.idsia.crema.IO;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.uai.UAIParser;
 import ch.idsia.crema.model.io.uai.UAIWriter;
-import org.junit.Assert;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class UAIWriterTest {
@@ -32,12 +20,12 @@ public class UAIWriterTest {
 	void testHmodel() throws IOException {
 		String fileName = "./models/test/simple-hcredal";
 
-		SparseModel model;
+		DAGModel model;
 
-		model = (SparseModel) UAIParser.read(fileName+".uai");
-		UAIWriter.write(model,fileName+"2.uai");
+		model = (DAGModel) UAIParser.read(fileName + ".uai");
+		UAIWriter.write(model, fileName + "2.uai");
 
-		FileReader fileReader = new FileReader(fileName+"2.uai");
+		FileReader fileReader = new FileReader(fileName + "2.uai");
 		BufferedReader reader = new BufferedReader(fileReader);
 
 		String text = reader.lines().collect(Collectors.joining());
@@ -69,12 +57,12 @@ public class UAIWriterTest {
 	void testVmodel() throws IOException {
 		String fileName = "./models/test/simple-vcredal";
 
-		SparseModel model;
+		DAGModel model;
 
-		model = (SparseModel) UAIParser.read(fileName+".uai");
-		UAIWriter.write(model,fileName+"2.uai");
+		model = (DAGModel) UAIParser.read(fileName + ".uai");
+		UAIWriter.write(model, fileName + "2.uai");
 
-		FileReader fileReader = new FileReader(fileName+"2.uai");
+		FileReader fileReader = new FileReader(fileName + "2.uai");
 		BufferedReader reader = new BufferedReader(fileReader);
 
 		String text = reader.lines().collect(Collectors.joining());

@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 
 /**
  * A factor. Please keep them unmutable.

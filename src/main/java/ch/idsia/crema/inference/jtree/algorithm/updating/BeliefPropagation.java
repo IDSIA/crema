@@ -4,11 +4,9 @@ import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.jtree.algorithm.cliques.Clique;
 import ch.idsia.crema.inference.jtree.algorithm.junction.JunctionTree;
 import ch.idsia.crema.inference.jtree.algorithm.junction.Separator;
-import ch.idsia.crema.model.graphical.GenericGraphicalModel;
-import ch.idsia.crema.model.graphical.Graph;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.Arrays;
@@ -24,18 +22,16 @@ import java.util.stream.Stream;
  */
 public class BeliefPropagation<F extends Factor<F>> {
 
-	private final Graph graph;
-	private final TIntObjectMap<F> factors;
+	private final DAGModel<F> model;
 
-	JunctionTree<F> junctionTree;
+	private JunctionTree<F> junctionTree;
 
 	private boolean fullyPropagated = false;
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
-	public BeliefPropagation(GenericGraphicalModel<F, Graph> ggm) {
-		this.graph = ggm.getNetwork();
-		this.factors = ggm.getFactorsMap();
+	public BeliefPropagation(DAGModel<F> model) {
+		this.model = model;
 		init();
 	}
 
@@ -44,7 +40,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 */
 	public void init() {
 		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
-		pipeline.setInput(graph);
+		pipeline.setInput(model.getNetwork());
 		junctionTree = pipeline.exec();
 		fullyPropagated = false;
 	}
@@ -97,7 +93,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	public F fullPropagation() {
 		checks();
 
-		Integer variable = graph.vertexSet().iterator().next();
+		Integer variable = model.getNetwork().vertexSet().iterator().next();
 
 		F f = collectingEvidence(variable);
 		distributingEvidence(variable);
@@ -168,8 +164,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	}
 
 	private void checks() {
-		if (graph == null) throw new IllegalArgumentException("No network available");
-		if (factors == null) throw new IllegalArgumentException("No factors available");
+		if (model == null) throw new IllegalArgumentException("No network available");
 		if (junctionTree == null) throw new IllegalStateException("No JunctionTree available");
 	}
 
@@ -239,7 +234,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 */
 	private F phi(Clique clique) {
 		F factor = IntStream.of(clique.getVariables())
-				.mapToObj(factors::get)
+				.mapToObj(model::getFactor)
 				.reduce(F::combine)
 				.orElseThrow(() -> new IllegalStateException("Empty F after reduce"));
 

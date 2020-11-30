@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.jtree.algorithm.moralization;
 
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,7 +44,7 @@ public class MoralizeTest {
 		m.setInput(bn.getNetwork());
 
 		// obtaining a domain graph G for BN (moral graph)
-		SparseUndirectedGraph moralGraph = m.exec();
+		SimpleGraph<Integer, DefaultEdge> moralGraph = m.exec();
 
 		assertEquals("", moralGraph.edgeSet().size(), 7);
 		assertNotNull("MoralGraph edge A1-A2 is null", moralGraph.getEdge(0, 1));

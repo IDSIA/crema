@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
 import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
-import ch.idsia.crema.inference.jtree.algorithm.moralization.MoralGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -10,17 +11,17 @@ import ch.idsia.crema.inference.jtree.algorithm.moralization.MoralGraph;
  * <p>
  * Base class to support multiple triangulation algorithm, such as {@link MinDegreeOrdering}.
  */
-public abstract class Triangulate implements Algorithm<MoralGraph, TriangulatedGraph> {
+public abstract class Triangulate implements Algorithm<SimpleGraph<Integer, DefaultEdge>, TriangulatedGraph> {
 
-	protected MoralGraph model;
+	protected SimpleGraph<Integer, DefaultEdge> network;
 	protected TriangulatedGraph triangulated;
 
 	/**
 	 * @param model the moralized graph to apply triangulation
 	 */
 	@Override
-	public void setInput(MoralGraph model) {
-		this.model = model;
+	public void setInput(SimpleGraph<Integer, DefaultEdge> model) {
+		this.network = model;
 	}
 
 	public TriangulatedGraph getOutput() {

@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.jtree;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.Updating;
 import ch.idsia.crema.inference.jtree.tree.EliminationTree;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 
 import java.util.Arrays;

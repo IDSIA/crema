@@ -1,8 +1,8 @@
 package ch.idsia.crema.factor.convert;
 
+import ch.idsia.crema.core.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
-import ch.idsia.crema.model.Converter;
 
 public class BayesianToExtensiveVertex implements Converter<BayesianFactor, ExtensiveVertexFactor> {
 	public static final BayesianToExtensiveVertex INSTANCE = new BayesianToExtensiveVertex();

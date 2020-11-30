@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
-import ch.idsia.crema.inference.jtree.algorithm.moralization.MoralGraph;
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,12 +13,12 @@ import static org.junit.Assert.assertEquals;
  * Date:    12.11.2020 13:50
  */
 public class TriangulateTest {
-	MoralGraph graph;
+	SimpleGraph<Integer, DefaultEdge> graph;
 
 	@Before
 	public void setUp() {
 		// Source: Jensen, p.119, Fig. 4.10 a)
-		graph = new MoralGraph();
+		graph = new SimpleGraph<>(DefaultEdge.class);
 
 		graph.addVertex(0);
 		graph.addVertex(1);
@@ -41,7 +41,7 @@ public class TriangulateTest {
 		t.setInput(graph);
 
 		// obtaining a triangulated graph for G
-		SparseUndirectedGraph triangulated = t.exec();
+		TriangulatedGraph triangulated = t.exec();
 
 		assertEquals("TriangulatedGraph has a different number of vertex", graph.vertexSet().size(), triangulated.vertexSet().size());
 		assertEquals("TriangulatedGraph has missing edges", graph.edgeSet().size() + 1, triangulated.edgeSet().size());

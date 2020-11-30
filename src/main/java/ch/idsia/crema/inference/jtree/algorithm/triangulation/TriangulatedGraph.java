@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -9,9 +10,13 @@ import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
  * <p>
  * This is a support class for {@link Triangulate} multiple output.
  */
-public class TriangulatedGraph extends SparseUndirectedGraph {
+public class TriangulatedGraph extends SimpleGraph<Integer, DefaultEdge> {
 
 	private int[] eliminationSequence;
+
+	public TriangulatedGraph() {
+		super(DefaultEdge.class);
+	}
 
 	public int[] getEliminationSequence() {
 		return eliminationSequence;

@@ -1,58 +1,65 @@
 package ch.idsia.crema.inference.jtree.algorithm.moralization;
 
+import ch.idsia.crema.inference.jtree.UndirectedGraph;
 import ch.idsia.crema.inference.jtree.algorithm.Algorithm;
-import ch.idsia.crema.model.graphical.SparseDirectedAcyclicGraph;
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.model.graphical.DAGModel;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
+import org.jgrapht.graph.SimpleGraph;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    12.02.2018 11:11
  */
-public class Moralize implements Algorithm<SparseDirectedAcyclicGraph, MoralGraph> {
+public class Moralize implements Algorithm<DirectedAcyclicGraph<Integer, DefaultEdge>, SimpleGraph<Integer, DefaultEdge>> {
 
-	private SparseDirectedAcyclicGraph model;
-	private MoralGraph moralized;
+	private DirectedAcyclicGraph<Integer, DefaultEdge> network;
+	private SimpleGraph<Integer, DefaultEdge> moralized;
 
 	/**
-	 * @param model the model to moralize
+	 * @param network the model to moralize
 	 */
 	@Override
-	public void setInput(SparseDirectedAcyclicGraph model) {
-		this.model = model;
+	public void setInput(DirectedAcyclicGraph<Integer, DefaultEdge> network) {
+		this.network = network;
 	}
 
 	/**
 	 * @return the last moralized graph found
 	 */
 	@Override
-	public MoralGraph getOutput() {
+	public SimpleGraph<Integer, DefaultEdge> getOutput() {
 		return moralized;
 	}
 
 	/**
-	 * Convert a {@link SparseDirectedAcyclicGraph} into a {@link SparseUndirectedGraph} using the moralization
+	 * Convert a {@link DAGModel} into a {@link UndirectedGraph} using the moralization
 	 * algorithm over the given model.
 	 *
-	 * @return a moralized {@link SparseUndirectedGraph}
+	 * @return a moralized {@link UndirectedGraph}
 	 */
 	@Override
-	public MoralGraph exec() {
-		if (model == null) throw new IllegalArgumentException("No model available");
+	public SimpleGraph<Integer, DefaultEdge> exec() {
+		if (network == null) throw new IllegalArgumentException("No model available");
 
-		moralized = new MoralGraph();
+		// copy model, this will keep the existing edges
+		moralized = new SimpleGraph<>(DefaultEdge.class);
 
 		// add all the vertices to the new graph
-		model.vertexSet().forEach(moralized::addVertex);
+		network.vertexSet().forEach(moralized::addVertex);
 
 		// apply moralization
-		model.vertexSet().forEach(v -> {
-			for (int parent : model.getParents(v)) {
+		network.vertexSet().forEach(v -> {
+			for (DefaultEdge e1 : network.incomingEdgesOf(v)) {
+				int parent = network.getEdgeSource(e1);
+
 				// keep existing edges
 				moralized.addEdge(parent, v);
 
 				// marry the parents and add edges to couples
-				for (int other : model.getParents(v)) {
+				for (DefaultEdge e2 : network.incomingEdgesOf(v)) {
+					int other = network.getEdgeSource(e2);
 					if (other == parent) continue;
 					moralized.addEdge(parent, other);
 				}

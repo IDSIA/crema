@@ -1,12 +1,11 @@
 package ch.idsia.crema.factor.convert;
 
-import static org.junit.Assert.assertArrayEquals;
-
-import org.junit.Test;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.Strides;
+import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
 
 public class VertexToIntevalTest {
 

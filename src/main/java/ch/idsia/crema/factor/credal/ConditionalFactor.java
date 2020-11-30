@@ -1,8 +1,8 @@
 package ch.idsia.crema.factor.credal;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateFactor;
-import ch.idsia.crema.model.Strides;
 
 /**
  * An abstract implementation of the {@link SeparateFactor} interface.

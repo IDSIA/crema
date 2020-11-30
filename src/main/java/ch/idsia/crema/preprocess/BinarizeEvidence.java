@@ -1,15 +1,15 @@
 package ch.idsia.crema.preprocess;
 
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.model.graphical.GraphicalModel;
+import gnu.trove.map.TIntIntMap;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.Strides;
-import gnu.trove.map.TIntIntMap;
 
 /**
  * Multiple evidences can be reduced to a single binary variable by adding

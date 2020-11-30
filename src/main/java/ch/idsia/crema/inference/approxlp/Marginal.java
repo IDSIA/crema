@@ -5,7 +5,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.commons.Simplex;
 import ch.idsia.crema.utility.ArraysUtil;

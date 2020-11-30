@@ -1,6 +1,6 @@
 package ch.idsia.crema.preprocess;
 
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
 import ch.idsia.crema.search.impl.DepthFirst;
 import gnu.trove.list.array.TIntArrayList;

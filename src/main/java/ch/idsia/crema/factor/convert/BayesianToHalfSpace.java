@@ -1,10 +1,9 @@
 package ch.idsia.crema.factor.convert;
 
+import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.Converter;
-import ch.idsia.crema.model.Strides;
 import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.optim.linear.Relationship;
 

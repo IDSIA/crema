@@ -1,7 +1,7 @@
 package ch.idsia.crema.factor.bayesian;
 
-import ch.idsia.crema.model.Domain;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Domain;
+import ch.idsia.crema.core.Strides;
 
 public class ConditionalProbabilityTable extends BayesianFactor {
 

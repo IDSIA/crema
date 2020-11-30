@@ -1,18 +1,17 @@
 package ch.idsia.crema.inference.ve.order;
 
-import java.util.Arrays;
-
+import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.io.dot.DotSerialize;
 import org.junit.Test;
 
-import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.io.dot.DotSerialize;
+import java.util.Arrays;
 
 public class MinFillOrderingTest {
 
 	@Test
 	public void testFindOrder() {
-		SparseModel<GenericFactor> model = new SparseModel<>();
+		DAGModel<GenericFactor> model = new DAGModel<>();
 		model.addVariable(2);
 		model.addVariable(2);
 		model.addVariable(2);
@@ -41,7 +40,7 @@ public class MinFillOrderingTest {
 
 	@Test
 	public void testFindOrder2() {
-		SparseModel<GenericFactor> model = new SparseModel<>();
+		DAGModel<GenericFactor> model = new DAGModel<>();
 		model.addVariable(2);
 		model.addVariable(2);
 		model.addVariable(2);

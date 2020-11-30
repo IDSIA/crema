@@ -1,23 +1,16 @@
 package ch.idsia.crema.factor.credal.vertex;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.CredalFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
-import ch.idsia.crema.user.credal.Vertex;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
@@ -27,6 +20,12 @@ import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * A Separately specified Vertex based credal factor. TODO: Data is currenlty
@@ -712,13 +711,13 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	 * @param models
 	 * @return
 	 */
-	public static SparseModel buildModel(boolean convexHull, BayesianNetwork... models) {
+	public static GraphicalModel<VertexFactor> buildModel(boolean convexHull, BayesianNetwork... models) {
 
 		for (int i = 1; i < models.length; i++) {
 			if (!ArraysUtil.equals(models[0].getVariables(), models[i].getVariables(), true, true))
 				throw new IllegalArgumentException("Inconsistent domains");
 		}
-		SparseModel vmodel = new SparseModel();
+		DAGModel<VertexFactor> vmodel = new DAGModel<>();
 		for (int v : models[0].getVariables())
 			vmodel.addVariable(v);
 		for (int v : vmodel.getVariables()) {
@@ -734,6 +733,5 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		}
 		return vmodel;
 	}
-
 
 }

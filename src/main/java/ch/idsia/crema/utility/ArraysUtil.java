@@ -1,8 +1,7 @@
 package ch.idsia.crema.utility;
 
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import gnu.trove.list.array.TIntArrayList;

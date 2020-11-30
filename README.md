@@ -12,9 +12,9 @@ An example of exact inference in a credal network is given below.
 ```java
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
-import ch.idsia.crema.model.ObservationBuilder;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.core.ObservationBuilder;
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 
 public class Starting {
     public static void main(String[] args) {
@@ -24,7 +24,7 @@ public class Starting {
         /*  CN defined with vertex Factor  */
 
         // Define the model (with vertex factors)
-        SparseModel<VertexFactor> model = new SparseModel<>();
+        GraphicalModel<VertexFactor> model = new DAGModel<>();
               int A = model.addVariable(3);
         int B = model.addVariable(2);
         
@@ -36,7 +36,6 @@ public class Starting {
         fu.addVertex(new double[]{1-p, 0., p});
         
         model.setFactor(A,fu);
-
 
         // Define the credal set of the child
         VertexFactor fx = new VertexFactor(model.getDomain(B), model.getDomain(A));

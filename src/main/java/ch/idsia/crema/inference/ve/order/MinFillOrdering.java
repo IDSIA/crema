@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.ve.order;
 
 
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.VertexPair;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;

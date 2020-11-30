@@ -1,7 +1,7 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.model.ObservationBuilder;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.ObservationBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.math.Operable;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;

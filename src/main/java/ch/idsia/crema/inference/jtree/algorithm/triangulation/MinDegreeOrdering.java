@@ -1,8 +1,10 @@
 package ch.idsia.crema.inference.jtree.algorithm.triangulation;
 
-import ch.idsia.crema.model.graphical.SparseUndirectedGraph;
+import ch.idsia.crema.utility.GraphUtil;
 import ch.idsia.crema.utility.VertexPair;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
+import org.jgrapht.graph.SimpleGraph;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,14 +17,14 @@ import java.util.stream.Collectors;
 public class MinDegreeOrdering extends Triangulate {
 
 	/**
-	 * Apply the Min-Degree-Ordering algorithm to a moralized {@link SparseUndirectedGraph} in order to find an
+	 * Apply the Min-Degree-Ordering algorithm to a moralized {@link DirectedAcyclicGraph>} in order to find an
 	 * elimination sequence and triangulate the input model.
 	 *
-	 * @return a triangulated {@link SparseUndirectedGraph}
+	 * @return a triangulated {@link DirectedAcyclicGraph>}
 	 */
 	@Override
 	public TriangulatedGraph exec() {
-		if (model == null) throw new IllegalArgumentException("No model available");
+		if (network == null) throw new IllegalArgumentException("No model available");
 
 		/*
 		 * MinDegreeOrdering
@@ -37,7 +39,9 @@ public class MinDegreeOrdering extends Triangulate {
 		 */
 
 		// we are working with a "destructive" algorithm, so we make a copy of the current graph
-		final SparseUndirectedGraph copy = model.copy();
+		final SimpleGraph<Integer, DefaultEdge> copy = new SimpleGraph<>(DefaultEdge.class);
+		GraphUtil.copy(network, copy);
+
 		triangulated = new TriangulatedGraph();
 		List<Integer> eliminationSequence = new ArrayList<>();
 
@@ -58,7 +62,6 @@ public class MinDegreeOrdering extends Triangulate {
 
 			// build neighbourhood
 			Set<DefaultEdge> edges = copy.edgesOf(v);
-
 			Set<Integer> neighbour = new HashSet<>();
 
 			for (DefaultEdge edge : edges) {
@@ -96,7 +99,7 @@ public class MinDegreeOrdering extends Triangulate {
 		return triangulated;
 	}
 
-	private void updateModels(SparseUndirectedGraph in, SparseUndirectedGraph out, Integer v, Set<DefaultEdge> edges) {
+	private void updateModels(SimpleGraph<Integer, DefaultEdge> in, TriangulatedGraph out, Integer v, Set<DefaultEdge> edges) {
 		Set<VertexPair<Integer>> toRemove = new HashSet<>();
 
 		for (DefaultEdge edge : edges) {

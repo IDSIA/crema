@@ -3,9 +3,8 @@ package ch.idsia.crema.inference.jtree.algorithm.updating;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
-import ch.idsia.crema.model.graphical.Graph;
-import ch.idsia.crema.model.graphical.SparseModel;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +63,7 @@ public class BeliefPropagationTest {
 
 	@Test
 	public void testPropagationQuery() {
-		BeliefPropagation<BayesianFactor, Graph> bp = new BeliefPropagation<>(model);
+		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(model);
 		BayesianFactor factor = bp.fullPropagation();
 
 		assertEquals(factor, factors[A0]);
@@ -129,7 +128,7 @@ public class BeliefPropagationTest {
 
 	@Test
 	public void testPropagationSymbolic() {
-		SparseModel<SymbolicFactor> m = new SparseModel<>();
+		DAGModel<SymbolicFactor> m = new DAGModel<>();
 		int A = m.addVariable(2);
 		int B = m.addVariable(2);
 		int C = m.addVariable(2);
