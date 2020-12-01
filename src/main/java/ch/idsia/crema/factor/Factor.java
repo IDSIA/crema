@@ -73,6 +73,7 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 
 	}
 
+	@SuppressWarnings("unchecked")
 	default F combine(Collection<F> other) {
 		return this.combine((F[]) other.toArray(Factor[]::new));
 	}

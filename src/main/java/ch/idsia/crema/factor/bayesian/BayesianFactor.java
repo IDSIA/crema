@@ -413,7 +413,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
 			int offset = ArraysUtil.indexOf(factor.domain.getVariables()[vindex], target.getVariables());
 			// if (offset >= 0) {
-			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32l);
+			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
 			// }
 		}
 
@@ -428,9 +428,9 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 		for (int i = 0; i < result.length; ++i) {
 			if (log)
-				result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.data[(int) (idx >>> 32l)];
+				result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.data[(int) (idx >>> 32L)];
 			else
-				result[i] = data[(int) (idx & 0xFFFFFFFF)] * factor.data[(int) (idx >>> 32l)];
+				result[i] = data[(int) (idx & 0xFFFFFFFF)] * factor.data[(int) (idx >>> 32L)];
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {
@@ -487,7 +487,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
 			int offset = ArraysUtil.indexOf(factor.domain.getVariables()[vindex], target.getVariables());
 			// if (offset >= 0) {
-			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32l);
+			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
 			// }
 		}
 
@@ -501,7 +501,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 
 		for (int i = 0; i < result.length; ++i) {
-			result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.data[(int) (idx >>> 32l)];
+			result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.data[(int) (idx >>> 32L)];
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {
@@ -541,7 +541,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
 			int offset = Arrays.binarySearch(domain.getVariables(), factor.domain.getVariables()[vindex]);
-			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32l);
+			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
 		}
 
 		for (int i = 0; i < length; ++i) {
@@ -554,9 +554,9 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 		for (int i = 0; i < result.length; ++i) {
 			if (log)
-				result[i] = data[(int) (idx & 0xFFFFFFFF)] - factor.data[(int) (idx >>> 32l)];
+				result[i] = data[(int) (idx & 0xFFFFFFFF)] - factor.data[(int) (idx >>> 32L)];
 			else
-				result[i] = data[(int) (idx & 0xFFFFFFFF)] / factor.data[(int) (idx >>> 32l)];
+				result[i] = data[(int) (idx & 0xFFFFFFFF)] / factor.data[(int) (idx >>> 32L)];
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {

@@ -4,6 +4,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.junit.Test;
 
 import java.util.Arrays;
 
@@ -16,7 +17,8 @@ import static org.junit.Assert.assertArrayEquals;
  */
 public class FrequentistEMTest {
 
-	public static void main(String[] args) throws InterruptedException {
+	@Test
+	public void testLearningFromSimpleData() throws InterruptedException {
 		// https://www.cse.ust.hk/bnbook/pdf/l07.h.pdf
 		BayesianNetwork model = new BayesianNetwork();
 

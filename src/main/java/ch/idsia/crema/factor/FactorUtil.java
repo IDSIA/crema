@@ -1,22 +1,21 @@
 package ch.idsia.crema.factor;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import ch.idsia.crema.model.math.Operation;
 import ch.idsia.crema.utility.ArraysUtil;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * A utility class with function to help with factors. This methods are not part
  * of the Factor API to avoid clogging.
- * 
- * @author david
  *
+ * @author david
  */
 public class FactorUtil {
 	/**
 	 * Normalize a Factor over a set of its variable (may be empty)
-	 * 
+	 *
 	 * @param f
 	 * @param over
 	 * @return
@@ -25,10 +24,10 @@ public class FactorUtil {
 		F div = marginal(op, f, over);
 		return op.divide(f, div);
 	}
-	
+
 	/**
 	 * Normalize a Factor over a set of its variable (may be empty)
-	 * 
+	 *
 	 * @param f
 	 * @param over
 	 * @return
@@ -75,11 +74,10 @@ public class FactorUtil {
 		return first;
 	}
 
-	
-	
+
 	/**
 	 * Combine an array of factors (One is mandatory)
-	 * 
+	 *
 	 * @param factors
 	 * @return
 	 */
@@ -118,9 +116,8 @@ public class FactorUtil {
 
 	/**
 	 * Combine an array of factors using an operation set.
-	 * 
-	 * @throws IndexOutOfBoundsException
-	 *             if factors is empty
+	 *
+	 * @throws IndexOutOfBoundsException if factors is empty
 	 */
 	@SafeVarargs
 	public static <F extends GenericFactor> F combine(Operation<F> op, F... factors) {
@@ -152,7 +149,7 @@ public class FactorUtil {
 		return factor;
 	}
 
-	
+
 	/**
 	 * return the marginal of a factors. Not this is a marginalization of all
 	 * but the "over" variables
@@ -173,19 +170,20 @@ public class FactorUtil {
 		}
 		return factor;
 	}
+
 	/**
 	 * <p>
 	 * An alternative take on filtering some rows out of a factor. Note that
 	 * factors do implement filter, but there is debate whether this is correct.
 	 * </p>
-	 * 
+	 *
 	 * <p>
 	 * The indicator is used as we cannot create and indicator factor without
 	 * knowing the actual data type (F is generic).
 	 * </p>
-	 * 
+	 *
 	 * @param factor
-	 * @param vars
+	 * @param indicator
 	 * @return
 	 */
 	public static <F extends Factor<F>> F filter(F factor, F indicator) {

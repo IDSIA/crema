@@ -197,7 +197,7 @@ public class DefaultAlgebra implements Operation<BayesianFactor> {
 
 		for (int vindex = 0; vindex < two.getDomain().getSize(); ++vindex) {
 			int offset = Arrays.binarySearch(one.getDomain().getVariables(), two.getDomain().getVariables()[vindex]);
-			stride[offset] += ((long) two.getDomain().getStrides()[vindex] << 32l);
+			stride[offset] += ((long) two.getDomain().getStrides()[vindex] << 32L);
 		}
 
 		for (int i = 0; i < length; ++i) {
@@ -210,9 +210,9 @@ public class DefaultAlgebra implements Operation<BayesianFactor> {
 
 		for (int i = 0; i < result.length; ++i) {
 			if (log)
-				result[i] = one.getInteralData()[(int) (idx & 0xFFFFFFFF)] - two.getInteralData()[(int) (idx >>> 32l)];
+				result[i] = one.getInteralData()[(int) (idx & 0xFFFFFFFF)] - two.getInteralData()[(int) (idx >>> 32L)];
 			else
-				result[i] = one.getInteralData()[(int) (idx & 0xFFFFFFFF)] / two.getInteralData()[(int) (idx >>> 32l)];
+				result[i] = one.getInteralData()[(int) (idx & 0xFFFFFFFF)] / two.getInteralData()[(int) (idx >>> 32L)];
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {
