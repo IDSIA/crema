@@ -11,20 +11,19 @@ import java.util.*;
 /**
  * Clique creation and ordering strategy generator based in the Minimum Fill In Algorithm.
  * TODO this could make use of a local-search of the search framework.
- * 
- * @author david 
  *
+ * @author david
  */
 public class MinFillOrdering implements OrderingStrategy {
 	private int[] sequence;
-	
+
 	@Override
 	public int[] apply(GraphicalModel<?> model) {
 		SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
-		
+
 		loadMoralized(model, graph);
 		triangulate(graph);
-		
+
 		return sequence;
 	}
 
@@ -34,10 +33,10 @@ public class MinFillOrdering implements OrderingStrategy {
 		}
 
 		for (int var : model.getVariables()) {
-			
+
 			for (int parent : model.getParents(var)) {
 				graph.addEdge(var, parent);
-				
+
 				// marry the parents
 				for (int other : model.getParents(var)) {
 					if (other == parent) break;
@@ -46,20 +45,17 @@ public class MinFillOrdering implements OrderingStrategy {
 			}
 		}
 	}
-	
 
 	/**
 	 * Triangulate the graph using the minfill algorithm.
-	 * 
+	 *
 	 * @param graph
 	 * @return
 	 */
 	private Collection<Set<Integer>> triangulate(SimpleGraph<Integer, DefaultEdge> graph) {
 		// make a copy of the vertices set
-		ArrayList<Integer> todo = new ArrayList<>(graph.vertexSet());
-
-		SimpleGraph<Integer, DefaultEdge> triag = graph;
-		ArrayList<Set<Integer>> cliques = new ArrayList<>();
+		List<Integer> todo = new ArrayList<>(graph.vertexSet());
+		List<Set<Integer>> cliques = new ArrayList<>();
 
 		int item = 0;
 		sequence = new int[todo.size()];
@@ -67,19 +63,19 @@ public class MinFillOrdering implements OrderingStrategy {
 		while (!todo.isEmpty()) {
 
 			int removedItems = 1;
-			
+
 			while (removedItems != 0 && !todo.isEmpty()) {
 
 				// remove all simplical nodes
 				removedItems = 0;
 				List<VertexPair<Integer>> best = null;
-				
+
 				ListIterator<Integer> todoIterator = todo.listIterator();
-				while(todoIterator.hasNext()) {
+				while (todoIterator.hasNext()) {
 					Integer node = todoIterator.next();
-					
+
 					// if they are all connected the node can be removed
-					List<VertexPair<Integer>> test = getMissingLinks(triag, node);
+					List<VertexPair<Integer>> test = getMissingLinks(graph, node);
 
 					// node is fully connected
 					if (test.isEmpty()) {
@@ -87,10 +83,10 @@ public class MinFillOrdering implements OrderingStrategy {
 						Set<Integer> candidate = new HashSet<>();
 						candidate.add(node);
 
-						for (DefaultEdge edge : triag.edgesOf(node)) {
-							Integer source = triag.getEdgeSource(edge);
-							Integer target = triag.getEdgeTarget(edge);
-					
+						for (DefaultEdge edge : graph.edgesOf(node)) {
+							Integer source = graph.getEdgeSource(edge);
+							Integer target = graph.getEdgeTarget(edge);
+
 							Integer neighbour = ((node == source) ? target : source);
 							candidate.add(neighbour);
 						}
@@ -99,37 +95,36 @@ public class MinFillOrdering implements OrderingStrategy {
 						// clique we need to add it
 						boolean found = false;
 						for (Set<Integer> anotherClique : cliques) {
-							if(anotherClique.containsAll(candidate)) {
+							if (anotherClique.containsAll(candidate)) {
 								found = true;
 								break;
 							}
 						}
-						
+
 						if (!found) {
 							cliques.add(candidate);
 						}
-						
-						sequence[item++]=node;
-						
+
+						sequence[item++] = node;
+
 						todoIterator.remove(); // remove last returned element (node)
-						triag.removeVertex(node);
+						graph.removeVertex(node);
 						++removedItems;
 					} else if (best == null || best.size() >= test.size()) {
 						// we are looking for the test triangulization that would add the least fill-in arcs
 						best = test;
 					}
 				}
-				
+
 				if (removedItems == 0 && best != null) {
 					for (VertexPair<Integer> vertex : best) {
-						triag.addEdge(vertex.getFirst(), vertex.getSecond());
+						graph.addEdge(vertex.getFirst(), vertex.getSecond());
 					}
 					// FIXME: best node should be simplical and should be removable
 				}
 			}
 		}
-		
-		
+
 		return cliques;
 	}
 
@@ -145,7 +140,7 @@ public class MinFillOrdering implements OrderingStrategy {
 			Integer source = graph.getEdgeSource(firstEdge);
 			Integer target = graph.getEdgeTarget(firstEdge);
 
-			Integer first = (node == source) ? target : source;
+			Integer first = node.equals(source) ? target : source;
 
 			// continue if the node has been removed
 //			if (removed.contains(first))
@@ -156,7 +151,7 @@ public class MinFillOrdering implements OrderingStrategy {
 				Integer source2 = graph.getEdgeSource(secondEdge);
 				Integer target2 = graph.getEdgeTarget(secondEdge);
 
-				Integer second = (node == source2) ? target2 : source2;
+				Integer second = node.equals(source2) ? target2 : source2;
 
 //				if (removed.contains(second))
 //					continue;
@@ -166,6 +161,7 @@ public class MinFillOrdering implements OrderingStrategy {
 				}
 			}
 		}
+
 		return missing;
 	}
 }

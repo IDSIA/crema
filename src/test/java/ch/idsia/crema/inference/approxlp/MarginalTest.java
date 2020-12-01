@@ -3,6 +3,7 @@ package ch.idsia.crema.inference.approxlp;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -14,7 +15,7 @@ public class MarginalTest {
 
 	@Test
 	public void test2NodeQuery() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		model.addVariable(3);
 		model.addVariable(3);
@@ -30,7 +31,7 @@ public class MarginalTest {
 		model.setFactor(0, f0);
 		model.setFactor(1, f1);
 
-		Inference inference = new Inference();
+		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, 0);
 
 		assertArrayEquals(new double[]{0.11, 0.36, 0.18}, factor.getLower(), 0.000000001);
@@ -39,7 +40,7 @@ public class MarginalTest {
 
 	@Test
 	public void test3VNodeQuery() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		model.addVariable(3);
 		model.addVariable(2);
@@ -61,7 +62,7 @@ public class MarginalTest {
 		model.setFactor(1, f1);
 		model.setFactor(2, f2);
 
-		Inference inference = new Inference();
+		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, 0);
 
 		assertArrayEquals(new double[]{0.082, 0.31, 0.165}, factor.getLower(), 0.000000001);
@@ -70,7 +71,7 @@ public class MarginalTest {
 
 	@Test
 	public void testDiamondConfigQuery() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		int n1 = model.addVariable(2);
 		int n2 = model.addVariable(2);
@@ -102,7 +103,7 @@ public class MarginalTest {
 		f2.set(new double[]{0.3, 0.4}, new double[]{0.6, 0.7}, 2);
 		model.setFactor(n2, f2);
 
-		Inference inference = new Inference();
+		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n0);
 
 		assertArrayEquals(new double[]{0.139, 0.3192, 0.155}, factor.getLower(), 0.000000001);
@@ -114,7 +115,7 @@ public class MarginalTest {
 
 	@Test
 	public void testSimplePosteriorQuery() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(2);
@@ -136,7 +137,7 @@ public class MarginalTest {
 		model = bin.execute(model, evidence, 2, false);
 		int ev = bin.getLeafDummy();
 
-		Inference inference = new Inference();
+		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n1, ev);
 
 		assertArrayEquals(new double[]{0.954545454545, 0}, factor.getLower(), 0.000000001);

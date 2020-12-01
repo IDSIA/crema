@@ -1,7 +1,6 @@
-package ch.idsia.crema.inference.bp.updating;
+package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.bp.GraphToJunctionTreePipe;
 import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;

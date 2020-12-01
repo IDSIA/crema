@@ -6,6 +6,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
@@ -20,7 +21,7 @@ public class PosteriorTest {
 
 	@Test
 	public void targetFree2() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int E = model.addVariable(2);
 		int X0 = model.addVariable(2);
 
@@ -43,15 +44,14 @@ public class PosteriorTest {
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
 		BinarizeEvidence be = new BinarizeEvidence();
-		DAGModel<GenericFactor> bmodel = be.execute(model, observation, 2, false);
+		GraphicalModel<GenericFactor> bmodel = be.execute(model, observation, 2, false);
 		int evidence = be.getLeafDummy();
 
-		Inference inf = new Inference();
+		Inference<GenericFactor> inf = new Inference<>();
 		IntervalFactor ifact = inf.query(bmodel, X0, evidence);
 
 //		assertArrayEquals(new double[] { 0.07 / 0.43, 0.32 / 0.46 }, ifact.getLower(), 0.001);
 //		assertArrayEquals(new double[] { 0.14 / 0.46, 0.36 / 0.43 }, ifact.getUpper(), 0.001);
-
 
 		ApproxLP2 a2 = new ApproxLP2();
 		a2.initialize(null);
@@ -64,7 +64,7 @@ public class PosteriorTest {
 
 	@Test
 	public void targetFree2WithParent() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int E = model.addVariable(3);
 		int X0 = model.addVariable(2);
 		int Xj = model.addVariable(3);
@@ -93,7 +93,7 @@ public class PosteriorTest {
 		BinarizeEvidence be = new BinarizeEvidence();
 		int evidence = be.executeInline(model, observation, 2, false);
 
-		Inference inf = new Inference();
+		Inference<GenericFactor> inf = new Inference<>();
 		IntervalFactor ifact = inf.query(model, X0, evidence);
 
 		assertArrayEquals(new double[]{0.6279069767434073, 0.16964285714332666}, ifact.getLower(), 0.001);
@@ -102,7 +102,7 @@ public class PosteriorTest {
 
 	@Test
 	public void targetFree3() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int E = model.addVariable(2);
 		int X0 = model.addVariable(3);
 
@@ -121,7 +121,7 @@ public class PosteriorTest {
 		BinarizeEvidence be = new BinarizeEvidence();
 		int evidence = be.executeInline(model, observation, 2, false);
 
-		Inference inf = new Inference();
+		Inference<GenericFactor> inf = new Inference<>();
 		IntervalFactor ifact = inf.query(model, X0, evidence);
 
 		assertArrayEquals(new double[]{0.21212121212087243, 0.23529411764741176, 0.277777777778395}, ifact.getLower(), 0.001);
@@ -130,7 +130,7 @@ public class PosteriorTest {
 
 	@Test
 	public void targetFree2WithChild() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int E = model.addVariable(2);
 		int Xj = model.addVariable(2);
 		int X0 = model.addVariable(2);
@@ -155,7 +155,7 @@ public class PosteriorTest {
 		model = be.execute(model, observation, 2, false);
 		int evidence = be.getLeafDummy();
 
-		Inference inf = new Inference();
+		Inference<GenericFactor> inf = new Inference<>();
 		IntervalFactor ifact = inf.query(model, X0, evidence);
 
 		assertArrayEquals(new double[]{0.24424778761090626, 0.6765799256506011}, ifact.getLower(), 0.001);
@@ -164,7 +164,7 @@ public class PosteriorTest {
 
 	@Test
 	public void testDiamondBayesianPosteriorQuery() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(2);
@@ -194,7 +194,7 @@ public class PosteriorTest {
 		BinarizeEvidence bin = new BinarizeEvidence();
 		int ev = bin.executeInline(model, evidence, 2, false);
 
-		Inference inference = new Inference();
+		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n3, ev);
 
 		assertArrayEquals(new double[]{0.22188969645147497, 0.7781103035492434}, factor.getLower(), 0.001);
@@ -203,7 +203,7 @@ public class PosteriorTest {
 
 	@Test
 	public void testDiamondBayesianPosteriorQuery3() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(3);
@@ -239,13 +239,13 @@ public class PosteriorTest {
 		BinarizeEvidence bin = new BinarizeEvidence();
 		int ev = bin.executeInline(model, evidence, 2, false);
 
-		Inference inference = new Inference();
+		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n3, ev);
 
 		assertArrayEquals(new double[]{0.22050585639124004, 0.6383476227590834}, factor.getLower(), 0.001);
 		assertArrayEquals(new double[]{0.3616523772409166, 0.7794941436087599}, factor.getUpper(), 0.001);
 
-		inference = new Inference();
+		inference = new Inference<>();
 
 		RemoveBarren barren = new RemoveBarren();
 		barren.execute(model, new int[]{n1}, ObservationBuilder.vars(ev).states(1));
@@ -263,7 +263,7 @@ public class PosteriorTest {
 	 */
 	@Test
 	public void testDiamondBayesianPosteriorQuery4() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(3);
@@ -310,13 +310,13 @@ public class PosteriorTest {
 		BinarizeEvidence bin = new BinarizeEvidence();
 		int ev = bin.executeInline(model, evidence, 2, false);
 
-		Inference inference = new Inference();
+		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n3, ev);
 
 		assertArrayEquals(new double[]{0.09702615320599722, 0.5996234703482123}, factor.getLower(), 0.001);
 		assertArrayEquals(new double[]{0.4003765296517877, 0.9029738467940027}, factor.getUpper(), 0.001);
 
-		inference = new Inference();
+		inference = new Inference<>();
 
 		RemoveBarren barren = new RemoveBarren();
 		barren.execute(model, new int[]{n1}, ObservationBuilder.vars(ev).states(1));
@@ -335,7 +335,7 @@ public class PosteriorTest {
 	 */
 	@Test()
 	public void testLeftOver() throws InterruptedException {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int n = model.addVariable(3);
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(3);
@@ -402,15 +402,13 @@ public class PosteriorTest {
 		BinarizeEvidence bin = new BinarizeEvidence();
 		int ev = bin.executeInline(model, evidence, 2, false);
 
-
-		Inference inference = new Inference();
+		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n3, ev);
 
 		assertArrayEquals(new double[]{0.09702615320599722, 0.5996234703482123}, factor.getLower(), 0.001);
 		assertArrayEquals(new double[]{0.4003765296517877, 0.9029738467940027}, factor.getUpper(), 0.001);
 
-
-		inference = new Inference();
+		inference = new Inference<>();
 
 		// no need to update n1 as we use the sparse model
 		factor = inference.query(model, n1, ev);
