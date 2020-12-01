@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class ObservationBuilder extends TIntIntHashMap {
 
-	private int vars[];
+	private int[] vars;
 
 	public static ObservationBuilder observe(int var, int state) {
 		return new ObservationBuilder(new int[]{var}, new int[]{state});
@@ -34,7 +34,7 @@ public class ObservationBuilder extends TIntIntHashMap {
 	}
 
 	public static ObservationBuilder[] observe(String[] vars, double[][] data) {
-		return observe(Stream.of(vars).mapToInt(v -> Integer.valueOf(v)).toArray(), data);
+		return observe(Stream.of(vars).mapToInt(Integer::valueOf).toArray(), data);
 	}
 
 	public static ObservationBuilder[] observe(int[] vars, double[][] data) {
@@ -100,7 +100,7 @@ public class ObservationBuilder extends TIntIntHashMap {
 
 	public static TIntIntMap[] filter(TIntIntMap[] data, int[] keys, int[] vals) {
 		return Stream.of(data)
-				.filter(d -> Arrays.equals(IntStream.of(keys).map(k -> d.get(k)).toArray(), vals))
+				.filter(d -> Arrays.equals(IntStream.of(keys).map(d::get).toArray(), vals))
 				.toArray(TIntIntMap[]::new);
 	}
 

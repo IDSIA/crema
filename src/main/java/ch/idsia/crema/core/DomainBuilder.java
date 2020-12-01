@@ -3,7 +3,7 @@ package ch.idsia.crema.core;
 public class DomainBuilder extends SimpleDomain {
 
 	private DomainBuilder(int[] vars, int[] sizes) {
-		super(vars, sizes); 
+		super(vars, sizes);
 	}
 
 	public static DomainBuilder var(int... vars) {
@@ -17,5 +17,5 @@ public class DomainBuilder extends SimpleDomain {
 	public Strides strides() {
 		return new Strides(getVariables(), getSizes());
 	}
-	
+
 }
