@@ -8,7 +8,7 @@ import ch.idsia.crema.model.vertex.*;
 import java.util.Arrays;
 
 public class DefaultExtensiveAlgebra implements Operation<ExtensiveVertexFactor> {
-	
+
 	@Override
 	public ExtensiveVertexFactor combine(ExtensiveVertexFactor one, ExtensiveVertexFactor two) {
 
@@ -16,7 +16,6 @@ public class DefaultExtensiveAlgebra implements Operation<ExtensiveVertexFactor>
 		final int length = target.getSize();
 
 		final int[] limits = new int[length];
-
 		final long[] stride = new long[length];
 		final long[] reset = new long[length];
 
@@ -30,7 +29,7 @@ public class DefaultExtensiveAlgebra implements Operation<ExtensiveVertexFactor>
 		for (int vindex = 0; vindex < two.getDomain().getSize(); ++vindex) {
 			int offset = Arrays.binarySearch(target.getVariables(), two.getDomain().getVariables()[vindex]);
 			if (offset >= 0) {
-				stride[offset] += ((long) two.getDomain().getStrides()[vindex] << 32l);
+				stride[offset] += ((long) two.getDomain().getStrides()[vindex] << 32L);
 			}
 		}
 
@@ -46,7 +45,7 @@ public class DefaultExtensiveAlgebra implements Operation<ExtensiveVertexFactor>
 		final int table_size = target.getCombinations();
 
 		VertexOperation ops = target_factor.isLog() ? new LogVertexOperation() : new SimpleVertexOperation();
-		
+
 		for (int our_table = 0; our_table < our_tables; ++our_table) {
 			for (int his_table = 0; his_table < his_tables; ++his_table) {
 				final double[] our_data = one.getInternalVertices().get(our_table);
@@ -59,26 +58,26 @@ public class DefaultExtensiveAlgebra implements Operation<ExtensiveVertexFactor>
 
 		return target_factor;
 	}
-	
+
 
 	@Override
 	public ExtensiveVertexFactor filter(final ExtensiveVertexFactor factor, int variable, int state) {
 		int offset = factor.getDomain().indexOf(variable);
 		return collect(factor, offset, new Filter(factor.getDomain().getStrideAt(offset), state));
 	}
-	
+
 	@Override
 	public ExtensiveVertexFactor marginalize(final ExtensiveVertexFactor factor, int variable) {
 		final Strides domain = factor.getDomain();
 		final int offset = domain.indexOf(variable);
-		
+
 		if (factor.isLog())
 			return collect(factor, offset, new LogMarginal(domain.getSizeAt(offset), domain.getStrideAt(offset)));
 		else
 			return collect(factor, offset, new Marginal(domain.getSizeAt(offset), domain.getStrideAt(offset)));
 	}
 
-	
+
 	private ExtensiveVertexFactor collect(final ExtensiveVertexFactor factor, final int offset, final Collector collector) {
 		final Strides domain = factor.getDomain();
 		final int stride = domain.getStrideAt(offset);
@@ -88,7 +87,7 @@ public class DefaultExtensiveAlgebra implements Operation<ExtensiveVertexFactor>
 
 		final Strides target_domain = domain.removeAt(offset);
 		final ExtensiveVertexFactor result = new ExtensiveVertexFactor(target_domain, factor.isLog());
-		
+
 		// marginalize all the vertices of the source factor
 		for (double[] vertex : factor.getInternalVertices()) {
 			int source = 0;

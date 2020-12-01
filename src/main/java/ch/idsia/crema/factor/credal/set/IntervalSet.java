@@ -60,7 +60,7 @@ public class IntervalSet extends AbstractSet {
 	 * @author huber
 	 */
 	public class BoundsHelper {
-		private int offset;
+		private final int offset;
 
 		public BoundsHelper(int... states) {
 			offset = IntervalSet.this.domain.getOffset(states);

@@ -19,7 +19,6 @@ public abstract class SeparateFactor<F extends SeparateFactor<F>> implements Gen
 	public SeparateFactor() {
 	}
 
-
 	public SeparateFactor(Strides dataDomain, Strides groupDomain) {
 		setConditioningDomain(groupDomain);
 		setDataDomain(dataDomain);

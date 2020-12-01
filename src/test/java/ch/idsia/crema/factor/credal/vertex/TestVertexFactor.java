@@ -17,6 +17,7 @@ public class TestVertexFactor {
 		int C = model.addVariable(2);
 
 		VertexFactor factorx = new VertexFactor(model.getDomain(A, B), model.getDomain(C));
+
 		// A0B0 A1B0 A0B1 A1B1
 		factorx.addVertex(new double[]{0.3, 0.5, 0.1, 0.1}, 1);
 		factorx.addVertex(new double[]{0.5, 0.2, 0.2, 0.1}, 1);
@@ -33,7 +34,6 @@ public class TestVertexFactor {
 		assertEquals(2, x.length);
 		assertArrayEquals(new double[]{0.5}, x[0], .0000001);
 		assertArrayEquals(new double[]{0.2}, x[1], .0000001);
-
 	}
 
 	@Test
@@ -337,6 +337,5 @@ public class TestVertexFactor {
 		VertexFactor v2_2 = v2_1.marginalize(5);
 		//v2_2.convex();
 		System.out.println(v2_2);
-
 	}
 }

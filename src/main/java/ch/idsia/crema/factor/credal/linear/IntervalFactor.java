@@ -16,8 +16,8 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class IntervalFactor extends SeparateFactor<IntervalFactor> implements SeparateLinearFactor<IntervalFactor> {
-	private double[][] lower;
-	private double[][] upper;
+	private final double[][] lower;
+	private final double[][] upper;
 
 	public IntervalFactor(Strides content, Strides separation) {
 		super(content, separation);
@@ -150,7 +150,6 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 		return new IntervalFactor(dataDomain, new_domain, new_lower, new_upper);
 	}
 
-
 	@Override
 	public LinearConstraintSet getLinearProblem(int... states) {
 		int offset = groupDomain.getOffset(states);
@@ -200,7 +199,6 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 		return true;
 	}
 
-
 	@Override
 	public String toString() {
 		String str = "P(" + Arrays.toString(getDataDomain().getVariables()) + " | " + Arrays.toString(getSeparatingDomain().getVariables()) + ")";
@@ -238,7 +236,6 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 
 		return new IntervalFactor(f.getDataDomain(), f.getSeparatingDomain(), lbounds, ubounds);
 	}
-
 
 	/**
 	 * Merges the bounds with other interval factors

@@ -30,15 +30,14 @@ import java.util.stream.Stream;
 /**
  * A Separately specified Vertex based credal factor. TODO: Data is currenlty
  * not logged!
- * 
- * @author david
  *
+ * @author david
  */
 public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFactor>, Factor<VertexFactor> {
 	private final static boolean log = false;
 
-	private Strides separatedDomain;
-	private Strides vertexDomain;
+	private final Strides separatedDomain;
+	private final Strides vertexDomain;
 
 	private final double[][][] data;
 
@@ -49,6 +48,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		this.vertexDomain = left;
 		data = new double[right.getCombinations()][][];
 	}
+
 	public VertexFactor(Strides left, Strides right, double[][][] data) {
 		this.separatedDomain = right;
 		this.vertexDomain = left;
@@ -62,54 +62,52 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		data = new double[1][][];
 
 		// check the coefficient sizes
-		for(double[] c : coefficients){
+		for (double[] c : coefficients) {
 			if (c.length != left.getCombinations())
-				throw new IllegalArgumentException("ERROR: wrong constraint size: "+c.length+" instead of "+left.getCombinations());
+				throw new IllegalArgumentException("ERROR: wrong constraint size: " + c.length + " instead of " + left.getCombinations());
 		}
 
 		// check the relationship vector length
-		if(rel.length == 0) rel = new Relationship[] {Relationship.EQ};
-		if(rel.length == 1) {
+		if (rel.length == 0) rel = new Relationship[]{Relationship.EQ};
+		if (rel.length == 1) {
 			Relationship[] rel_aux = new Relationship[coefficients.length];
-			for(int i = 0; i< coefficients.length; i++)
+			for (int i = 0; i < coefficients.length; i++)
 				rel_aux[i] = rel[0];
 			rel = rel_aux;
-		}else if(rel.length != coefficients.length) {
-			throw new IllegalArgumentException("ERROR: wrong relationship vector length: "+rel.length);
+		} else if (rel.length != coefficients.length) {
+			throw new IllegalArgumentException("ERROR: wrong relationship vector length: " + rel.length);
 		}
 
-
 		SeparateHalfspaceFactor k_const = new SeparateHalfspaceFactor(left, Strides.empty());
-		for(int i=0; i< coefficients.length; i++){
-				k_const.addConstraint(coefficients[i], rel[i], values[i]);
+		for (int i = 0; i < coefficients.length; i++) {
+			k_const.addConstraint(coefficients[i], rel[i], values[i]);
 		}
 
 		// normalization constraint
-		double [] ones =  new double[left.getCombinations()];
-		for(int i=0; i<ones.length; i++)
+		double[] ones = new double[left.getCombinations()];
+		for (int i = 0; i < ones.length; i++)
 			ones[i] = 1.;
 		k_const.addConstraint(ones, Relationship.EQ, 1.0);
 
 		// non-negative constraints
-		double [] zeros =  new double[left.getCombinations()];
-		for(int i=0; i<zeros.length; i++)
+		double[] zeros = new double[left.getCombinations()];
+		for (int i = 0; i < zeros.length; i++)
 			ones[i] = 0.;
 
-		for(int i=0; i<left.getCombinations(); i++) {
+		for (int i = 0; i < left.getCombinations(); i++) {
 			double[] c = zeros.clone();
 			c[i] = 1.;
-			k_const.addConstraint(c,Relationship.GEQ, 0);
-
+			k_const.addConstraint(c, Relationship.GEQ, 0);
 		}
 
 		HalfspaceToVertex conversor = new HalfspaceToVertex();
-		double[][] vertices = conversor.apply(k_const,0).getData()[0];
+		double[][] vertices = conversor.apply(k_const, 0).getData()[0];
 
-		if(vertices == null || vertices.length == 0){
+		if (vertices == null || vertices.length == 0) {
 			throw new NoFeasibleSolutionException();
 		}
 		//add extreme points
-		for(double[] v : vertices){
+		for (double[] v : vertices) {
 			this.addVertex(v);
 		}
 	}
@@ -120,18 +118,16 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		data = new double[1][][];
 
 		HalfspaceToVertex conversor = new HalfspaceToVertex();
-		double[][] vertices = conversor.apply(constrainsFactor,0).getData()[0];
+		double[][] vertices = conversor.apply(constrainsFactor, 0).getData()[0];
 
-		if(vertices == null || vertices.length == 0){
+		if (vertices == null || vertices.length == 0) {
 			throw new NoFeasibleSolutionException();
 		}
 		//add extreme points
-		for(double[] v : vertices){
+		for (double[] v : vertices) {
 			this.addVertex(v);
 		}
 	}
-
-
 
 
 	@Override
@@ -174,7 +170,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 			newdata[len] = vertex;
 			data[offset] = newdata;
 		} else {
-			data[offset] = new double[][] { vertex };
+			data[offset] = new double[][]{vertex};
 		}
 	}
 
@@ -193,11 +189,11 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
 	/**
 	 * Iterate over this object's domains extended to the specified domain
-	 * 
+	 *
 	 * @param domain
 	 * @return
 	 */
-	@SuppressWarnings({ "unused", "deprecation" })
+	@SuppressWarnings({"unused", "deprecation"})
 	private SeparateIndexIterator iterate(Strides domain) {
 		IndexIterator data = vertexDomain.getSupersetIndexIterator(domain);
 		IndexIterator group = separatedDomain.getSupersetIndexIterator(domain);
@@ -206,7 +202,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
 	/**
 	 * Iterator over the two domains data and conditioning
-	 * 
+	 *
 	 * @return
 	 */
 	public SeparateIndexIterator iterate() {
@@ -215,7 +211,6 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return new SeparateIndexIterator(data, group);
 	}
 
-	
 	@Override
 	public VertexFactor filter(int variable, int state) {
 
@@ -224,18 +219,18 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 			double[][][] newdata = new double[separatedDomain.getCombinations()][][];
 			var_offset = vertexDomain.indexOf(variable);
 			Strides newleft = vertexDomain.removeAt(var_offset);
-			
-			int offset = vertexDomain.getPartialOffset(new int[] { variable }, new int[] { state });
-			
+
+			int offset = vertexDomain.getPartialOffset(new int[]{variable}, new int[]{state});
+
 			for (int r = 0; r < separatedDomain.getCombinations(); ++r) {
 				double[][] source = data[r];
 				double[][] target = new double[source.length][newleft.getCombinations()];
 				newdata[r] = target;
-				
+
 				IndexIterator iter = vertexDomain.getIterator(newleft);
 
 				int tindex = 0;
-				while(iter.hasNext()) {
+				while (iter.hasNext()) {
 					int i = iter.next();
 					for (int vertex = 0; vertex < source.length; ++vertex) {
 						target[vertex][tindex] = source[vertex][i + offset];
@@ -243,12 +238,12 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 					++tindex;
 				}
 			}
-			
+
 			return new VertexFactor(newleft, separatedDomain, newdata);
 		} else {
 			Strides newdomain = separatedDomain.removeAt(var_offset); // new
-																		// Strides(separatedDomain,
-																		// var_offset);
+			// Strides(separatedDomain,
+			// var_offset);
 			IndexIterator iter = separatedDomain.getFiteredIndexIterator(variable, state);
 
 			// should be replaceable with
@@ -265,16 +260,16 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 			return new VertexFactor(vertexDomain, newdomain, newdata);
 		}
 	}
-	
+
 	/**
 	 * sum/marginalize some variables out of the credal set.
-	 * 
+	 *
 	 * @param vars
 	 * @return
 	 */
 	public VertexFactor marginalize(int... vars) {
-
 		//System.out.println("marg "+Arrays.toString(vars)+" from "+toStringSimple());
+
 		// only vars of the domain
 		Strides sum_strides = getDataDomain().intersection(vars);
 		Strides left = getDataDomain().remove(vars);
@@ -301,25 +296,20 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
 		VertexFactor f = new VertexFactor(left, getSeparatingDomain(), target_data);
 
-		if(CONVEX_HULL_MARG)
+		if (CONVEX_HULL_MARG)
 			f.applyConvexHull(true);
 
 		return f;
-
-
-
 	}
 
-	
 	/**
-	 * @param target
-	 *            the new grouping/separation domain
+	 * @param target the new grouping/separation domain
 	 * @return
 	 */
 	public VertexFactor reseparate(Strides target) {
 		// requested current separation!
 		if (Arrays.equals(target.getVariables(), separatedDomain.getVariables())) return this;
-		
+
 		Strides T = getSeparatingDomain().intersection(target);
 		Strides Lt = getSeparatingDomain().remove(target);
 		Strides Dl = getDataDomain().union(Lt);
@@ -376,15 +366,13 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return new VertexFactor(Dl, T, dest_data);
 	}
 
-
-
 	@Override
 	public VertexFactor combine(VertexFactor other) {
 
 		//System.out.println("combine "+toStringSimple()+" with "+other.toStringSimple());
 
-		if(!this.getDomain().isConsistentWith(other.getDomain())){
-			throw new IllegalArgumentException("Factors domains are not consistent: "+this+", "+other);
+		if (!this.getDomain().isConsistentWith(other.getDomain())) {
+			throw new IllegalArgumentException("Factors domains are not consistent: " + this + ", " + other);
 		}
 
 		// union
@@ -395,11 +383,11 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		VertexFactor reshaped1 = this.reseparate(right);
 		VertexFactor reshaped2 = other.reseparate(right);
 
-		double target_data[][][] = new double[right.getCombinations()][][];
+		double[][][] target_data = new double[right.getCombinations()][][];
 
 		IndexIterator iter1 = reshaped1.getSeparatingDomain().getIterator(right);
 		IndexIterator iter2 = reshaped2.getSeparatingDomain().getIterator(right);
-		
+
 		for (int r = 0; r < right.getCombinations(); ++r) {
 			int idx1 = iter1.next();
 			int idx2 = iter2.next();
@@ -429,7 +417,9 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return new VertexFactor(left, right, target_data);
 	}
 
-	/** as we might be in a log space, the multiplication might be a sum */
+	/**
+	 * as we might be in a log space, the multiplication might be a sum
+	 */
 	private double multiply(double d, double e) {
 		return log ? d + e : d * e;
 	}
@@ -479,7 +469,6 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return build.toString();
 	}
 
-
 	public double[][][] getInternalData() {
 		return data;
 	}
@@ -494,20 +483,19 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	public VertexFactor marginalize(int variable) {
 		return this.marginalize(new int[]{variable});
 	}
-	
+
 	public VertexFactor normalize() {
 		double[][][] newdata = data.clone();
 		for (int i = 0; i < data.length; ++i) {
 			newdata[i] = data[i].clone();
 			for (int v = 0; v < newdata[i].length; ++v) {
 				double sum = Arrays.stream(data[i][v]).sum();
-				newdata[i][v] = Arrays.stream(data[i][v]).map(x->x/sum).toArray();
+				newdata[i][v] = Arrays.stream(data[i][v]).map(x -> x / sum).toArray();
 			}
 		}
 		return new VertexFactor(vertexDomain, separatedDomain, newdata);
 	}
-	
-	
+
 	public Iterator<double[][]> getVertexSetIterator() {
 		return Arrays.asList(data).iterator();
 	}
@@ -516,72 +504,72 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return data[i];
 	}
 
-
 	/**
 	 * Static method that builds a deterministic factor (values can only be ones or zeros).
 	 * Thus, children variables are determined by the values of the parents
-	 * @param left	Strides - children variables.
-	 * @param right	Strides - parent variables
+	 *
+	 * @param left        Strides - children variables.
+	 * @param right       Strides - parent variables
 	 * @param assignments assignments of each combination of the parent
 	 * @return
 	 */
-	public static VertexFactor deterministic(Strides left, Strides right, int... assignments){
+	public static VertexFactor deterministic(Strides left, Strides right, int... assignments) {
 
 		if (assignments.length != right.getCombinations())
 			throw new IllegalArgumentException("ERROR: length of assignments should be equal to the number of combinations of the parents");
 
-		if (Ints.min(assignments)<0 || Ints.max(assignments)>= left.getCombinations())
-			throw new IllegalArgumentException("ERROR: assignments of deterministic function should be in the inteval [0,"+left.getCombinations()+")");
+		if (Ints.min(assignments) < 0 || Ints.max(assignments) >= left.getCombinations())
+			throw new IllegalArgumentException("ERROR: assignments of deterministic function should be in the inteval [0," + left.getCombinations() + ")");
 
+		VertexFactor f = new VertexFactor(left, right);
 
-		VertexFactor f = new VertexFactor(left,right);
-
-		for(int i=0; i< right.getCombinations(); i++){
+		for (int i = 0; i < right.getCombinations(); i++) {
 			double[] values = new double[left.getCombinations()];
 			values[assignments[i]] = 1.0;
 			f.addVertex(values, i);
 		}
 		return f;
 	}
+
 	/**
 	 * Static method that builds a deterministic factor (values can only be ones or zeros)
 	 * without parent variables.
-	 * @param left	Strides - children variables.
+	 *
+	 * @param left       Strides - children variables.
 	 * @param assignment int - single value to assign
 	 * @return
 	 */
 
-	public static VertexFactor deterministic(Strides left, int assignment){
+	public static VertexFactor deterministic(Strides left, int assignment) {
 		return VertexFactor.deterministic(left, Strides.empty(), assignment);
 	}
 
 	/**
 	 * Static method that builds a deterministic factor (values can only be ones or zeros)
 	 * without parent variables.
-	 * @param var	int - id for the single children variable.
+	 *
+	 * @param var        int - id for the single children variable.
 	 * @param assignment int - single value to assign
 	 * @return
 	 */
 
-	public VertexFactor getDeterministic(int var, int assignment){
+	public VertexFactor getDeterministic(int var, int assignment) {
 		return VertexFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
 
-
-	public VertexFactor getSingleVertexFactor(int... idx){
+	public VertexFactor getSingleVertexFactor(int... idx) {
 
 		int[] idx_arr;
 
-		if(idx.length == 1) {
-			idx_arr = IntStream.range(0,this.getSeparatingDomain().getCombinations())
+		if (idx.length == 1) {
+			idx_arr = IntStream.range(0, this.getSeparatingDomain().getCombinations())
 					.map(i -> idx[0])
 					.toArray();
-		}else{
+		} else {
 			idx_arr = Arrays.copyOf(idx, idx.length);
 		}
 
-
-		if(idx_arr.length != this.getSeparatingDomain().getCombinations()){
+		if (idx_arr.length != this.getSeparatingDomain().getCombinations()) {
 			throw new IllegalArgumentException("idx length should be equal to the number combinations of the parents.");
 		}
 
@@ -593,35 +581,31 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return new VertexFactor(this.getDataDomain(), this.getSeparatingDomain(), data);
 	}
 
-
-	public BayesianFactor sampleVertex(){
+	public BayesianFactor sampleVertex() {
 
 		int left_comb = this.getSeparatingDomain().getCombinations();
 
-		int idx[] = IntStream.range(0,left_comb)
-				.map(i-> RandomUtil.getRandom().nextInt(this.getVerticesAt(i).length))
+		int[] idx = IntStream.range(0, left_comb)
+				.map(i -> RandomUtil.getRandom().nextInt(this.getVerticesAt(i).length))
 				.toArray();
 
-		double[] data =
-				Doubles.concat(
-						IntStream.range(0,left_comb)
-								.mapToObj(i -> this.getVerticesAt(i)[RandomUtil.getRandom().nextInt(this.getVerticesAt(i).length)])
-								.toArray(double[][]::new)
-				);
-
+		double[] data = Doubles.concat(
+				IntStream.range(0, left_comb)
+						.mapToObj(i -> this.getVerticesAt(i)[RandomUtil.getRandom().nextInt(this.getVerticesAt(i).length)])
+						.toArray(double[][]::new)
+		);
 
 		Strides newDomain = this.getDataDomain().concat(this.getSeparatingDomain());
 		return new BayesianFactor(newDomain, data);
 	}
 
-
-	public void applyConvexHull(boolean simplex){
-		for(int i=0; i<this.getSeparatingDomain().getCombinations(); i++) {
+	public void applyConvexHull(boolean simplex) {
+		for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
 			data[i] = LPConvexHull.compute(data[i], true);
 		}
 	}
 
-	public VertexFactor convexHull(boolean simplex){
+	public VertexFactor convexHull(boolean simplex) {
 		VertexFactor f = this.copy();
 		f.applyConvexHull(simplex);
 		return f;
@@ -629,12 +613,12 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
 	/**
 	 * Replaces the IDs of the variables in the domain
+	 *
 	 * @param new_vars
 	 * @return
 	 */
-
 	@Override
-	public VertexFactor renameDomain(int... new_vars){
+	public VertexFactor renameDomain(int... new_vars) {
 
 		int[] leftIdx = IntStream.range(0, this.vertexDomain.getVariables().length).toArray();
 		int[] rightIdx = IntStream.range(this.vertexDomain.getVariables().length, new_vars.length).toArray();
@@ -651,12 +635,12 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 				ArraysUtil.slice(sizes, rightIdx)
 		);
 
-		VertexFactor out = new VertexFactor(leftStrides, rightStrides, this.getData());
-		return out;
+		return new VertexFactor(leftStrides, rightStrides, this.getData());
 	}
 
 	/**
 	 * Sorts the parents following the global variable order
+	 *
 	 * @return
 	 */
 	@Override
@@ -669,17 +653,16 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		IndexIterator it = oldLeft.getReorderedIterator(newLeft.getVariables());
 		int j;
 		// i -> j
-		for(int i=0; i<parentComb; i++ ){
+		for (int i = 0; i < parentComb; i++) {
 			j = it.next();
 			newData[i] = data[j];
 		}
 		return new VertexFactor(getDataDomain(), newLeft, newData);
 	}
 
-
-	private VertexFactor merge(VertexFactor f){
+	private VertexFactor merge(VertexFactor f) {
 		double[][][] vertices = new double[f.getSeparatingDomain().getCombinations()][][];
-		for(int i=0; i<f.getSeparatingDomain().getCombinations(); i++){
+		for (int i = 0; i < f.getSeparatingDomain().getCombinations(); i++) {
 			double[][] v1 = this.getVerticesAt(i);
 			double[][] v2 = f.getVerticesAt(i);
 			vertices[i] = ArraysUtil.reshape2d(
@@ -689,35 +672,37 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 		return new VertexFactor(f.getDataDomain(), f.getSeparatingDomain(), vertices);
 	}
 
-	public VertexFactor merge(VertexFactor... factors){
-		if(factors.length == 1)
+	public VertexFactor merge(VertexFactor... factors) {
+		if (factors.length == 1)
 			return merge(factors[0]);
 		VertexFactor out = this;
-		for(VertexFactor f : factors)
+		for (VertexFactor f : factors)
 			out = out.merge(f);
 		return out;
 	}
 
-	public static VertexFactor mergeVertices(VertexFactor... factors){
-		if(factors.length == 0)
+	public static VertexFactor mergeVertices(VertexFactor... factors) {
+		if (factors.length == 0)
 			throw new IllegalArgumentException("wrong number of factors");
-		else if(factors.length == 1)
+		else if (factors.length == 1)
 			return factors[0].copy();
-		return factors[0].merge(IntStream.range(1,factors.length).mapToObj(i->factors[i]).toArray(VertexFactor[]::new));
+		return factors[0].merge(Arrays.stream(factors, 1, factors.length).toArray(VertexFactor[]::new));
 	}
 
 	/**
 	 * Build a credal network from a set of precise models
+	 *
 	 * @param models
 	 * @return
 	 */
 	public static GraphicalModel<VertexFactor> buildModel(boolean convexHull, BayesianNetwork... models) {
-
 		for (int i = 1; i < models.length; i++) {
 			if (!ArraysUtil.equals(models[0].getVariables(), models[i].getVariables(), true, true))
 				throw new IllegalArgumentException("Inconsistent domains");
 		}
-		DAGModel<VertexFactor> vmodel = new DAGModel<>();
+
+		GraphicalModel<VertexFactor> vmodel = new DAGModel<>();
+
 		for (int v : models[0].getVariables())
 			vmodel.addVariable(v);
 		for (int v : vmodel.getVariables()) {
@@ -726,7 +711,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 			VertexFactor f = VertexFactor.mergeVertices(Stream.of(models)
 					.map(m -> new BayesianToVertex().apply(m.getFactor(v), v))
 					.toArray(VertexFactor[]::new));
-			if(convexHull)
+			if (convexHull)
 				f = f.convexHull(true);
 
 			vmodel.setFactor(v, f);

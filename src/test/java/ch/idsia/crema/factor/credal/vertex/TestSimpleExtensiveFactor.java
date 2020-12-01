@@ -23,7 +23,6 @@ public class TestSimpleExtensiveFactor {
 		int x0 = model.addVariable(2);
 		int x1 = model.addVariable(2);
 
-
 		VertexFactor factorx = new VertexFactor(model.getDomain(x0, x1), Strides.EMPTY);
 		factorx.addVertex(new double[]{0.1, 0.2, 0.4, 0.3});
 		factorx.addVertex(new double[]{0.3, 0.5, 0.1, 0.1});
@@ -56,12 +55,10 @@ public class TestSimpleExtensiveFactor {
 
 		model.setFactor(x0, f1h);
 		model.setFactor(x1, f2h);
-
 	}
 
 	@Test
 	public void defaultAlgebra() {
-
 		// factor (v0 | v2)
 		Strides domain = DomainBuilder.var(0, 2).size(3, 3).strides();
 		ExtensiveVertexFactor factor = new ExtensiveVertexFactor(domain, false);
@@ -131,8 +128,7 @@ public class TestSimpleExtensiveFactor {
 		factor2.addVertex(new double[]{0.7, 0.2, 0.1});
 
 		Operation<ExtensiveVertexFactor> algebra = new OnlineConvexHullAlgebra() {
-
-			TCustomHashSet<double[]> seen = new TCustomHashSet<>(new VertexHashStrategy());
+			final TCustomHashSet<double[]> seen = new TCustomHashSet<>(new VertexHashStrategy());
 
 			@Override
 			protected boolean canAddVector(ExtensiveVertexFactor factor, double[] vector) {

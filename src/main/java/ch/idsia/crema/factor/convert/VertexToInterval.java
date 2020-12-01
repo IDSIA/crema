@@ -8,9 +8,8 @@ import java.util.Arrays;
 
 /**
  * Convert from {@link VertexFactor} to {@link IntervalFactor}
- * 
- * @author huber
  *
+ * @author huber
  */
 public class VertexToInterval implements Converter<VertexFactor, IntervalFactor> {
 
