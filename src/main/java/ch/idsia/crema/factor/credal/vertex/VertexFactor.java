@@ -1,11 +1,6 @@
 package ch.idsia.crema.factor.credal.vertex;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
@@ -13,10 +8,9 @@ import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.CredalFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
@@ -26,6 +20,12 @@ import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * A Separately specified Vertex based credal factor. TODO: Data is currenlty
@@ -563,7 +563,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 	 * @return
 	 */
 
-	public VertexFactor get_deterministic(int var, int assignment){
+	public VertexFactor getDeterministic(int var, int assignment){
 		return VertexFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
 

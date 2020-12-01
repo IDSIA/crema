@@ -5,7 +5,6 @@ import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
 import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
 
 
 public class inferEx1 {

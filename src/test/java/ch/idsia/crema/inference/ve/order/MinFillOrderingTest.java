@@ -1,12 +1,11 @@
 package ch.idsia.crema.inference.ve.order;
 
-import java.util.Arrays;
-
-import org.junit.Test;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.dot.DotSerialize;
+import org.junit.Test;
+
+import java.util.Arrays;
 
 public class MinFillOrderingTest {
 

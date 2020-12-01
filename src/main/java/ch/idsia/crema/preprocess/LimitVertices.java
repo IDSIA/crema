@@ -1,7 +1,7 @@
 package ch.idsia.crema.preprocess;
 
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.hull.LPConvexHull;

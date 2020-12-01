@@ -1,8 +1,5 @@
 package ch.idsia.crema.inference.approxlp2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesianFactor;
@@ -15,6 +12,9 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 

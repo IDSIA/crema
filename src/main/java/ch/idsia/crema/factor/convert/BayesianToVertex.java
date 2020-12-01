@@ -1,9 +1,9 @@
 package ch.idsia.crema.factor.convert;
 
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.core.Converter;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 

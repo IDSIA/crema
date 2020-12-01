@@ -1,18 +1,20 @@
 package ch.idsia.crema.factor.bayesian;
 
-import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.core.Domain;
-import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.model.vertex.*;
+import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.model.vertex.Collector;
+import ch.idsia.crema.model.vertex.Filter;
+import ch.idsia.crema.model.vertex.LogMarginal;
+import ch.idsia.crema.model.vertex.Marginal;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
@@ -277,10 +279,11 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 * @param obs
 	 * @return
 	 */
-	public BayesianFactor filter(TIntIntHashMap obs){
+	public BayesianFactor filter(TIntIntMap obs){
 		BayesianFactor f = this.copy();
 		for(int v : obs.keys())
-			f = f.filter(v, obs.get(v));
+			if (ArraysUtil.contains(v, f.getDomain().getVariables()))
+				f = f.filter(v, obs.get(v));
 		return f;
 	}
 
@@ -577,20 +580,6 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return new BayesianFactor(domain, result, log);
 	}
 
-	/**
-	 * Factor normalization
-	 *
-	 */
-	public BayesianFactor normalize(int... given) {
-		BayesianFactor div = this;
-		for (int m : ArraysUtil.removeAllFromSortedArray(domain.getVariables(), given)) {
-			div = div.marginalize(m);
-		}
-		return divide(div);
-	}
-
-
-
 	@Override
 	public String toString() {
 		return "P(" + Arrays.toString(domain.getVariables()) + ") "+Arrays.toString(this.getData());
@@ -634,7 +623,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 
 
-	public BayesianFactor fixPrecission(int num_decimals, int... left_vars){
+	public BayesianFactor fixPrecision(int num_decimals, int... left_vars){
 
 		Strides left = this.getDomain().intersection(left_vars);
 		Strides right = this.getDomain().remove(left);
@@ -686,7 +675,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return BayesianFactor.deterministic(left, Strides.empty(), assignment);
 	}
 
-	public BayesianFactor get_deterministic(int var, int assignment){
+	public BayesianFactor getDeterministic(int var, int assignment){
 		return BayesianFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
 

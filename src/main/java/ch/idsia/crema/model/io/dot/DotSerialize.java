@@ -8,7 +8,7 @@ public class DotSerialize {
 		
 		builder.append("digraph model {\n");
 		for (int i : gm.getVariables()) {
-			builder.append("   node" + i + " [label=\"" + i + " (" + gm.getSize(i) +")\"];\n");
+			builder.append("   node").append(i).append(" [label=\"").append(i).append(" (").append(gm.getSize(i)).append(")\"];\n");
 		}
 		
 		for (int i : gm.getVariables()) {

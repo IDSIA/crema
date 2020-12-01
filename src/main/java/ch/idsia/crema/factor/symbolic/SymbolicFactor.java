@@ -1,7 +1,7 @@
 package ch.idsia.crema.factor.symbolic;
 
-import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.Factor;
 
 
 public abstract class SymbolicFactor implements Factor<SymbolicFactor> {

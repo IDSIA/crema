@@ -1,13 +1,10 @@
 package ch.idsia.crema.core;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
-import ch.idsia.crema.core.DomainBuilder;
-import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.utility.IndexIterator;
 import org.junit.Test;
 
-import ch.idsia.crema.utility.IndexIterator;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class StridesTest {
 

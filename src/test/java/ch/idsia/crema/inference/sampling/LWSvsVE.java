@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.jtree.BayesianNetworks;
+import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
@@ -25,7 +25,7 @@ public class LWSvsVE {
 
 	private BayesianNetwork model;
 
-	private Random random = new Random(42);
+	private final Random random = new Random(42);
 
 	private static final int e = 5;
 	private static final int m = 1000;
@@ -34,7 +34,7 @@ public class LWSvsVE {
 
 	@Before
 	public void setUp() {
-		BayesianNetworks BN = BayesianNetworks.random(42, n, p);
+		BayesianNetworkContainer BN = BayesianNetworkContainer.random(42, n, p);
 
 		model = BN.network;
 	}

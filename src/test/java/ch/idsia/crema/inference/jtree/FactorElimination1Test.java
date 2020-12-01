@@ -1,9 +1,12 @@
 package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.fe.FactorElimination1;
 import ch.idsia.crema.model.graphical.DAGModel;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -49,7 +52,7 @@ public class FactorElimination1Test {
 
 		BayesianFactor q = fe.FE1(C);
 
-		assert (q.getData()[0] <= .376 + eps);
-		assert (q.getData()[1] <= .624 + eps);
+		assertTrue(q.getData()[0] <= .376 + eps);
+		assertTrue(q.getData()[1] <= .624 + eps);
 	}
 }

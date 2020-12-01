@@ -1,7 +1,6 @@
 package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.Inference;
 import gnu.trove.map.TIntIntMap;
 
 import java.util.stream.DoubleStream;

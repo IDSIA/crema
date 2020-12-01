@@ -1,10 +1,10 @@
 package ch.idsia.crema.factor.convert;
 
+import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.core.Converter;
-import ch.idsia.crema.core.Strides;
 
 public class SeparateVertexToExtensiveVertex implements Converter<VertexFactor, ExtensiveVertexFactor>{
 

@@ -1,12 +1,11 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
-
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.BufferedReader;

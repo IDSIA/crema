@@ -1,13 +1,13 @@
 package ch.idsia.crema.model.io;
 
-import java.io.FileInputStream;
-import java.util.Arrays;
-
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.io.bif.XMLBIFParser;
+
+import java.io.FileInputStream;
+import java.util.Arrays;
 
 public class TestBIFXML {
 

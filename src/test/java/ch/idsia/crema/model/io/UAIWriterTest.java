@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class UAIWriterTest {

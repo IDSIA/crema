@@ -1,13 +1,12 @@
 package ch.idsia.crema.factor.credal.set;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import ch.idsia.crema.core.Strides;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
-import ch.idsia.crema.core.Strides;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class HCredalSet extends AbstractSet {
 	private LinearConstraintSet problem;

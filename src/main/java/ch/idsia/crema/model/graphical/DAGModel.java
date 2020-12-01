@@ -7,6 +7,7 @@ import ch.idsia.crema.model.change.CardinalityChange;
 import ch.idsia.crema.model.change.DomainChange;
 import ch.idsia.crema.model.change.NullChange;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.GraphUtil;
 import com.google.common.primitives.Ints;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.list.array.TIntArrayList;
@@ -69,19 +70,34 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		cardinalityChanger = changer;
 	}
 
+	@SuppressWarnings("unchecked")
+	public DAGModel(DAGModel<F> original) {
+		network = new DirectedAcyclicGraph<>(DefaultEdge.class);
+		cardinalities = new TIntIntHashMap();
+		factors = new TIntObjectHashMap<>();
+
+		domainChanger = original.domainChanger;
+		cardinalityChanger = original.cardinalityChanger;
+
+		max = original.max;
+
+		// copy network
+		GraphUtil.copy(original.network, network);
+
+		// copy factors
+		for (int v : original.getVariables()) {
+			F f = original.getFactor(v);
+			this.setFactor(v, (F) f.copy());
+		}
+	}
+
 	public DirectedAcyclicGraph<Integer, DefaultEdge> getNetwork() {
 		return network;
 	}
 
 	@Override
 	public DAGModel<F> copy() {
-		final DAGModel<F> copy = new DAGModel<>();
-		copy.network = new DirectedAcyclicGraph<>(DefaultEdge.class);
-
-		network.vertexSet().forEach(v -> copy.network.addVertex(v));
-		network.edgeSet().forEach(e -> copy.network.addEdge(network.getEdgeSource(e), network.getEdgeTarget(e)));
-
-		return copy;
+		return new DAGModel<>(this);
 	}
 
 	/**
@@ -94,27 +110,25 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	 */
 	public <R extends GenericFactor> DAGModel<R> convert(BiFunction<F, Integer, R> converter) {
 		NullChange<R> changer = new NullChange<>();
+		DAGModel<R> newModel = new DAGModel<>();
 
-		DAGModel<R> new_model = new DAGModel<>();
+		GraphUtil.copy(network, newModel.network);
 
-		network.vertexSet().forEach(v -> new_model.network.addVertex(v));
-		network.edgeSet().forEach(e -> new_model.network.addEdge(network.getEdgeSource(e), network.getEdgeTarget(e)));
+		newModel.domainChanger = changer;
+		newModel.cardinalityChanger = changer;
 
-		new_model.domainChanger = changer;
-		new_model.cardinalityChanger = changer;
-
-		new_model.cardinalities = new TIntIntHashMap(this.cardinalities);
-		new_model.factors = new TIntObjectHashMap<>(factors.size());
-		new_model.max = this.max;
+		newModel.cardinalities = new TIntIntHashMap(this.cardinalities);
+		newModel.factors = new TIntObjectHashMap<>(factors.size());
+		newModel.max = this.max;
 
 		TIntObjectIterator<F> iterator = this.factors.iterator();
 		while (iterator.hasNext()) {
 			iterator.advance();
-			R new_factor = converter.apply(iterator.value(), iterator.key());
-			new_model.factors.put(iterator.key(), new_factor);
+			R newFactor = converter.apply(iterator.value(), iterator.key());
+			newModel.factors.put(iterator.key(), newFactor);
 		}
 
-		return new_model;
+		return newModel;
 	}
 
 	@Override
@@ -198,7 +212,6 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		network.addVertex(vid);
 		return vid;
 	}
-
 
 	@Override
 	public void removeParent(int variable, int parent) {
@@ -304,8 +317,6 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	public void setFactor(int variable, F factor) {
 		int[] vars = factor.getDomain().getVariables();
 		int index = ArrayUtils.indexOf(vars, variable);
-
-
 		int[] parents = ArraysUtil.remove(vars, index);
 		addParents(variable, parents);
 
@@ -349,7 +360,7 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	public DAGModel<F> observe(int var, int state) {
 		DAGModel<F> obs_model = this.copy();
 		// Fix the value of the intervened variable
-		obs_model.setFactor(var, (F) this.getFactor(var).get_deterministic(var, state));
+		obs_model.setFactor(var, (F) this.getFactor(var).getDeterministic(var, state));
 		return obs_model;
 	}
 
@@ -417,7 +428,6 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	 * @param node2
 	 * @return
 	 */
-
 	public boolean areConnected(int node1, int node2) {
 		return areConnected(node1, node2, new int[]{});
 	}

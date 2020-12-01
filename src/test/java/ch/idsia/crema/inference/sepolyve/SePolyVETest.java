@@ -1,15 +1,14 @@
 package ch.idsia.crema.inference.sepolyve;
 
-import org.junit.Test;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.convert.VertexToInterval;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.junit.Test;
 
 public class SePolyVETest {
 

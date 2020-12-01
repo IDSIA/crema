@@ -1,7 +1,5 @@
 package ch.idsia.crema.factor.bayesian;
 
-import java.util.Arrays;
-
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.math.Operation;
 import ch.idsia.crema.model.vertex.Collector;
@@ -9,6 +7,8 @@ import ch.idsia.crema.model.vertex.Filter;
 import ch.idsia.crema.model.vertex.LogMarginal;
 import ch.idsia.crema.model.vertex.Marginal;
 import ch.idsia.crema.utility.ArraysUtil;
+
+import java.util.Arrays;
 
 public class DefaultAlgebra implements Operation<BayesianFactor> {
 	

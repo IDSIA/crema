@@ -1,14 +1,11 @@
 package ch.idsia.crema.factor.credal.vertex;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.model.graphical.DAGModel;
 import org.junit.Test;
 
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.model.graphical.DAGModel;
+import static org.junit.Assert.*;
 
 public class TestVertexFactor {
 

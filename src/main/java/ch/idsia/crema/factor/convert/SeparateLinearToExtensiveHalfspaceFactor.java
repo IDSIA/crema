@@ -1,19 +1,18 @@
 package ch.idsia.crema.factor.convert;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
+import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.credal.linear.ExtensiveHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
+import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.linear.OpenMapRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
-import ch.idsia.crema.factor.credal.linear.ExtensiveHalfspaceFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.core.Converter;
-import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.utility.IndexIterator;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 
 @SuppressWarnings("rawtypes")

@@ -1,16 +1,15 @@
 package ch.idsia.crema.inference.approxlp2;
 
-import ch.idsia.crema.model.graphical.GraphicalModel;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.commons.Simplex;
 import ch.idsia.crema.utility.ArraysUtil;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 /**
  * Marginal problem Objective Function. This class implements the evaluation of the moves 

@@ -1,15 +1,14 @@
 package ch.idsia.crema.inference.ve;
 
-import static org.junit.Assert.assertArrayEquals;
-
-import java.util.Arrays;
-
+import ch.idsia.crema.core.DomainBuilder;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.math3.util.MathArrays;
 import org.junit.Test;
 
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.core.DomainBuilder;
-import gnu.trove.map.hash.TIntIntHashMap;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertArrayEquals;
 
 public class VariableEliminationTest {
 

@@ -1,19 +1,18 @@
 package ch.idsia.crema.factor.credal.vertex;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
+import ch.idsia.crema.core.DomainBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultExtensiveAlgebra;
 import ch.idsia.crema.factor.credal.vertex.algebra.OnlineConvexHullAlgebra;
-import ch.idsia.crema.core.DomainBuilder;
-import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.math.Operation;
 import ch.idsia.crema.model.vertex.VertexHashStrategy;
 import gnu.trove.set.hash.TCustomHashSet;
+import org.junit.Test;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class TestSimpleExtensiveFactor {
 

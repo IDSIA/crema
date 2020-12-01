@@ -2,8 +2,8 @@ package ch.idsia.crema.model.io;
 
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.uai.UAIParser;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,7 +17,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class UAIParserTest {

@@ -1,8 +1,8 @@
 package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.change.NullChange;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.iterator.TIntIntIterator;
 import gnu.trove.map.TIntIntMap;
 

@@ -1,8 +1,8 @@
 package ch.idsia.crema.inference.ve.order;
 
-import java.util.function.Function;
-
 import ch.idsia.crema.model.graphical.GraphicalModel;
+
+import java.util.function.Function;
 
 /**
  * a Function that takes a model and returns an ordering sequence.

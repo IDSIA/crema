@@ -1,8 +1,8 @@
 package ch.idsia.crema.factor;
 
-import java.util.Arrays;
-
 import ch.idsia.crema.core.Strides;
+
+import java.util.Arrays;
 
 public class VoidFactor implements Factor<VoidFactor> {
 

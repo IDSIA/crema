@@ -1,8 +1,6 @@
 package ch.idsia.crema.factor.credal.linear;
 
-import java.util.*;
-import java.util.stream.IntStream;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
@@ -10,7 +8,8 @@ import com.google.common.primitives.Ints;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 
-import ch.idsia.crema.core.Strides;
+import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * A separately specified Credal factor that has a list of linear constrains for each
@@ -365,7 +364,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
      * @return
      */
 
-    public SeparateHalfspaceFactor get_deterministic(int var, int assignment) {
+    public SeparateHalfspaceFactor getDeterministic(int var, int assignment) {
         return SeparateHalfspaceFactor.deterministic(this.getDomain().intersection(var), assignment);
     }
 
