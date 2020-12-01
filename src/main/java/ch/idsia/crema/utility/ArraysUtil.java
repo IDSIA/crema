@@ -18,7 +18,6 @@ import java.util.stream.Stream;
 
 public class ArraysUtil {
 
-
 	/**
 	 * Append element of second to the end of base and return the new array.
 	 *
@@ -55,7 +54,7 @@ public class ArraysUtil {
 		return append(second, base);
 	}
 
-	public static String[] append(String[] base, String... second){
+	public static String[] append(String[] base, String... second) {
 		String[] result = new String[base.length + second.length];
 		System.arraycopy(base, 0, result, 0, base.length);
 		System.arraycopy(second, 0, result, base.length, second.length);
@@ -66,15 +65,13 @@ public class ArraysUtil {
 		return append(second, base);
 	}
 
-
-
-		/**
-         * Remove the element at the specified index from the base array.
-         *
-         * @param base  original items (Not Null)
-         * @param index the index of the element to be removed
-         * @return the new array
-         */
+	/**
+	 * Remove the element at the specified index from the base array.
+	 *
+	 * @param base  original items (Not Null)
+	 * @param index the index of the element to be removed
+	 * @return the new array
+	 */
 	public static double[] remove(double[] base, int index) {
 		int new_size = base.length - 1;
 		double[] result = new double[new_size];
@@ -112,8 +109,9 @@ public class ArraysUtil {
 		return result;
 	}
 
-	/** 
+	/**
 	 * Non inline ordering of integer array
+	 *
 	 * @param base int[] - the array to be sorted
 	 * @return int[] the sorted array
 	 */
@@ -134,17 +132,12 @@ public class ArraysUtil {
 	}
 
 	public static int[] order(int[] data, final IntComparator comparator) {
-		ArrayList<X> internal = new ArrayList<>(data.length);
+		List<X> internal = new ArrayList<>(data.length);
 		for (int i = 0; i < data.length; ++i) {
 			internal.add(new X(i, data[i]));
 		}
 
-		Collections.sort(internal, new Comparator<X>() {
-			@Override
-			public int compare(X o1, X o2) {
-				return comparator.compare(o1.val, o2.val);
-			}
-		});
+		internal.sort((o1, o2) -> comparator.compare(o1.val, o2.val));
 
 		int[] positions = new int[data.length];
 		for (int i = 0; i < data.length; ++i) {
@@ -157,17 +150,12 @@ public class ArraysUtil {
 	}
 
 	public static int[] order(int[] data) {
-		ArrayList<X> internal = new ArrayList<>(data.length);
+		List<X> internal = new ArrayList<>(data.length);
 		for (int i = 0; i < data.length; ++i) {
 			internal.add(new X(i, data[i]));
 		}
 
-		Collections.sort(internal, new Comparator<X>() {
-			@Override
-			public int compare(X o1, X o2) {
-				return o1.val - o2.val;
-			}
-		});
+		internal.sort(Comparator.comparingInt(o -> o.val));
 
 		int[] positions = new int[data.length];
 		for (int i = 0; i < data.length; ++i) {
@@ -257,7 +245,6 @@ public class ArraysUtil {
 	 * @return the new array or the original array if the element was not found
 	 */
 	public static int[] removeFromSortedArray(int[] array, int element) {
-
 		if (array == null || array.length == 0) {
 			// when no items in the array then return a new array with only the
 			// item
@@ -291,19 +278,19 @@ public class ArraysUtil {
 	 * Add the element to a sorted array. The method return a new sorted array
 	 * containing the specified element. The original array is returned if the
 	 * element was already part of the array.
-	 *
+	 * <p>
 	 * Expects a sorted array! Behaviours is rather unpredictable if array is not sorted.
-	 * 
+	 *
 	 * @param array   the sorted array
 	 * @param element the item to be added to the array
 	 * @return a new array containing the element or the original one if element is
-	 *         already present
+	 * already present
 	 */
 	public static int[] addToSortedArray(int[] array, int element) {
 		if (array == null || array.length == 0) {
 			// when no items in the array then return a new array with only the
 			// item
-			return new int[] { element };
+			return new int[]{element};
 		}
 
 		// look for existing links
@@ -362,7 +349,7 @@ public class ArraysUtil {
 
 	/**
 	 * Union of two sorted arrays.
-	 * 
+	 *
 	 * @param arr1
 	 * @param arr2
 	 * @return
@@ -481,12 +468,11 @@ public class ArraysUtil {
 
 	/**
 	 * Union of 2 unsorted arrays without repetition
-	 * 
+	 *
 	 * @param arr1
 	 * @param arr2
 	 * @return
 	 */
-
 	public static int[] unionSet(int[] arr1, int[] arr2) {
 		return Ints.toArray(ImmutableSet.copyOf(Ints.asList(Ints.concat(arr1, arr2))));
 	}
@@ -494,7 +480,7 @@ public class ArraysUtil {
 	/**
 	 * Normalize an array by fixing the last value of the array so that it sums up
 	 * to the target value.
-	 * 
+	 *
 	 * @param arr    array to normalize
 	 * @param target target sum value
 	 * @param eps    tolerance threshold
@@ -543,19 +529,19 @@ public class ArraysUtil {
 
 	/**
 	 * Returns the dimensions of 2d matrix
-	 * 
+	 *
 	 * @param matrix
 	 * @return - tuple of integers
 	 */
 	public static int[] getShape(double[][] matrix) {
 		if (Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
 			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
-		return new int[] { matrix.length, matrix[0].length };
+		return new int[]{matrix.length, matrix[0].length};
 	}
 
 	/**
 	 * Returns the dimensions of 2d matrix
-	 * 
+	 *
 	 * @param matrix
 	 * @return - tuple of integers
 	 */
@@ -563,12 +549,12 @@ public class ArraysUtil {
 	public static int[] getShape(int[][] matrix) {
 		if (Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
 			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
-		return new int[] { matrix.length, matrix[0].length };
+		return new int[]{matrix.length, matrix[0].length};
 	}
 
 	/**
 	 * Transpose of a 2d matrix
-	 * 
+	 *
 	 * @param original
 	 * @return
 	 */
@@ -580,12 +566,11 @@ public class ArraysUtil {
 				transposed[j][i] = original[i][j];
 
 		return transposed;
-
 	}
 
 	/**
 	 * Transpose of a 2d matrix
-	 * 
+	 *
 	 * @param original
 	 * @return
 	 */
@@ -597,12 +582,11 @@ public class ArraysUtil {
 				transposed[j][i] = original[i][j];
 
 		return transposed;
-
 	}
 
 	/**
 	 * Transforms a 1d vector into a 2d matrix
-	 * 
+	 *
 	 * @param vector - vector to transform
 	 * @param shape  - value of the 1st dimension or tuple with both of them.
 	 * @return
@@ -610,12 +594,12 @@ public class ArraysUtil {
 	public static double[][] reshape2d(double[] vector, int... shape) {
 
 		if (shape.length == 1)
-			shape = new int[] { shape[0], vector.length / shape[0] };
+			shape = new int[]{shape[0], vector.length / shape[0]};
 
 		if (shape[0] * shape[1] != vector.length)
 			throw new IllegalArgumentException("ERROR: incompatible shapes");
 
-		List data = Doubles.asList(vector);
+		List<Double> data = Doubles.asList(vector);
 		double[][] out = new double[shape[0]][shape[1]];
 
 		for (int i = 0; i < shape[0]; i++) {
@@ -629,12 +613,11 @@ public class ArraysUtil {
 
 	/**
 	 * Transforms a 1d vector into a 2d matrix
-	 * 
+	 *
 	 * @param vector - vector to transform
 	 * @param shape  - fully-defined vector specifying the 3 new dimensions.
 	 * @return
 	 */
-
 	public static double[][][] reshape3d(double[] vector, int[] shape) {
 		if (shape[0] * shape[1] * shape[2] != vector.length)
 			throw new IllegalArgumentException("ERROR: incompatible shapes");
@@ -642,21 +625,20 @@ public class ArraysUtil {
 		double[][][] out = new double[shape[0]][][];
 		int step = shape[1] * shape[2];
 		for (int k = 0; k < out.length; k++) {
-			out[k] = reshape2d(Arrays.copyOfRange(vector, k * step, (k + 1) * step), new int[] { shape[1], shape[2] });
+			out[k] = reshape2d(Arrays.copyOfRange(vector, k * step, (k + 1) * step), shape[1], shape[2]);
 		}
 		return out;
 	}
 
 	/**
 	 * Given a vector representing a multidimensional array, swaps the axis.
-	 * 
+	 *
 	 * @param data     - matrix to transform
 	 * @param sizes    - lengths of each axis
 	 * @param newOrder - list of old axis in the new order.
 	 * @return
 	 */
 	public static double[] swapVectorStrides(double[] data, int[] sizes, int[] newOrder) {
-
 		int[] oldOrder = IntStream.range(0, sizes.length).toArray();
 		int[] newSizes = IntStream.range(0, sizes.length).map(i -> sizes[newOrder[i]]).toArray();
 
@@ -677,13 +659,12 @@ public class ArraysUtil {
 
 	/**
 	 * Given a vector representing a multidimensional array, swaps the axis.
-	 * 
+	 *
 	 * @param data     - matrix to transform
 	 * @param oldSizes - lengths of each axis
 	 * @return
 	 */
 	public static double[] changeEndian(double[] data, int[] oldSizes) {
-
 		int N = oldSizes.length;
 		int[] newOrder = new int[N];
 		int[] newSizes = new int[N];
@@ -693,27 +674,25 @@ public class ArraysUtil {
 		}
 
 		return swapVectorStrides(data, newSizes, newOrder);
-
 	}
 
 	/**
 	 * Given a 1d vector of doubles, transforms it in a list of tuples where the
 	 * first element is the sequence number.
-	 * 
+	 *
 	 * @param vect
 	 * @param start
 	 * @return
 	 */
-
 	public static double[][] enumerate(double[] vect, int start) {
-		return IntStream.range(0 + start, vect.length + start).mapToObj(i -> new double[] { i, vect[i - start] })
+		return IntStream.range(0 + start, vect.length + start).mapToObj(i -> new double[]{i, vect[i - start]})
 				.toArray(double[][]::new);
 	}
 
 	/**
 	 * Given a 1d vector of doubles, transforms it in a list of tuples where the
 	 * first element is the sequence number.
-	 * 
+	 *
 	 * @param vect
 	 * @return
 	 */
@@ -723,7 +702,7 @@ public class ArraysUtil {
 
 	/**
 	 * Generates a new vector without repeated values
-	 * 
+	 *
 	 * @param arr
 	 * @return
 	 */
@@ -733,7 +712,7 @@ public class ArraysUtil {
 
 	/**
 	 * Generates a new vector without repeated values
-	 * 
+	 *
 	 * @param arr
 	 * @return
 	 */
@@ -743,7 +722,7 @@ public class ArraysUtil {
 
 	/**
 	 * Round all the values in a vector with a number of decimals.
-	 * 
+	 *
 	 * @param arr
 	 * @param num_decimals
 	 * @return
@@ -761,14 +740,13 @@ public class ArraysUtil {
 
 	/**
 	 * Round non zero values such as the sum is equal to the target.
-	 * 
+	 *
 	 * @param arr
 	 * @param target
 	 * @param num_decimals
 	 * @return
 	 */
 	public static double[] roundNonZerosToTarget(double[] arr, double target, int num_decimals) {
-
 		double[] data = Arrays.copyOf(arr, arr.length);
 
 		data = ArraysUtil.round(data, 3);
@@ -788,7 +766,7 @@ public class ArraysUtil {
 
 	/**
 	 * Generates the latex source for representing a 2d array.
-	 * 
+	 *
 	 * @param matrix
 	 * @return
 	 */
@@ -809,7 +787,7 @@ public class ArraysUtil {
 	/**
 	 * Given a latex code representing a 1d vector, this function obtains the
 	 * equivalent array of doubles.
-	 * 
+	 *
 	 * @param latexcode
 	 * @return
 	 */
@@ -820,7 +798,7 @@ public class ArraysUtil {
 	/**
 	 * Given a latex code representing a 2d vector, this function obtains the
 	 * equivalent array of doubles.
-	 * 
+	 *
 	 * @param latexcode
 	 * @return
 	 */
@@ -831,7 +809,7 @@ public class ArraysUtil {
 	/**
 	 * Given a latex code representing a 1d vector, this function obtains the
 	 * equivalent array of ints.
-	 * 
+	 *
 	 * @param latexcode
 	 * @return
 	 */
@@ -842,7 +820,7 @@ public class ArraysUtil {
 	/**
 	 * Given a latex code representing a 2d vector, this function obtains the
 	 * equivalent array of ints.
-	 * 
+	 *
 	 * @param latexcode
 	 * @return
 	 */
@@ -852,7 +830,7 @@ public class ArraysUtil {
 
 	/**
 	 * cast a 1d array of doubles into one of ints
-	 * 
+	 *
 	 * @param arr
 	 * @return
 	 */
@@ -862,17 +840,16 @@ public class ArraysUtil {
 
 	/**
 	 * cast a 2d array of doubles into one of ints
-	 * 
+	 *
 	 * @param arr
 	 * @return
 	 */
 	public static int[][] toIntArray(double[][] arr) {
-		return Stream.of(arr).map(v -> toIntVector(v)).toArray(int[][]::new);
+		return Stream.of(arr).map(ArraysUtil::toIntVector).toArray(int[][]::new);
 	}
 
 	public static double[][] copyOfRange(double[][] original, int from, int to, int axis) {
-
-		double sliced[][] = null;
+		double[][] sliced;
 
 		if (axis == 0) {
 			sliced = Arrays.copyOfRange(original, from, to);
@@ -886,12 +863,11 @@ public class ArraysUtil {
 		}
 
 		return sliced;
-
 	}
 
 	public static double[][] filterRows(double[][] array, Predicate<double[]> cond) {
 		// Predicate cond = v-> DoubleStream.of((double[]) v).anyMatch(x->x!=0);
-		return IntStream.range(0, array.length).mapToObj(i -> array[i]).filter(cond).toArray(double[][]::new);
+		return Arrays.stream(array, 0, array.length).filter(cond).toArray(double[][]::new);
 	}
 
 	public static double[][] filterNonZeroRows(double[][] array) {
@@ -904,7 +880,7 @@ public class ArraysUtil {
 	}
 
 	public static int[] rowsWhereAllZeros(double[][] array) {
-		Predicate cond = v -> DoubleStream.of((double[]) v).allMatch(x -> x == 0);
+		Predicate<double[]> cond = v -> DoubleStream.of(v).allMatch(x -> x == 0);
 		return rowsWhere(array, cond);
 	}
 
@@ -942,7 +918,6 @@ public class ArraysUtil {
 		return sliceColumns(array, idx_comp);
 	}
 
-
 	public static int[] where(int[] arr, Predicate<Integer> cond) {
 		return IntStream.range(0, arr.length).filter(i -> cond.test(arr[i])).toArray();
 	}
@@ -959,6 +934,7 @@ public class ArraysUtil {
 		return ndimWithClass(array.getClass());
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static int ndimWithClass(Class array) {
 		if (!array.getComponentType().getName().startsWith("["))
 			return 1;
@@ -967,14 +943,14 @@ public class ArraysUtil {
 
 	/**
 	 * Flatten a list containing a n-dimensional array of doubles
-	 * 
+	 *
 	 * @param a
 	 * @return
 	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static double[] flattenDoubles(List a) {
 		int ndims = ArraysUtil.ndim(a.get(0));
 		if (ndims > 1) {
-
 			ListIterator it = a.listIterator();
 			List aux = new ArrayList();
 
@@ -1000,14 +976,14 @@ public class ArraysUtil {
 
 	/**
 	 * Flatten a list containing a n-dimensional array of integers
-	 * 
+	 *
 	 * @param a
 	 * @return
 	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static int[] flattenInts(List a) {
 		int ndims = ArraysUtil.ndim(a.get(0));
 		if (ndims > 1) {
-
 			ListIterator it = a.listIterator();
 			List aux = new ArrayList();
 
@@ -1022,20 +998,17 @@ public class ArraysUtil {
 			}
 
 			a = aux;
-
 		}
+
 		int[] out = ((int[]) a.get(0));
 		for (int i = 1; i < a.size(); i++)
 			out = Ints.concat(out, ((int[]) a.get(i)));
 		return out;
-
 	}
-
-
 
 	/**
 	 * Helper method to index multiple items in one shot.
-	 * 
+	 *
 	 * @param values
 	 * @param indices
 	 * @return
@@ -1046,7 +1019,7 @@ public class ArraysUtil {
 
 	/**
 	 * Non inline version of the Apache commons reverse methods
-	 * 
+	 *
 	 * @param is
 	 * @return
 	 */
@@ -1057,38 +1030,40 @@ public class ArraysUtil {
 	}
 
 	public static boolean isOneHot(double[] arr) {
-		return where(arr, x -> x == 1).length == 1  &&
-				where(arr, x -> x == 0).length == arr.length-1;
+		return where(arr, x -> x == 1).length == 1 &&
+				where(arr, x -> x == 0).length == arr.length - 1;
 	}
 
-	public static double[] replace(double[] arr, Predicate pred, double replacement){
+	public static double[] replace(double[] arr, Predicate<Double> pred, double replacement) {
 		double[] out = Arrays.copyOf(arr, arr.length);
-		for(int i: where(out, pred))
+		for (int i : where(out, pred))
 			out[i] = replacement;
 		return out;
 	}
 
-	public static double[] replace(double[] arr, double val, double replacement){
+	public static double[] replace(double[] arr, double val, double replacement) {
 		Predicate<Double> cond = x -> x == val;
 		return replace(arr, cond, replacement);
 	}
-	public static int[] replace(int[] arr, Predicate pred, int replacement){
+
+	public static int[] replace(int[] arr, Predicate<Integer> pred, int replacement) {
 		int[] out = Arrays.copyOf(arr, arr.length);
-		for(int i: where(out, pred))
+		for (int i : where(out, pred))
 			out[i] = replacement;
 		return out;
 	}
-	public static int[] replace(int[] arr, int val, int replacement){
+
+	public static int[] replace(int[] arr, int val, int replacement) {
 		Predicate<Integer> cond = x -> x == val;
 		return replace(arr, cond, replacement);
 	}
 
-	public static boolean equals(int[] arr1, int[] arr2, boolean sort, boolean unique){
-		if(unique){
+	public static boolean equals(int[] arr1, int[] arr2, boolean sort, boolean unique) {
+		if (unique) {
 			arr1 = unique(arr1);
 			arr2 = unique(arr2);
 		}
-		if(sort){
+		if (sort) {
 			arr1 = sort(arr1);
 			arr2 = sort(arr2);
 		}
