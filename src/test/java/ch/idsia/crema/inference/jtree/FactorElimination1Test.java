@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.fe.FactorElimination1;
 import ch.idsia.crema.model.graphical.DAGModel;
 import org.junit.Before;
 import org.junit.Test;
