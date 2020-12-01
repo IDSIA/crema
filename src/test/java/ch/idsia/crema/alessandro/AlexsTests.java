@@ -12,12 +12,14 @@ import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.search.ISearch;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+@Ignore
 public class AlexsTests {
 
 	public static void main(String[] args) {
