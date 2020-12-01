@@ -54,18 +54,33 @@ public class FrequentistEMTest {
 				.setRegularization(0.0)
 				.setInline(false);
 
+		// after one iteration
+		inf.run(Arrays.asList(observations), 1);
+
+		// Posterior
+		assertArrayEquals(new double[]{.5, .5}, inf.getPosterior().getFactor(X[0]).getData(), 0); //[0.5, 0.5]
+		// P(X1|X0=0)
+		assertArrayEquals(new double[]{.9, .1}, inf.getPosterior().getFactor(X[1]).filter(X[0], 0).getData(), 0); // [0.9, 0.1]
+		// P(X1|X0=1)
+		assertArrayEquals(new double[]{.1, .9}, inf.getPosterior().getFactor(X[1]).filter(X[0], 1).getData(), 0); // [0.1, 0.9]
+		// P(X2|X1=0)
+		assertArrayEquals(new double[]{.9, .1}, inf.getPosterior().getFactor(X[2]).filter(X[1], 0).getData(), 0); // [0.9, 0.1]
+		// P(X2|X1=1)
+		assertArrayEquals(new double[]{.1, .9}, inf.getPosterior().getFactor(X[2]).filter(X[1], 1).getData(), 0); // [0.1, 0.9]
+
+		// after convergence
 		inf.run(Arrays.asList(observations), 100);
 
 		// Posterior
-		assertArrayEquals(new double[]{.5, .5}, inf.getPosterior().getFactor(X[0]).getData(), 1e-6); //[0.5, 0.5]
+		assertArrayEquals(new double[]{.5, .5}, inf.getPosterior().getFactor(X[0]).getData(), 0); //[0.5, 0.5]
 		// P(X1|X0=0)
-		assertArrayEquals(new double[]{.9, .1}, inf.getPosterior().getFactor(X[1]).filter(X[0], 0).getData(), 1e-6); // [0.9, 0.1]
+		assertArrayEquals(new double[]{1., .0}, inf.getPosterior().getFactor(X[1]).filter(X[0], 0).getData(), 1e-6); // [0.9, 0.1]
 		// P(X1|X0=1)
-		assertArrayEquals(new double[]{.1, .9}, inf.getPosterior().getFactor(X[1]).filter(X[0], 1).getData(), 1e-6); // [0.1, 0.9]
+		assertArrayEquals(new double[]{.0, 1.}, inf.getPosterior().getFactor(X[1]).filter(X[0], 1).getData(), 1e-6); // [0.1, 0.9]
 		// P(X2|X1=0)
-		assertArrayEquals(new double[]{.9, .1}, inf.getPosterior().getFactor(X[2]).filter(X[1], 0).getData(), 1e-6); // [0.9, 0.1]
+		assertArrayEquals(new double[]{1., .0}, inf.getPosterior().getFactor(X[2]).filter(X[1], 0).getData(), 1e-6); // [0.9, 0.1]
 		// P(X2|X1=1)
-		assertArrayEquals(new double[]{.1, .9}, inf.getPosterior().getFactor(X[2]).filter(X[1], 1).getData(), 1e-6); // [0.1, 0.9]
+		assertArrayEquals(new double[]{.0, 1.}, inf.getPosterior().getFactor(X[2]).filter(X[1], 1).getData(), 1e-6); // [0.1, 0.9]
 	}
 
 }
