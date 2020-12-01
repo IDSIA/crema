@@ -11,11 +11,11 @@ import java.util.Arrays;
 
 public class TestBIFXML {
 
-	//@Test
 
 	/**
 	 * TODO Fix this
 	 */
+	//@Test
 	public void testLoad() {
 		XMLBIFParser parser = new XMLBIFParser();
 		DAGModel<IntervalFactor> approxModel = new DAGModel<>();

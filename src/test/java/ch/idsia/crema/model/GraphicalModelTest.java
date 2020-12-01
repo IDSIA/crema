@@ -3,17 +3,19 @@ package ch.idsia.crema.model;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.algebra.DefaultExtensiveAlgebra;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class GraphicalModelTest {
 
 	@Test
 	public void testAddStateNullChange() {
-		DAGModel<BayesianFactor> model = new DAGModel<BayesianFactor>();
+		GraphicalModel<BayesianFactor> model = new DAGModel<>();
 		model.addVariable(2);
 		model.addVariable(2);
 		model.addParent(1, 0);
@@ -24,64 +26,61 @@ public class GraphicalModelTest {
 
 		// we have the null change manager installed by default
 		model.addState(0);
-		assertEquals(null, model.getFactor(1));
+		assertNull(model.getFactor(1));
 	}
 
-	@Test
+	//	@Test
 	public void testAlessandro() {
-
-		DAGModel<VertexFactor> model = new DAGModel<VertexFactor>();
+		DAGModel<VertexFactor> model = new DAGModel<>();
 		int v1 = model.addVariable(3);
 		int v2 = model.addVariable(3);
 		int v3 = model.addVariable(3);
-		
-		/*
+
 		Strides domain = model.getDomain(v2);
 		VertexFactor f2 = new VertexFactor(domain, model.getDomain());
-		f2.addVertex(new double[] { 0.2, 0.3, 0.5 });
-		f2.addVertex(new double[] { 0.2, 0.1, 0.7 });
-		f2.addVertex(new double[] { 0.3, 0.3, 0.4 });
-		
+		f2.addVertex(new double[]{0.2, 0.3, 0.5});
+		f2.addVertex(new double[]{0.2, 0.1, 0.7});
+		f2.addVertex(new double[]{0.3, 0.3, 0.4});
+
 		domain = model.getDomain(v3);
 		VertexFactor f3 = new VertexFactor(domain, model.getDomain());
-		f3.addVertex(new double[] { 0.2, 0.3, 0.5 });
-		f3.addVertex(new double[] { 0.2, 0.1, 0.7 });
-		f3.addVertex(new double[] { 0.3, 0.3, 0.4 });
-		
-		VertexFactor f1 = new VertexFactor(model.getDomain(v1), model.getDomain(v2, v3));
-		f1.addVertex(new double[] { 0.2, 0.3, 0.5 },0,0);
-		f1.addVertex(new double[] { 0.2, 0.1, 0.7 },0,0);
-		f1.addVertex(new double[] { 0.3, 0.3, 0.4 },0,0);
-		f1.addVertex(new double[] { 0.2, 0.3, 0.5 },1,0);
-		f1.addVertex(new double[] { 0.2, 0.1, 0.7 },1,0);
-		f1.addVertex(new double[] { 0.3, 0.3, 0.4 },1,0);
-		f1.addVertex(new double[] { 0.2, 0.3, 0.5 },0,1);
-		f1.addVertex(new double[] { 0.2, 0.1, 0.7 },0,1);
-		f1.addVertex(new double[] { 0.2, 0.3, 0.5 },1,1);
-		f1.addVertex(new double[] { 0.2, 0.1, 0.7 },1,1);
-		f1.addVertex(new double[] { 0.2, 0.3, 0.5 },1,2);
-		f1.addVertex(new double[] { 0.2, 0.1, 0.7 },1,2);
-		f1.addVertex(new double[] { 0.2, 0.3, 0.5 },0,2);
-		f1.addVertex(new double[] { 0.2, 0.1, 0.7 },0,2);
-		f1.addVertex(new double[] { 0.2, 0.3, 0.5 },2,1);
-		f1.addVertex(new double[] { 0.2, 0.1, 0.7 },2,1);
-		f1.addVertex(new double[] { 0.2, 0.3, 0.5 },2,0);
-		f1.addVertex(new double[] { 0.2, 0.1, 0.7 },2,0);
-		*/
-		//model.setFactor(v1, f1);
-		//model.setFactor(v2, f2);
-		//model.setFactor(v3, f3);
+		f3.addVertex(new double[]{0.2, 0.3, 0.5});
+		f3.addVertex(new double[]{0.2, 0.1, 0.7});
+		f3.addVertex(new double[]{0.3, 0.3, 0.4});
 
-		//ch.idsia.crema.factor.credal.vertex.algebra.DefaultAlgebra a = new ch.idsia.crema.factor.credal.vertex.algebra.DefaultAlgebra();
+		VertexFactor f1 = new VertexFactor(model.getDomain(v1), model.getDomain(v2, v3));
+		f1.addVertex(new double[]{0.2, 0.3, 0.5}, 0, 0);
+		f1.addVertex(new double[]{0.2, 0.1, 0.7}, 0, 0);
+		f1.addVertex(new double[]{0.3, 0.3, 0.4}, 0, 0);
+		f1.addVertex(new double[]{0.2, 0.3, 0.5}, 1, 0);
+		f1.addVertex(new double[]{0.2, 0.1, 0.7}, 1, 0);
+		f1.addVertex(new double[]{0.3, 0.3, 0.4}, 1, 0);
+		f1.addVertex(new double[]{0.2, 0.3, 0.5}, 0, 1);
+		f1.addVertex(new double[]{0.2, 0.1, 0.7}, 0, 1);
+		f1.addVertex(new double[]{0.2, 0.3, 0.5}, 1, 1);
+		f1.addVertex(new double[]{0.2, 0.1, 0.7}, 1, 1);
+		f1.addVertex(new double[]{0.2, 0.3, 0.5}, 1, 2);
+		f1.addVertex(new double[]{0.2, 0.1, 0.7}, 1, 2);
+		f1.addVertex(new double[]{0.2, 0.3, 0.5}, 0, 2);
+		f1.addVertex(new double[]{0.2, 0.1, 0.7}, 0, 2);
+		f1.addVertex(new double[]{0.2, 0.3, 0.5}, 2, 1);
+		f1.addVertex(new double[]{0.2, 0.1, 0.7}, 2, 1);
+		f1.addVertex(new double[]{0.2, 0.3, 0.5}, 2, 0);
+		f1.addVertex(new double[]{0.2, 0.1, 0.7}, 2, 0);
+
+		model.setFactor(v1, f1);
+		model.setFactor(v2, f2);
+		model.setFactor(v3, f3);
+
+		DefaultExtensiveAlgebra da = new DefaultExtensiveAlgebra();
 
 		// we have the null change manager installed by default
-		//assertEquals(null, model.getFactor(1));
+		assertNull(model.getFactor(1));
 	}
-
 
 	@Test
 	public void testRemoveState() {
-		DAGModel<BayesianFactor> model = new DAGModel<BayesianFactor>();
+		GraphicalModel<BayesianFactor> model = new DAGModel<>();
 
 		model.addVariable(2);
 		model.addVariable(2);
@@ -104,12 +103,11 @@ public class GraphicalModelTest {
 
 		// since 0 was deleted the variable of the factor is 2
 		assertArrayEquals(new int[]{1, 3}, model.getFactor(3).getDomain().getVariables());
-
 	}
 
 	@Test
 	public void testRemoveVariable() {
-		DAGModel<BayesianFactor> model = new DAGModel<BayesianFactor>();
+		GraphicalModel<BayesianFactor> model = new DAGModel<>();
 
 		model.addVariable(2);
 		model.addVariable(2);

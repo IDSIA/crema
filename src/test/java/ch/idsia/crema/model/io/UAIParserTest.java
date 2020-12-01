@@ -21,27 +21,25 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
+@SuppressWarnings("rawtypes")
 public class UAIParserTest {
 
 	Map<String, Object> models;
 
 	@BeforeAll
 	public void init() throws IOException {
-
 		String modelFolder = "./models/";
 		String[] names = {"simple-hcredal.uai", "simple-vcredal.uai", "simple-bayes.uai"};
 
-		models = new HashMap<String, Object>();
+		models = new HashMap<>();
 		for (String name : names) {
 			models.put(name, UAIParser.read(modelFolder + name));
 		}
-
 	}
 
 	@ParameterizedTest
 	@CsvSource(value = {"simple-hcredal.uai:3", "simple-vcredal.uai:3"}, delimiter = ':')
 	void numvars(String name, String num) {
-
 		System.out.println(models.get(name));
 
 		assertEquals(((DAGModel) models.get(name)).getVariables().length, Integer.parseInt(num));

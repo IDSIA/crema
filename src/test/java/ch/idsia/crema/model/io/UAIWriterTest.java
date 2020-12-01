@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 
 @TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
+@SuppressWarnings("rawtypes")
 public class UAIWriterTest {
 
 	@Test

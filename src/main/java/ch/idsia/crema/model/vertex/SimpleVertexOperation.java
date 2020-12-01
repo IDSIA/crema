@@ -12,7 +12,7 @@ public class SimpleVertexOperation implements VertexOperation {
 
 		long idx = 0;
 		for (int i = 0; i < size; ++i) {
-			result[i] = t1[(int) idx] * t2[(int) (idx >>> 32l)];
+			result[i] = t1[(int) idx] * t2[(int) (idx >>> 32L)];
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {
