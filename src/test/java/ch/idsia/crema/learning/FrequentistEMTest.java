@@ -18,7 +18,7 @@ import static org.junit.Assert.assertArrayEquals;
 public class FrequentistEMTest {
 
 	@Test
-	public void testLearningFromSimpleData() throws InterruptedException {
+	public void testModelLoading() throws InterruptedException {
 		// https://www.cse.ust.hk/bnbook/pdf/l07.h.pdf
 		BayesianNetwork model = new BayesianNetwork();
 
@@ -50,9 +50,6 @@ public class FrequentistEMTest {
 			}
 		}
 
-		//RandomUtil.setRandomSeed(222);
-		//model = (BayesianNetwork) BayesianFactor.randomModel(model, 4, false);
-
 		ExpectationMaximization<BayesianFactor> inf = new FrequentistEM(model)
 				.setRegularization(0.0)
 				.setInline(false);
@@ -62,13 +59,13 @@ public class FrequentistEMTest {
 		// Posterior
 		assertArrayEquals(new double[]{.5, .5}, inf.getPosterior().getFactor(X[0]).getData(), 1e-6); //[0.5, 0.5]
 		// P(X1|X0=0)
-		assertArrayEquals(new double[]{2. / 3., 1. / 3.}, inf.getPosterior().getFactor(X[1]).filter(X[0], 0).getData(), 1e-6); // [0.9, 0.1]
+		assertArrayEquals(new double[]{.9, .1}, inf.getPosterior().getFactor(X[1]).filter(X[0], 0).getData(), 1e-6); // [0.9, 0.1]
 		// P(X1|X0=1)
-		assertArrayEquals(new double[]{1. / 3., 2. / 3.}, inf.getPosterior().getFactor(X[1]).filter(X[0], 1).getData(), 1e-6); // [0.1, 0.9]
+		assertArrayEquals(new double[]{.1, .9}, inf.getPosterior().getFactor(X[1]).filter(X[0], 1).getData(), 1e-6); // [0.1, 0.9]
 		// P(X2|X1=0)
-		assertArrayEquals(new double[]{2. / 3., 1. / 3.}, inf.getPosterior().getFactor(X[2]).filter(X[1], 0).getData(), 1e-6); // [0.9, 0.1]
+		assertArrayEquals(new double[]{.9, .1}, inf.getPosterior().getFactor(X[2]).filter(X[1], 0).getData(), 1e-6); // [0.9, 0.1]
 		// P(X2|X1=1)
-		assertArrayEquals(new double[]{1. / 3., 2. / 3.}, inf.getPosterior().getFactor(X[2]).filter(X[1], 1).getData(), 1e-6); // [0.1, 0.9]
+		assertArrayEquals(new double[]{.1, .9}, inf.getPosterior().getFactor(X[2]).filter(X[1], 1).getData(), 1e-6); // [0.1, 0.9]
 	}
 
 }

@@ -16,8 +16,7 @@ public class FrequentistEM extends DiscreteEM {
 
 	private double regularization = 0.00001;
 
-	public FrequentistEM(GraphicalModel<BayesianFactor> model,
-	                     JoinInference<BayesianFactor, BayesianFactor> inferenceEngine) {
+	public FrequentistEM(GraphicalModel<BayesianFactor> model, JoinInference<BayesianFactor, BayesianFactor> inferenceEngine) {
 		this.inferenceEngine = inferenceEngine;
 		this.priorModel = model;
 	}
