@@ -51,7 +51,6 @@ public class FractionalSolverTest {
 		// nothing changed just called solve with other signature
 		assertEquals(0.184175234689316, solver.getValue(), 0.000000001);
 		assertArrayEquals(expected, solver.getVertex(), 0.000000001);
-
 	}
 
 	@Test
@@ -68,7 +67,6 @@ public class FractionalSolverTest {
 		constraints.add(constraint);
 
 		// x1, x0 >= 0 implicit in this fractional solver
-
 		constraint = new LinearConstraint(new double[]{2, 1}, Relationship.LEQ, 14);
 		constraints.add(constraint);
 
@@ -80,7 +78,6 @@ public class FractionalSolverTest {
 
 		assertArrayEquals(new double[]{7, 0}, solver.getVertex(), 0.0000001);
 		assertEquals(-1.090909090909, solver.getValue(), 0.0000001);
-
 	}
 
 }
