@@ -42,7 +42,7 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	protected int max = 0;
 
 	/**
-	 *
+	 * DirectedAcyclicGraph (DAG) implementation of the network associated with this model.
 	 */
 	protected DirectedAcyclicGraph<Integer, DefaultEdge> network;
 
@@ -79,15 +79,17 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		domainChanger = original.domainChanger;
 		cardinalityChanger = original.cardinalityChanger;
 
-		max = original.max;
+		max = 0;
 
-		// copy network
-		GraphUtil.copy(original.network, network);
+		// copy variables
+		for (int v : original.getVariables()) {
+			addVariable(v, original.cardinalities.get(v));
+		}
 
 		// copy factors
 		for (int v : original.getVariables()) {
-			F f = original.getFactor(v);
-			this.setFactor(v, (F) f.copy());
+			addParents(v, original.getParents(v));
+			setFactor(v, (F) original.getFactor(v).copy());
 		}
 	}
 
