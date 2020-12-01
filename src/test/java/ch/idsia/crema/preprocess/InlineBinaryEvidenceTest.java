@@ -14,7 +14,6 @@ public class InlineBinaryEvidenceTest {
 
 	@Test
 	public void test1_0() {
-
 		for (int i = 0; i < 3; ++i) {
 			DAGModel<GenericFactor> model = new DAGModel<>();
 
@@ -66,7 +65,7 @@ public class InlineBinaryEvidenceTest {
 
 		BayesianFactor f = (BayesianFactor) model.getFactor(ev);
 
-		assertTrue(ev == 2);
+		assertEquals(2, ev);
 
 		assertArrayEquals(new double[]{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, f.getData(), 0);
 	}
@@ -96,7 +95,7 @@ public class InlineBinaryEvidenceTest {
 
 		BayesianFactor f = (BayesianFactor) model.getFactor(ev);
 
-		assertTrue(ev == 2);
+		assertEquals(2, ev);
 
 		assertArrayEquals(new double[]{1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0}, f.getData(), 0);
 	}

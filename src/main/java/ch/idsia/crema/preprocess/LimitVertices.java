@@ -9,6 +9,9 @@ import ch.idsia.crema.utility.hull.LPConvexHull;
 import java.util.Random;
 
 public class LimitVertices {
+
+	private final Random picker = new Random();
+
 	public GraphicalModel<VertexFactor> apply(GraphicalModel<VertexFactor> model, int max) {
 		GraphicalModel<VertexFactor> m2 = model.copy();
 		for (int variable : m2.getVariables()) {
@@ -18,8 +21,6 @@ public class LimitVertices {
 		}
 		return m2;
 	}
-
-	private Random picker = new Random();
 
 	/**
 	 * Probably generates max vertices!
