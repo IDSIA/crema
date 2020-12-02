@@ -1,6 +1,5 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.IO;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
@@ -26,7 +25,6 @@ public class VCredalUAIWriter extends NetUAIWriter<DAGModel> {
 		TYPE = UAITypes.VCREDAL;
 		this.writer = writer;
 	}
-
 
 	@Override
 	protected void sanityChecks() {
@@ -60,7 +58,6 @@ public class VCredalUAIWriter extends NetUAIWriter<DAGModel> {
 					tofileln(vertex[k]);
 			}
 		}
-
 	}
 
 	@Override
@@ -70,7 +67,6 @@ public class VCredalUAIWriter extends NetUAIWriter<DAGModel> {
 		writeDomains();
 		writeFactors();
 	}
-
 
 	protected static boolean isCompatible(Object object) {
 
@@ -82,20 +78,5 @@ public class VCredalUAIWriter extends NetUAIWriter<DAGModel> {
 				return false;
 		return true;
 	}
-
-
-	public static void main(String[] args) throws IOException {
-		String fileName = "./models/simple-vcredal_";
-
-		DAGModel model;
-
-		model = (DAGModel) UAIParser.read(fileName + ".uai");
-		UAIWriter.write(model, fileName + "2.uai");
-
-		model = (DAGModel) UAIParser.read(fileName + "2.uai");
-		IO.write(model, fileName + "3.uai");
-
-	}
-
 
 }

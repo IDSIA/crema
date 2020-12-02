@@ -1,6 +1,5 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.IO;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
@@ -28,7 +27,6 @@ public class HCredalUAIWriter extends NetUAIWriter<DAGModel> {
 		TYPE = UAITypes.HCREDAL;
 		this.writer = writer;
 	}
-
 
 	@Override
 	protected void sanityChecks() {
@@ -86,14 +84,12 @@ public class HCredalUAIWriter extends NetUAIWriter<DAGModel> {
 		writeFactors();
 	}
 
-
 	public static Collection<LinearConstraint> processConstraints(Collection<LinearConstraint> set) {
 		return ConstraintsUtil.changeGEQtoLEQ(
 				ConstraintsUtil.changeEQtoLEQ(
 						ConstraintsUtil.removeNormalization(
 								ConstraintsUtil.removeNonNegative(set))));
 	}
-
 
 	protected static boolean isCompatible(Object object) {
 
@@ -104,20 +100,6 @@ public class HCredalUAIWriter extends NetUAIWriter<DAGModel> {
 			if (!(((DAGModel) object).getFactor(v) instanceof SeparateHalfspaceFactor))
 				return false;
 		return true;
-	}
-
-
-	public static void main(String[] args) throws IOException {
-		String fileName = "./models/simple-hcredal";
-
-		DAGModel model;
-
-		model = (DAGModel) UAIParser.read(fileName + ".uai");
-		UAIWriter.write(model, fileName + "2.uai");
-
-		model = (DAGModel) UAIParser.read(fileName + "2.uai");
-		IO.write(model, fileName + "3.uai");
-
 	}
 
 }

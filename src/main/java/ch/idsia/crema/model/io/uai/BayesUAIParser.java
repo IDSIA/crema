@@ -7,97 +7,86 @@ import ch.idsia.crema.utility.ArraysUtil;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * Parser for Bayesian Networks in UAI format
- *  @author Rafael Cabañas
+ *
+ * @author Rafael Cabañas
  */
 
 
-public class BayesUAIParser extends NetUAIParser<BayesianNetwork>{
+public class BayesUAIParser extends NetUAIParser<BayesianNetwork> {
 
-    private double[][] probs;
+	private double[][] probs;
 
-    public BayesUAIParser(String file) throws FileNotFoundException {
-        TYPE = UAITypes.BAYES;
-        this.bufferedReader = initReader(file);
-    }
+	public BayesUAIParser(String file) throws FileNotFoundException {
+		TYPE = UAITypes.BAYES;
+		this.bufferedReader = initReader(file);
+	}
 
-    public BayesUAIParser(BufferedReader reader) {
-        TYPE = UAITypes.BAYES;
-        this.bufferedReader = reader;
-    }
+	public BayesUAIParser(BufferedReader reader) {
+		TYPE = UAITypes.BAYES;
+		this.bufferedReader = reader;
+	}
 
-    @Override
-    protected void processFile() {
-        parseType();
-        parseVariablesInfo();
-        parseDomainsLastIsHead();
-        parseCPTs();
-    }
+	@Override
+	protected void processFile() {
+		parseType();
+		parseVariablesInfo();
+		parseDomainsLastIsHead();
+		parseCPTs();
+	}
 
-    @Override
-    protected BayesianNetwork build() {
-        BayesianNetwork model = new BayesianNetwork();
+	@Override
+	protected BayesianNetwork build() {
+		BayesianNetwork model = new BayesianNetwork();
 
-        // Add the variables
-        for (int i = 0; i < numberOfVariables; i++) {
-            model.addVariable(cardinalities[i]);
-        }
+		// Add the variables
+		for (int i = 0; i < numberOfVariables; i++) {
+			model.addVariable(cardinalities[i]);
+		}
 
-        // Adding the parents to each variable
-        for (int k = 0; k < numberOfVariables; k++) {
-            model.addParents(k, parents[k]);
-        }
+		// Adding the parents to each variable
+		for (int k = 0; k < numberOfVariables; k++) {
+			model.addParents(k, parents[k]);
+		}
 
-        // Build the bayesian Factor for each variable
-        BayesianFactor[] cpt = new BayesianFactor[numberOfVariables];
-        for (int i = 0; i < numberOfVariables; i++) {
-            // Build the domain with the head/left variable at the end
-            Strides dom = model.getDomain(parents[i]).concat(model.getDomain(i));
+		// Build the bayesian Factor for each variable
+		BayesianFactor[] cpt = new BayesianFactor[numberOfVariables];
+		for (int i = 0; i < numberOfVariables; i++) {
+			// Build the domain with the head/left variable at the end
+			Strides dom = model.getDomain(parents[i]).concat(model.getDomain(i));
 
-            double data[] = probs[i];
-            if (parents[i].length>0)
-                data = ArraysUtil.changeEndian(probs[i], dom.getSizes());
-            cpt[i] = new BayesianFactor(dom, data);
+			double[] data = probs[i];
+			if (parents[i].length > 0)
+				data = ArraysUtil.changeEndian(probs[i], dom.getSizes());
+			cpt[i] = new BayesianFactor(dom, data);
 
-        }
+		}
 
-        model.setFactors(cpt);
+		model.setFactors(cpt);
 
-        return model;
-    }
+		return model;
+	}
 
-    @Override
-    protected void sanityChecks() {
-        super.sanityChecks();
-    }
+	@Override
+	protected void sanityChecks() {
+		super.sanityChecks();
+	}
 
-    private void parseCPTs(){
+	/**
+	 * Parse the probability values and store them in a 1D array for each factor.
+	 */
+	private void parseCPTs() {
+		probs = new double[numberOfVariables][];
 
-        // Parse the probability values and store them in a 1D array
-        // for each factor
-
-        probs = new double[numberOfVariables][];
-        for(int i=0; i<numberOfVariables;i++){
-            int numValues = popInteger();
-            probs[i] = new double[numValues];
-            for(int j=0;j<numValues;j++){
-                probs[i][j] = popDouble();
-            }
-        }
-        System.out.println();
-    }
-
-    public static void main(String[] args) throws IOException {
-        String fileName = "./models/simple-bayes.uai"; // .cn File to open
-        BayesianNetwork model = (BayesianNetwork) UAIParser.read(fileName);
-
-        for(int x : model.getVariables()){
-            System.out.println((model.getFactor(x)));
-        }
-
-    }
+		for (int i = 0; i < numberOfVariables; i++) {
+			int numValues = popInteger();
+			probs[i] = new double[numValues];
+			for (int j = 0; j < numValues; j++) {
+				probs[i][j] = popDouble();
+			}
+		}
+	}
 
 }

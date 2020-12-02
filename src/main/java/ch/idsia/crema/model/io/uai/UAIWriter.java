@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-public abstract class UAIWriter<T extends Object> {
+public abstract class UAIWriter<T> {
 
 	protected BufferedWriter writer;
 	protected TypesIO TYPE;

@@ -9,7 +9,6 @@ import ch.idsia.crema.utility.IndexIterator;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.stream.IntStream;
 
 /**
@@ -19,7 +18,6 @@ import java.util.stream.IntStream;
  */
 
 public class VCredalUAIParser extends NetUAIParser<GraphicalModel<VertexFactor>> {
-
 
 	private double[][][][] vertices = new double[numberOfVariables][][][];
 
@@ -100,16 +98,6 @@ public class VCredalUAIParser extends NetUAIParser<GraphicalModel<VertexFactor>>
 				}
 			}
 
-		}
-	}
-
-	// TODO: move to tests
-	public static void main(String[] args) throws IOException {
-		String fileName = "./models/simple-vcredal2.uai";
-		GraphicalModel model = (GraphicalModel<VertexFactor>) UAIParser.read(fileName);
-
-		for (int x : model.getVariables()) {
-			System.out.println(((VertexFactor) model.getFactor(x)));
 		}
 	}
 

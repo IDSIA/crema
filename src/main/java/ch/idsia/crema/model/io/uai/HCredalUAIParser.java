@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -10,17 +11,13 @@ import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * Parser for H-CREDAL networks in UAI format
  *
  * @author Rafael Cabañas
  */
-
-
-public class HCredalUAIParser extends NetUAIParser<GraphicalModel> {
-
+public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Factor<?>>> {
 
 	private double[][] aCoeff = new double[numberOfVariables][];
 	private double[][] bCoeff = new double[numberOfVariables][];
@@ -103,7 +100,6 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel> {
 		return model;
 	}
 
-
 	@Override
 	protected void sanityChecks() {
 		super.sanityChecks();
@@ -128,17 +124,6 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel> {
 				bCoeff[i][k] = popDouble();
 			}
 		}
-	}
-
-	public static void main(String[] args) throws IOException {
-		String fileName = "./models/simple-hcredal.uai";
-		GraphicalModel model = (GraphicalModel) UAIParser.read(fileName);
-
-		for (int i = 0; i < model.getVariables().length; i++) {
-			System.out.println("Variable " + i);
-			((SeparateHalfspaceFactor) model.getFactor(i)).printLinearProblem();
-		}
-
 	}
 
 }

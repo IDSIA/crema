@@ -1,6 +1,5 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.IO;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -12,53 +11,46 @@ import java.io.IOException;
 
 public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 
+	public BayesUAIWriter(BayesianNetwork target, String file) throws IOException {
+		this.target = target;
+		TYPE = UAITypes.BAYES;
+		this.writer = initWriter(file);
 
+	}
 
-    public BayesUAIWriter(BayesianNetwork target, String file) throws IOException {
-        this.target = target;
-        TYPE = UAITypes.BAYES;
-        this.writer = initWriter(file);
+	public BayesUAIWriter(BayesianNetwork target, BufferedWriter writer) {
+		this.target = target;
+		TYPE = UAITypes.BAYES;
+		this.writer = writer;
+	}
 
-    }
-    public BayesUAIWriter(BayesianNetwork target, BufferedWriter writer){
-        this.target = target;
-        TYPE = UAITypes.BAYES;
-        this.writer = writer;
-    }
+	@Override
+	protected void sanityChecks() {
+		// TODO
+		return;
+	}
 
+	@Override
+	protected void writeFactors() throws IOException {
+		tofileln("");
+		for (int v : target.getVariables()) {
 
-    @Override
-    protected void sanityChecks() {
-        return;
-    }
+			BayesianFactor f = target.getFactor(v);
+			int vsize = f.getDomain().getCardinality(v);
 
-    @Override
-    protected void writeFactors() throws IOException {
+			f = f.reorderDomain(Ints.concat(new int[]{v},
+					ArraysUtil.reverse(target.getParents(v))
+			));
 
+			double[] probs = f.getData();
+			tofileln(probs.length);
 
-        tofileln("");
-        for(int v : target.getVariables()) {
+			for (double[] p : ArraysUtil.reshape2d(probs, probs.length / vsize, vsize))
+				tofileln(p);
 
-            BayesianFactor f =  target.getFactor(v);
-            int vsize = f.getDomain().getCardinality(v);
+			//tofileln(probs);
 
-            f = f.reorderDomain(Ints.concat(new int[]{v},
-                                        ArraysUtil.reverse(target.getParents(v))
-            ));
-
-            double[] probs = f.getData();
-            tofileln(probs.length);
-
-            for(double[] p : ArraysUtil.reshape2d(probs, probs.length/vsize, vsize))
-                tofileln(p);
-
-            //tofileln(probs);
-
-            tofileln("");
-
-
-
-
+			tofileln("");
 
 /*
             if(f != null){
@@ -78,47 +70,32 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 
 
  */
-        }
+		}
+	}
 
-    }
+	@Override
+	protected void writeTarget() throws IOException {
+		writeType();
+		writeVariablesInfo();
+		writeDomains();
+		writeFactors();
+	}
 
-    @Override
-    protected void writeTarget() throws IOException {
-        writeType();
-        writeVariablesInfo();
-        writeDomains();
-        writeFactors();
-    }
+	@Override
+	protected void writeDomains() throws IOException {
+		// Write the number of factors
+		tofileln(target.getVariables().length);
+		// Add the factor domains with children at the end
+		for (int v : target.getVariables()) {
+			int[] parents = ArraysUtil.reverse(target.getParents(v));
+			tofile(parents.length + 1 + "\t");
+			tofile(parents);
+			tofileln(v);
+		}
+	}
 
-
-    @Override
-    protected void writeDomains() throws IOException {
-        // Write the number of factors
-        tofileln(target.getVariables().length);
-        // Add the factor domains with children at the end
-        for(int v: target.getVariables()){
-            int[] parents = ArraysUtil.reverse(target.getParents(v));
-            tofile(parents.length+1+"\t");
-            tofile(parents);
-            tofileln(v);
-        }
-    }
-
-
-    public static boolean isCompatible(Object target){
-        return target instanceof BayesianNetwork;
-    }
-
-
-
-    public static void main(String[] args) throws IOException {
-        String fileName = "./models/bayes";
-
-        BayesianNetwork bnet = (BayesianNetwork) IO.read(fileName+".uai");
-
-        IO.write(bnet,fileName+"_2.uai");
-    }
-
-
+	public static boolean isCompatible(Object target) {
+		return target instanceof BayesianNetwork;
+	}
 
 }
