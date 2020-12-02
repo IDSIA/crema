@@ -21,16 +21,13 @@ public class ApproxLP2 {
 	 * Preconditions: model reduction (barren and root node observations, single
 	 * node evidence. Factors must be of type ExtensiveLinearFactors,
 	 * BayesianFactor or SeparateLinearFactor
-	 * 
+	 * <p>
 	 * XXX must support multiple evidence here and in the variable elimination
-	 * 
-	 * @param model
-	 *            the data model
-	 * @param query
-	 *            the variable whose intervals we are interested in
-	 * @param evidence
-	 *            the variable that is to be considered the summarization of the
-	 *            evidence (-1 if no evidence)
+	 *
+	 * @param model    the data model
+	 * @param query    the variable whose intervals we are interested in
+	 * @param evidence the variable that is to be considered the summarization of the
+	 *                 evidence (-1 if no evidence)
 	 * @return
 	 * @throws InterruptedException
 	 */
@@ -58,15 +55,15 @@ public class ApproxLP2 {
 
 		}
 
-		IntervalFactor result = new IntervalFactor(model.getDomain(query), model.getDomain(), new double[][] { lowers },
-				new double[][] { uppers });
+		IntervalFactor result = new IntervalFactor(
+				model.getDomain(query), model.getDomain(), new double[][]{lowers}, new double[][]{uppers}
+		);
 		result.updateReachability();
 
 		return result;
 	}
 
-	private double runSearcher(GraphicalModel<? extends GenericFactor> model, Manager objective)
-			throws InterruptedException {
+	private double runSearcher(GraphicalModel<? extends GenericFactor> model, Manager objective) throws InterruptedException {
 
 		Neighbourhood neighbourhood = new Neighbourhood(model);
 

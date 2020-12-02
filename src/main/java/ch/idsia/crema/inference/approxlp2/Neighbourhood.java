@@ -18,15 +18,15 @@ import java.util.List;
 
 public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 
+	private final GraphicalModel<? extends GenericFactor> model;
 	private int[] freeable;
-	private GraphicalModel<? extends GenericFactor> model;
-	
+
 	public Neighbourhood(GraphicalModel<? extends GenericFactor> model, int... locked) {
 		this.model = model;
-		
+
 		initialize(new TIntHashSet(locked));
 	}
-	
+
 	@Override
 	public List<Move> neighbours(Solution solution) {
 		ArrayList<Move> moves = new ArrayList<>();
@@ -38,7 +38,7 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 		}
 		return moves;
 	}
-	
+
 	@Override
 	public Solution random() {
 		TIntObjectHashMap<BayesianFactor> factors = new TIntObjectHashMap<>();
@@ -55,7 +55,6 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 		return new Solution(from, doing);
 	}
 
-
 	private BayesianFactor random(GenericFactor factor) {
 		if (factor instanceof ExtensiveLinearFactor) {
 			return new ExtensiveLinearToRandomBayesianFactor().apply((ExtensiveLinearFactor<?>) factor);
@@ -67,13 +66,12 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 		return null;
 	}
 
-
 	private void initialize(TIntSet locked) {
 		TIntArrayList freeableVariable = new TIntArrayList();
 		for (int var : model.getVariables()) {
 			// locked variables are not to be freed
 			if (locked.contains(var)) continue;
-			
+
 			GenericFactor factor = model.getFactor(var);
 			if (factor != null) {
 				if (factor instanceof ExtensiveLinearFactor ||
@@ -85,7 +83,7 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 				freeableVariable.add(var);
 			}
 		}
-		
+
 		freeable = freeableVariable.toArray();
 	}
 }

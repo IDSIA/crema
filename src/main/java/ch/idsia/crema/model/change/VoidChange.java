@@ -28,6 +28,5 @@ public class VoidChange<F extends GenericFactor> implements DomainChange<F>, Car
 	public F remove(F factor, int variable) {
 		return factor;
 	}
-	
 
 }

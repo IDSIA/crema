@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * Project: CreMA
  * Date:    07.02.2018 15:50
  */
+// TODO: we have three types of FactorElimination... keep just one
 public class FactorElimination implements Updating<BayesianFactor, BayesianFactor> {
 
 	private TIntIntMap evidence;

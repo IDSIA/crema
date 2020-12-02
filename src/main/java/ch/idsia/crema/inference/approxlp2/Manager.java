@@ -16,32 +16,33 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 
 	public static final double BAD = Double.NaN;
 	private static final double EPS = 0.000000000001;
-	
+
 	protected SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
-	
+
 	// the underlying model
 	protected GraphicalModel<? extends GenericFactor> model;
 	protected GoalType goal;
-	
+
 	protected int x0;
 	protected int x0state;
-	
+
 	protected int[] sequence;
-	
+
 	private BayesianFactor x0factor;
-	
+
 	public Manager(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state) {
 		this.model = model;
 		this.goal = dir;
 		this.x0 = x0;
 		this.x0state = x0state;
-	
+
 		this.sequence = new MinFillOrdering().apply(model);
 	}
-	
+
 	/**
 	 * This is a custom bayesian factor over x0 with a 1 for x0state.
 	 * The value is cached.
+	 *
 	 * @return
 	 */
 	protected BayesianFactor getX0factor() {
@@ -49,51 +50,50 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 			int size = model.getSize(x0);
 			double[] realObj = new double[size];
 			realObj[x0state] = 1.0;
-		
+
 			x0factor = new BayesianFactor(model.getDomain(x0), realObj, false);
 		}
 		return x0factor;
 	}
-	
-	
+
 	/**
 	 * Make non vertex changing moves illegal.
-	 * 
+	 *
 	 * @param from
 	 * @param move
 	 */
 	protected void fixNotMoving(Solution from, Move move) {
 		if (Double.isNaN(from.getScore())) return;
-		
+
 		BayesianFactor original = from.getData().get(move.getFree());
 		if (original.equals(move.getValues())) {
 			move.setScore(BAD);
 		}
 	}
-	
+
 	protected BayesianFactor calcMarginal(Solution sol, int[] query) {
-		//	DAGModel<? extends GenericFactor> model = this.model.copy();
-		//	RemoveBarren barren = new RemoveBarren();
-		//	barren.execute(model, query);
-		
+		// DAGModel<? extends GenericFactor> model = this.model.copy();
+		// RemoveBarren barren = new RemoveBarren();
+		// barren.execute(model, query);
+
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(sequence);
 		ve.setFactors(sol.getData().valueCollection());
 		ve.setNormalize(false);
 		return ve.run(query);
 	}
-	
+
 	protected BayesianFactor calcPosterior(Solution sol, int[] query, TIntIntMap ev) {
-//		DAGModel<? extends GenericFactor> model = new DupModel().execute(this.model);
-//		RemoveBarren barren = new RemoveBarren();
-//		barren.execute(model, query, ev);
-		
+		// DAGModel<? extends GenericFactor> model = new DupModel().execute(this.model);
+		// RemoveBarren barren = new RemoveBarren();
+		// barren.execute(model, query, ev);
+
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(sequence);
 		ve.setFactors(sol.getData().valueCollection());
 		ve.setEvidence(ev);
 		ve.setNormalize(false);
 		return ve.run(query);
 	}
-	
+
 	@Override
 	public int compare(Solution sol1, Solution sol2) {
 		if (goal == GoalType.MINIMIZE) {
@@ -102,7 +102,6 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 			return (int) Math.signum(sol2.getScore() - sol1.getScore());
 		}
 	}
-
 
 	@Override
 	public boolean isImprovement(double change) {
@@ -114,15 +113,15 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	public boolean isImprovement(double from, double to) {
 		if (Double.isNaN(to)) return false;
 		if (Double.isNaN(from)) return true;
-		
+
 		return isImprovement(to - from);
 	}
 
-	
 	@Override
 	public boolean isBound(double value) {
 		if (goal == GoalType.MAXIMIZE && value >= 1.0 - EPS) return true;
 		if (goal == GoalType.MINIMIZE && value <= 0.0 + EPS) return true;
 		return false;
 	}
+
 }

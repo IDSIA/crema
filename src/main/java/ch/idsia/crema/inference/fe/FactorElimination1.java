@@ -15,7 +15,9 @@ import java.util.List;
  * Project: CreMA
  * Date:    06.02.2018 09:37
  */
+// TODO: we have three types of FactorElimination... keep just one
 public class FactorElimination1 implements SingleInference<BayesianFactor, BayesianFactor> {
+
 	private GraphicalModel<BayesianFactor> model;
 
 	public void setModel(GraphicalModel<BayesianFactor> model) {

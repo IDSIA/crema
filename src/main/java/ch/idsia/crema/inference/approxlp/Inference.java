@@ -33,7 +33,7 @@ public class Inference<F extends GenericFactor> implements SingleInference<F, In
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public IntervalFactor query(GraphicalModel<?> model, int query, int evidence) throws InterruptedException {
+	public IntervalFactor query(GraphicalModel<? extends GenericFactor> model, int query, int evidence) throws InterruptedException {
 		int states = model.getSize(query);
 
 		double[] lowers = new double[states];

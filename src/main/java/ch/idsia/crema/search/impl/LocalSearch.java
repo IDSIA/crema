@@ -2,7 +2,7 @@ package ch.idsia.crema.search.impl;
 
 import java.util.List;
 
-public class Localsearch<M, S> extends AbstractSearch<M, S> {
+public class LocalSearch<M, S> extends AbstractSearch<M, S> {
 
 	@Override
 	protected boolean step() {

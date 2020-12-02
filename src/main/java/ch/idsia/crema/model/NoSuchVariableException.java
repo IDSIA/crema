@@ -7,8 +7,8 @@ import java.util.Arrays;
 public class NoSuchVariableException extends RuntimeException {
 	private static final long serialVersionUID = -1517007487763589611L;
 
-	private int var;
-	private Domain domain;
+	private final int var;
+	private final Domain domain;
 
 	public NoSuchVariableException(int var, Domain domain) {
 		this.var = var;

@@ -9,6 +9,7 @@ import gnu.trove.set.hash.TIntHashSet;
  * Project: CreMA
  * Date:    06.02.2018 15:29
  */
+// TODO: we have three types of FactorElimination... keep just one
 public class FactorElimination2 {
 
 	private EliminationTree T;

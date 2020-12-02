@@ -11,7 +11,7 @@ public class Greedy<M, S> extends AbstractSearch<M, S> {
 
 		double winner_score = currentScore;
 		M winner_move = null;
-		
+
 		for (M move : moves) {
 			double score = objective.eval(currentSolution, move);
 			if (objective.isImprovement(winner_score, score)) {
@@ -20,17 +20,17 @@ public class Greedy<M, S> extends AbstractSearch<M, S> {
 				//break; // find best
 			}
 		}
-		
+
 		if (winner_move == null) {
 			// there was no possible improvement
 			//currentSolution = neighbourhood.random();
 			return false;
 		}
-		
-		currentSolution = neighbourhood.move(currentSolution, winner_move);  
+
+		currentSolution = neighbourhood.move(currentSolution, winner_move);
 		currentScore = winner_score;
 		if (stats != null) stats.move(winner_move);
-		
+
 		if (objective.isImprovement(bestScore, currentScore)) {
 			bestSolution = currentSolution;
 			bestScore = currentScore;

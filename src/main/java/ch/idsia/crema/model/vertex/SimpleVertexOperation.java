@@ -3,6 +3,7 @@ package ch.idsia.crema.model.vertex;
 import org.apache.commons.math3.util.FastMath;
 
 public class SimpleVertexOperation implements VertexOperation {
+
 	@Override
 	public double[] combine(double[] t1, double[] t2, int size, long[] stride, long[] reset, int[] limits) {
 		int length = limits.length;
