@@ -1,16 +1,8 @@
 package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.symbolic.PriorFactor;
-import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
-import ch.idsia.crema.model.graphical.DAGModel;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 public class BeliefPropagationTest {
 
