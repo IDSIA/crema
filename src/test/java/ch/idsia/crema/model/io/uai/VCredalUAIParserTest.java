@@ -18,7 +18,7 @@ public class VCredalUAIParserTest {
 	@Test
 	public void readSimpleVCredal2Uai() throws IOException {
 		String fileName = "./models/simple-vcredal2.uai";
-		GraphicalModel<VertexFactor> model = (GraphicalModel<VertexFactor>) UAIParser.read(fileName);
+		GraphicalModel<VertexFactor> model = UAIParser.read(fileName);
 
 		Assert.assertEquals("Wrong number of variables", 3, model.getVariablesCount());
 		Assert.assertEquals("P[1] does not have exactly one parent", 1, model.getParents(1).length);

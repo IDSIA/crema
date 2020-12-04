@@ -9,8 +9,8 @@ import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.optim.linear.Relationship;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Parser for H-CREDAL networks in UAI format
@@ -22,14 +22,13 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Fact
 	private double[][] aCoeff = new double[numberOfVariables][];
 	private double[][] bCoeff = new double[numberOfVariables][];
 
-	public HCredalUAIParser(String file) throws FileNotFoundException {
-		TYPE = UAITypes.HCREDAL;
-		this.bufferedReader = initReader(file);
+	public HCredalUAIParser(String filename) throws IOException {
+		super(filename);
 	}
 
-	public HCredalUAIParser(BufferedReader reader) {
+	public HCredalUAIParser(List<String> lines) {
+		super(lines);
 		TYPE = UAITypes.HCREDAL;
-		this.bufferedReader = reader;
 	}
 
 	@Override
@@ -41,8 +40,8 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Fact
 	}
 
 	@Override
-	protected GraphicalModel build() {
-		GraphicalModel model = new DAGModel();
+	protected GraphicalModel<? extends  Factor<?>> build() {
+		GraphicalModel model = new DAGModel<>();
 
 		// Add the variables
 		for (int i = 0; i < numberOfVariables; i++) {

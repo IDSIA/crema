@@ -7,8 +7,8 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -21,14 +21,13 @@ public class VCredalUAIParser extends NetUAIParser<GraphicalModel<VertexFactor>>
 
 	private double[][][][] vertices = new double[numberOfVariables][][][];
 
-	public VCredalUAIParser(String file) throws FileNotFoundException {
-		TYPE = UAITypes.VCREDAL;
-		this.bufferedReader = initReader(file);
+	public VCredalUAIParser(String filename) throws IOException {
+		super(filename);
 	}
 
-	public VCredalUAIParser(BufferedReader reader) {
+	public VCredalUAIParser(List<String> lines) {
+		super(lines);
 		TYPE = UAITypes.VCREDAL;
-		this.bufferedReader = reader;
 	}
 
 	@Override

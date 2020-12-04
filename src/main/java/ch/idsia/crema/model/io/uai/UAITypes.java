@@ -3,17 +3,14 @@ package ch.idsia.crema.model.io.uai;
 import ch.idsia.crema.model.io.TypesIO;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public enum UAITypes implements TypesIO {
 
 	BAYES("BAYES"),
-	EVID(""), // TODO: evidence files does not have a label
+	EVID("EVID"),
 	HCREDAL("H-CREDAL"),
 	VCREDAL("V-CREDAL");
-
-	private static List<String> labels;
 
 	private static final Map<String, TypesIO> BY_LABEL = new HashMap<>();
 

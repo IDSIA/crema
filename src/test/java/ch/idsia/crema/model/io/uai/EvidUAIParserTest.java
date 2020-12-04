@@ -16,7 +16,7 @@ public class EvidUAIParserTest {
 	@Test
 	public void readEvidenceSimpleUaiDo() throws IOException {
 		// .uai.do and .uai.evid are parsed so far in the same way
-		TIntIntMap[] evidences = (TIntIntMap[]) EvidUAIParser.read("./models/simple.uai.do");
+		TIntIntMap[] evidences = UAIParser.read("./models/simple.uai.do");
 
 		for (TIntIntMap ev : evidences)
 			System.out.println(ev);

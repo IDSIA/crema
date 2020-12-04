@@ -3,6 +3,8 @@ package ch.idsia.crema.model.io.uai;
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -16,6 +18,14 @@ public abstract class NetUAIParser<T extends GraphicalModel<? extends Factor<?>>
 	protected int[] cardinalities;
 	protected int numberOfTables;
 	protected int[][] parents;
+
+	public NetUAIParser(String filename) throws IOException {
+		super(filename);
+	}
+
+	public NetUAIParser(List<String> lines) {
+		super(lines);
+	}
 
 	// TODO: this assume that variables take consecutive ids from 0
 	protected void parseVariablesInfo() {

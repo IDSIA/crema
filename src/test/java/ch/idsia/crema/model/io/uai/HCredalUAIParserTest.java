@@ -18,7 +18,7 @@ public class HCredalUAIParserTest {
 	@Test
 	public void readSimpleHCredalUai() throws IOException {
 		String fileName = "./models/simple-hcredal.uai";
-		GraphicalModel<SeparateHalfspaceFactor> model = (GraphicalModel<SeparateHalfspaceFactor>) UAIParser.read(fileName);
+		GraphicalModel<SeparateHalfspaceFactor> model = UAIParser.read(fileName);
 
 		Assert.assertEquals("Wrong number of variables", 3, model.getVariablesCount());
 		Assert.assertEquals("P[1] does not have exactly one parent", 1, model.getParents(1).length);

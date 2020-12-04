@@ -2,10 +2,11 @@ package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.model.io.TypesIO;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Generic parser class for UAI format
@@ -17,90 +18,71 @@ public abstract class UAIParser<T> {
 
 	protected String[] elements = null;
 	private int offset = 0;
-	protected BufferedReader bufferedReader;
 	private String parsedType = "";
 
 	protected TypesIO TYPE;
 
-	public static Object read(String fileName) throws IOException {
-		BufferedReader buff = null;
-		TypesIO type;
+	protected List<String> lines;
 
-		if (fileName.endsWith(".uai")) {
-			// Extract the type to know the required parser
-			type = UAITypes.valueOfLabel(getIOTypeStr(fileName));
-			// rest the buffer
-		} else if (fileName.endsWith(".uai.evid") || fileName.endsWith(".uai.do")) {
-			type = UAITypes.EVID;
-		} else {
+	@SuppressWarnings("unchecked")
+	public static <T> T read(String filename) throws IOException {
+		if (!(filename.endsWith(".uai") || filename.endsWith(".uai.evid") || filename.endsWith(".uai.do"))) {
 			throw new IllegalArgumentException("Unknown file extension");
 		}
 
-		buff = initReader(fileName);
+		List<String> lines = readLines(filename);
+		TypesIO type = UAITypes.valueOfLabel(getIOTypeStr(lines.get(0)));
 
 		Object parsedObject;
-		try {
-			// Parse the file
-			if (type == UAITypes.HCREDAL) {
-				parsedObject = new HCredalUAIParser(buff).parse();
-			} else if (type == UAITypes.VCREDAL) {
-				parsedObject = new VCredalUAIParser(buff).parse();
-			} else if (type == UAITypes.BAYES) {
-				parsedObject = new BayesUAIParser(buff).parse();
-			} else if (type == UAITypes.EVID) {
-				parsedObject = new EvidUAIParser(buff).parse();
-			} else {
-				throw new IllegalArgumentException("Unknown type to be parsed");
-			}
-		} catch (Exception e) {
-			if (buff != null) {
-				buff.close();
-			}
-			throw e;
+
+		// Parse the file
+		if (type == UAITypes.HCREDAL) {
+			parsedObject = new HCredalUAIParser(lines).parse();
+		} else if (type == UAITypes.VCREDAL) {
+			parsedObject = new VCredalUAIParser(lines).parse();
+		} else if (type == UAITypes.BAYES) {
+			parsedObject = new BayesUAIParser(lines).parse();
+		} else if (type == UAITypes.EVID) {
+			parsedObject = new EvidUAIParser(lines).parse();
+		} else {
+			throw new IllegalArgumentException("Unknown type to be parsed");
 		}
 
-		return parsedObject;
+		return (T) parsedObject;
 	}
 
-	public void closeReader() throws IOException {
-		if (this.bufferedReader != null)
-			this.bufferedReader.close();
+	public static List<String> readLines(String filename) throws IOException {
+		return Files.lines(Path.of(filename))
+				// skip comment lines
+				.filter(line -> !(line.startsWith("//") || line.startsWith("#")))
+				.collect(Collectors.toList());
 	}
 
-	public static String getIOTypeStr(String fileName) throws IOException {
+	public static String getIOTypeStr(String firstLine) {
+		// Extract the type to know the required parser
+		String str = firstLine.replaceAll("[ \\t\\n]+", "");
 
-		BufferedReader buff = initReader(fileName);
-		String type;
+		int i = str.indexOf(" ");
 
-		try {
-			// Extract the type to know the required parser
-			String str = buff.readLine().replaceAll("[ \\t\\n]+", "");
-			int i = str.indexOf(" ");
-			if (i > 0) type = str.substring(0, i);
-			else type = str;
-		} catch (Exception e) {
-			buff.close();
-			throw e;
-		}
-		return type;
+		if (i > 0)
+			return str.substring(0, i);
+		return str;
 	}
 
-	public static BufferedReader initReader(String fileName) throws FileNotFoundException {
-		// Opening the .cn file
-		FileReader fileReader = new FileReader(fileName);
-		return new BufferedReader(fileReader);
+	public UAIParser(String filename) throws IOException {
+		lines = readLines(filename);
+		TYPE = UAITypes.valueOfLabel(getIOTypeStr(lines.get(0)));
 	}
 
-	protected void readFile() throws IOException {
-		StringBuilder stringBuilder = new StringBuilder();
-		String line;
-		while ((line = bufferedReader.readLine()) != null) {
-			stringBuilder.append(line).append(" ");
-		}
+	public UAIParser(List<String> lines) {
+		this.lines = lines;
+	}
 
-		bufferedReader.close();
+	protected void readContent() {
+		String content = String.join(" ", lines);
+
 		// Splitting file elements (spaces, tabs and newlines have the same effect)
-		elements = stringBuilder.toString().split("[ \\t\\n]+");
+		elements = content.split("[ \\t\\n]+");
 	}
 
 	protected abstract void processFile();
@@ -109,7 +91,7 @@ public abstract class UAIParser<T> {
 
 	public T parse() throws IOException {
 		T parsedObj;
-		readFile();
+		readContent();
 		processFile();
 		sanityChecks();
 		parsedObj = build();

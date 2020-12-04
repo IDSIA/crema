@@ -18,7 +18,7 @@ public class BayesUAIParserTest {
 	public void readSimpleBayesUAi() throws IOException {
 		String fileName = "./models/simple-bayes.uai"; // .cn File to open
 
-		BayesianNetwork model = (BayesianNetwork) UAIParser.read(fileName);
+		BayesianNetwork model = UAIParser.read(fileName);
 
 		Assert.assertEquals("Wrong number of variables", 2, model.getVariablesCount());
 		Assert.assertEquals("P[0] is not parent of P[1]", 1, model.getParents(1).length);

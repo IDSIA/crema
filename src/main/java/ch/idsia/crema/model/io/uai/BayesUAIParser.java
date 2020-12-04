@@ -5,28 +5,25 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Parser for Bayesian Networks in UAI format
  *
  * @author Rafael Cabañas
  */
-
-
 public class BayesUAIParser extends NetUAIParser<BayesianNetwork> {
 
 	private double[][] probs;
 
-	public BayesUAIParser(String file) throws FileNotFoundException {
-		TYPE = UAITypes.BAYES;
-		this.bufferedReader = initReader(file);
+	public BayesUAIParser(String filename) throws IOException {
+		super(filename);
 	}
 
-	public BayesUAIParser(BufferedReader reader) {
+	public BayesUAIParser(List<String> lines) {
+		super(lines);
 		TYPE = UAITypes.BAYES;
-		this.bufferedReader = reader;
 	}
 
 	@Override
