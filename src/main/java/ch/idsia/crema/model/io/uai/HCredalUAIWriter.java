@@ -18,7 +18,6 @@ public class HCredalUAIWriter extends NetUAIWriter<DAGModel<? extends Factor<?>>
 	public HCredalUAIWriter(DAGModel<? extends Factor<?>> target, String filename) {
 		super(target, filename);
 		TYPE = UAITypes.HCREDAL;
-
 	}
 
 	@Override

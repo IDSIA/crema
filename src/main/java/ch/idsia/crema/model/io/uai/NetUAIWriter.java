@@ -33,11 +33,14 @@ public abstract class NetUAIWriter<T extends DAGModel<? extends Factor<?>>> exte
 		// Add the factor domains with children at the end
 		for (int v : target.getVariables()) {
 			int[] parents = target.getParents(v);
-			append(
-					str(parents.length + 1 + "\t"),
-					str(parents),
-					str(v)
-			);
+			if (parents.length == 0)
+				append("1", str(v));
+			else
+				append(
+						str(parents.length + 1),
+						str(parents),
+						str(v)
+				);
 		}
 	}
 

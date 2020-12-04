@@ -54,7 +54,7 @@ public abstract class UAIWriter<T> {
 	}
 
 	protected void append(String... line) {
-		lines.add(String.join("\t", line));
+		lines.add(String.join(" ", line));
 	}
 
 	protected void append(double... values) {
