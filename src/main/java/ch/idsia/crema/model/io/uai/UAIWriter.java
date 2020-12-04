@@ -1,96 +1,87 @@
 package ch.idsia.crema.model.io.uai;
 
+import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.TypesIO;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class UAIWriter<T> {
 
-	protected BufferedWriter writer;
 	protected TypesIO TYPE;
 
 	protected T target;
 
+	protected List<String> lines = new ArrayList<>();
 
-	public static void write(Object target, String fileName) throws IOException {
+	protected String filename;
 
-		UAIWriter writer = null;
-		try {
-			if (HCredalUAIWriter.isCompatible(target))
-				writer = new HCredalUAIWriter((DAGModel) target, fileName);
-			else if (VCredalUAIWriter.isCompatible(target))
-				writer = new VCredalUAIWriter((DAGModel) target, fileName);
-			else if (BayesUAIWriter.isCompatible(target))
-				writer = new BayesUAIWriter((BayesianNetwork) target, fileName);
-			else
-				throw new IllegalArgumentException("Unknown type to write");
-			writer.writeToFile();
-		} catch (Exception e) {
-			if (writer != null) writer.getWriter().close();
-			throw e;
-		}
-		if (writer != null) writer.getWriter().close();
+	@SuppressWarnings("unchecked")
+	public static void write(Object target, String filename) throws IOException {
+		if (HCredalUAIWriter.isCompatible(target))
+			new HCredalUAIWriter((DAGModel<? extends Factor<?>>) target, filename).write();
+		else if (VCredalUAIWriter.isCompatible(target))
+			new VCredalUAIWriter((DAGModel<VertexFactor>) target, filename).write();
+		else if (BayesUAIWriter.isCompatible(target))
+			new BayesUAIWriter((BayesianNetwork) target, filename).write();
+		else
+			throw new IllegalArgumentException("Unknown type to write");
 	}
 
-
-	public BufferedWriter initWriter(String file) throws IOException {
-		return new BufferedWriter(new FileWriter(file));
+	public UAIWriter(T target, String filename) {
+		this.target = target;
+		this.filename = filename;
 	}
 
-	public BufferedWriter getWriter() {
-		return writer;
+	protected String str(String... values) {
+		return StringUtils.join(values, " ");
 	}
 
-	protected void tofile(String s) throws IOException {
-		writer.write(s);
+	protected String str(double... values) {
+		return StringUtils.join(ArrayUtils.toObject(values), " ");
 	}
 
-	protected void tofile(double... values) throws IOException {
-		tofile(DoubleStream.of(values).mapToObj(v -> v + " ").collect(Collectors.joining()));
+	protected String str(int... values) {
+		return StringUtils.join(ArrayUtils.toObject(values), " ");
 	}
 
-	protected void tofile(int... values) throws IOException {
-		tofile(IntStream.of(values).mapToObj(v -> v + " ").collect(Collectors.joining()));
+	protected void append(String... line) {
+		lines.add(String.join("\t", line));
 	}
 
-
-	protected void tofileln(String s) throws IOException {
-		writer.write(s + "\n");
+	protected void append(double... values) {
+		append(str(values));
 	}
 
-	protected void tofileln(double... values) throws IOException {
-		tofileln(DoubleStream.of(values).mapToObj(v -> v + " ").collect(Collectors.joining()));
+	protected void append(int... values) {
+		append(str(values));
 	}
 
-	protected void tofileln(int... values) throws IOException {
-		tofileln(IntStream.of(values).mapToObj(v -> v + " ").collect(Collectors.joining()));
-	}
-
-	public void writeToFile() throws IOException {
+	public void write() throws IOException {
 		sanityChecks();
 		writeTarget();
+		writeToFile();
 	}
 
-	public void writeType() throws IOException {
-		tofileln(this.TYPE.getLabel() + " ");
+	protected void writeToFile() throws IOException {
+		Files.write(Path.of(filename), lines);
+	}
+
+	protected void writeType() {
+		append(this.TYPE.getLabel());
 	}
 
 	protected abstract void sanityChecks();
 
 	protected abstract void writeTarget() throws IOException;
-
-	protected static boolean isCompatible(Object object) {
-		throw new IllegalStateException(
-				"isCompatible hasn't been set up in the subclass");
-	}
-
 
 }
 

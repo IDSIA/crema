@@ -6,24 +6,14 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class VCredalUAIWriter extends NetUAIWriter<DAGModel> {
+public class VCredalUAIWriter extends NetUAIWriter<DAGModel<VertexFactor>> {
 
-	public VCredalUAIWriter(DAGModel target, String file) throws IOException {
-		this.target = target;
+	public VCredalUAIWriter(DAGModel<VertexFactor> target, String filename) {
+		super(target, filename);
 		TYPE = UAITypes.VCREDAL;
-		this.writer = initWriter(file);
-
-	}
-
-	public VCredalUAIWriter(DAGModel target, BufferedWriter writer) {
-		this.target = target;
-		TYPE = UAITypes.VCREDAL;
-		this.writer = writer;
 	}
 
 	@Override
@@ -34,12 +24,11 @@ public class VCredalUAIWriter extends NetUAIWriter<DAGModel> {
 	}
 
 	@Override
-	protected void writeFactors() throws IOException {
+	protected void writeFactors() {
 		for (int v : target.getVariables()) {
+			VertexFactor f = target.getFactor(v);
 
-			VertexFactor f = (VertexFactor) target.getFactor(v);
-
-			tofileln("");
+			append("");
 			// get a reordered iterator as UAI stores data with inverted variables compared to Crema
 			Strides paDomain = target.getDomain(target.getParents(v)).reverseDomain();
 			IndexIterator iter = paDomain.getReorderedIterator(target.getParents(v));
@@ -49,19 +38,19 @@ public class VCredalUAIWriter extends NetUAIWriter<DAGModel> {
 			int paComb = paDomain.getCombinations();
 			int vSize = target.getSize(v);
 
-			// Transform constraints
+			// transform constraints
 			while (iter.hasNext()) {
 				int j = iter.next();
 				double[][] vertex = f.getVerticesAt(j);
-				tofileln(vertex.length * vSize);
-				for (int k = 0; k < vertex.length; k++)
-					tofileln(vertex[k]);
+				append(vertex.length * vSize);
+				for (double[] doubles : vertex)
+					append(doubles);
 			}
 		}
 	}
 
 	@Override
-	protected void writeTarget() throws IOException {
+	protected void writeTarget() {
 		writeType();
 		writeVariablesInfo();
 		writeDomains();
@@ -69,12 +58,11 @@ public class VCredalUAIWriter extends NetUAIWriter<DAGModel> {
 	}
 
 	protected static boolean isCompatible(Object object) {
-
 		if (!(object instanceof DAGModel))
 			return false;
 
-		for (int v : ((DAGModel) object).getVariables())
-			if (!(((DAGModel) object).getFactor(v) instanceof VertexFactor))
+		for (int v : ((DAGModel<?>) object).getVariables())
+			if (!(((DAGModel<?>) object).getFactor(v) instanceof VertexFactor))
 				return false;
 		return true;
 	}

@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -8,24 +9,16 @@ import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
-public class HCredalUAIWriter extends NetUAIWriter<DAGModel> {
+public class HCredalUAIWriter extends NetUAIWriter<DAGModel<? extends Factor<?>>> {
 
-	public HCredalUAIWriter(DAGModel target, String file) throws IOException {
-		this.target = target;
+	public HCredalUAIWriter(DAGModel<? extends Factor<?>> target, String filename) {
+		super(target, filename);
 		TYPE = UAITypes.HCREDAL;
-		this.writer = initWriter(file);
 
-	}
-
-	public HCredalUAIWriter(DAGModel target, BufferedWriter writer) {
-		this.target = target;
-		TYPE = UAITypes.HCREDAL;
-		this.writer = writer;
 	}
 
 	@Override
@@ -36,12 +29,11 @@ public class HCredalUAIWriter extends NetUAIWriter<DAGModel> {
 	}
 
 	@Override
-	protected void writeFactors() throws IOException {
+	protected void writeFactors() {
 		for (int v : target.getVariables()) {
-
 			SeparateHalfspaceFactor f = (SeparateHalfspaceFactor) target.getFactor(v);
 
-			tofileln("");
+			append("");
 			// get a reordered iterator as UAI stores data with inverted variables compared to Crema
 			Strides paDomain = target.getDomain(target.getParents(v)).reverseDomain();
 			IndexIterator iter = paDomain.getReorderedIterator(target.getParents(v));
@@ -52,8 +44,8 @@ public class HCredalUAIWriter extends NetUAIWriter<DAGModel> {
 			int vSize = target.getSize(v);
 			int offset = 0;
 
-			// Transform constraints
-			int j = 0;
+			// transform constraints
+			int j;
 			while (iter.hasNext()) {
 				j = iter.next();
 				Collection<LinearConstraint> Kj = HCredalUAIWriter.processConstraints(f.getLinearProblemAt(j).getConstraints());
@@ -62,22 +54,24 @@ public class HCredalUAIWriter extends NetUAIWriter<DAGModel> {
 				offset += vSize;
 			}
 
-			// Write coefficients
-			tofileln(paComb * vSize * K.size());
+			// write coefficients
+			append(paComb * vSize * K.size());
 			for (LinearConstraint c : K)
-				tofileln(ArraysUtil.replace(c.getCoefficients().toArray(), -0.0, 0.0));
-			//Write values
-			tofileln(K.size());
-			for (LinearConstraint c : K)
-				tofile(ArraysUtil.replace(new double[]{c.getValue()}, -0.0, 0.0));
-			tofileln("");
+				append(ArraysUtil.replace(c.getCoefficients().toArray(), -0.0, 0.0));
 
+			// write values
+			append(K.size());
+			append(K.stream()
+					.map(c -> ArraysUtil.replace(new double[]{c.getValue()}, -0.0, 0.0))
+					.map(this::str)
+					.collect(Collectors.joining(" "))
+			);
 		}
 
 	}
 
 	@Override
-	protected void writeTarget() throws IOException {
+	protected void writeTarget() {
 		writeType();
 		writeVariablesInfo();
 		writeDomains();
@@ -92,12 +86,11 @@ public class HCredalUAIWriter extends NetUAIWriter<DAGModel> {
 	}
 
 	protected static boolean isCompatible(Object object) {
-
 		if (!(object instanceof DAGModel))
 			return false;
 
-		for (int v : ((DAGModel) object).getVariables())
-			if (!(((DAGModel) object).getFactor(v) instanceof SeparateHalfspaceFactor))
+		for (int v : ((DAGModel<?>) object).getVariables())
+			if (!(((DAGModel<?>) object).getFactor(v) instanceof SeparateHalfspaceFactor))
 				return false;
 		return true;
 	}

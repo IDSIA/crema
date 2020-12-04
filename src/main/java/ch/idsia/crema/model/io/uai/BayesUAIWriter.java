@@ -5,34 +5,22 @@ import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Ints;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-
 
 public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 
-	public BayesUAIWriter(BayesianNetwork target, String file) throws IOException {
-		this.target = target;
+	public BayesUAIWriter(BayesianNetwork target, String filename) {
+		super(target, filename);
 		TYPE = UAITypes.BAYES;
-		this.writer = initWriter(file);
-
-	}
-
-	public BayesUAIWriter(BayesianNetwork target, BufferedWriter writer) {
-		this.target = target;
-		TYPE = UAITypes.BAYES;
-		this.writer = writer;
 	}
 
 	@Override
 	protected void sanityChecks() {
 		// TODO
-		return;
 	}
 
 	@Override
-	protected void writeFactors() throws IOException {
-		tofileln("");
+	protected void writeFactors() {
+		append("");
 		for (int v : target.getVariables()) {
 
 			BayesianFactor f = target.getFactor(v);
@@ -43,14 +31,14 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 			));
 
 			double[] probs = f.getData();
-			tofileln(probs.length);
+			append(probs.length);
 
 			for (double[] p : ArraysUtil.reshape2d(probs, probs.length / vsize, vsize))
-				tofileln(p);
+				append("", str(p));
 
-			//tofileln(probs);
+			// append(probs);
 
-			tofileln("");
+			append("");
 
 /*
             if(f != null){
@@ -67,14 +55,12 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
             }else{
                 tofileln(0);
             }
-
-
  */
 		}
 	}
 
 	@Override
-	protected void writeTarget() throws IOException {
+	protected void writeTarget() {
 		writeType();
 		writeVariablesInfo();
 		writeDomains();
@@ -82,15 +68,21 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 	}
 
 	@Override
-	protected void writeDomains() throws IOException {
-		// Write the number of factors
-		tofileln(target.getVariables().length);
-		// Add the factor domains with children at the end
+	protected void writeDomains() {
+		// write the number of factors
+		append(target.getVariables().length);
+
+		// add the factor domains with children at the end
 		for (int v : target.getVariables()) {
 			int[] parents = ArraysUtil.reverse(target.getParents(v));
-			tofile(parents.length + 1 + "\t");
-			tofile(parents);
-			tofileln(v);
+			if (parents.length == 0)
+				append("1", str(v));
+			else
+				append(
+						str(parents.length + 1),
+						str(parents),
+						str(v)
+				);
 		}
 	}
 
