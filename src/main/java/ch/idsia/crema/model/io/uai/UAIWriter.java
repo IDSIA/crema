@@ -71,6 +71,12 @@ public abstract class UAIWriter<T> {
 		writeToFile();
 	}
 
+	public List<String> serialize() {
+		sanityChecks();
+		writeTarget();
+		return lines;
+	}
+
 	protected void writeToFile() throws IOException {
 		Files.write(Path.of(filename), lines);
 	}
@@ -81,7 +87,7 @@ public abstract class UAIWriter<T> {
 
 	protected abstract void sanityChecks();
 
-	protected abstract void writeTarget() throws IOException;
+	protected abstract void writeTarget();
 
 }
 
