@@ -89,7 +89,7 @@ public abstract class UAIParser<T> {
 
 	protected abstract T build();
 
-	public T parse() throws IOException {
+	public T parse() {
 		T parsedObj;
 		readContent();
 		processFile();
