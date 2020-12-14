@@ -6,7 +6,7 @@ import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.DupModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.search.ObjectiveFunction;
@@ -43,7 +43,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	/**
 	 * This is a custom bayesian factor over x0 with a 1 for x0state. The value
 	 * is cached.
-	 * 
+	 *
 	 * @return
 	 */
 	protected BayesianFactor getX0factor() {
@@ -59,7 +59,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 
 	/**
 	 * Make non vertex changing moves illegal.
-	 * 
+	 *
 	 * @param from
 	 * @param move
 	 */
@@ -131,8 +131,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 		return false;
 	}
 
-
-	public static BayesianFactor replaceZerosInMarginal(BayesianFactor f){
+	public static BayesianFactor replaceZerosInMarginal(BayesianFactor f) {
 		BayesianFactor out = f.copy();
 		out.replaceInLine(0, EPS);
 		return out.normalize();

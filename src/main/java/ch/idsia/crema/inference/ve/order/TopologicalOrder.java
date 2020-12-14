@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.ve.order;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.list.array.TIntArrayList;
 
 public class TopologicalOrder implements OrderingStrategy {
@@ -11,26 +11,25 @@ public class TopologicalOrder implements OrderingStrategy {
 		for (int i = 0; i < n_var; i++) {
 			E[i] = new TIntArrayList();
 		}
-		TIntArrayList P = new TIntArrayList(n_var); // Parent set dom_size
-													// residual for each node
-		TIntArrayList L = new TIntArrayList(); // Empty list that will contain
-												// the sorted elements
+		TIntArrayList P = new TIntArrayList(n_var); // Parent set dom_size residual for each node
+		TIntArrayList L = new TIntArrayList(); // Empty list that will contain the sorted elements
 		TIntArrayList S = new TIntArrayList(); // Set of all nodes with no
-												// incoming edges
+
+		// incoming edges
 		for (int i : model.getVariables()) {
 			int[] parents = model.getParents(i);
-			
+
 			// Add root notes
 			if (parents.length == 0) {
 				S.add(i);
 			}
-			
+
 			P.add(parents.length);
 			for (int parent : parents) {
 				E[parent].add(i);
 			}
 		}
-		
+
 		while (!S.isEmpty()) { // while S is non-empty do
 			int n = S.iterator().next(); // remove a node n from S
 			S.remove(n);

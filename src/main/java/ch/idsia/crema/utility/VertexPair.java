@@ -6,13 +6,13 @@ import java.util.Objects;
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    12.02.2018 14:21
- *
+ * <p>
  * Based on https://www.programcreek.com/java-api-examples/index.php?source_dir=SerialFIM-master/org/jgrapht/util/VertexPair.java
  */
 public class VertexPair<V> {
 
-	private V first;
-	private V second;
+	private final V first;
+	private final V second;
 
 	public VertexPair(V first, V second) {
 		this.first = first;

@@ -1,13 +1,16 @@
 package ch.idsia.crema.inference.jtree.tree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.jtree.FactorElimination2;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.inference.fe.EliminationTree;
+import ch.idsia.crema.inference.fe.FactorElimination2;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+
+import static org.junit.Assert.*;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -22,7 +25,7 @@ public class EliminationTreeTest {
 	@Before
 	public void setUp() {
 		// This model is based on "Modeling and Reasoning with BN", Dawiche, p.155
-		SparseModel<BayesianFactor> model = new SparseModel<>();
+		DAGModel<BayesianFactor> model = new DAGModel<>();
 
 		// Winter?
 		A = model.addVariable(2);
@@ -116,30 +119,30 @@ public class EliminationTreeTest {
 
 		System.out.println(Arrays.toString(S14));
 
-		assert (S14.length == 2);
-		assert (ArraysUtil.contains(A, S14));
-		assert (ArraysUtil.contains(B, S14));
+		assertEquals(S14.length, 2);
+		assertTrue(ArraysUtil.contains(A, S14));
+		assertTrue(ArraysUtil.contains(B, S14));
 	}
 
 	@Test
 	public void testClusterA() {
 		buildEliminationTreeA(T);
 
-		assert (Arrays.equals(T.cluster(A), new int[]{A, B}));
-		assert (Arrays.equals(T.cluster(B), new int[]{A, B}));
-		assert (Arrays.equals(T.cluster(C), new int[]{A, C}));
-		assert (Arrays.equals(T.cluster(D), new int[]{A, B, C, D}));
-		assert (Arrays.equals(T.cluster(E), new int[]{C, E,}));
+		assertArrayEquals(T.cluster(A), new int[]{A, B});
+		assertArrayEquals(T.cluster(B), new int[]{A, B});
+		assertArrayEquals(T.cluster(C), new int[]{A, C});
+		assertArrayEquals(T.cluster(D), new int[]{A, B, C, D});
+		assertArrayEquals(T.cluster(E), new int[]{C, E,});
 	}
 
 	@Test
 	public void testClusterB() {
 		buildEliminationTreeB(T);
 
-		assert (Arrays.equals(T.cluster(A), new int[]{A, B}));
-		assert (Arrays.equals(T.cluster(B), new int[]{A, B}));
-		assert (Arrays.equals(T.cluster(C), new int[]{A, B, C}));
-		assert (Arrays.equals(T.cluster(D), new int[]{B, C, D}));
-		assert (Arrays.equals(T.cluster(E), new int[]{C, E,}));
+		assertArrayEquals(T.cluster(A), new int[]{A, B});
+		assertArrayEquals(T.cluster(B), new int[]{A, B});
+		assertArrayEquals(T.cluster(C), new int[]{A, B, C});
+		assertArrayEquals(T.cluster(D), new int[]{B, C, D});
+		assertArrayEquals(T.cluster(E), new int[]{C, E,});
 	}
 }

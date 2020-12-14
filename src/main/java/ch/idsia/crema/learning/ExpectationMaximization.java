@@ -1,184 +1,164 @@
 package ch.idsia.crema.learning;
 
 import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.JoinInference;
-import ch.idsia.crema.inference.ve.FactorVariableElimination;
-import ch.idsia.crema.inference.ve.order.MinFillOrdering;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
-import ch.idsia.crema.preprocess.CutObserved;
-import ch.idsia.crema.preprocess.RemoveBarren;
-import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * Author:  Rafael Cabañas and Claudio "Dna" Bonesana
  * Project: CreMA
  */
-public abstract class ExpectationMaximization<F extends Factor, M extends ExpectationMaximization> {
+public abstract class ExpectationMaximization<F extends Factor<F>> {
 
-    protected JoinInference<F, F> inferenceEngine;
+	protected JoinInference<F, F> inferenceEngine;
 
-    protected  GraphicalModel<F> priorModel;
+	protected GraphicalModel<F> priorModel;
 
-    protected GraphicalModel<F> posteriorModel;
+	protected GraphicalModel<F> posteriorModel;
 
-    protected boolean inline = false;
+	protected boolean inline = false;
 
-    protected boolean verbose = false;
+	protected boolean verbose = false;
 
-    protected int[] trainableVars = null;
+	protected int[] trainableVars = null;
 
-    protected boolean recordIntermediate = false;
+	protected boolean recordIntermediate = false;
 
-    protected List<GraphicalModel<F>> intermediateModels;
+	protected List<GraphicalModel<F>> intermediateModels;
 
-    protected boolean stopAtConvergence =  true;
+	protected boolean stopAtConvergence = true;
 
-    protected boolean updated;
+	protected boolean updated;
 
-    protected int performedIterations = 0;
+	protected int performedIterations = 0;
 
-    protected double klthreshold = 0.0;
+	protected double klthreshold = 0.0;
 
-    protected abstract void stepPrivate(Collection stepArgs) throws InterruptedException;
+	protected abstract void stepPrivate(Collection<TIntIntMap> stepArgs) throws InterruptedException;
 
-    public void step(Collection stepArgs) throws InterruptedException {
-        stepPrivate(stepArgs);
-        performedIterations++;
-        if(recordIntermediate)
-            addIntermediateModels(posteriorModel);
+	public void step(Collection<TIntIntMap> stepArgs) throws InterruptedException {
+		stepPrivate(stepArgs);
+		performedIterations++;
+		if (recordIntermediate)
+			addIntermediateModels(posteriorModel);
+	}
 
-    }
+	public void run(Collection<TIntIntMap> stepArgs, int iterations) throws InterruptedException {
+		init();
+		for (int i = 1; i <= iterations; i++) {
+			if (verbose) {
+				if (i % 10 == 0)
+					System.out.print("\n" + i + " iterations ");
+				else
+					System.out.print(".");
+			}
+			step(stepArgs);
+			if (stopAtConvergence && !updated)
+				break;
+		}
+	}
 
+	private void init() {
+		if (!inline)
+			this.posteriorModel = priorModel.copy();
+		else
+			this.posteriorModel = priorModel;
 
-    public void run(Collection stepArgs, int iterations) throws InterruptedException {
-        init();
-        for(int i=1; i<=iterations; i++) {
-            if(verbose){
-                if(i % 10 == 0)
-                    System.out.print("\n"+i+" iterations ");
-                else
-                    System.out.print(".");
-            }
-            step(stepArgs);
-            if(stopAtConvergence && !updated)
-                break;
+		if (trainableVars == null)
+			trainableVars = posteriorModel.getVariables();
 
-        }
-    }
+		if (recordIntermediate) {
+			intermediateModels = new ArrayList<GraphicalModel<F>>();
+			addIntermediateModels(priorModel);
+		}
+	}
 
-    private void init(){
-        if(!inline)
-            this.posteriorModel = priorModel.copy();
-        else
-            this.posteriorModel = priorModel;
+	public GraphicalModel<F> getPosterior() {
+		return posteriorModel;
+	}
 
-        if(trainableVars == null)
-            trainableVars = posteriorModel.getVariables();
+	public ExpectationMaximization<F> setInline(boolean inline) {
+		this.inline = inline;
+		return this;
+	}
 
-        if(recordIntermediate) {
-            intermediateModels = new ArrayList<GraphicalModel<F>>();
-            addIntermediateModels(priorModel);
-        }
+	public boolean isVerbose() {
+		return verbose;
+	}
 
-    }
+	public ExpectationMaximization<F> setVerbose(boolean verbose) {
+		this.verbose = verbose;
+		return this;
+	}
 
-    public GraphicalModel<F> getPosterior() {
-        return posteriorModel;
-    }
+	public ExpectationMaximization<F> setTrainableVars(int[] trainableVars) {
+		this.trainableVars = trainableVars;
+		return this;
+	}
 
+	public int[] getTrainableVars() {
+		return trainableVars;
+	}
 
+	public ExpectationMaximization<F> setRecordIntermediate(boolean recordIntermediate) {
+		this.recordIntermediate = recordIntermediate;
+		return this;
+	}
 
-    public M setInline(boolean inline) {
-        this.inline = inline;
-        return (M) this;
-    }
+	public boolean isRecordIntermediate() {
+		return recordIntermediate;
+	}
 
-    public boolean isVerbose() {
-        return verbose;
-    }
+	public List<GraphicalModel<F>> getIntermediateModels() {
+		return intermediateModels;
+	}
 
-    public M setVerbose(boolean verbose) {
-        this.verbose = verbose;
-        return (M) this;
-    }
+	public boolean isStopAtConvergence() {
+		return stopAtConvergence;
+	}
 
-    public M setTrainableVars(int[] trainableVars) {
-        this.trainableVars = trainableVars;
-        return (M) this;
-    }
+	public ExpectationMaximization<F> setStopAtConvergence(boolean stopAtConvergence) {
+		this.stopAtConvergence = stopAtConvergence;
+		return this;
+	}
 
-    public int[] getTrainableVars() {
-        return trainableVars;
-    }
+	public ExpectationMaximization<F> setKlthreshold(double klthreshold) {
+		this.klthreshold = klthreshold;
+		return this;
+	}
 
+	public int getPerformedIterations() {
+		return performedIterations;
+	}
 
-    public M setRecordIntermediate(boolean recordIntermediate) {
-        this.recordIntermediate = recordIntermediate;
-        return (M) this;
-    }
+	public double getKlthreshold() {
+		return klthreshold;
+	}
 
-    public boolean isRecordIntermediate() {
-        return recordIntermediate;
-    }
+	public JoinInference<F, F> getInferenceEngine() {
+		return inferenceEngine;
+	}
 
-    public List<GraphicalModel<F>> getIntermediateModels() {
-        return intermediateModels;
-    }
+	public ExpectationMaximization<F> setInferenceEngine(JoinInference<F, F> inferenceEngine) {
+		this.inferenceEngine = inferenceEngine;
+		return this;
+	}
 
-    public boolean isStopAtConvergence() {
-        return stopAtConvergence;
-    }
+	protected void addIntermediateModels(GraphicalModel<F> model) {
+		this.intermediateModels.add(model.copy());
+	}
 
-    public M  setStopAtConvergence(boolean stopAtConvergence) {
-        this.stopAtConvergence = stopAtConvergence;
-        return (M) this;
-    }
+	protected void setPerformedIterations(int performedIterations) {
+		this.performedIterations = performedIterations;
+	}
 
-    public M setKlthreshold(double klthreshold) {
-        this.klthreshold = klthreshold;
-        return (M) this;
-    }
-
-    public int getPerformedIterations() {
-        return performedIterations;
-    }
-
-
-    public double getKlthreshold() {
-        return klthreshold;
-    }
-
-    public JoinInference<F, F> getInferenceEngine() {
-        return inferenceEngine;
-    }
-
-    public M setInferenceEngine(JoinInference<F, F> inferenceEngine) {
-        this.inferenceEngine = inferenceEngine;
-        return (M) this;
-    }
-
-    protected void addIntermediateModels(GraphicalModel<F> model) {
-        this.intermediateModels.add(model.copy());
-    }
-
-    protected void setPerformedIterations(int performedIterations) {
-        this.performedIterations = performedIterations;
-    }
-
-    protected void setUpdated(boolean updated) {
-        this.updated = updated;
-    }
+	protected void setUpdated(boolean updated) {
+		this.updated = updated;
+	}
 
 }

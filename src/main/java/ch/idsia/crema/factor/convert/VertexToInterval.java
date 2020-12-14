@@ -1,16 +1,15 @@
 package ch.idsia.crema.factor.convert;
 
-import java.util.Arrays;
-
+import ch.idsia.crema.core.Converter;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.Converter;
+
+import java.util.Arrays;
 
 /**
  * Convert from {@link VertexFactor} to {@link IntervalFactor}
- * 
- * @author huber
  *
+ * @author huber
  */
 public class VertexToInterval implements Converter<VertexFactor, IntervalFactor> {
 

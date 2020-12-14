@@ -1,125 +1,97 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.IO;
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-public class HCredalUAIWriter extends NetUAIWriter<SparseModel>{
+public class HCredalUAIWriter extends NetUAIWriter<DAGModel<? extends Factor<?>>> {
 
-    public HCredalUAIWriter(SparseModel target, String file) throws IOException {
-        this.target = target;
-        TYPE = UAITypes.HCREDAL;
-        this.writer = initWriter(file);
+	public HCredalUAIWriter(DAGModel<? extends Factor<?>> target, String filename) {
+		super(target, filename);
+		TYPE = UAITypes.HCREDAL;
+	}
 
-    }
-    public HCredalUAIWriter(SparseModel target, BufferedWriter writer){
-        this.target = target;
-        TYPE = UAITypes.HCREDAL;
-        this.writer = writer;
-    }
+	@Override
+	protected void sanityChecks() {
+		super.sanityChecks();
+		if (!isCompatible(target))
+			throw new IllegalArgumentException("Target is not compatible with writer");
+	}
 
+	@Override
+	protected void writeFactors() {
+		for (int v : target.getVariables()) {
+			SeparateHalfspaceFactor f = (SeparateHalfspaceFactor) target.getFactor(v);
 
-    @Override
-    protected void sanityChecks() {
-        super.sanityChecks();
-        if(!isCompatible(target))
-            throw new IllegalArgumentException("Target is not compatible with writer");
-    }
+			append("");
+			// get a reordered iterator as UAI stores data with inverted variables compared to Crema
+			Strides paDomain = target.getDomain(target.getParents(v)).reverseDomain();
+			IndexIterator iter = paDomain.getReorderedIterator(target.getParents(v));
 
-    @Override
-    protected void writeFactors() throws IOException {
-        for(int v : target.getVariables()) {
+			Collection<LinearConstraint> K = new ArrayList<>();
 
-            SeparateHalfspaceFactor f = (SeparateHalfspaceFactor) target.getFactor(v);
+			int paComb = paDomain.getCombinations();
+			int vSize = target.getSize(v);
+			int offset = 0;
 
-            tofileln("");
-            // get a reordered iterator as UAI stores data with inverted variables compared to Crema
-            Strides paDomain = target.getDomain(target.getParents(v)).reverseDomain();
-            IndexIterator iter = paDomain.getReorderedIterator(target.getParents(v));
+			// transform constraints
+			int j;
+			while (iter.hasNext()) {
+				j = iter.next();
+				Collection<LinearConstraint> Kj = HCredalUAIWriter.processConstraints(f.getLinearProblemAt(j).getConstraints());
+				Kj = ConstraintsUtil.expandCoeff(Kj, paComb * vSize, offset);
+				K.addAll(Kj);
+				offset += vSize;
+			}
 
-            Collection<LinearConstraint> K = new ArrayList<>();
+			// write coefficients
+			append(paComb * vSize * K.size());
+			for (LinearConstraint c : K)
+				append(ArraysUtil.replace(c.getCoefficients().toArray(), -0.0, 0.0));
 
-            int paComb = paDomain.getCombinations();
-            int vSize = target.getSize(v);
-            int offset = 0;
+			// write values
+			append(K.size());
+			append(K.stream()
+					.map(c -> ArraysUtil.replace(new double[]{c.getValue()}, -0.0, 0.0))
+					.map(this::str)
+					.collect(Collectors.joining(" "))
+			);
+		}
 
-            // Transform constraints
-            int j = 0;
-            while(iter.hasNext()) {
-                j = iter.next();
-                Collection<LinearConstraint> Kj = HCredalUAIWriter.processConstraints(f.getLinearProblemAt(j).getConstraints());
-                Kj = ConstraintsUtil.expandCoeff(Kj, paComb*vSize, offset);
-                K.addAll(Kj);
-                offset += vSize;
-            }
+	}
 
-            // Write coefficients
-            tofileln(paComb*vSize*K.size());
-            for(LinearConstraint c : K)
-                tofileln(ArraysUtil.replace(c.getCoefficients().toArray(), -0.0, 0.0));
-            //Write values
-            tofileln(K.size());
-            for(LinearConstraint c : K)
-                tofile(ArraysUtil.replace(new double[]{c.getValue()}, -0.0, 0.0));
-            tofileln("");
+	@Override
+	protected void writeTarget() {
+		writeType();
+		writeVariablesInfo();
+		writeDomains();
+		writeFactors();
+	}
 
-        }
+	public static Collection<LinearConstraint> processConstraints(Collection<LinearConstraint> set) {
+		return ConstraintsUtil.changeGEQtoLEQ(
+				ConstraintsUtil.changeEQtoLEQ(
+						ConstraintsUtil.removeNormalization(
+								ConstraintsUtil.removeNonNegative(set))));
+	}
 
-    }
+	protected static boolean isCompatible(Object object) {
+		if (!(object instanceof DAGModel))
+			return false;
 
-    @Override
-    protected void writeTarget() throws IOException {
-        writeType();
-        writeVariablesInfo();
-        writeDomains();
-        writeFactors();
-    }
-
-
-    public static Collection<LinearConstraint> processConstraints(Collection<LinearConstraint> set){
-        return ConstraintsUtil.changeGEQtoLEQ(
-                    ConstraintsUtil.changeEQtoLEQ(
-                            ConstraintsUtil.removeNormalization(
-                                    ConstraintsUtil.removeNonNegative(set))));
-    }
-
-
-    protected static boolean isCompatible(Object object){
-
-        if(!(object instanceof SparseModel))
-            return false;
-
-        for(int v : ((SparseModel) object).getVariables())
-            if(!(((SparseModel) object).getFactor(v) instanceof  SeparateHalfspaceFactor))
-                return false;
-        return true;
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        String fileName = "./models/simple-hcredal";
-
-        SparseModel model;
-
-        model = (SparseModel) UAIParser.read(fileName+".uai");
-        UAIWriter.write(model,fileName+"2.uai");
-
-        model = (SparseModel) UAIParser.read(fileName+"2.uai");
-        IO.write(model,fileName+"3.uai");
-
-    }
-
-
+		for (int v : ((DAGModel<?>) object).getVariables())
+			if (!(((DAGModel<?>) object).getFactor(v) instanceof SeparateHalfspaceFactor))
+				return false;
+		return true;
+	}
 
 }

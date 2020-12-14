@@ -1,12 +1,12 @@
 package ch.idsia.crema.inference.approxlp;
 
+import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.ObservationBuilder;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearFractionalSolver;
 import ch.idsia.crema.solver.commons.FractionalSolver;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -20,9 +20,9 @@ import java.util.stream.DoubleStream;
 public class Posterior extends Manager {
 
 	//private static final double BAD = Double.NaN;
-	private SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
+	private final SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
-	private int evidence;
+	private final int evidence;
 
 	public Posterior(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state, int evidence) {
 		super(model, dir, x0, x0state);
@@ -41,6 +41,7 @@ public class Posterior extends Manager {
 			return null;
 		}
 		simplex.loadProblem(factor, goal);
+
 		return simplex;
 	}
 
@@ -52,7 +53,6 @@ public class Posterior extends Manager {
 	 */
 	@Override
 	public double eval(Solution from, Move doing) {
-
 		int free = doing.getFree();
 		int[] parents = model.getParents(free);
 		int pindex = Arrays.binarySearch(parents, x0);
@@ -72,9 +72,9 @@ public class Posterior extends Manager {
 			// prepare the full domain by first adding the free var to its
 			// parents
 			int[] target = ArraysUtil.addToSortedArray(parents, free);
-			
+
 			// all includes evidence
-			int[] all = ArraysUtil.addToSortedArray(target, evidence); 
+			int[] all = ArraysUtil.addToSortedArray(target, evidence);
 
 			BayesianFactor p_ep0 = tmp = calcMarginal(from, all);
 
@@ -100,7 +100,7 @@ public class Posterior extends Manager {
 			// 1).getData();
 			// denominator = p_ep0.filter(evidence, 1).getData();
 
-		} else if (free == x0) { 
+		} else if (free == x0) {
 			int[] target = ArraysUtil.addToSortedArray(parents, free);
 			int[] all = ArraysUtil.addToSortedArray(target, evidence);
 
@@ -115,7 +115,7 @@ public class Posterior extends Manager {
 			BayesianFactor p_0pj = p_ep0.marginalize(evidence);
 
 			p_ep0 = p_ep0.divide(p_0pj).combine(p_p); // this is p(e|x0p0) * p(p0)
-			
+
 			// filter evidence
 			p_ep0 = p_ep0.filter(evidence, 1);
 			denominator = p_ep0.getData();
@@ -126,44 +126,44 @@ public class Posterior extends Manager {
 
 		} else {
 			int[] target = ArraysUtil.addToSortedArray(parents, free);
-			
+
 			int[] all = ArraysUtil.addToSortedArray(target, x0);
 			all = ArraysUtil.addToSortedArray(all, evidence);
-			
+
 			// num = [P(x0|xE,xj,pj) * P(xE|xj,pj) * P(pj)]
 
 			BayesianFactor p_0epj = tmp = calcMarginal(from, all);
-			
+
 			BayesianFactor p_p = p_0epj;
 			// here we could use FactorUtils.marginal
 			for (int parent : ArraysUtil.removeAllFromSortedArray(all, parents)) {
 				p_p = p_p.marginalize(parent);
 			}
-			
+
 			BayesianFactor p_epj = p_0epj.marginalize(x0);
 			BayesianFactor p_pj = p_epj.marginalize(evidence);
 
 			p_epj = p_epj.divide(p_pj).combine(p_p); // P(Xe | Xj Pj) * P(Pj) 
-			
+
 			// P(xE|xj,pj) * P(pj)
 			denominator = p_epj.filter(evidence, 1).getData();
 
 			p_0epj = p_0epj.divide(p_pj).combine(p_p); // P(x0 Xe | Xj Pj)
 			p_0epj = p_0epj.filter(evidence, 1).filter(x0, x0state);
-			
+
 			numerator = p_0epj.getData();
 		}
 
-		if(DoubleStream.of(numerator).anyMatch(x -> Double.isNaN(x)))
+		if (DoubleStream.of(numerator).anyMatch(Double::isNaN))
 			throw new IllegalStateException("Numerator in the LinearFractionalSolver contains NaN values.");
-		if(DoubleStream.of(numerator).anyMatch(x -> Double.isNaN(x)))
+		if (DoubleStream.of(numerator).anyMatch(Double::isNaN))
 			throw new IllegalStateException("Denominator in the LinearFractionalSolver contains NaN values.");
 
 		LinearFractionalSolver solver = createSolver(free);
 		try {
 			solver.solve(numerator, 0.0, denominator, 0.0);
 		} catch (NoFeasibleSolutionException ex) {
-			System.out.println(free + " "+ (Arrays.stream(tmp.getData()).sum() == 1.0) + " " + Arrays.toString(tmp.getData()));
+			System.out.println(free + " " + (Arrays.stream(tmp.getData()).sum() == 1.0) + " " + Arrays.toString(tmp.getData()));
 			throw ex;
 		}
 		BayesianFactor solution = from.getData().get(free);
@@ -175,22 +175,20 @@ public class Posterior extends Manager {
 
 		doing.setValues(solution);
 		doing.setScore(solver.getValue());
-		
+
 		fixNotMoving(from, doing);
 
 		return doing.getScore();
 	}
 
-
 	@Override
 	public double eval(Solution solution) {
-		
 		if (!Double.isNaN(solution.getScore()))
 			return solution.getScore();
 
 		TIntIntMap ev = ObservationBuilder.observe(evidence, 1);
-		
-		BayesianFactor marg = calcPosterior(solution, new int[] { x0 }, ev);
+
+		BayesianFactor marg = calcPosterior(solution, new int[]{x0}, ev);
 		marg = marg.normalize();
 		double value = marg.getValue(x0state);
 		solution.setScore(value);

@@ -1,16 +1,17 @@
 package ch.idsia.crema.factor.symbolic;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.model.Strides;
 
 
 public abstract class SymbolicFactor implements Factor<SymbolicFactor> {
-	private Strides domain;
-	
+
+	private final Strides domain;
+
 	public SymbolicFactor(Strides domain) {
 		this.domain = domain;
 	}
-	
+
 	@Override
 	public CombinedFactor combine(SymbolicFactor other) {
 		return new CombinedFactor(this, other);
@@ -20,16 +21,15 @@ public abstract class SymbolicFactor implements Factor<SymbolicFactor> {
 	public MarginalizedFactor marginalize(int variable) {
 		return new MarginalizedFactor(this, variable);
 	}
-	
+
 	@Override
 	public Strides getDomain() {
 		return domain;
 	}
 
-
-	// XXX copy not this way
 	@Override
 	public SymbolicFactor copy() {
+		// TODO: copy not this way
 		return null;
 	}
 
@@ -38,8 +38,6 @@ public abstract class SymbolicFactor implements Factor<SymbolicFactor> {
 		return new FilteredFactor(this, variable, state);
 	}
 
-
-	
 	@Override
 	public DividedFactor divide(SymbolicFactor factor) {
 		return new DividedFactor(this, factor);
