@@ -11,7 +11,6 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -56,15 +55,11 @@ public class BeliefPropagation<F extends Factor<F>> {
 	}
 
 	private Clique getRoot(int variable) {
-		Optional<Clique> minRoot = junctionTree.vertexSet()
+		return junctionTree.vertexSet()
 				.stream()
 				.filter(c -> c.contains(variable))
-				.min(Comparator.comparingInt(c -> c.getVariables().length));
-
-		if (minRoot.isEmpty())
-			throw new IllegalArgumentException("Variable " + variable + " not found in model");
-
-		return minRoot.get();
+				.min(Comparator.comparingInt(c -> c.getVariables().length))
+				.orElseThrow(() -> new IllegalArgumentException("Variable " + variable + " not found in model"));
 	}
 
 	/**
@@ -74,10 +69,12 @@ public class BeliefPropagation<F extends Factor<F>> {
 	public F query(int variable) {
 		F f;
 
-		if (!fullyPropagated)
+		if (!fullyPropagated) {
+			distributingEvidence(variable);
 			f = collectingEvidence(variable);
-		else
+		} else {
 			f = phi(getRoot(variable));
+		}
 
 		// marginalize out what is not needed
 		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
@@ -164,7 +161,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	}
 
 	private void checks() {
-		if (model == null) throw new IllegalArgumentException("No network available");
+		if (model == null) throw new IllegalStateException("No network available");
 		if (junctionTree == null) throw new IllegalStateException("No JunctionTree available");
 	}
 
@@ -236,7 +233,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 		F factor = IntStream.of(clique.getVariables())
 				.mapToObj(model::getFactor)
 				.reduce(F::combine)
-				.orElseThrow(() -> new IllegalStateException("Empty F after reduce"));
+				.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
 
 		return factor.filter(evidence);
 	}
