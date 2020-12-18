@@ -1,0 +1,38 @@
+package ch.idsia.crema.entropy;
+
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import org.junit.Test;
+
+import static ch.idsia.crema.entropy.BayesianEntropy.H;
+import static org.junit.Assert.assertEquals;
+
+/**
+ * Author:  Claudio "Dna" Bonesana
+ * Project: crema
+ * Date:    18.12.2020 11:15
+ */
+public class BayesianEntropyTest {
+
+	@Test
+	public void testSimpleHA() {
+		BayesianFactor A = new BayesianFactor(new int[]{1}, new int[]{4});
+		A.setData(new double[]{.25, .25, .25, .25});
+
+		double h = H(A);
+
+		assertEquals(1, h, 1e-3);
+	}
+
+	@Test
+	public void testSimpleHAGivenB() {
+		BayesianFactor A = new BayesianFactor(new int[]{1}, new int[]{2});
+		A.setData(new double[]{.4, .6});
+
+		BayesianFactor B = new BayesianFactor(new int[]{1, 2}, new int[]{2, 4});
+		B.setData(new double[]{.4, .7, .6, .3});
+
+		double h = H(A, B);
+
+		System.out.println(h);
+	}
+}
