@@ -22,10 +22,10 @@ public class CutObservedSepHalfspace {
 	 *                 pairs
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	public void executeInplace(GraphicalModel model, TIntIntMap evidence) {
-		int size = evidence.size();
+	public void executeInplace(final GraphicalModel model, final TIntIntMap evidence) {
+		final int size = evidence.size();
 
-		TIntIntIterator iterator = evidence.iterator();
+		final TIntIntIterator iterator = evidence.iterator();
 		for (int o = 0; o < size; ++o) {
 			iterator.advance();
 			final int observed = iterator.key();
@@ -33,11 +33,13 @@ public class CutObservedSepHalfspace {
 
 			//int[] affected = Ints.concat(model.getChildren(observed), new int[]{observed});
 
-			int[] affected = model.getChildren(observed);
+			final int[] affected = model.getChildren(observed);
 
-			for (int variable : affected) {
-				SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor) model.getFactor(variable)).filter(observed, state);
-				if (variable != observed) model.removeParent(variable, observed);
+			for (final int variable : affected) {
+				final SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor) model.getFactor(variable))
+                        .filter(observed, state);
+				if (variable != observed)
+				    model.removeParent(variable, observed);
 				model.setFactor(variable, new_factor);
 
 			}
@@ -53,9 +55,9 @@ public class CutObservedSepHalfspace {
 	 *                 pairs
 	 */
 	@SuppressWarnings({"rawtypes"})
-	public GraphicalModel execute(GraphicalModel model, TIntIntMap evidence) {
+	public GraphicalModel execute(final GraphicalModel model, final TIntIntMap evidence) {
 
-		GraphicalModel copy = model.copy();
+		final GraphicalModel copy = model.copy();
 		executeInplace(copy, evidence);
 		return copy;
 	}
