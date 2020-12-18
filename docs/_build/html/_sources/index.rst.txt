@@ -49,7 +49,7 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
 
    notes/modeldef
    notes/guideinference
-   JavaDoc <https://idsia.github.io/credici/javadoc/>
+   JavaDoc <https://idsia.github.io/crema/javadoc/>
 
 
 
