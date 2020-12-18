@@ -65,9 +65,10 @@ public class AbellanEntropy {
 	 * @param b
 	 * @return
 	 */
-	private int secondminLS(double[] arr, boolean[] b) {
+	private int secondMinLS(double[] arr, boolean[] b) {
 		boolean[] b2 = b.clone();
 		int index = minLS(arr, b2);
+		// FIXME: what if index is -1?
 		double min1 = arr[index];
 		for (int i = 0; i < arr.length; i++)
 			if (arr[i] == min1)
@@ -91,7 +92,12 @@ public class AbellanEntropy {
 		return true;
 	}
 
-	public double[] getMaxEntro(double[] l, double[] u) {
+	/**
+	 * @param l
+	 * @param u
+	 * @return
+	 */
+	public double[] getMaxEntropy(double[] l, double[] u) {
 		// ALGORITHM
 		double ss;
 		int r, f, m;
@@ -110,7 +116,7 @@ public class AbellanEntropy {
 			}
 			ss = DoubleStream.of(l).sum();
 			r = minLS(l, S);
-			f = secondminLS(l, S);
+			f = secondMinLS(l, S);
 			m = nMinLS(l, S);
 			for (int i = 0; i < l.length; i++) {
 				if (l[i] == l[minLS(l, S)]) {
