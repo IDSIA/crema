@@ -1,4 +1,4 @@
-package ch.idsia.credo.entropy;
+package ch.idsia.crema.entropy;
 
 import gnu.trove.iterator.TIntIterator;
 import gnu.trove.set.TIntSet;

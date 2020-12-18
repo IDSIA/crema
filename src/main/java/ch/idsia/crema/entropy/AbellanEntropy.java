@@ -1,4 +1,4 @@
-package ch.idsia.crema.alessandro;
+package ch.idsia.crema.entropy;
 
 import java.util.stream.DoubleStream;
 public class AbellanEntropy {
