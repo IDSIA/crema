@@ -1,8 +1,7 @@
 package ch.idsia.crema.entropy;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-
-import java.util.Arrays;
+import ch.idsia.crema.utility.IndexIterator;
 
 import static org.apache.commons.math3.util.FastMath.log;
 
@@ -21,10 +20,17 @@ public class BayesianEntropy {
 	 * @return The entropy of this CPT.
 	 */
 	public static double H(BayesianFactor A) {
-		int states = A.getDomain().getCardinality(1);
-		return -Arrays.stream(A.getData())
-				.map(a -> a * log(states, a))
-				.sum();
+		double H = 0;
+		int x = 0;
+
+		IndexIterator it = A.getDomain().getIterator();
+		while (it.hasNext()) {
+			double v = A.getValueAt(it.next());
+			H += v * log(v);
+			x++;
+		}
+
+		return -H / log(x);
 	}
 
 	/**
@@ -35,20 +41,24 @@ public class BayesianEntropy {
 	 * @return The entropy of this relation.
 	 */
 	public static double H(BayesianFactor fA, BayesianFactor fB) {
-		double[] A = fA.getData();
-		double[] B = fB.getData();
-
-		int AStates = fA.getDomain().getCardinality(1);
-		int BStates = fB.getDomain().getCardinality(2);
-
 		double H = 0.0;
-		for (int b = 0; b < BStates; b++) {
-			for (int a = 0; a < AStates; a++) {
-				// H = P(A) * P(B|A) * Log2 P(B|A)
-				H += A[a] * B[a * BStates + b] * log(B[a * BStates + b]);
+
+		IndexIterator itA = fA.getDomain().getIterator();
+		int x = 0;
+		while (itA.hasNext()) {
+			double a = fA.getValueAt(itA.next());
+
+			IndexIterator itB = fB.getDomain().getIterator();
+			x = 0;
+			while (itB.hasNext()) {
+				double b = fB.getValueAt(itB.next());
+
+//				 H = P(A) * P(B|A) * Log2 P(B|A)
+				H += a * b * log(b);
+				x++;
 			}
 		}
 
-		return -H;
+		return -H / log(x);
 	}
 }

@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class BayesianEntropyTest {
 
 	@Test
-	public void testSimpleHA() {
+	public void testEntropySingleFactorHigh() {
 		BayesianFactor A = new BayesianFactor(new int[]{1}, new int[]{4});
 		A.setData(new double[]{.25, .25, .25, .25});
 
@@ -24,15 +24,38 @@ public class BayesianEntropyTest {
 	}
 
 	@Test
-	public void testSimpleHAGivenB() {
+	public void testEntropySingleFactorLow() {
 		BayesianFactor A = new BayesianFactor(new int[]{1}, new int[]{2});
-		A.setData(new double[]{.4, .6});
+		A.setData(new double[]{1e-6, 1 - 1e-6});
 
-		BayesianFactor B = new BayesianFactor(new int[]{1, 2}, new int[]{2, 4});
-		B.setData(new double[]{.4, .7, .6, .3});
+		double h = H(A);
+
+		assertEquals(0, h, .1);
+	}
+
+	@Test
+	public void testEntropyConditionedHigh() {
+		BayesianFactor A = new BayesianFactor(new int[]{1}, new int[]{2});
+		A.setData(new double[]{.5, .5});
+
+		BayesianFactor B = new BayesianFactor(new int[]{1, 2}, new int[]{2, 2});
+		B.setData(new double[]{.5, .5, .5, .5});
 
 		double h = H(A, B);
 
-		System.out.println(h);
+		assertEquals(1, h, 1e-3);
+	}
+
+	@Test
+	public void testEntropyConditionedLow() {
+		BayesianFactor A = new BayesianFactor(new int[]{1}, new int[]{2});
+		A.setData(new double[]{1e-6, 1 - 1e-6});
+
+		BayesianFactor B = new BayesianFactor(new int[]{1, 2}, new int[]{2, 2});
+		B.setData(new double[]{1e-6, 1 - 1e-6, 1 - 1e-6, 1e-6});
+
+		double h = H(A, B);
+
+		assertEquals(0, h, 1e-3);
 	}
 }
