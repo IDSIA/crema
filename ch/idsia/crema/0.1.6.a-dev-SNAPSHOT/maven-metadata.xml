@@ -5,32 +5,32 @@
   <version>0.1.6.a-dev-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20201210.120212</timestamp>
+      <timestamp>20210114.163006</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
-    <lastUpdated>20201210120212</lastUpdated>
+    <lastUpdated>20210114163006</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>0.1.6.a-dev-20201210.120212-1</value>
-        <updated>20201210120212</updated>
+        <value>0.1.6.a-dev-20210114.163006-1</value>
+        <updated>20210114163006</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>0.1.6.a-dev-20201210.120212-1</value>
-        <updated>20201210120212</updated>
+        <value>0.1.6.a-dev-20210114.163006-1</value>
+        <updated>20210114163006</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>jar-with-dependencies</classifier>
         <extension>jar</extension>
-        <value>0.1.6.a-dev-20201210.120212-1</value>
-        <updated>20201210120212</updated>
+        <value>0.1.6.a-dev-20210114.163006-1</value>
+        <updated>20210114163006</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
         <extension>jar</extension>
-        <value>0.1.6.a-dev-20201210.120212-1</value>
-        <updated>20201210120212</updated>
+        <value>0.1.6.a-dev-20210114.163006-1</value>
+        <updated>20210114163006</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
