@@ -1,8 +1,10 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.model.graphical.GenericSparseModel;
-import org.junit.Assert;
+import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -10,16 +12,22 @@ import java.util.stream.IntStream;
  *
  * @author Rafael Cabañas
  */
-
-public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIParser<T> {
+public abstract class NetUAIParser<T extends GraphicalModel<? extends Factor<?>>> extends UAIParser<T> {
 
 	protected int numberOfVariables;
 	protected int[] cardinalities;
 	protected int numberOfTables;
 	protected int[][] parents;
 
+	public NetUAIParser(String filename) throws IOException {
+		super(filename);
+	}
 
-	// todo: this assume that variables take consecutive ids from 0
+	public NetUAIParser(List<String> lines) {
+		super(lines);
+	}
+
+	// TODO: this assume that variables take consecutive ids from 0
 	protected void parseVariablesInfo() {
 		// Parsing the number of variables in the network
 		numberOfVariables = popInteger();
@@ -48,7 +56,6 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 				parents[i][k] = popInteger();
 			}
 		}
-
 	}
 
 	protected void parseDomainsLastIsHead() {
@@ -78,16 +85,20 @@ public abstract class NetUAIParser<T extends GenericSparseModel> extends UAIPars
 		super.sanityChecks();
 
 		// Specific sanity checks for SparseModels
-		Assert.assertEquals("Wrong number of tables (" + numberOfTables + ") and variables (" + numberOfVariables + ")",
-				numberOfVariables, numberOfTables);
+		if (numberOfVariables != numberOfTables)
+			throw new IllegalArgumentException("Wrong number of tables (" + numberOfTables + ") and variables (" + numberOfVariables + ")");
 
-		Assert.assertTrue("Wrong cardinalities",
-				IntStream.of(cardinalities).allMatch(c -> c > 1));
+		if (!IntStream.of(cardinalities).allMatch(c -> c > 1))
+			throw new IllegalArgumentException("Wrong cardinalities");
 
 		for (int i = 0; i < parents.length; i++) {
 			for (int j = 0; j < parents[i].length; j++) {
-				Assert.assertTrue(parents[i][j] >= 0 || parents[i][j] < numberOfVariables);
-				Assert.assertTrue(parents[i][j] != i);
+
+				if (!(parents[i][j] >= 0 || parents[i][j] < numberOfVariables))
+					throw new IllegalArgumentException("Wrong parents for i=" + i + " and j=" + j + ": invalid parent");
+
+				if (parents[i][j] == i)
+					throw new IllegalArgumentException("Wrong parents for i=" + i + " and j=" + j + ": parent of itself");
 			}
 		}
 	}

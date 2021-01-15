@@ -1,15 +1,14 @@
 package ch.idsia.crema.factor.credal;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateFactor;
-import ch.idsia.crema.model.Strides;
 
 /**
  * An abstract implementation of the {@link SeparateFactor} interface.
- * 
+ *
+ * @param <F> the managed type. This is usually the type itself.
  * @author david
- * @param <F>
- *            the managed type. This is usually the type itself.
  */
 public abstract class ConditionalFactor<F extends ConditionalFactor<F>> implements GenericFactor, SeparatelySpecified<F> {
 

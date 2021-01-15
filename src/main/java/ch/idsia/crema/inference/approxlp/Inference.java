@@ -3,8 +3,7 @@ package ch.idsia.crema.inference.approxlp;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.inference.SingleInference;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.impl.GreedyWithRandomRestart;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
@@ -24,20 +23,17 @@ public class Inference<F extends GenericFactor> implements SingleInference<F, In
 	 * Preconditions: model reduction (barren and root node observations, single
 	 * node evidence. Factors must be of type ExtensiveLinearFactors,
 	 * BayesianFactor or SeparateLinearFactor
-	 * 
+	 * <p>
 	 * XXX must support multiple evidence here and in the variable elimination
-	 * 
-	 * @param model
-	 *            the data model
-	 * @param query
-	 *            the variable whose intervals we are interested in
-	 * @param evidence
-	 *            the variable that is to be considered the summarization of the
-	 *            evidence (-1 if no evidence)
+	 *
+	 * @param model    the data model
+	 * @param query    the variable whose intervals we are interested in
+	 * @param evidence the variable that is to be considered the summarization of the
+	 *                 evidence (-1 if no evidence)
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public IntervalFactor query(GraphicalModel<?> model, int query, int evidence) throws InterruptedException {
+	public IntervalFactor query(GraphicalModel<? extends GenericFactor> model, int query, int evidence) throws InterruptedException {
 		int states = model.getSize(query);
 
 		double[] lowers = new double[states];
@@ -63,8 +59,8 @@ public class Inference<F extends GenericFactor> implements SingleInference<F, In
 
 		}
 
-		IntervalFactor result = new IntervalFactor(model.getDomain(query), model.getDomain(), new double[][] { lowers },
-				new double[][] { uppers });
+		IntervalFactor result = new IntervalFactor(model.getDomain(query), model.getDomain(), new double[][]{lowers},
+				new double[][]{uppers});
 		result.updateReachability();
 
 		return result;
@@ -108,11 +104,4 @@ public class Inference<F extends GenericFactor> implements SingleInference<F, In
 		}
 	}
 
-	public static void main(String[] args) throws InterruptedException {
-		SparseModel<IntervalFactor> m = new SparseModel<>();
-
-		Inference<IntervalFactor> i = new Inference<>();
-		IntervalFactor f = i.apply(m, 1);
-
-	}
 }

@@ -1,12 +1,6 @@
 package ch.idsia.crema.alessandro;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
-import org.junit.Test;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -15,10 +9,17 @@ import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateConvexAlgebra;
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
 import ch.idsia.crema.inference.approxlp.Inference;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.search.ISearch;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
+import org.junit.Ignore;
+import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
+@Ignore
 public class AlexsTests {
 
 	public static void main(String[] args) {
@@ -71,9 +72,9 @@ public class AlexsTests {
 */
 
 	@Test
-	
+
 	public void twoNodesTernary() {
-		SparseModel<GenericFactor> model = new SparseModel<>();
+		DAGModel<GenericFactor> model = new DAGModel<>();
 		int varA = model.addVariable(3); // Variables
 		int varB = model.addVariable(3); // Variables
 		Strides dA = Strides.as(varA, 3);
@@ -146,7 +147,7 @@ public class AlexsTests {
 			resultsALP = approx.query(model, 0, dummy);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} catch (NoFeasibleSolutionException e){
+		} catch (NoFeasibleSolutionException e) {
 			e.printStackTrace();
 			return;
 		}
@@ -157,50 +158,48 @@ public class AlexsTests {
 	}
 
 
-	
-	
 	public void threeNodes() {
-		SparseModel<GenericFactor> model = new SparseModel<>();
+		DAGModel<GenericFactor> model = new DAGModel<>();
 		int varA = model.addVariable(2); // Variables
 		int varB = model.addVariable(2); // Variables
 		int varC = model.addVariable(2); // Variables
-		Strides dA = Strides.as(varA,2);
-		Strides dB = Strides.as(varB,2);
-		Strides dC = Strides.as(varC,2);
-		IntervalFactor ffA,ffB,ffC;
-		ffA = new IntervalFactor(dA,Strides.EMPTY);
-		ffA.setLower(new double[] {0.4,0.4});
-		ffA.setUpper(new double[] {0.6,0.6});
-		ffB = new IntervalFactor(dB,dA);
-		ffB.setLower(new double[] {0.2,0.7}, 0);
-		ffB.setUpper(new double[] {0.3,0.8}, 0);
-		ffB.setLower(new double[] {0.8,0.1}, 1);
-		ffB.setUpper(new double[] {0.9,0.2}, 1);
-		ffC = new IntervalFactor(dC,dB);
-		ffC.setLower(new double[] {0.2,0.7}, 0);
-		ffC.setUpper(new double[] {0.3,0.8}, 0);
-		ffC.setLower(new double[] {0.8,0.1}, 1);
-		ffC.setUpper(new double[] {0.9,0.2}, 1);
-		model.setFactor(varA,ffA);
-		model.setFactor(varB,ffB);
-		model.setFactor(varC,ffC);
-		VertexFactor fA,fB,fC;
+		Strides dA = Strides.as(varA, 2);
+		Strides dB = Strides.as(varB, 2);
+		Strides dC = Strides.as(varC, 2);
+		IntervalFactor ffA, ffB, ffC;
+		ffA = new IntervalFactor(dA, Strides.EMPTY);
+		ffA.setLower(new double[]{0.4, 0.4});
+		ffA.setUpper(new double[]{0.6, 0.6});
+		ffB = new IntervalFactor(dB, dA);
+		ffB.setLower(new double[]{0.2, 0.7}, 0);
+		ffB.setUpper(new double[]{0.3, 0.8}, 0);
+		ffB.setLower(new double[]{0.8, 0.1}, 1);
+		ffB.setUpper(new double[]{0.9, 0.2}, 1);
+		ffC = new IntervalFactor(dC, dB);
+		ffC.setLower(new double[]{0.2, 0.7}, 0);
+		ffC.setUpper(new double[]{0.3, 0.8}, 0);
+		ffC.setLower(new double[]{0.8, 0.1}, 1);
+		ffC.setUpper(new double[]{0.9, 0.2}, 1);
+		model.setFactor(varA, ffA);
+		model.setFactor(varB, ffB);
+		model.setFactor(varC, ffC);
+		VertexFactor fA, fB, fC;
 		fA = new VertexFactor(dA, Strides.EMPTY);
-		fA.addVertex(new double[] {.4,.6});
-		fA.addVertex(new double[] {.6,.4});
+		fA.addVertex(new double[]{.4, .6});
+		fA.addVertex(new double[]{.6, .4});
 		fB = new VertexFactor(dB, dA);
-		fB.addVertex(new double[] {0.2,0.8}, 0);
-		fB.addVertex(new double[] {0.3,0.7}, 0);
-		fB.addVertex(new double[] {0.8,0.2}, 1);
-		fB.addVertex(new double[] {0.9,0.1}, 1);		
+		fB.addVertex(new double[]{0.2, 0.8}, 0);
+		fB.addVertex(new double[]{0.3, 0.7}, 0);
+		fB.addVertex(new double[]{0.8, 0.2}, 1);
+		fB.addVertex(new double[]{0.9, 0.1}, 1);
 		fC = new VertexFactor(dC, dB);
-		fC.addVertex(new double[] {0.2,0.8}, 0);
-		fC.addVertex(new double[] {0.3,0.7}, 0);
-		fC.addVertex(new double[] {0.8,0.2}, 1);
-		fC.addVertex(new double[] {0.9,0.1}, 1);		
+		fC.addVertex(new double[]{0.2, 0.8}, 0);
+		fC.addVertex(new double[]{0.3, 0.7}, 0);
+		fC.addVertex(new double[]{0.8, 0.2}, 1);
+		fC.addVertex(new double[]{0.9, 0.1}, 1);
 		int dummy = model.addVariable(2);
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(2,dummy), false);
-		fDummy.setValue(1.0, 1, 1);	
+		BayesianFactor fDummy = new BayesianFactor(model.getDomain(2, dummy), false);
+		fDummy.setValue(1.0, 1, 1);
 		fDummy.setValue(1.0, 0, 0);
 		model.setFactor(dummy, fDummy);
 
@@ -218,13 +217,13 @@ public class AlexsTests {
 		//		//Backward
 		int s = 1;
 		fC = fC.reseparate(Strides.EMPTY);
-		fC = fC.filter(varC,s);//
+		fC = fC.filter(varC, s);//
 		fC = convex_alge.fullConvex(fC);
 		fB = fB.reseparate(Strides.EMPTY);
-		fB = alge.combine(fB,fC);
-		fB = alge.marginalize(fB,1);
+		fB = alge.combine(fB, fC);
+		fB = alge.marginalize(fB, 1);
 		fB = fB.reseparate(Strides.EMPTY);
-		fA = alge.combine(fA,fB);
+		fA = alge.combine(fA, fB);
 		//VertexFactor bottom = convex_alge.fullConvex(fC);
 		//VertexFactor parent = fB.reseparate(Strides.EMPTY);
 		//VertexFactor tmp = alge.combine(bottom, parent);
@@ -239,7 +238,7 @@ public class AlexsTests {
 		Inference approx = new Inference();
 		IntervalFactor resultsALP = null;
 		try {
-			resultsALP = approx.query(model,0,3);
+			resultsALP = approx.query(model, 0, 3);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -249,39 +248,36 @@ public class AlexsTests {
 		//
 	}
 
-	
-	
-	
 
 	public void twoNodes() {
-		SparseModel<GenericFactor> model = new SparseModel<>();
+		DAGModel<GenericFactor> model = new DAGModel<>();
 		int varA = model.addVariable(2); // Variables
 		int varB = model.addVariable(2); // Variables
-		Strides dA = Strides.as(varA,2);
-		Strides dB = Strides.as(varB,2);
-		IntervalFactor ffA,ffB;
-		ffA = new IntervalFactor(dA,Strides.EMPTY);
-		ffA.setLower(new double[] {0.4,0.4});
-		ffA.setUpper(new double[] {0.6,0.6});
-		ffB = new IntervalFactor(dB,dA);
-		ffB.setLower(new double[] {0.2,0.7}, 0);
-		ffB.setUpper(new double[] {0.3,0.8}, 0);
-		ffB.setLower(new double[] {0.8,0.1}, 1);
-		ffB.setUpper(new double[] {0.9,0.2}, 1);
-		model.setFactor(varA,ffA);
-		model.setFactor(varB,ffB);
-		VertexFactor fA,fB;
+		Strides dA = Strides.as(varA, 2);
+		Strides dB = Strides.as(varB, 2);
+		IntervalFactor ffA, ffB;
+		ffA = new IntervalFactor(dA, Strides.EMPTY);
+		ffA.setLower(new double[]{0.4, 0.4});
+		ffA.setUpper(new double[]{0.6, 0.6});
+		ffB = new IntervalFactor(dB, dA);
+		ffB.setLower(new double[]{0.2, 0.7}, 0);
+		ffB.setUpper(new double[]{0.3, 0.8}, 0);
+		ffB.setLower(new double[]{0.8, 0.1}, 1);
+		ffB.setUpper(new double[]{0.9, 0.2}, 1);
+		model.setFactor(varA, ffA);
+		model.setFactor(varB, ffB);
+		VertexFactor fA, fB;
 		fA = new VertexFactor(dA, Strides.EMPTY);
-		fA.addVertex(new double[] {.4,.6});
-		fA.addVertex(new double[] {.6,.4});
+		fA.addVertex(new double[]{.4, .6});
+		fA.addVertex(new double[]{.6, .4});
 		fB = new VertexFactor(dB, dA);
-		fB.addVertex(new double[] {0.2,0.8}, 0);
-		fB.addVertex(new double[] {0.3,0.7}, 0);
-		fB.addVertex(new double[] {0.8,0.2}, 1);
-		fB.addVertex(new double[] {0.9,0.1}, 1);		
+		fB.addVertex(new double[]{0.2, 0.8}, 0);
+		fB.addVertex(new double[]{0.3, 0.7}, 0);
+		fB.addVertex(new double[]{0.8, 0.2}, 1);
+		fB.addVertex(new double[]{0.9, 0.1}, 1);
 		int dummy = model.addVariable(2);
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(1,dummy), false);
-		fDummy.setValue(1.0, 1, 0);	
+		BayesianFactor fDummy = new BayesianFactor(model.getDomain(1, dummy), false);
+		fDummy.setValue(1.0, 1, 0);
 		fDummy.setValue(1.0, 0, 1);
 		model.setFactor(dummy, fDummy);
 
@@ -299,7 +295,7 @@ public class AlexsTests {
 		//		//Backward
 		int s = 0;
 		fB = fB.reseparate(Strides.EMPTY);
-		fB = fB.filter(varB,s);//
+		fB = fB.filter(varB, s);//
 		VertexFactor bottom = convex_alge.fullConvex(fB);
 		VertexFactor parent = fA.reseparate(Strides.EMPTY);
 		VertexFactor tmp = alge.combine(bottom, parent);
@@ -312,11 +308,10 @@ public class AlexsTests {
 		System.out.println("========");
 
 
-
 		Inference approx = new Inference();
 		IntervalFactor resultsALP = null;
 		try {
-			resultsALP = approx.query(model,0,2);
+			resultsALP = approx.query(model, 0, 2);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -343,7 +338,7 @@ public class AlexsTests {
 		CNGenerator a = new CNGenerator(); // Credal set generator
 
 		// Model initialization
-		SparseModel<IntervalFactor> model = new SparseModel<>();
+		DAGModel<IntervalFactor> model = new DAGModel<>();
 		Strides[] d = new Strides[nVars]; // Array of domains
 
 		for (int i = 0; i < nVars; i++) {
@@ -410,7 +405,7 @@ public class AlexsTests {
 		long difference = System.nanoTime() - startTime;
 		System.out.println("Random chain created in " + String.format("%d min, %d sec",
 				TimeUnit.NANOSECONDS.toHours(difference), TimeUnit.NANOSECONDS.toSeconds(difference)
-				- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
 		startTime = System.nanoTime(); // Elapsed time
 
 		// Algebra to perform the computations
@@ -482,10 +477,9 @@ public class AlexsTests {
 		difference = System.nanoTime() - startTime;
 		System.out.println("Elasped time " + String.format("%d min, %d sec", TimeUnit.NANOSECONDS.toHours(difference),
 				TimeUnit.NANOSECONDS.toSeconds(difference)
-				- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
 
 	}
-
 
 
 	public void chainBack() {
@@ -506,7 +500,7 @@ public class AlexsTests {
 		CNGenerator a = new CNGenerator(); // Credal set generator
 		//
 		//		// Model initialization
-		SparseModel<GenericFactor> model = new SparseModel<>();
+		DAGModel<GenericFactor> model = new DAGModel<>();
 		Strides[] d = new Strides[nVars]; // Array of domains
 		//
 		for (int i = 0; i < nVars; i++) {
@@ -586,7 +580,7 @@ public class AlexsTests {
 		//
 		int dummy = model.addVariable(2);
 		//
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(nVars-1,dummy), false);
+		BayesianFactor fDummy = new BayesianFactor(model.getDomain(nVars - 1, dummy), false);
 		//fDummy.setValue(1.0,0,1);
 		//fDummy.setValue(1.0,1,0);
 		//fDummy.setValue(1.0,2,0);
@@ -608,7 +602,7 @@ public class AlexsTests {
 		long difference = System.nanoTime() - startTime;
 		System.out.println("Random chain created in " + String.format("%d min, %d sec",
 				TimeUnit.NANOSECONDS.toHours(difference), TimeUnit.NANOSECONDS.toSeconds(difference)
-				- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
 		startTime = System.nanoTime(); // Elapsed time
 
 		//		// Algebra to perform the computations
@@ -632,7 +626,7 @@ public class AlexsTests {
 			vertici2 = f[i].getVertices();
 			VertexFactor bottom = convex_alge.fullConvex(f[i]);
 			vertici_conv2 = bottom.getVertices();
-			System.out.println("V before"+vertici2.length+"after"+vertici_conv2.length);
+			System.out.println("V before" + vertici2.length + "after" + vertici_conv2.length);
 			//
 			VertexFactor parent = f[i - 1].reseparate(Strides.EMPTY);
 			//VertexFactor parent = f[i-1];			
@@ -648,16 +642,15 @@ public class AlexsTests {
 				f[0] = tmp.normalize();
 			} else
 				f[i - 1] = alge.marginalize(tmp, i - 1);
-				//vertici2 = f[i-1].getVertices();
-				//// Rounding to prevent numerical issues with the convex hull
-				//for (double[] vertex : vertici2) {
-				//	vertex[0] = Math.round(vertex[0] * tol) / tol;
-				//	vertex[1] = Math.round(vertex[1] * tol) / tol;
-				//	vertex[2] = 1.0 - vertex[0] - vertex[1];
-				//}
+			//vertici2 = f[i-1].getVertices();
+			//// Rounding to prevent numerical issues with the convex hull
+			//for (double[] vertex : vertici2) {
+			//	vertex[0] = Math.round(vertex[0] * tol) / tol;
+			//	vertex[1] = Math.round(vertex[1] * tol) / tol;
+			//	vertex[2] = 1.0 - vertex[0] - vertex[1];
+			//}
 
-			
-			
+
 		}
 
 		//		// Rounding to prevent numerical issues with the convex hull
@@ -695,7 +688,7 @@ public class AlexsTests {
 		aprrox.initialize(init);
 		IntervalFactor resultsALP = null;
 		try {
-			resultsALP = aprrox.query(model, 0,dummy);
+			resultsALP = aprrox.query(model, 0, dummy);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -707,29 +700,27 @@ public class AlexsTests {
 		difference = System.nanoTime() - startTime;
 		System.out.println("Elasped time " + String.format("%d min, %d sec", TimeUnit.NANOSECONDS.toHours(difference),
 				TimeUnit.NANOSECONDS.toSeconds(difference)
-				- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
 
 	}
 
 
-
-
 	public void chainBackTest() {
-	
+
 		int s = 2; // observed state
 		int nVars = 10; // # of variables
 		int nDim = 3; // dimensionality
 		double imprecision = 0.4; // imprecision level
 		double tol = 1E-10;
 		System.out.println("=====================");
-		System.out.println("Number of vars=" + nVars);	
+		System.out.println("Number of vars=" + nVars);
 		double[][] myVertices;
 		double[] lowerP = new double[nDim];
 		double[] upperP = new double[nDim];
 		long startTime = System.nanoTime(); // Elapsed time
 		CNGenerator myVarA = new CNGenerator(); // Credal set generator
 		// Model initialization
-		SparseModel<GenericFactor> model = new SparseModel<>();
+		DAGModel<GenericFactor> model = new DAGModel<>();
 		Strides[] d = new Strides[nVars]; // Array of domains
 		for (int i = 0; i < nVars; i++) {
 			int var = model.addVariable(nDim); // Variables
@@ -755,7 +746,7 @@ public class AlexsTests {
 		}
 		ff[0].setLower(lowerP.clone());
 		ff[0].setUpper(upperP.clone());
-		model.setFactor(0, ff[0]);	
+		model.setFactor(0, ff[0]);
 		//for (double[] vv : myVertices)
 		//System.out.println(Arrays.toString(vv));
 		System.out.println(Arrays.toString(lowerP));
@@ -773,7 +764,7 @@ public class AlexsTests {
 		System.out.println(Arrays.toString(lowerP));
 		System.out.println(Arrays.toString(upperP));
 		// OTHER LOCAL MODELS
-		
+
 		for (int i = 1; i < nVars; i++) {
 			myVertices = myVarA.linvac(nDim, imprecision);
 			f[i] = new VertexFactor(d[i], d[i - 1]);
@@ -803,7 +794,7 @@ public class AlexsTests {
 			model.setFactor(i, ff[i]);
 		}
 		int dummy = model.addVariable(2);
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(nVars-1,dummy), false);
+		BayesianFactor fDummy = new BayesianFactor(model.getDomain(nVars - 1, dummy), false);
 		fDummy.setValue(1.0, 0 /* nVars -1 = 0 */,
 				s == 0 ? 1 : 0 /* dummy = true */); // set
 		//													// p(dummy=true|nvars-1=0)
@@ -819,7 +810,7 @@ public class AlexsTests {
 		long difference = System.nanoTime() - startTime;
 		System.out.println("Random chain created in " + String.format("%d min, %d sec",
 				TimeUnit.NANOSECONDS.toHours(difference), TimeUnit.NANOSECONDS.toSeconds(difference)
-				- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
 		startTime = System.nanoTime(); // Elapsed time
 		// Algebra to perform the computations
 		DefaultSeparateAlgebra alge = new DefaultSeparateAlgebra();
@@ -832,26 +823,27 @@ public class AlexsTests {
 		f[nVars - 1] = f[nVars - 1].filter(nVars - 1, s);//
 		// Bottom-up Elimination (VE)
 		//try {
-	      //      FileWriter writer = new FileWriter("MyFile.txt", true);
-	        //    writer.write("CIAO");
+		//      FileWriter writer = new FileWriter("MyFile.txt", true);
+		//    writer.write("CIAO");
 		for (int i = nVars - 1; i > 0; i--) {
-			System.out.print("[V" + i+"] ");
+			System.out.print("[V" + i + "] ");
 			vertici2 = f[i].getVertices();
-			if(i<3){
-				for (double[] vvv : vertici2){
-				System.out.println(Arrays.toString(vvv));}
-			//writer.write(Arrays.toString(vvv)+"\n");
-			//writer.write("\n");
-			
+			if (i < 3) {
+				for (double[] vvv : vertici2) {
+					System.out.println(Arrays.toString(vvv));
+				}
+				//writer.write(Arrays.toString(vvv)+"\n");
+				//writer.write("\n");
+
 			}
-		    //writer.close();//}
-		    
-			
+			//writer.close();//}
+
+
 			System.out.print(vertici2.length);
 			//f[i] = convex_alge.round(f[i], tol);
 			VertexFactor bottom = convex_alge.fullConvex(f[i]);
 			vertici_conv2 = bottom.getVertices();
-			System.out.print("/"+vertici_conv2.length);
+			System.out.print("/" + vertici_conv2.length);
 			VertexFactor parent = f[i - 1].reseparate(Strides.EMPTY);
 			VertexFactor tmp = alge.combine(bottom, parent);
 			System.out.println("");
@@ -863,12 +855,12 @@ public class AlexsTests {
 			} else
 				f[i - 1] = alge.marginalize(tmp, i - 1);
 		}
-		
-	   // } catch (IOException e) {
-         //   e.printStackTrace();
-        //}
-	
-		
+
+		// } catch (IOException e) {
+		//   e.printStackTrace();
+		//}
+
+
 		// Rounding to prevent numerical issues with the convex hull
 		vertici_conv2 = f[0].getVertices();
 		Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
@@ -910,6 +902,6 @@ public class AlexsTests {
 		difference = System.nanoTime() - startTime;
 		System.out.println("Elapsed time " + String.format("%d min, %d sec", TimeUnit.NANOSECONDS.toHours(difference),
 				TimeUnit.NANOSECONDS.toSeconds(difference)
-				- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
+						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
 	}
 }

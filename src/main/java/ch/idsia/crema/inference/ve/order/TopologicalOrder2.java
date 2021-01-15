@@ -1,12 +1,12 @@
 package ch.idsia.crema.inference.ve.order;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
+// TODO: this is very similar to TopologicalOrder, remove one of the two?
 public class TopologicalOrder2  implements OrderingStrategy {
 	
-
 	@Override
 	public int[] apply(GraphicalModel<?> model) {
         TIntObjectMap<TIntArrayList> E = new TIntObjectHashMap<>(model.getVariablesCount()); // Container for the edges

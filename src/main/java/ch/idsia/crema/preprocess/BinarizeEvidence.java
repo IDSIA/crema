@@ -1,40 +1,41 @@
 package ch.idsia.crema.preprocess;
 
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.model.graphical.GraphicalModel;
+import gnu.trove.map.TIntIntMap;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.GraphicalModel;
-import ch.idsia.crema.model.Strides;
-import gnu.trove.map.TIntIntMap;
-
 /**
  * Multiple evidences can be reduced to a single binary variable by adding
  * deterministic nodes as children of the observed nodes.
- * 
+ *
  * <p>
  * This is usefull for algorithms that do not filter the observed evidences out
  * of the factors until the end.
  * </p>
- * 
+ * <p>
  * TODO we should consider the possibility to specify a method/lambda, or something else, to customize the precise factor creation.
  * Currently we are using {@link BayesianFactor} only.
- * 
+ *
  * @author david
  */
 public class BinarizeEvidence {
 
 	private int leafDummy;
-	
+
 	public int getLeafDummy() {
 		return leafDummy;
 	}
-	
+
 	/**
 	 * Execute the binarization and return a new Factor
+	 *
 	 * @param model
 	 * @param evidence
 	 * @param size
@@ -47,18 +48,17 @@ public class BinarizeEvidence {
 		leafDummy = executeInline(copy, evidence, size, log);
 		return copy;
 	}
-	
+
 	public <M extends GraphicalModel<? super Factor<?>>> int executeInline(M model, TIntIntMap evidence, int size, boolean log) {
 
 		int[] keys = evidence.keys();
 
-		// XXX DO we need to sort the keys????
+		// TODO: XXX do we need to sort the keys????
 
 		int new_var = -1;
 
 		ArrayList<Instance> parents = new ArrayList<>();
-		for (int var_index = 0; var_index < keys.length; ++var_index) {
-			int var = keys[var_index];
+		for (int var : keys) {
 			int var_size = model.getSize(var);
 			int var_obs = evidence.get(var);
 
@@ -116,7 +116,7 @@ public class BinarizeEvidence {
 			strides[index] = conf;
 
 			offset += conf * parent.observed;
-			conf *= parent.size;
+			conf *= parent.size; // FIXME: this cause conf to be 0 if the parent.size is zero!
 			++index;
 		}
 
@@ -138,7 +138,7 @@ public class BinarizeEvidence {
 		// create the factor's data array as the concatenation of two blocks:
 		// the first is a set of 0 with exception of offset that is set to 1
 		// the second is the inverse.
-		double[] data = new double[conf * 2];		
+		double[] data = new double[conf * 2];
 		Arrays.fill(data, 0, conf, 1.0);
 
 		data[offset] = 0;

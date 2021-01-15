@@ -1,6 +1,6 @@
 package ch.idsia.crema.search.impl;
 
-public enum Utils {
+public class Utils {
 	;
 
 	public static int tryParse(Object string, int fallback) {

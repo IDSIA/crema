@@ -1,74 +1,58 @@
 package ch.idsia.crema.factor.credal.vertex.generator;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.logging.Level;
-
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.javasoft.polco.adapter.Options;
 import ch.javasoft.polco.adapter.PolcoAdapter;
 import ch.javasoft.xml.config.XmlConfigException;
 
+import java.util.Arrays;
+import java.util.Random;
+import java.util.logging.Level;
+
 public class CNGenerator {
 	static Random random = new Random(0);
 
 	public static double[] randomMassFunction(int dimension) {
-		int d = dimension;
-		double[] p = new double[d];
+		double[] p = new double[dimension];
 		double sum = 0.0;
-		for (int j = 0; j < d; j++) {
+		for (int j = 0; j < dimension; j++) {
 			p[j] = random.nextDouble();//Math.random();
 			sum += p[j];
 		}
-		for (int j = 0; j < d; j++) {
+		for (int j = 0; j < dimension; j++) {
 			p[j] /= sum;
 		}
 		return p;
 	}
 
 	public double[][] linvac(int dimension, double epsilon) {
-		int d = dimension;
-		double e = epsilon;
 		double sum;
-		double[][] v2 = new double[d][d]; // first d is # vertices
-		double[] p = randomMassFunction(d);
-		for (int i = 0; i < d; i++) {
+		double[][] v2 = new double[dimension][dimension]; // first d is # vertices
+		double[] p = randomMassFunction(dimension);
+		for (int i = 0; i < dimension; i++) {
 			sum = 0.0;
-			for (int j = 0; j < (d - 1); j++) {
+			for (int j = 0; j < (dimension - 1); j++) {
 				if (j == i) {
-					v2[i][j] = e + (1 - e) * p[j];
+					v2[i][j] = epsilon + (1 - epsilon) * p[j];
 				} else {
-					v2[i][j] = (1 - e) * p[j];
+					v2[i][j] = (1 - epsilon) * p[j];
 				}
 				v2[i][j] = Math.round(v2[i][j] * 100000d) / 100000d;
 				sum += v2[i][j];
 			}
-			v2[i][d - 1] = Math.round((1.0 - sum) * 100000d) / 100000d;
+			v2[i][dimension - 1] = Math.round((1.0 - sum) * 100000d) / 100000d;
 		}
 		return v2;
 	}
 
-	// Tool to display 2d-arrays
-	public static void printMatrix(double[][] m) {
-		for (int i = 0; i < m.length; i++) {
-			for (int j = 0; j < m[i].length; j++) {
-				System.out.print(m[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
-
-	// Tool to display 2d-arrays
-	public static void printArray(double[] v) {
-		for (int i = 0; i < v.length; i++) {
-			System.out.print(v[i] + " ");
-		}
-		System.out.println();
-	}
-
-	// Convert probability intervals into reachable ones
+	/**
+	 * Convert probability intervals into reachable ones
+	 *
+	 * @param bounds
+	 * @return
+	 */
 	public double[][] makeReachable(double[][] bounds) {
-		// DEBUG: add non-emptiness check
+		// TODO: DEBUG: add non-emptiness check
 		int d = bounds[0].length;
 		double[] reachValue = new double[2];
 		for (int i = 0; i < d; i++) {
@@ -90,8 +74,12 @@ public class CNGenerator {
 		return bounds;
 	}
 
-	// Compute the extreme points of a probability interval
-	// using the whole dimensionality
+	/**
+	 * Compute the extreme points of a probability interval using the whole dimensionality.
+	 *
+	 * @param i a probability interval
+	 * @return
+	 */
 	public double[][] fromInt2VertFullD(double[][] i) {
 		// Using polco to compute vertices
 		PolcoAdapter p;
@@ -116,9 +104,11 @@ public class CNGenerator {
 			ineqs[q + d][0] = i[1][q];
 			eqs[0][q + 1] = -1;
 		}
+
 		eqs[0][0] = 1;
 		double[][] rays = p.getDoubleRays(eqs, ineqs);
 		int nV = rays.length; // Number of vertices
+
 		// Matrix with the coordinates of the nV vertices
 		double[][] v = new double[nV][d];
 		double sum;
@@ -131,11 +121,16 @@ public class CNGenerator {
 			}
 			v[j][d - 1] = Math.round((1.0 - sum) * 100000d) / 100000d;
 		}
+
 		return v;
 	}
 
-	// Compute the extreme points of a probability interval
-	// using in d-1 dimensions
+	/**
+	 * Compute the extreme points of a probability interval using in d-1 dimensions.
+	 *
+	 * @param i a probability interval
+	 * @return
+	 */
 	public static double[][] fromInt2VertSmallD(double[][] i) {
 		// Using polco to compute vertices
 		PolcoAdapter p;
@@ -178,170 +173,127 @@ public class CNGenerator {
 		return v;
 	}
 
-	public double[][] JasperRandomGenerator(int dimension, double epsilon) {
-		int d = dimension;
-		double e = epsilon;
-		double[] p = new double[d];
-		double[] c = new double[d];
-		double[] c2 = new double[d];
+	public double[][] JasperRandomGenerator(int dimension, double eps) {
+		// TODO: eps not used
+		double[] p = new double[dimension];
+		double[] c = new double[dimension];
+		double[] c2 = new double[dimension];
 		double alpha = 0;
 		double sum = 0.0;
-		for (int j = 0; j < d; j++) {
+		for (int j = 0; j < dimension; j++) {
 			p[j] = Math.random();
 			c[j] = Math.random();
 			sum += p[j];
 		}
-		for (int j = 0; j < d; j++) {
+
+		for (int j = 0; j < dimension; j++) {
 			p[j] /= sum;
 			c2[j] = 0;
-			for (int i = 0; i < d; i++) {
+			for (int i = 0; i < dimension; i++) {
 				if (i != j) {
 					c2[j] += c[i];
 				}
 			}
 		}
-		for (int j = 0; j < d; j++) {
+
+		for (int j = 0; j < dimension; j++) {
 			if (c2[j] > alpha) {
 				alpha = c2[j];
 			}
 		}
+
 		if (alpha > 1.0) {
-			for (int i = 0; i < d; i++) {
+			for (int i = 0; i < dimension; i++) {
 				c[i] /= alpha;
 			}
 		}
-		double[][] bounds = new double[2][d];
-		for (int i = 0; i < d; i++) {
+
+		double[][] bounds = new double[2][dimension];
+		for (int i = 0; i < dimension; i++) {
 			bounds[0][i] = 0;
 			bounds[1][i] = 1 - c[i];
 		}
-		double[][] vertices = fromInt2VertFullD(makeReachable(bounds));
+
 		// vertices = contaminate(vertices,p,.2);
-		return vertices;
+		return fromInt2VertFullD(makeReachable(bounds));
 	}
 
 	// Compute the center of mass of a credal set
-	public double[] fromVerticesToCoM(double[][] vertices){
+	public double[] fromVerticesToCoM(double[][] vertices) {
 		// If a single vertex, the CoM is ...
-		if(vertices.length==1){ return vertices[0]; }
-		else{
+		if (vertices.length == 1) {
+			return vertices[0];
+		} else {
 			double[] cOm = new double[vertices[0].length];
-			for(int j=0;j<vertices[0].length;j++){
-				for(int i=0;i<vertices.length;i++){
-					cOm[j] += vertices[i][j];}
-				cOm[j] /= vertices.length;}
-			ArraysUtil.roundArrayToTarget(cOm,1.0,1E-9);
+			for (int j = 0; j < vertices[0].length; j++) {
+				for (double[] vertex : vertices) {
+					cOm[j] += vertex[j];
+				}
+				cOm[j] /= vertices.length;
+			}
+			ArraysUtil.roundArrayToTarget(cOm, 1.0, 1E-9);
 			return cOm;
-		}}
+		}
+	}
 
-	// Compute the center of mass of a credal set
-	public double[] fromIntervalsToCoM(double[][] bounds){
+	/**
+	 * Compute the center of mass of a credal set.
+	 *
+	 * @param bounds
+	 * @return
+	 */
+	public double[] fromIntervalsToCoM(double[][] bounds) {
 		double[] centerOfMass = new double[bounds[0].length];
-		//CNGenerator myGen = new CNGenerator();
+		// CNGenerator myGen = new CNGenerator();
 		// FIXME decide tolerance
 		double eps = 1E-9;
-		if(Arrays.stream(bounds[0]).sum()>(1.0-eps)){
-			centerOfMass = bounds[0];}
-		else{
+		if (Arrays.stream(bounds[0]).sum() > (1.0 - eps)) {
+			centerOfMass = bounds[0];
+		} else {
 			double[][] vertices = fromInt2VertFullD(bounds);
-			centerOfMass = fromVerticesToCoM(vertices);}
-		return centerOfMass;}
+			centerOfMass = fromVerticesToCoM(vertices);
+		}
+		return centerOfMass;
+	}
 
-
-
-
-
+	/**
+	 * @param dimensions number of dimensions
+	 * @param datasize   number of observations, dataset size (to control the level of imprecision)
+	 * @param ess        equivalent sample size, IDM parameter (to control the imprecision)
+	 * @return
+	 */
 	public double[][] generate(int dimensions, int datasize, double ess) {
-		// Parameters
-		int d = dimensions; // Dimension
-		int n = datasize; // Dataset size (to control the level of imprecision)
-		double s = ess; // IDM parameter (to control the imprecision)
 		// Initialization
-		int[] counts = new int[d]; // Pseudo-counts for the generation
+		int[] counts = new int[dimensions]; // Pseudo-counts for the generation
 		int n2 = 0;
-		double[] values = new double[d]; // Random values
-		double[][] bounds = new double[2][d];
+		double[] values = new double[dimensions]; // Random values
+		double[][] bounds = new double[2][dimensions];
+
 		// double[] l = new double[d]; // Lower probabilities
 		// double[] u = new double[d]; // Upper probabilities
+
 		double sumValues = 0.0; // sum of random numbers
 
 		// Generating d random numbers (double)
-		for (int k = 0; k < d; k++) {
+		for (int k = 0; k < dimensions; k++) {
 			values[k] = Math.random();
 			sumValues += values[k];
 		}
+
 		// Generating d integer numbers summing up to n
-		for (int k = 0; k < d; k++) {
-			counts[k] = (int) Math.round(values[k] * n / sumValues);
+		for (int k = 0; k < dimensions; k++) {
+			counts[k] = (int) Math.round(values[k] * datasize / sumValues);
 			n2 += counts[k];
 		}
+
 		// Compute lower and upper probs (IDM)
-		for (int k = 0; k < d; k++) {
-			bounds[0][k] = counts[k] / (n2 + s);
-			bounds[1][k] = (counts[k] + s) / (n2 + s);
+		for (int k = 0; k < dimensions; k++) {
+			bounds[0][k] = counts[k] / (n2 + ess);
+			bounds[1][k] = (counts[k] + ess) / (n2 + ess);
 		}
-		double[][] vertices = fromInt2VertSmallD(makeReachable(bounds));
+
 		// double[][] vertices2 = fromInt2VertFullD(makeReachable(bounds));
-		return vertices;
+		return fromInt2VertSmallD(makeReachable(bounds));
 	}
 
-
-
-
-	public static void main(String[] args) {
-
-		CNGenerator a = new CNGenerator();
-		
-		double[] lowerP = {.2,.1};
-		double[] upperP = {.95,.7};
-		double[][] myBounds = {lowerP,upperP};
-		double[][] myReachBounds = new double[2][lowerP.length];
-		CNGenerator reachRobot = new CNGenerator();
-		myReachBounds = reachRobot.makeReachable(myBounds);
-		System.out.println("Before");
-		System.out.println("L="+Arrays.toString(myBounds[0]));
-		System.out.println("U="+Arrays.toString(myBounds[1]));
-		System.out.println("After");
-		System.out.println("L="+Arrays.toString(myReachBounds[0]));
-		System.out.println("U="+Arrays.toString(myReachBounds[1]));
-
-		
-		
-		double[][] v = a.linvac(5,.1);
-		//double[][] z = a.JasperRandomGenerator(3,.1);
-		//double[][] v;
-		//v = a.Jasper(3, .01);
-		// double[][] v = a.generate(3, 10, 2.0);
-		printMatrix(v);
-		//printMatrix(z);
-
-		// double[][] v2 = a.generate2(3, 10, 2.0);
-		// printMatrix(v2);
-		// double[][] bounds = {{.1,.1,.1},{.8,.5,.8}};
-		// double[][] bounds = {{.1,.2,.1},{.7,.8,.9}};
-		// printMatrix(bounds);
-		// System.out.println("---");
-		// bounds = makeReachable(bounds);
-		// System.out.println("---");
-
-		// printMatrix(fromInt2VertSmallD(bounds));
-		// System.out.println("---");
-		// printMatrix(fromInt2VertFullD(bounds));
-
-		// double[][] matrice = {{.2,.3,.5},{.3,.4,.3},{.1,.8,.1}};
-		// a.setBounds(bounds);
-		// a.vertices = matrice;
-		// printMatrix(new CNGenerator().generate(3, 10, 2));
-	}
 }
-/**
- * generate a set of vertices
- * 
- * @param dimensions
- *            - number of dimensions
- * @param datasize
- *            - number of observations
- * @param ess
- *            - equivalent sample size
- * @return
- */

@@ -1,151 +1,135 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.model.io.TypesIO;
-import org.junit.Assert;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Generic parser class for UAI format
- *  @author Rafael Cabañas
+ *
+ * @author Rafael Cabañas
  */
 
 public abstract class UAIParser<T> {
 
-    protected String[] elements = null;
-    private int offset = 0;
-    protected BufferedReader bufferedReader;
-    private String parsedType = "";
+	protected String[] elements = null;
+	private int offset = 0;
+	private String parsedType = "";
 
-    protected TypesIO TYPE;
+	protected TypesIO TYPE;
 
-    public static Object read(String fileName) throws IOException {
-        BufferedReader buff = null;
-        TypesIO type;
+	protected List<String> lines;
 
-        if (fileName.endsWith(".uai")) {
-            // Extract the type to know the required parser
-            type = UAITypes.valueOfLabel(getIOTypeStr(fileName));
-            // rest the buffer
-            buff = initReader(fileName);
-        } else if (fileName.endsWith(".uai.evid") || fileName.endsWith(".uai.do")){
-            type = UAITypes.EVID;
-        } else {
-            throw new IllegalArgumentException("Unknown file extension");
-        }
+	@SuppressWarnings("unchecked")
+	public static <T> T read(String filename) throws IOException {
+		if (!(filename.endsWith(".uai") || filename.endsWith(".uai.evid") || filename.endsWith(".uai.do"))) {
+			throw new IllegalArgumentException("Unknown file extension");
+		}
 
-        Object parsedObject;
-        try {
-            // Parse the file
-            if (type == UAITypes.HCREDAL) {
-                parsedObject = new HCredalUAIParser(buff).parse();
-            } else if (type == UAITypes.VCREDAL) {
-                parsedObject = new VCredalUAIParser(buff).parse();
-            } else if (type == UAITypes.BAYES) {
-                parsedObject = new BayesUAIParser(buff).parse();
-            } else if (type == UAITypes.EVID){
-                parsedObject = new EvidUAIParser(buff).parse();
-            }else {
-                throw new IllegalArgumentException("Unknown type to be parsed");
-            }
-        } catch (Exception e){
-            if (buff != null) {
-	            buff.close();
-            }
-            throw e;
-        }
+		List<String> lines = readLines(filename);
+		TypesIO type = UAITypes.valueOfLabel(getIOTypeStr(lines.get(0)));
 
-        return parsedObject;
-    }
+		Object parsedObject;
 
-    public void closeReader() throws IOException {
-        if(this.bufferedReader != null)
-            this.bufferedReader.close();
-    }
+		// Parse the file
+		if (type == UAITypes.HCREDAL) {
+			parsedObject = new HCredalUAIParser(lines).parse();
+		} else if (type == UAITypes.VCREDAL) {
+			parsedObject = new VCredalUAIParser(lines).parse();
+		} else if (type == UAITypes.BAYES) {
+			parsedObject = new BayesUAIParser(lines).parse();
+		} else if (type == UAITypes.EVID) {
+			parsedObject = new EvidUAIParser(lines).parse();
+		} else {
+			throw new IllegalArgumentException("Unknown type to be parsed");
+		}
 
-    public static String getIOTypeStr(String fileName) throws IOException {
+		return (T) parsedObject;
+	}
 
-        BufferedReader buff = initReader(fileName);
-        String type;
+	public static List<String> readLines(String filename) throws IOException {
+		return Files.lines(Path.of(filename))
+				// skip comment lines
+				.filter(line -> !(line.startsWith("//") || line.startsWith("#")))
+				.collect(Collectors.toList());
+	}
 
-        try {
-            // Extract the type to know the required parser
-            String str = buff.readLine().replaceAll("[ \\t\\n]+", "");
-            int i = str.indexOf(" ");
-            if (i > 0) type = str.substring(0, i);
-            else type = str;
-        } catch (Exception e) {
-            buff.close();
-            throw e;
-        }
-        return type;
-    }
+	public static String getIOTypeStr(String firstLine) {
+		// Extract the type to know the required parser
+		String str = firstLine.replaceAll("[ \\t\\n]+", "");
 
-    public static  BufferedReader initReader(String fileName) throws FileNotFoundException {
-        // Opening the .cn file
-        FileReader fileReader = new FileReader(fileName);
-        return new BufferedReader(fileReader);
-    }
+		int i = str.indexOf(" ");
 
-    protected void readFile() throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-            stringBuilder.append(line).append(" ");
-        }
+		if (i > 0)
+			return str.substring(0, i);
+		return str;
+	}
 
-        bufferedReader.close();
-        // Splitting file elements (spaces, tabs and newlines have the same effect)
-        elements = stringBuilder.toString().split("[ \\t\\n]+");
-    }
+	public UAIParser(String filename) throws IOException {
+		lines = readLines(filename);
+		TYPE = UAITypes.valueOfLabel(getIOTypeStr(lines.get(0)));
+	}
 
-    protected abstract void processFile();
+	public UAIParser(List<String> lines) {
+		this.lines = lines;
+	}
 
-    protected abstract T build();
+	protected void readContent() {
+		String content = String.join(" ", lines);
 
-    public T parse() throws IOException {
-        T parsedObj;
-        readFile();
-        processFile();
-        sanityChecks();
-        parsedObj = build();
-        return parsedObj;
-    }
+		// Splitting file elements (spaces, tabs and newlines have the same effect)
+		elements = content.split("[ \\t\\n]+");
+	}
 
-    protected void sanityChecks(){
-	    Assert.assertEquals("Wrong type " + parsedType + " instead of " + TYPE, TYPE.getLabel(), parsedType);
-    }
+	protected abstract void processFile();
 
-    protected void incrementOffset(int n){
-        this.offset += n;
-    }
+	protected abstract T build();
 
-    protected int getOffset() {
-        return offset;
-    }
+	public T parse() {
+		T parsedObj;
+		readContent();
+		processFile();
+		sanityChecks();
+		parsedObj = build();
+		return parsedObj;
+	}
 
-    protected void setOffset(int offset) {
-        this.offset = offset;
-    }
+	protected void sanityChecks() {
+		if (!TYPE.getLabel().equals(parsedType))
+			throw new IllegalArgumentException("Wrong type " + parsedType + " instead of " + TYPE);
+	}
 
-    protected String popElement(){
-        incrementOffset(1);
-        return elements[getOffset()-1];
-    }
+	protected void incrementOffset(int n) {
+		this.offset += n;
+	}
 
-    protected void parseType(){
-        parsedType = popElement();
-    }
+	protected int getOffset() {
+		return offset;
+	}
 
-    protected int popInteger(){
-        return Integer.parseInt(popElement());
-    }
+	protected void setOffset(int offset) {
+		this.offset = offset;
+	}
 
-    protected double popDouble(){
-        return Double.parseDouble(popElement());
-    }
+	protected String popElement() {
+		incrementOffset(1);
+		return elements[getOffset() - 1];
+	}
+
+	protected void parseType() {
+		parsedType = popElement();
+	}
+
+	protected int popInteger() {
+		return Integer.parseInt(popElement());
+	}
+
+	protected double popDouble() {
+		return Double.parseDouble(popElement());
+	}
 
 }

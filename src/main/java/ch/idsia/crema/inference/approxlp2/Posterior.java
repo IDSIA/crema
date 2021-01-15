@@ -1,29 +1,28 @@
 package ch.idsia.crema.inference.approxlp2;
 
-import java.util.Arrays;
-
-import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.graphical.SparseModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearFractionalSolver;
 import ch.idsia.crema.solver.commons.FractionalSolver;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+
+import java.util.Arrays;
 
 public class Posterior extends Manager {
 
 	//private static final double BAD = Double.NaN;
-	private SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
+	private final SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
-	private TIntIntMap evidence;
-	
-	public Posterior(SparseModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state, TIntIntMap evidence) {
+	private final TIntIntMap evidence;
+
+	public Posterior(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state, TIntIntMap evidence) {
 		super(model, dir, x0, x0state);
 		this.evidence = evidence;
 	}
@@ -43,7 +42,6 @@ public class Posterior extends Manager {
 		return simplex;
 	}
 
-	
 	double computeApproxPXe(BayesianFactor joint, int free, int query, int[] parents) {
 		joint = joint.marginalize(query).marginalize(free);
 		for (int parent : parents) {
@@ -51,7 +49,7 @@ public class Posterior extends Manager {
 		}
 		return joint.getValue(1);
 	}
-	
+
 	/**
 	 * Evaluate the value for a move and get the new vertex
 	 * <p>
@@ -73,7 +71,7 @@ public class Posterior extends Manager {
 
 		// note that observed nodes have their outbound links cut before being
 		// binarized.
-		
+
 		// parents of free contain the query and the free var is observed
 		if (pindex >= 0 && evidence.containsKey(free)) {
 			// x0 (the query) is among the parent of the free variable
@@ -81,44 +79,44 @@ public class Posterior extends Manager {
 			// prepare the full domain by first adding the free var to its
 			// parents
 			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
-			
+
 			BayesianFactor p_x0xexjpj = calcPosterior(from, xjpj, evidence);
 			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
-			
+
 			BayesianFactor p_x0xe_xjpj = p_x0xexjpj.divide(p_xjpj);
 			BayesianFactor p_pj = p_xjpj.marginalize(free);
 			BayesianFactor p_num = p_x0xe_xjpj.combine(p_pj);
 
 			// we need to filter the target variable
 			numerator = p_num.filter(x0, x0state).combine(getX0factor()).getData();
-			
+
 			// no need to filter (the sum will elimintate x0)
 			BayesianFactor p_denom = p_x0xexjpj.combine(p_pj);
 			denominator = p_denom.getData();
-			
+
 		} else if (pindex >= 0) {
 			// x0 (the query) is among the parent of the free variable
 
 			// prepare the full domain by first adding the free var to its
 			// parents
 			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
-			
+
 			BayesianFactor p_x0xexjpj = calcPosterior(from, xjpj, evidence);
 			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
-			
+
 			BayesianFactor p_x0xe_xjpj = p_x0xexjpj.divide(p_xjpj);
 			BayesianFactor p_pj = p_xjpj.marginalize(free);
 			BayesianFactor p_num = p_x0xe_xjpj.combine(p_pj);
 
 			// we need to filter the target variable
 			numerator = p_num.filter(x0, x0state).combine(getX0factor()).getData();
-			
+
 			// no need to filter (the sum will elimintate x0)
 			BayesianFactor p_denom = p_x0xexjpj.combine(p_pj);
 			denominator = p_denom.getData();
-			
-		} else if (free == x0) { 
-			
+
+		} else if (free == x0) {
+
 			int[] xjpj = ArraysUtil.addToSortedArray(parents, free); // == x0pj
 
 			BayesianFactor p_xexjpj = calcPosterior(from, xjpj, evidence);
@@ -126,80 +124,79 @@ public class Posterior extends Manager {
 			BayesianFactor p_pj = p_xjpj.marginalize(free);
 			BayesianFactor p_xe_xjpj = p_xexjpj.divide(p_xjpj);
 			BayesianFactor p_num = p_xe_xjpj.combine(p_pj);
-			
+
 			numerator = p_num.combine(getX0factor()).getData();
-		
+
 			// filter evidence
 			BayesianFactor p_denom = p_xexjpj.combine(p_pj);
 			denominator = p_denom.getData();
-			
-		} else if(evidence.containsKey(free)) {
+
+		} else if (evidence.containsKey(free)) {
 			// xj is observed
 			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
 			int[] all = ArraysUtil.addToSortedArray(xjpj, x0);
-			
+
 			// num = [P(x0xE|xj,pj) * P(xE|xj,pj) * P(pj)]
 
 			BayesianFactor p_x0xex0pj = calcPosterior(from, all, evidence);
 			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
 			BayesianFactor p_pj = p_xjpj.marginalize(free);
-			
+
 			BayesianFactor p_x0xe_xjpj = p_x0xex0pj.divide(p_xjpj);
 			BayesianFactor p_num = p_x0xe_xjpj.combine(p_pj).filter(x0, x0state);
-			
+
 			numerator = p_num.getData();
-			
+
 			// P(xE|xj,pj) * P(pj)
 			BayesianFactor p_denom = p_x0xe_xjpj.marginalize(x0).combine(p_pj);
 			denominator = p_denom.getData();
 
-			
+
 		} else {
 			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
 			int[] all = ArraysUtil.addToSortedArray(xjpj, x0);
-			
+
 			// num = [P(x0xE|xj,pj) * P(xE|xj,pj) * P(pj)]
 
 			BayesianFactor p_x0xex0pj = calcPosterior(from, all, evidence);
 			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
 			BayesianFactor p_pj = p_xjpj.marginalize(free);
-			
+
 			BayesianFactor p_x0xe_xjpj = p_x0xex0pj.divide(p_xjpj);
 			BayesianFactor p_num = p_x0xe_xjpj.combine(p_pj).filter(x0, x0state);
-			
+
 			numerator = p_num.getData();
-			
+
 			// P(xE|xj,pj) * P(pj)
 			BayesianFactor p_denom = p_x0xe_xjpj.marginalize(x0).combine(p_pj);
 			denominator = p_denom.getData();
 		}
-				
+
 		LinearFractionalSolver solver = createSolver(free);
 		try {
 			solver.solve(numerator, 0.0, denominator, 0.0);
 		} catch (NoFeasibleSolutionException ex) {
 			throw ex;
 		}
-		
+
 		BayesianFactor solution = from.getData().get(free);
 		solution = new BayesianFactor(solution.getDomain(), solution.isLog());
 		solution.setData(solver.getVertex());
 
 		doing.setValues(solution);
 		doing.setScore(solver.getValue());
-		
+
 		fixNotMoving(from, doing);
 		return doing.getScore();
 	}
 
-
 	@Override
 	public double eval(Solution solution) {
-		
+
 		if (!Double.isNaN(solution.getScore()))
 			return solution.getScore();
-		
-		BayesianFactor marg = calcPosterior(solution, new int[] { x0 }, evidence);
+
+		BayesianFactor marg = calcPosterior(solution, new int[]{x0}, evidence);
 		double value = marg.getValue(x0state);
 		solution.setScore(value);
 		return value;

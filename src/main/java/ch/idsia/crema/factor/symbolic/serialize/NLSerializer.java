@@ -1,21 +1,18 @@
 package ch.idsia.crema.factor.symbolic.serialize;
 
-import java.util.HashMap;
-
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.factor.symbolic.CombinedFactor;
-import ch.idsia.crema.factor.symbolic.FilteredFactor;
-import ch.idsia.crema.factor.symbolic.MarginalizedFactor;
-import ch.idsia.crema.factor.symbolic.PriorFactor;
-import ch.idsia.crema.factor.symbolic.Serializer;
-import ch.idsia.crema.factor.symbolic.SymbolicFactor;
+import ch.idsia.crema.factor.symbolic.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+
+import java.util.HashMap;
+import java.util.StringJoiner;
 
 public class NLSerializer implements Serializer {
+
+	private final HashMap<SymbolicFactor, Integer> ids = new HashMap<>();
 
 	@Override
 	public String serialize(SymbolicFactor factor) {
@@ -54,13 +51,11 @@ public class NLSerializer implements Serializer {
 
 			int source_index = iterator.next();
 
-			// XXX fixme (StringJoiner requires Java8, do we agree?)
-			// StringJoiner sj = new StringJoiner("+");
+			StringJoiner sj = new StringJoiner("+");
 			for (int state = 0; state < size; ++state) {
-				// sj.add(getName(source, source_index + state * stride));
+				sj.add(getName(source, source_index + state * stride));
 			}
-			// builder.append(sj);
-			builder.append("\n");
+			builder.append(sj).append("\n");
 		}
 		serializeAny(source, builder);
 	}
@@ -78,13 +73,11 @@ public class NLSerializer implements Serializer {
 
 			builder.append(" = ");
 
-			// XXX same here SJ requires Java8
-			// StringJoiner sj = new StringJoiner(" * ");
-			// for (int source = 0; source < sources.length; ++source) {
-			// sj.add(getName(sources[source], iterators[source].next()));
-			// }
-			// builder.append(sj);
-			builder.append("\n");
+			StringJoiner sj = new StringJoiner(" * ");
+			for (int source = 0; source < sources.length; ++source) {
+				sj.add(getName(sources[source], iterators[source].next()));
+			}
+			builder.append(sj).append("\n");
 		}
 
 		for (SymbolicFactor source : sources) {
@@ -93,10 +86,10 @@ public class NLSerializer implements Serializer {
 	}
 
 	protected void serialize(FilteredFactor filtered, StringBuilder builder) {
-		int offset = filtered.getSource().getDomain().getPartialOffset(new int[] { filtered.getVariable() },
-				new int[] { filtered.getState() });
+		int offset = filtered.getSource().getDomain().getPartialOffset(new int[]{filtered.getVariable()},
+				new int[]{filtered.getState()});
 
-//IndexIterator source_iterator = filtered.getSource().getDomain().getFiteredIndexIterator(filtered.getVariable(), filtered.getState());
+		// IndexIterator source_iterator = filtered.getSource().getDomain().getFiteredIndexIterator(filtered.getVariable(), filtered.getState());
 		IndexIterator source_iterator = filtered.getSource().getDomain().getIterator(filtered.getVariable()).offset(offset);
 
 		for (int target_index = 0; target_index < filtered.getDomain().getCombinations(); ++target_index) {
@@ -164,6 +157,4 @@ public class NLSerializer implements Serializer {
 		}
 		return "V" + id + "S" + configuration;
 	}
-
-	private HashMap<SymbolicFactor, Integer> ids = new HashMap<>();
 }

@@ -1,6 +1,6 @@
 package ch.idsia.crema.utility;
 
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.core.Strides;
 import gnu.trove.iterator.TIntIterator;
 import gnu.trove.list.array.TIntArrayList;
 
@@ -10,15 +10,16 @@ public class IndexIterator implements TIntIterator {
 	final private int[] strides;
 	final private int[] sizes;
 	final private int[] reset;
-	
+
 	// not constant stuff (the array is final, but its content changes during iteration)
 	final private int[] moving_positions;
 
 	private int current_index = 0;
 	private int steps = 0;
 
-	/** 
+	/**
 	 * Create a new Index
+	 *
 	 * @param o
 	 * @return
 	 */
@@ -28,18 +29,17 @@ public class IndexIterator implements TIntIterator {
 
 	/**
 	 * Iterated over the specified domain.
-	 * 
+	 *
 	 * @param domain
 	 */
 	public IndexIterator(Strides domain) {
 		this(domain.getStrides(), domain.getSizes(), 0, domain.getCombinations());
 	}
 
-	
 	public IndexIterator(int[] strides, int[] sizes, int steps) {
 		this(strides, sizes, 0, steps);
 	}
-	
+
 	public IndexIterator(int[] strides, int[] sizes, int offset, int steps) {
 		this.strides = strides;
 		this.sizes = sizes;
@@ -52,8 +52,6 @@ public class IndexIterator implements TIntIterator {
 			reset[i] = (sizes[i] - 1) * strides[i];
 		}
 	}
-	
-	
 
 	public IndexIterator(int[] strides, int[] sizes, int[] reset, int[] moving_positions, int current_index, int steps) {
 		super();
@@ -64,17 +62,16 @@ public class IndexIterator implements TIntIterator {
 		this.current_index = current_index;
 		this.steps = steps;
 	}
-	
 
 	/**
-	 * Make a copy of the iterator for separate use. The new iterator can safely be used independenlty. 
-	 * Note that the memory usage is less than creating a new IndexIterator as the strides, sizes and reset values are not cloned. 
+	 * Make a copy of the iterator for separate use. The new iterator can safely be used independenlty.
+	 * Note that the memory usage is less than creating a new IndexIterator as the strides, sizes and reset values are not cloned.
 	 */
 	@Override
 	public IndexIterator clone() {
 		// only the moving_positions array needs to be cloned! (the steps and the current_index are passed by value)
-		return new IndexIterator(this.strides, this.sizes, this.reset, this.moving_positions.clone(), this.current_index, this.steps); 
-	} 
+		return new IndexIterator(this.strides, this.sizes, this.reset, this.moving_positions.clone(), this.current_index, this.steps);
+	}
 
 	@Override
 	public boolean hasNext() {
@@ -113,7 +110,7 @@ public class IndexIterator implements TIntIterator {
 	public void remove() {
 		throw new UnsupportedOperationException("Index iterator does not support removals");
 	}
-	
+
 	public int[] getPositions() {
 		return moving_positions;
 	}

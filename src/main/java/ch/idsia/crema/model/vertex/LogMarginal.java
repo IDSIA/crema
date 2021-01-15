@@ -3,9 +3,10 @@ package ch.idsia.crema.model.vertex;
 import org.apache.commons.math3.util.FastMath;
 
 public final class LogMarginal implements Collector {
+
 	private final int[] offsets;
 	private final int size;
-	
+
 	@Override
 	public final double collect(final double[] data, final int source) {
 		double value = 0;
@@ -14,7 +15,7 @@ public final class LogMarginal implements Collector {
 		}
 		return FastMath.log(value);
 	}
-			
+
 	public LogMarginal(int size, int stride) {
 		this.size = size;
 		offsets = new int[size];

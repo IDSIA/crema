@@ -4,8 +4,8 @@ import ch.idsia.crema.factor.GenericFactor;
 
 /**
  * A marker interface for credal Factors
- * @author david
  *
+ * @author david
  */
 public interface CredalFactor extends GenericFactor {
 

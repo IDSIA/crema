@@ -8,7 +8,6 @@ import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.util.Arrays;

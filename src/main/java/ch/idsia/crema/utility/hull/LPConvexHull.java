@@ -1,41 +1,41 @@
 package ch.idsia.crema.utility.hull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import ch.idsia.crema.solver.commons.Simplex;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.linear.Relationship;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
-import ch.idsia.crema.solver.commons.Simplex;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class LPConvexHull {
 	public static double[][] add(double[][] current, double[] newpoint) {
-		
+
 		ArrayList<double[]> newPoints = new ArrayList<>(Arrays.asList(current));
 		newPoints.add(newpoint);
-		
+
 		// if new point is internal return
 		if (isJasperInternal(newPoints, current.length)) return current;
-			
+
 		// else we keep testing
 		for (int i = current.length - 1; i >= 0; i--) {
 			if (isJasperInternal(newPoints, i)) {
 				newPoints.remove(i);
 			}
 		}
+
 		return newPoints.toArray(new double[newPoints.size()][]);
-			
 	}
-	
-	private static boolean isJasperInternal(ArrayList<double[]> points, int checkNr) {
+
+	private static boolean isJasperInternal(List<double[]> points, int checkNr) {
 		// check whether point nr. CheckNr is internal
 		int nrPoints = points.size();
 		int dimension = points.get(0).length;
 
 		Simplex solver = new Simplex();
-		ArrayList<LinearConstraint> constraints = new ArrayList<>();
+		List<LinearConstraint> constraints = new ArrayList<>();
 
 		double[] coef = new double[nrPoints];
 		for (int i = 0; i < nrPoints; i++) {
@@ -71,8 +71,7 @@ public class LPConvexHull {
 		return answer;
 	}
 
-	private static boolean[] listJasperInternal(ArrayList<double[]> points) {
-
+	private static boolean[] listJasperInternal(List<double[]> points) {
 		int nrPoints = points.size();
 
 		boolean[] list = new boolean[nrPoints];
@@ -84,7 +83,9 @@ public class LPConvexHull {
 
 	public static double[][] compute(double[][] points, boolean simplex) {
 		int NrPoints = points.length;
-		ArrayList<double[]> newPoints = new ArrayList<>(Arrays.asList(points));
+
+		List<double[]> newPoints = new ArrayList<>(Arrays.asList(points));
+
 		for (int i = NrPoints - 1; i >= 0; i--) {
 			if (isJasperInternal(newPoints, i)) {
 				newPoints.remove(i);

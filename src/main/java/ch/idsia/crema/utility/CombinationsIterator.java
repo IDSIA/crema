@@ -1,15 +1,10 @@
 package ch.idsia.crema.utility;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Iterator over the possible combinations of the elements of the arrays given at construction time.
- * The input arrays are given as an array of collections or a collection of collections. 
+ * The input arrays are given as an array of collections or a collection of collections.
  * The order of the elements is kept the on of the input.
  * <p>Example:
  * <pre>
@@ -25,52 +20,54 @@ import java.util.List;
  * 4, "3"
  * 6, "1"
  * 6, "3"
- * </pre> 
- * @author david
+ * </pre>
  *
  * @param <E>
+ * @author david
  */
 public class CombinationsIterator<E> implements Iterator<Collection<E>> {
 
 	private int total;
 	private int counter;
 
-	private ArrayList<ArrayList<E>> collections;
-	private ArrayList<E> current;
-	
+	private final ArrayList<ArrayList<E>> collections;
+	private final ArrayList<E> current;
+
 	public CombinationsIterator(Collection<Collection<E>> source) {
 		this.collections = new ArrayList<>(source.size());
 		this.current = new ArrayList<>(source.size());
 
 		this.counter = -1;
 		this.total = 1;
-		
+
 		// make a copy of each collection
 		for (Collection<E> collection : source) {
 			ArrayList<E> copy = new ArrayList<>(collection);
 			this.collections.add(copy);
 			this.current.add(null);
-			this.total *= copy.size(); 
+			this.total *= copy.size();
 		}
 	}
-	
+
 	public int size() {
 		return total;
 	}
-	public CombinationsIterator(@SuppressWarnings("unchecked") Collection<E>... collectionsList) {
+
+	@SuppressWarnings("unchecked")
+	public CombinationsIterator(Collection<E>... collectionsList) {
 		this(Arrays.asList(collectionsList));
 	}
-	
+
 	@Override
 	public boolean hasNext() {
-		return counter < total-1;
+		return counter < total - 1;
 	}
 
 	@Override
 	public List<E> next() {
 		++counter;
 		int index = counter;
-		for (int collectionIndex = collections.size() - 1; collectionIndex >= 0; -- collectionIndex) {
+		for (int collectionIndex = collections.size() - 1; collectionIndex >= 0; --collectionIndex) {
 			ArrayList<E> collection = collections.get(collectionIndex);
 			int offset = index % collection.size();
 			current.set(collectionIndex, collection.get(offset));
