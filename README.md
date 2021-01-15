@@ -68,7 +68,7 @@ Add the following code in the  pom.xml of your project:
         <dependency>
             <groupId>ch.idsia</groupId>
             <artifactId>crema</artifactId>
-            <version>0.1.5</version>
+            <version>0.1.6</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
