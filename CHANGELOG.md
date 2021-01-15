@@ -1,3 +1,20 @@
+0.1.6
+===========
+
+- fixed #44, #40.
+- New class hierarchy for Models:
+    * the main interface is `Model`,
+    * the graphical models now implements the `GraphicalModel` interface,
+    * basic _Directed Acyclic Graph_ is `DAGModel`,
+    * the `BayesianNetwork` class is now a specialized case of `DAGModel`,
+- Added *Join Tree* and *Belief Propagation* algorithms for BayesianFactor-based models. 
+- Added algorithms for entropy of Bayesian and Credal networks. 
+- General code cleanup (mainly code style).
+- Removed main methods from the library and moved to separate unit test classes.
+- Updated tests and removed old experiments.
+- Removed examples relative to Adaptive project.
+- Updated tutorials.
+
 0.1.5
 ===========
 
