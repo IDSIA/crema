@@ -9,7 +9,7 @@ Contact and Support
 
 
 
-Credici has been developed at the Swiss AI Lab IDSIA (Istituto Dalle Molle di Studi sull'Intelligenza Artificiale).
+Crema has been developed at the Swiss AI Lab IDSIA (Istituto Dalle Molle di Studi sull'Intelligenza Artificiale).
 The members of the development and research team are:
 
 
