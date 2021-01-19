@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to inform that an operation will perform the changes inline.
+ *
  * @author davidhuber
  */
 @Retention(RetentionPolicy.RUNTIME)

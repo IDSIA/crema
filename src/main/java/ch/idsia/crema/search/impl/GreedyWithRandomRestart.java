@@ -6,12 +6,9 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * 
- * 
- * @author davidhuber
- *
  * @param <M> the move type
  * @param <S> the solution type
+ * @author davidhuber
  */
 public class GreedyWithRandomRestart<M, S> extends AbstractSearch<M, S> {
 	public static final String MAX_RESTARTS = "maxrestarts";
@@ -24,7 +21,7 @@ public class GreedyWithRandomRestart<M, S> extends AbstractSearch<M, S> {
 
 	private int maxRestarts = MAX_RESTARTS_DEFAULT;
 	private int restarts = MAX_RESTARTS_DEFAULT; // counting down
-	
+
 	private int maxPlateau = MAX_PLATEAU_DEFAULT;
 	private int plateau = 0; // counting up 
 
@@ -37,11 +34,11 @@ public class GreedyWithRandomRestart<M, S> extends AbstractSearch<M, S> {
 		if (config.containsKey(MAX_RESTARTS)) {
 			maxRestarts = Utils.tryParse(config.get(MAX_RESTARTS), MAX_RESTARTS_DEFAULT);
 		}
-		
+
 		if (config.containsKey(MAX_PLATEAU)) {
 			maxPlateau = Utils.tryParse(config.get(MAX_PLATEAU), MAX_PLATEAU_DEFAULT);
 		}
-		
+
 		super.initialize(initial, config);
 
 		restarts = maxRestarts;
@@ -72,7 +69,7 @@ public class GreedyWithRandomRestart<M, S> extends AbstractSearch<M, S> {
 
 		// no improving move found
 		if (winner_move == null) {
-			
+
 			// max plateau reached or no other valid move available
 			if (plateau >= maxPlateau || last_valid == null) {
 				currentSolution = neighbourhood.random();

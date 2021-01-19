@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * Should imply {@link Barren}
- * @author huber
  *
+ * @author huber
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

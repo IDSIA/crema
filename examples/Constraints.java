@@ -2,7 +2,6 @@ import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 public class Constraints {

@@ -7,7 +7,6 @@ import ch.idsia.crema.inference.approxlp.CredalApproxLP;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
 import ch.idsia.crema.model.ObservationBuilder;
 import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.graphical.SparseModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.IOException;

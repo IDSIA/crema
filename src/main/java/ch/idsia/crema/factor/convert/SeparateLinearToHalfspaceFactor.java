@@ -1,35 +1,37 @@
 package ch.idsia.crema.factor.convert;
 
-import java.util.ArrayList;
-
+import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.model.Converter;
+import java.util.ArrayList;
+import java.util.List;
 
+@SuppressWarnings("rawtypes")
 public class SeparateLinearToHalfspaceFactor implements Converter<SeparateLinearFactor, SeparateHalfspaceFactor> {
 
 	/**
-	 * when true the linear constraints obtained from the source factor are copied.
+	 * When true the linear constraints obtained from the source factor are copied.
 	 * Otherwise they are simply referenced. This is a compile time switch.
 	 */
 	private static final boolean copy = false;
-	
+
 	@Override
 	public SeparateHalfspaceFactor apply(SeparateLinearFactor s, Integer var) {
-		ArrayList<ArrayList<LinearConstraint>> data = new ArrayList<>(s.getSeparatingDomain().getCombinations());
-		
+		List<List<LinearConstraint>> data = new ArrayList<>(s.getSeparatingDomain().getCombinations());
+
 		for (int offset = 0; offset < s.getSeparatingDomain().getCombinations(); ++offset) {
 			LinearConstraintSet set = s.getLinearProblemAt(offset);
 			if (copy) {
-				ArrayList<LinearConstraint> new_constraints = new ArrayList<>(set.getConstraints().size());
+				List<LinearConstraint> new_constraints = new ArrayList<>(set.getConstraints().size());
 				for (LinearConstraint constraint : set.getConstraints()) {
 					RealVector coeff = constraint.getCoefficients().copy();
 					new_constraints.add(new LinearConstraint(coeff, constraint.getRelationship(), constraint.getValue()));
 				}
+				// TODO: copy done but not saved
 			} else {
 				data.add(new ArrayList<>(set.getConstraints()));
 			}
@@ -46,6 +48,5 @@ public class SeparateLinearToHalfspaceFactor implements Converter<SeparateLinear
 	public Class<SeparateLinearFactor> getSourceClass() {
 		return SeparateLinearFactor.class;
 	}
-
 
 }

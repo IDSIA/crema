@@ -22,7 +22,6 @@ public class LikelihoodWeightingSamplingTest extends StochasticSamplingTest {
 
 	@Test
 	public void vsVariableElimination() throws InterruptedException {
-
 		TIntIntMap evidence = new TIntIntHashMap(new int[]{3}, new int[]{0});
 
 		for (int query = 0; query < 5; query++) {

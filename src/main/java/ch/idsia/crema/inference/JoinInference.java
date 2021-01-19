@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.model.GraphicalModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 
 /**
@@ -11,10 +11,10 @@ import gnu.trove.map.TIntIntMap;
  */
 public interface JoinInference<F extends GenericFactor, R extends GenericFactor> extends SingleInference<F, R> {
 
-    R apply(GraphicalModel<F> model, int[] query, TIntIntMap observations) throws InterruptedException;
+	R apply(GraphicalModel<F> model, int[] query, TIntIntMap observations) throws InterruptedException;
 
-    default R apply(GraphicalModel<F> model, int query, TIntIntMap observations) throws InterruptedException {
-        return apply(model, new int[]{query}, observations);
-    }
+	default R apply(GraphicalModel<F> model, int query, TIntIntMap observations) throws InterruptedException {
+		return apply(model, new int[]{query}, observations);
+	}
 
 }

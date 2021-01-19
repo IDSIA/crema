@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.jtree.tree.EliminationTree;
+import ch.idsia.crema.inference.fe.EliminationTree;
+import ch.idsia.crema.inference.fe.FactorElimination;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class FactorEliminationTest {
 
 	@Before
 	public void setUp() {
-		BayesianNetworks bn = BayesianNetworks.mix5Variables();
+		BayesianNetworkContainer bn = BayesianNetworkContainer.mix5Variables();
 		BayesianFactor[] f = bn.factors;
 
 		int A = bn.variables[0];

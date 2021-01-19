@@ -1,17 +1,13 @@
 package ch.idsia.crema.factor.credal.vertex;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.Strides;
-import ch.idsia.crema.model.vertex.Collector;
-import ch.idsia.crema.model.vertex.Filter;
-import ch.idsia.crema.model.vertex.LogMarginal;
-import ch.idsia.crema.model.vertex.LogVertexOperation;
-import ch.idsia.crema.model.vertex.Marginal;
+import ch.idsia.crema.model.vertex.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVertexFactor> {
 
@@ -24,7 +20,7 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 		this.data = new ArrayList<>(capacity);
 		this.domain = strides;
 	}
-	
+
 	public ExtensiveVertexFactor(Strides strides, boolean log) {
 		this.log = log;
 		this.data = new ArrayList<>();
@@ -38,12 +34,10 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 		this.log = log;
 	}
 
-	
 	public void addInternalVertex(double[] data) {
 		this.data.add(data);
 	}
 
-	
 	public void addVertex(double[] data) {
 		if (log) {
 			for (int i = 0; i < data.length; ++i) {
@@ -53,7 +47,6 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 		this.data.add(data);
 	}
 
-	
 	public void addVertex(BayesianFactor data) {
 		if (this.log == data.isLog()) {
 			this.data.add(data.getInteralData());
@@ -70,18 +63,15 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 		}
 	}
 
-	
 	public BayesianFactor getBayesianVertex(int vertex) {
 		return new BayesianFactor(domain, data.get(vertex), log);
 	}
 
-	
 	@Override
 	public Strides getDomain() {
 		return domain;
 	}
 
-	
 	public ArrayList<double[]> getInternalVertices() {
 		return data;
 	}
@@ -89,8 +79,7 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 	public boolean isLog() {
 		return log;
 	}
-	
-	
+
 	@Override
 	public ExtensiveVertexFactor copy() {
 		ArrayList<double[]> new_data = new ArrayList<>(data.size());
@@ -120,7 +109,7 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
 			int offset = Arrays.binarySearch(target.getVariables(), factor.domain.getVariables()[vindex]);
 			if (offset >= 0) {
-				stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32l);
+				stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
 			}
 		}
 
@@ -143,7 +132,7 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 			int table = 0;
 			for (int our_table = 0; our_table < our_tables; ++our_table) {
 				for (int his_table = 0; his_table < his_tables; ++his_table) {
-					result[table++][i] = data.get(our_table)[(int) (idx & 0xFFFFFFFF)] + factor.data.get(his_table)[(int) (idx >>> 32l)];
+					result[table++][i] = data.get(our_table)[(int) (idx & 0xFFFFFFFF)] + factor.data.get(his_table)[(int) (idx >>> 32L)];
 				}
 			}
 
@@ -164,7 +153,6 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 		return target_factor;
 	}
 
-	
 	@Override
 	public ExtensiveVertexFactor combine(ExtensiveVertexFactor factor) {
 		final Strides target = domain.union(factor.domain);
@@ -185,7 +173,7 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
 			int offset = Arrays.binarySearch(target.getVariables(), factor.domain.getVariables()[vindex]);
 			if (offset >= 0) {
-				stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32l);
+				stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
 			}
 		}
 
@@ -196,8 +184,6 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 
 		final int our_tables = data.size();
 		final int his_tables = factor.data.size();
-
-
 
 		ExtensiveVertexFactor target_factor = new ExtensiveVertexFactor(target, log);
 		target_factor.data.ensureCapacity(our_tables * his_tables);
@@ -218,13 +204,13 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 
 		return target_factor;
 	}
-	
+
 	@Override
 	public ExtensiveVertexFactor filter(int variable, int state) {
 		int offset = domain.indexOf(variable);
 		return collect(offset, new Filter(domain.getStrideAt(offset), state));
 	}
-	
+
 	@Override
 	public ExtensiveVertexFactor marginalize(int variable) {
 		int offset = domain.indexOf(variable);
@@ -234,15 +220,12 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 			return collect(offset, new Marginal(domain.getSizeAt(offset), domain.getStrideAt(offset)));
 	}
 
-	
 	private ExtensiveVertexFactor collect(final int offset, final Collector collector) {
 
 		final int stride = domain.getStrideAt(offset);
 		final int size = domain.getSizeAt(offset);
-
 		final int reset = size * stride;
 
-		
 		Strides target_domain = domain.removeAt(offset); //new Strides(domain, offset);
 
 		ExtensiveVertexFactor result = new ExtensiveVertexFactor(target_domain, isLog());
@@ -251,7 +234,7 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 			int next = stride;
 			int jump = stride * (size - 1);
 
-			final double[] new_data = new double[target_domain.getCombinations()];
+			final double[] newData = new double[target_domain.getCombinations()];
 
 			for (int target = 0; target < target_domain.getCombinations(); ++target, ++source) {
 				if (source == next) {
@@ -259,16 +242,16 @@ public class ExtensiveVertexFactor implements GenericFactor, Factor<ExtensiveVer
 					next += reset;
 				}
 
-				new_data[target] = collector.collect(vertex, source);
+				newData[target] = collector.collect(vertex, source);
 			}
 
-			result.data.add(new_data);
+			result.data.add(newData);
 		}
 
 		return result;
 	}
-	
-	/// XXX
+
+	/// TODO: XXX
 	@Override
 	public ExtensiveVertexFactor divide(ExtensiveVertexFactor factor) {
 		// TODO Auto-generated method stub
