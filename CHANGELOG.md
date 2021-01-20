@@ -1,3 +1,8 @@
+0.1.6.hf1
+===========
+
+- fixed an issue with BeliefPropagation
+
 0.1.6
 ===========
 
