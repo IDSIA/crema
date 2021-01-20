@@ -5,12 +5,14 @@ import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
+import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -154,5 +156,79 @@ public class BeliefPropagationTest {
 		SymbolicFactor factor = bp.fullPropagation();
 
 		System.out.println(factor);
+	}
+
+	@Test
+	public void testInference() {
+		BayesianNetwork bn = new BayesianNetwork();
+		int A = bn.addVariable(2); // skill:    A               (low, high)
+		int H = bn.addVariable(2); // question: high interest   (a, b)
+		int L = bn.addVariable(2); // question: low interest    (a, b)
+
+		bn.addParent(H, A);
+		bn.addParent(L, A);
+
+		BayesianFactor[] factors = new BayesianFactor[3];
+		factors[A] = new BayesianFactor(bn.getDomain(A));
+		factors[H] = new BayesianFactor(bn.getDomain(A, H));
+		factors[L] = new BayesianFactor(bn.getDomain(A, L));
+
+		factors[A].setData(new double[]{.5, .5});
+		factors[H].setData(new double[]{.9, .1, .1, .9});
+		factors[L].setData(new double[]{.2, .8, .8, .2});
+
+		bn.setFactors(factors);
+
+		BeliefPropagation<BayesianFactor> inf = new BeliefPropagation<>(bn);
+
+
+		assertArrayEquals(new int[]{H, L}, bn.getChildren(A));
+		assertArrayEquals(new int[]{A}, bn.getParents(L));
+		assertArrayEquals(new int[]{A}, bn.getParents(H));
+
+		TIntIntMap obs = new TIntIntHashMap();
+
+		obs.put(L, 0);
+		inf.setEvidence(obs);
+		BayesianFactor q = inf.query(A);
+
+		assertArrayEquals(new double[]{.2, .8}, q.getData(), 1e-3);
+
+		obs.put(L, 1);
+		inf.setEvidence(obs);
+		q = inf.query(A);
+		assertArrayEquals(new double[]{.8, .2}, q.getData(), 1e-3);
+
+		obs = new TIntIntHashMap();
+
+		obs.put(H, 0);
+		inf.setEvidence(obs);
+		q = inf.query(A);
+		assertArrayEquals(new double[]{.9, .1}, q.getData(), 1e-3);
+
+		obs.put(H, 1);
+		inf.setEvidence(obs);
+		q = inf.query(A);
+		assertArrayEquals(new double[]{.1, .9}, q.getData(), 1e-3);
+
+		obs.put(L, 1);
+		obs.put(H, 1);
+		q = inf.query(A);
+		assertArrayEquals(new double[]{.3077, .6923}, q.getData(), 1e-3);
+
+		obs.put(L, 0);
+		obs.put(H, 1);
+		q = inf.query(A);
+		assertArrayEquals(new double[]{.0270, .9730}, q.getData(), 1e-3);
+
+		obs.put(L, 1);
+		obs.put(H, 0);
+		q = inf.query(A);
+		assertArrayEquals(new double[]{.9730, .0270}, q.getData(), 1e-3);
+
+		obs.put(L, 0);
+		obs.put(H, 0);
+		q = inf.query(A);
+		assertArrayEquals(new double[]{0.6923, 0.3077}, q.getData(), 1e-3);
 	}
 }

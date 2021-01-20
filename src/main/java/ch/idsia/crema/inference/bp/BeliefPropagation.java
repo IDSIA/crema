@@ -69,11 +69,10 @@ public class BeliefPropagation<F extends Factor<F>> {
 	public F query(int variable) {
 		F f;
 
-		if (!fullyPropagated) {
-			distributingEvidence(variable);
-			f = collectingEvidence(variable);
-		} else {
+		if (fullyPropagated) {
 			f = phi(getRoot(variable));
+		} else {
+			f = collectingEvidence(variable);
 		}
 
 		// marginalize out what is not needed
@@ -88,9 +87,13 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 * @return the marginalized probability of the query node.
 	 */
 	public F fullPropagation() {
-		checks();
-
 		Integer variable = model.getNetwork().vertexSet().iterator().next();
+
+		return fullPropagation(variable);
+	}
+
+	public F fullPropagation(int variable) {
+		checks();
 
 		F f = collectingEvidence(variable);
 		distributingEvidence(variable);
@@ -153,7 +156,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 			Separator<F> S = junctionTree.getEdge(i, root);
 			F Mij = project(phi, S);
 
-			// distribute the message M(root,j) to node j
+			// distribute the message M(root,i) to node i
 			distribute(root, i, Mij);
 		});
 
@@ -235,7 +238,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 				.reduce(F::combine)
 				.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
 
-		return factor.filter(evidence);
+		return factor.filter(evidence).normalize();
 	}
 
 	/**
@@ -247,7 +250,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 */
 	private F project(F phi, Separator<F> S) {
 		int[] ints = Arrays.stream(phi.getDomain().getVariables())
-				.filter(x -> ArraysUtil.contains(x, S.getVariables()))
+				.filter(x -> !ArraysUtil.contains(x, S.getVariables()))
 				.toArray();
 
 		return phi.marginalize(ints).normalize();
