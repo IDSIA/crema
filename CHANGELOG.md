@@ -1,7 +1,7 @@
-0.1.6.hf1
+0.1.6.a
 ===========
 
-- fixed an issue with BeliefPropagation
+- Fixed #48, an issue with BeliefPropagation caused by wrong management of messages.
 
 0.1.6
 ===========
