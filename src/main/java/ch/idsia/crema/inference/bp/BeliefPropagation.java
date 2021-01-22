@@ -5,12 +5,15 @@ import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.junction.JunctionTree;
 import ch.idsia.crema.inference.bp.junction.Separator;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
-import java.util.Comparator;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -27,6 +30,8 @@ public class BeliefPropagation<F extends Factor<F>> {
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
+	private Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
+
 	public BeliefPropagation(DAGModel<F> model) {
 		this.model = model;
 		init();
@@ -39,6 +44,41 @@ public class BeliefPropagation<F extends Factor<F>> {
 		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
 		pipeline.setInput(model.getNetwork());
 		junctionTree = pipeline.exec();
+
+		// distribute potentials
+		TIntObjectMap<Clique> factorsPerClique = new TIntObjectHashMap<>();
+
+		if (junctionTree.vertexSet().size() == 2) {
+			junctionTree.vertexSet().forEach(clique -> {
+				for (int v : clique.getVariables()) {
+
+					factorsPerClique.put(v, clique);
+				}
+			});
+		} else {
+			final List<Clique> cliques = junctionTree.vertexSet().stream()
+					.sorted(Comparator.comparingInt(a -> junctionTree.edgesOf(a).size()))
+					.collect(Collectors.toList());
+
+			cliques.forEach(clique -> {
+				final Set<Separator<F>> edges = junctionTree.edgesOf(clique);
+				final int[] ints = edges.stream()
+						.map(Separator::getVariables)
+						.flatMapToInt(Arrays::stream)
+						.toArray();
+				for (int v : clique.getVariables()) {
+					if (edges.size() == 1 && ArraysUtil.contains(v, ints)) {
+						continue;
+					}
+					factorsPerClique.put(v, clique);
+				}
+			});
+		}
+
+		model.getFactorsMap().forEachEntry(
+				(v, f) -> potentialsPerClique.computeIfAbsent(factorsPerClique.get(v), i -> new HashSet<>()).add(f)
+		);
+
 		fullyPropagated = false;
 	}
 
@@ -67,16 +107,16 @@ public class BeliefPropagation<F extends Factor<F>> {
 	public F query(int variable) {
 		F f;
 
-		if (fullyPropagated) {
-			f = phi(getRoot(variable));
-		} else {
-			f = collectingEvidence(variable);
-		}
+//		if (fullyPropagated) {
+//			f = phi(getRoot(variable));
+//		} else {
+		f = collectingEvidence(variable);
+//		}
 
 		// marginalize out what is not needed
-		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
+//		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
 
-		return f.marginalize(ints).normalize();
+		return f;
 	}
 
 	public F query(int variable, TIntIntMap evidence) {
@@ -123,16 +163,16 @@ public class BeliefPropagation<F extends Factor<F>> {
 		final Clique root = getRoot(variable);
 
 		// collect messages
-		Stream<F> psis = junctionTree.edgesOf(root).stream()
+		F psis = junctionTree.edgesOf(root).stream()
 				.map(edge -> cliqueFromDirection(root, edge))
-				.map(i -> collect(/* from */ i, /* to */root));
-
-		Stream<F> phis = Stream.of(phi(root));
-
-		// combine by potential
-		F f = Stream.concat(phis, psis)
+				.map(i -> collect(/* from */ i, /* to */root))
 				.reduce(F::combine)
 				.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
+
+		F phis = phi(root);
+
+		// combine by potential
+		F f = psis.combine(phis);
 
 		// marginalize out what is not needed
 		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
@@ -180,23 +220,30 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 * @return the message Mjk
 	 */
 	private F collect(Clique j, Clique k) {
-		// collect psi(j)
-		Stream<F> psis = junctionTree.edgesOf(j).stream()
+		// collect and combine messages psi to j
+		Optional<F> psis = junctionTree.edgesOf(j).stream()
 				.map(edge -> cliqueFromDirection(j, edge))
 				.filter(i -> !i.equals(k))
-				.map(i -> collect(/* from */ i, /* to */ j));
+				.map(i -> collect(/* from */ i, /* to */ j))
+				.reduce(F::combine);
 
-		Stream<F> phis = Stream.of(phi(j));
+		// collect and combine potentials phi of j
+		F phis = phi(j);
 
-		// combine phi(j) with psis from other branches
-		final F phi = Stream.concat(phis, psis)
-				.reduce(F::combine)
-				.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
-
-		// compute the message by projecting phi over the separator(i, j)
+		// the new message is the marginalization over the separator
 		Separator<F> S = junctionTree.getEdge(j, k);
-		F Mjk = project(phi, S);
+		int[] ints = cliqueNotInSeparator(j, S);
+		F Mjk;
+
+		if (psis.isPresent()) {
+			Mjk = phis.combine(psis.get()).marginalize(ints);
+		} else {
+			Mjk = phis.marginalize(ints);
+		}
+
 		S.setMessage(/* from */ j, Mjk);
+
+		System.out.println("PSI(" + j + " -> " + k + ":" + S + ") = " + Mjk);
 
 		return Mjk;
 	}
@@ -224,6 +271,12 @@ public class BeliefPropagation<F extends Factor<F>> {
 		}
 	}
 
+	public int[] cliqueNotInSeparator(Clique c, Separator<F> S) {
+		return Arrays.stream(c.getVariables())
+				.filter(x -> !ArraysUtil.contains(x, S.getVariables()))
+				.toArray();
+	}
+
 	/**
 	 * Compute the potential phi of a given {@link Clique}. Evidence is considered there.
 	 *
@@ -231,11 +284,14 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 * @return a {@link F} which is a combination of all the factors and the evidences included in the Clique
 	 */
 	private F phi(Clique clique) {
-		F f = IntStream.of(clique.getVariables())
-				.mapToObj(model::getFactor)
+		final F phi = potentialsPerClique.get(clique).stream()
+				.map(f -> f.filter(evidence))
 				.reduce(F::combine)
 				.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
-		return f.filter(evidence);
+
+		System.out.println("PHI(" + clique + ") = " + phi);
+
+		return phi;
 	}
 
 	/**
@@ -246,6 +302,9 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 * @return a marginalized and normalized {@link F}
 	 */
 	private F project(F phi, Separator<F> S) {
-		return phi.marginalize(S.getVariables());
+		int[] ints = Arrays.stream(phi.getDomain().getVariables())
+				.filter(x -> !ArraysUtil.contains(x, S.getVariables()))
+				.toArray();
+		return phi.marginalize(ints);
 	}
 }
