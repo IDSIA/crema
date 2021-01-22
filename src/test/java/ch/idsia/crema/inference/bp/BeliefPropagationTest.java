@@ -22,7 +22,6 @@ public class BeliefPropagationTest {
 
 	// TODO: add better tests...
 
-	@Ignore // TODO: need more testing
 	@Test
 	public void testPropagationQuery() {
 		// source: Jensen, p.110, Fig. 4.1 "A simple Bayesian network BN".
@@ -44,11 +43,29 @@ public class BeliefPropagationTest {
 		BayesianFactor[] factors = new BayesianFactor[model.getVariables().length];
 
 		factors[A0] = new BayesianFactor(model.getDomain(A0), new double[]{.7, .3});
-		factors[A1] = new BayesianFactor(model.getDomain(A0, A1), new double[]{.4, .6, .3, .7});
-		factors[A2] = new BayesianFactor(model.getDomain(A0, A2), new double[]{.5, .5, .8, .2});
-		factors[A3] = new BayesianFactor(model.getDomain(A1, A3), new double[]{.6, .4, .1, .9});
-		factors[A4] = new BayesianFactor(model.getDomain(A1, A2, A4), new double[]{.1, .9, .4, .6, .8, .2, .7, .3});
-		factors[A5] = new BayesianFactor(model.getDomain(A5, A2), new double[]{.4, .6, .5, .5});
+		factors[A1] = new BayesianFactor(model.getDomain(A0, A1), new double[]{.4, .3, .6, .7});
+		factors[A2] = new BayesianFactor(model.getDomain(A0, A2), new double[]{.5, .8, .5, .2});
+		factors[A3] = new BayesianFactor(model.getDomain(A1, A3), new double[]{.6, .1, .4, .9});
+		factors[A4] = new BayesianFactor(model.getDomain(A1, A2, A4), new double[]{.1, .8, .4, .7, .9, .2, .6, .3});
+		factors[A5] = new BayesianFactor(model.getDomain(A2, A5), new double[]{.4, .5, .6, .5});
+
+
+		System.out.println(factors[A1].filter(A0, 0));
+		System.out.println(factors[A1].filter(A0, 1));
+
+		System.out.println(factors[A2].filter(A0, 0));
+		System.out.println(factors[A2].filter(A0, 1));
+
+		System.out.println(factors[A3].filter(A1, 0));
+		System.out.println(factors[A3].filter(A1, 1));
+
+		System.out.println(factors[A4].filter(A1, 0).filter(A2, 0));
+		System.out.println(factors[A4].filter(A1, 0).filter(A2, 1));
+		System.out.println(factors[A4].filter(A1, 1).filter(A2, 0));
+		System.out.println(factors[A4].filter(A1, 1).filter(A2, 1));
+
+		System.out.println(factors[A5].filter(A2, 0));
+		System.out.println(factors[A5].filter(A2, 1));
 
 		model.setFactors(factors);
 
