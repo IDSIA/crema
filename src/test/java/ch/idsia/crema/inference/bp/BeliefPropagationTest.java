@@ -49,24 +49,6 @@ public class BeliefPropagationTest {
 		factors[A4] = new BayesianFactor(model.getDomain(A1, A2, A4), new double[]{.1, .8, .4, .7, .9, .2, .6, .3});
 		factors[A5] = new BayesianFactor(model.getDomain(A2, A5), new double[]{.4, .5, .6, .5});
 
-
-		System.out.println(factors[A1].filter(A0, 0));
-		System.out.println(factors[A1].filter(A0, 1));
-
-		System.out.println(factors[A2].filter(A0, 0));
-		System.out.println(factors[A2].filter(A0, 1));
-
-		System.out.println(factors[A3].filter(A1, 0));
-		System.out.println(factors[A3].filter(A1, 1));
-
-		System.out.println(factors[A4].filter(A1, 0).filter(A2, 0));
-		System.out.println(factors[A4].filter(A1, 0).filter(A2, 1));
-		System.out.println(factors[A4].filter(A1, 1).filter(A2, 0));
-		System.out.println(factors[A4].filter(A1, 1).filter(A2, 1));
-
-		System.out.println(factors[A5].filter(A2, 0));
-		System.out.println(factors[A5].filter(A2, 1));
-
 		model.setFactors(factors);
 
 		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(model);
@@ -107,24 +89,27 @@ public class BeliefPropagationTest {
 		obs.put(B, 0);
 		q = bp.query(A, obs);
 		System.out.println("P(A | B=0):       " + q);
-		// TODO: there and below are missing asserts with correct computations
+		assertArrayEquals(new double[]{.1818, .8182}, q.getData(), 1e-3);
 
 		// P(A | B=1)
 		obs.put(B, 1);
 		q = bp.query(A, obs);
 		System.out.println("P(A | B=1):       " + q);
+		assertArrayEquals(new double[]{.8235, .1765}, q.getData(), 1e-3);
 
 		// P(A | B=0, C=0)
 		obs.put(B, 0);
 		obs.put(C, 0);
 		q = bp.query(A, obs);
 		System.out.println("P(A | B=0, C=0): " + q);
+		assertArrayEquals(new double[]{.0597, .9403}, q.getData(), 1e-3);
 
 		// P(A | B=1, C=1)
 		obs.put(B, 1);
 		obs.put(C, 1);
 		q = bp.query(A, obs);
 		System.out.println("P(A | B=1, C=1): " + q);
+		assertArrayEquals(new double[]{.9256, .0744}, q.getData(), 1e-3);
 	}
 
 	@Ignore // TODO: this need method filter() implemented for SymbolicFactors
@@ -263,27 +248,13 @@ public class BeliefPropagationTest {
 		final BayesianFactor phi6 = factors[A].combine(phi5);       // P(A) * phi5
 		final BayesianFactor res1 = phi6.normalize();
 
-		/*
-		System.out.println("X=" + factors[A].combine(factors[B]).combine(factors[C]).combine(factors[D]).filter(D, 0).marginalize(B, C, D).normalize());
-
-		System.out.println("Φ1=" + phi1);
-		System.out.println("Φ2=" + phi2);
-		System.out.println("Φ3=" + phi3);
-		System.out.println("Φ4=" + phi4);
-		System.out.println("Φ5=" + phi5);
-		System.out.println("Φ6=" + phi6);
-		System.out.println("res=" + res1);
-		 */
-
+		// computations by hand using messages
 		final BayesianFactor psi1 = factors[D].filter(D, 0);
 		final BayesianFactor psi2 = factors[B].combine(factors[C]).combine(psi1).marginalize(C);
 		final BayesianFactor phiS = factors[A].combine(psi2).marginalize(B);
-		final BayesianFactor res2 = phiS.normalize();
+		final BayesianFactor res = phiS.normalize();
 
-		System.out.println("Ψ1=" + psi1);
-		System.out.println("Ψ2=" + psi2);
-		System.out.println("Φ6=" + phiS);
-		System.out.println("res=" + res2);
+		assertEquals(res1, res);
 
 		// computation using Belief Propagation
 		BeliefPropagation<BayesianFactor> inf = new BeliefPropagation<>(bn);
@@ -293,7 +264,7 @@ public class BeliefPropagationTest {
 		final BayesianFactor q = inf.query(A, obs);
 		System.out.println("query=" + q);
 
-		assertEquals(res2, q);
+		assertEquals(res, q);
 	}
 
 }
