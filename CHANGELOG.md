@@ -2,7 +2,7 @@
 ===========
 
 - Fixed #48, an issue with BeliefPropagation caused by wrong management of messages.
-- Added a parser for the BIF format ( #45 )
+- Added a parser for the BIF format ( #51 )
 
 0.1.6
 ===========
