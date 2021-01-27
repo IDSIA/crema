@@ -30,7 +30,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
-	private Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
+	private final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
 
 	public BeliefPropagation(DAGModel<F> model) {
 		this.model = model;
@@ -57,7 +57,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 			});
 		} else {
 			final List<Clique> cliques = junctionTree.vertexSet().stream()
-					.sorted(Comparator.comparingInt(a -> junctionTree.edgesOf(a).size()))
+					.sorted(Comparator.comparingInt(a -> -junctionTree.edgesOf(a).size()))
 					.collect(Collectors.toList());
 
 			cliques.forEach(clique -> {
