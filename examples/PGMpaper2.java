@@ -1,12 +1,12 @@
 import ch.idsia.crema.IO;
+import ch.idsia.crema.core.ObservationBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.approxlp.CredalApproxLP;
-import ch.idsia.crema.inference.ve.CredalVariableElimination;
-import ch.idsia.crema.model.ObservationBuilder;
-import ch.idsia.crema.model.Strides;
+
+import ch.idsia.crema.model.graphical.DAGModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class PGMpaper2 {
     public static void main(String[] args) throws InterruptedException, IOException {
 
         // define the structure
-        SparseModel cnet = new SparseModel();
+        DAGModel cnet = new DAGModel();
         int a = cnet.addVariable(2);
         int b = cnet.addVariable(3);
         cnet.addParent(a, b);
@@ -65,4 +65,4 @@ public class PGMpaper2 {
 
     }
 }
-
+//68

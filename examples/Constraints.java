@@ -1,16 +1,16 @@
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.DAGModel;
 import org.apache.commons.math3.optim.linear.Relationship;
-
 public class Constraints {
     public static void main(String[] args) {
 
         double p = 0.2;
 
         // Define the model
-        SparseModel model = new SparseModel();
+        DAGModel model = new DAGModel();
         int u = model.addVariable(3);
 
         SeparateHalfspaceFactor fu_constr = new SeparateHalfspaceFactor(model.getDomain(u), Strides.empty());
@@ -38,3 +38,4 @@ public class Constraints {
     }
 
 }
+//41

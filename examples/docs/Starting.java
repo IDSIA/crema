@@ -1,10 +1,10 @@
 package docs;
 
+import ch.idsia.crema.core.ObservationBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
-import ch.idsia.crema.model.ObservationBuilder;
-import ch.idsia.crema.model.Strides;
-
+import ch.idsia.crema.model.graphical.DAGModel;
 public class Starting {
     public static void main(String[] args) {
         double p = 0.2;
@@ -13,7 +13,7 @@ public class Starting {
         /*  CN defined with vertex Factor  */
 
         // Define the model (with vertex factors)
-        SparseModel model = new SparseModel();
+        DAGModel model = new DAGModel();
         int A = model.addVariable(3);
         int B = model.addVariable(2);
         model.addParent(B,A);
@@ -40,3 +40,4 @@ public class Starting {
 
     }
 }
+//43

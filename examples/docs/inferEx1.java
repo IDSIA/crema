@@ -1,17 +1,18 @@
 package docs;
 
+import ch.idsia.crema.core.ObservationBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
-import ch.idsia.crema.model.ObservationBuilder;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.DAGModel;
 
 
 public class inferEx1 {
 public static void main(String[] args) throws InterruptedException {
 
 // define the structure
-SparseModel cnet = new SparseModel();
+DAGModel cnet = new DAGModel();
 int X0 = cnet.addVariable(2);
 int X1 = cnet.addVariable(3);
 cnet.addParent(X0,X1);
@@ -40,3 +41,4 @@ double[][][] vertices = res1.getData();
 
 }
 }
+//44
