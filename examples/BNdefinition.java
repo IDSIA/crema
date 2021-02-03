@@ -1,5 +1,5 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 
 import java.util.Arrays;
 
@@ -51,3 +51,4 @@ public class BNdefinition {
 
     }
 }
+//54
