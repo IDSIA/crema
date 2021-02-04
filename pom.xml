@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.idsia</groupId>
 	<artifactId>crema</artifactId>
-	<version>0.1.6.c</version>
+	<version>0.1.6-feat55-SNAPSHOT</version>
 
 	<name>Credal Model Algorithms</name>
 

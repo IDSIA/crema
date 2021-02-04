@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LPConvexHull {
-	public static double[][] add(double[][] current, double[] newpoint) {
+public class LPConvexHull implements ConvexHull {
+
+
+	private static double[][] add(double[][] current, double[] newpoint) {
 
 		ArrayList<double[]> newPoints = new ArrayList<>(Arrays.asList(current));
 		newPoints.add(newpoint);
@@ -81,11 +83,11 @@ public class LPConvexHull {
 		return list;
 	}
 
-	public static double[][] compute(double[][] points, boolean simplex) {
-		int NrPoints = points.length;
 
-		List<double[]> newPoints = new ArrayList<>(Arrays.asList(points));
-
+	@Override
+	public double[][] apply(double[][] vertices) {
+		int NrPoints = vertices.length;
+		List<double[]> newPoints = new ArrayList<>(Arrays.asList(vertices));
 		for (int i = NrPoints - 1; i >= 0; i--) {
 			if (isJasperInternal(newPoints, i)) {
 				newPoints.remove(i);
@@ -93,4 +95,10 @@ public class LPConvexHull {
 		}
 		return newPoints.toArray(new double[newPoints.size()][]);
 	}
-}
+
+	public static double[][] compute(double[][] vertices) {
+		return (new LPConvexHull()).apply(vertices);
+	}
+
+
+	}

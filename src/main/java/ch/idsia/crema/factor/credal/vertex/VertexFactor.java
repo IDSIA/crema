@@ -602,7 +602,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
     public void applyConvexHull(boolean simplex) {
         for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
-            data[i] = LPConvexHull.compute(data[i], true);
+            data[i] = LPConvexHull.compute(data[i]);
         }
     }
 
