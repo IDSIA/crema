@@ -76,4 +76,6 @@ public class SeparateLinearToExtensiveHalfspaceFactor implements Converter<Separ
 	public Class<SeparateLinearFactor> getSourceClass() {
 		return SeparateLinearFactor.class;
 	}
+
+	
 }
