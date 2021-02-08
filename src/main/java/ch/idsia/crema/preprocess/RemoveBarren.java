@@ -16,11 +16,29 @@ public class RemoveBarren {
 
 	}
 
+	/**
+	 * Remove barren variable indicating the observed variables
+	 * Returns a new model
+	 * @param <M>
+	 * @param model the model to be processed
+	 * @param query the variable that will be queried
+	 * @param evidence the observed variables
+	 * @return a new model where unconnected variables have been removed
+	 */
 	@SuppressWarnings("rawtypes")
 	public <M extends GraphicalModel> M execute(M model, int query, int... evidence) {
 		return execute(model, new int[]{query}, evidence);
 	}
 
+	/**
+	 * remove barren variables providing the observed variables as part of an evidence var-state map.
+	 * 
+	 * @param <M>
+	 * @param model the model to be processed 
+	 * @param query the variable that will be queried
+	 * @param evidence the observed variable as a map of variable-states
+	 * @return a new model where unconnected variables have been removed
+	 */
 	@SuppressWarnings("rawtypes")
 	public <M extends GraphicalModel> M execute(M model, int query, TIntIntMap evidence) {
 		return execute(model, new int[]{query}, evidence.keys());

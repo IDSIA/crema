@@ -4,7 +4,9 @@ import ch.idsia.crema.core.Strides;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 
+import java.nio.Buffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -67,5 +69,18 @@ public class ExtensiveHalfspaceFactor implements ExtensiveLinearFactor<Extensive
 	@Override
 	public LinearConstraintSet getLinearProblem() {
 		return new LinearConstraintSet(data);
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		for (LinearConstraint constraint : data) {
+			buffer.append(Arrays.toString(constraint.getCoefficients().toArray()));
+			buffer.append(constraint.getRelationship().toString());
+			buffer.append(constraint.getValue());
+			buffer.append("\n");
+		}
+
+		return buffer.toString();
 	}
 }
