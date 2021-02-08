@@ -13,7 +13,7 @@ import java.util.List;
 public class LPConvexHull implements ConvexHull {
 
 
-	private static double[][] add(double[][] current, double[] newpoint) {
+	public static double[][] add(double[][] current, double[] newpoint) {
 
 		ArrayList<double[]> newPoints = new ArrayList<>(Arrays.asList(current));
 		newPoints.add(newpoint);

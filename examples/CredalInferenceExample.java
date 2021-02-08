@@ -14,7 +14,9 @@ import org.apache.commons.math3.optim.linear.Relationship;
 import java.util.Arrays;
 
 public class CredalInferenceExample {
+
     public static void main(String[] args) throws InterruptedException {
+
 
         double p = 0.2;
         double eps = 0.0001;
@@ -150,3 +152,5 @@ public class CredalInferenceExample {
 
     }
 }
+
+
