@@ -1,7 +1,9 @@
-0.1.6.hf1
+0.1.6.c
 ===========
 
-- fixed an issue with BeliefPropagation
+- Fixed #48, an issue with BeliefPropagation caused by wrong management of messages.
+- Fixed a minor issue in BeliefPropagation (introduced in 0.1.6.b)
+- Added a parser for the BIF format ( #51 )
 
 0.1.6
 ===========

@@ -1,8 +1,7 @@
+import ch.idsia.crema.core.Domain;
+import ch.idsia.crema.core.DomainBuilder;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.Domain;
-import ch.idsia.crema.model.DomainBuilder;
-import ch.idsia.crema.model.graphical.specialized.BayesianNetwork;
-
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 
 
 public class BayesianFactors {
@@ -50,3 +49,5 @@ public class BayesianFactors {
 
     }
 }
+//53
+

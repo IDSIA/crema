@@ -7,12 +7,13 @@ import ch.idsia.crema.inference.bp.junction.Separator;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -29,6 +30,8 @@ public class BeliefPropagation<F extends Factor<F>> {
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
+	private final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
+
 	public BeliefPropagation(DAGModel<F> model) {
 		this.model = model;
 		init();
@@ -41,6 +44,41 @@ public class BeliefPropagation<F extends Factor<F>> {
 		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
 		pipeline.setInput(model.getNetwork());
 		junctionTree = pipeline.exec();
+
+		// distribute potentials
+		TIntObjectMap<Clique> factorsPerClique = new TIntObjectHashMap<>();
+
+		if (junctionTree.vertexSet().size() == 2) {
+			junctionTree.vertexSet().forEach(clique -> {
+				for (int v : clique.getVariables()) {
+
+					factorsPerClique.put(v, clique);
+				}
+			});
+		} else {
+			final List<Clique> cliques = junctionTree.vertexSet().stream()
+					.sorted(Comparator.comparingInt(a -> -junctionTree.edgesOf(a).size()))
+					.collect(Collectors.toList());
+
+			cliques.forEach(clique -> {
+				final Set<Separator<F>> edges = junctionTree.edgesOf(clique);
+				final int[] ints = edges.stream()
+						.map(Separator::getVariables)
+						.flatMapToInt(Arrays::stream)
+						.toArray();
+				for (int v : clique.getVariables()) {
+					if (edges.size() == 1 && ArraysUtil.contains(v, ints)) {
+						continue;
+					}
+					factorsPerClique.put(v, clique);
+				}
+			});
+		}
+
+		model.getFactorsMap().forEachEntry(
+				(v, f) -> potentialsPerClique.computeIfAbsent(factorsPerClique.get(v), i -> new HashSet<>()).add(f)
+		);
+
 		fullyPropagated = false;
 	}
 
@@ -62,6 +100,24 @@ public class BeliefPropagation<F extends Factor<F>> {
 				.orElseThrow(() -> new IllegalArgumentException("Variable " + variable + " not found in model"));
 	}
 
+	private Clique cliqueFromDirection(Clique from, Separator<F> edge) {
+		Clique source = junctionTree.getEdgeSource(edge);
+		Clique target = junctionTree.getEdgeTarget(edge);
+
+		return from == source ? target : source;
+	}
+
+	public int[] variablesNotInSeparator(Clique c, Separator<F> S) {
+		return Arrays.stream(c.getVariables())
+				.filter(x -> !ArraysUtil.contains(x, S.getVariables()))
+				.toArray();
+	}
+
+	private void checks() {
+		if (model == null) throw new IllegalStateException("No network available");
+		if (junctionTree == null) throw new IllegalStateException("No JunctionTree available");
+	}
+
 	/**
 	 * @param variable variable to query
 	 * @return the marginal probability of the given query
@@ -70,10 +126,37 @@ public class BeliefPropagation<F extends Factor<F>> {
 		F f;
 
 		if (fullyPropagated) {
-			f = phi(getRoot(variable));
+			f = queryFullyPropagated(variable);
 		} else {
 			f = collectingEvidence(variable);
 		}
+
+		return f;
+	}
+
+	public F query(int variable, TIntIntMap evidence) {
+		setEvidence(evidence);
+		return query(variable);
+	}
+
+	public F queryFullyPropagated(int variable) {
+		// TODO: implement other smart ways to query a fully propagated junction tree
+		final Clique root = getRoot(variable);
+		final F phis = phi(root);
+
+		final F psis = junctionTree.edgesOf(root).stream()
+				.map(edge -> {
+					Clique source = junctionTree.getEdgeSource(edge);
+					Clique target = junctionTree.getEdgeTarget(edge);
+
+					Clique i = root == source ? target : source;
+
+					return edge.getMessage(i);
+				})
+				.reduce(F::combine)
+				.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
+
+		F f = psis.combine(phis);
 
 		// marginalize out what is not needed
 		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
@@ -110,30 +193,63 @@ public class BeliefPropagation<F extends Factor<F>> {
 	public F collectingEvidence(int variable) {
 		checks();
 
-		Clique root = getRoot(variable);
+		final Clique root = getRoot(variable);
 
 		// collect messages
-		Stream<F> psis = junctionTree.edgesOf(root).stream()
-				.map(edge -> {
-					Clique source = junctionTree.getEdgeSource(edge);
-					Clique target = junctionTree.getEdgeTarget(edge);
-
-					Clique i = root == source ? target : source;
-
-					return collect(/* from */ i, /* to */root);
-				});
-
-		Stream<F> phis = Stream.of(phi(root));
-
-		// combine by potential
-		F f = Stream.concat(phis, psis)
+		F psis = junctionTree.edgesOf(root).stream()
+				.map(edge -> cliqueFromDirection(root, edge))
+				.map(i -> collect(/* from */ i, /* to */root))
 				.reduce(F::combine)
 				.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
+
+		F phis = phi(root);
+
+		// combine by potential
+		F f = psis.combine(phis);
 
 		// marginalize out what is not needed
 		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
 
 		return f.marginalize(ints).normalize();
+	}
+
+	/**
+	 * This method is called from a k node that request a message from a j node. This is what happens in the j node. We
+	 * want to send a message from the j node to the k node. We first collect recursively all the messages coming from
+	 * other non-k nodes to this node. Then we combine all the messages Ψ with the potentials Φ of the j node. Finally,
+	 * we set and return the message for the k node.
+	 *
+	 * @param j from this node
+	 * @param k to this node
+	 * @return the message Mjk
+	 */
+	private F collect(Clique j, Clique k) {
+		// collect and combine messages psi to j
+		Optional<F> psis = junctionTree.edgesOf(j).stream()
+				.map(edge -> cliqueFromDirection(j, edge))
+				.filter(i -> !i.equals(k))
+				.map(i -> collect(/* from */ i, /* to */ j))
+				.reduce(F::combine);
+
+		// collect and combine potentials phi of j
+		F phis = phi(j);
+
+		// the new message is the marginalization over the separator
+		Separator<F> S = junctionTree.getEdge(j, k);
+		int[] ints = variablesNotInSeparator(j, S);
+		F Mjk;
+
+		if (psis.isPresent()) {
+			Mjk = phis.combine(psis.get()).marginalize(ints);
+		} else {
+			Mjk = phis.marginalize(ints);
+		}
+
+		S.setMessage(/* from */ j, Mjk);
+
+//		System.out.println("PSI(" + j + " -> " + k + ":" + S + ") = " + Mjk);
+
+		return Mjk;
 	}
 
 	/**
@@ -145,84 +261,74 @@ public class BeliefPropagation<F extends Factor<F>> {
 		checks();
 
 		Clique root = getRoot(variable);
-		F phi = phi(root);
+		F phis = phi(root);
 
-		junctionTree.outgoingEdgesOf(root).forEach(edge -> {
-			Clique source = junctionTree.getEdgeSource(edge);
-			Clique target = junctionTree.getEdgeTarget(edge);
-
-			Clique i = root == source ? target : source;
-
-			Separator<F> S = junctionTree.getEdge(i, root);
-			F Mij = project(phi, S);
-
-			// distribute the message M(root,i) to node i
-			distribute(root, i, Mij);
-		});
+		junctionTree.outgoingEdgesOf(root).stream()
+				.map(edge -> cliqueFromDirection(root, edge))
+				.forEach(i -> {
+					Separator<F> S = junctionTree.getEdge(i, root);
+					int[] ints = variablesNotInSeparator(root, S);
+					F Mij = phis.marginalize(ints);
+					// distribute the message from root to i
+					S.setMessage(root, Mij);
+					distribute(root, i);
+				});
 
 		fullyPropagated = true;
 	}
 
-	private void checks() {
-		if (model == null) throw new IllegalStateException("No network available");
-		if (junctionTree == null) throw new IllegalStateException("No JunctionTree available");
-	}
-
 	/**
+	 * This method is called for each node k from the node j. This will collect all messages from other edges, excluded
+	 * edge k->next, and update the message of the k->next edge. This update is done for all edges. Then the method call
+	 * an update on all following 'next' nodes.
+	 *
 	 * @param j from this node
 	 * @param k to this node
-	 * @return the message Mjk
 	 */
-	private F collect(Clique j, Clique k) {
-		// collect phi(j)
-		F phi = phi(j);
+	private void distribute(Clique j, Clique k) {
+		F phis = phi(k);
 
-		for (Separator<F> edge : junctionTree.edgesOf(j)) {
-			Clique source = junctionTree.getEdgeSource(edge);
-			Clique target = junctionTree.getEdgeTarget(edge);
+		// if we have nodes that need the message from this node k
+		for (Separator<F> edgeTo : junctionTree.edgesOf(k)) {
+			Clique target = cliqueFromDirection(k, edgeTo); // target that will receive the message
 
-			// if we have inbound edges for this node j, we compute the message
-			Clique i = j == source ? target : source;
+			// ignore message outgoing to j
+			if (target.equals(j)) continue;
 
-			// ignore messages inbound from k
-			if (i.equals(k)) continue;
+			List<F> messages = new ArrayList<>();
 
-			F Mij = collect(i, j);
+			// collect messages from other edges
+			for (Separator<F> edgeFrom : junctionTree.edgesOf(k)) {
+				Clique source = cliqueFromDirection(k, edgeFrom); // source will give the message
 
-			phi.combine(Mij);
+				// don't get message from where we want to update
+				if (source.equals(target))
+					continue;
+
+				messages.add(edgeFrom.getMessage(source));
+			}
+
+			Optional<F> psis = messages.stream().reduce(F::combine);
+			int[] ints = variablesNotInSeparator(j, edgeTo);
+			F M;
+
+			if (psis.isPresent()) {
+				M = phis.combine(psis.get()).marginalize(ints);
+			} else {
+				M = phis.marginalize(ints);
+			}
+
+			edgeTo.setMessage(k, M);
 		}
 
-		// compute the message by projecting phi over the separator(i, j)
-		Separator<F> S = junctionTree.getEdge(j, k);
-		F Mjk = project(phi, S);
-		S.setMessage(j, Mjk);
+		// proceed with distribution
+		for (Separator<F> edgeTo : junctionTree.edgesOf(k)) {
+			Clique i = cliqueFromDirection(k, edgeTo);
 
-		return Mjk;
-	}
+			// ignore message outgoing to j
+			if (i.equals(j)) continue;
 
-	/**
-	 * @param k   from this node
-	 * @param i   to this node
-	 * @param Mki the message Mki
-	 */
-	private void distribute(Clique k, Clique i, F Mki) {
-		junctionTree.getEdge(k, i).setMessage(k, Mki);
-
-		F phi = phi(i).combine(Mki);
-
-		// if we have nodes that need the message from this node i
-		for (Separator<F> edge : junctionTree.edgesOf(i)) {
-			Clique source = junctionTree.getEdgeSource(edge);
-			Clique target = junctionTree.getEdgeTarget(edge);
-
-			Clique j = i == source ? target : source;
-
-			// ignore message outgoing to k
-			if (j.equals(k)) continue;
-
-			F Mij = project(phi, junctionTree.getEdge(i, j));
-
-			distribute(i, j, Mij);
+			distribute(k, i);
 		}
 	}
 
@@ -233,26 +339,12 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 * @return a {@link F} which is a combination of all the factors and the evidences included in the Clique
 	 */
 	private F phi(Clique clique) {
-		F factor = IntStream.of(clique.getVariables())
-				.mapToObj(model::getFactor)
+		return potentialsPerClique.get(clique).stream()
+				.map(f -> f.filter(evidence))
 				.reduce(F::combine)
 				.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
 
-		return factor.filter(evidence).normalize();
-	}
-
-	/**
-	 * Project the variables of the given {@link Separator} on the given potential.
-	 *
-	 * @param phi input potential
-	 * @param S   separator to consider
-	 * @return a marginalized and normalized {@link F}
-	 */
-	private F project(F phi, Separator<F> S) {
-		int[] ints = Arrays.stream(phi.getDomain().getVariables())
-				.filter(x -> !ArraysUtil.contains(x, S.getVariables()))
-				.toArray();
-
-		return phi.marginalize(ints).normalize();
+//		System.out.println("PHI(" + clique + ") = " + phi);
+//		return phi;
 	}
 }

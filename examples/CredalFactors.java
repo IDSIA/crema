@@ -1,6 +1,6 @@
+import ch.idsia.crema.core.DomainBuilder;
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.DomainBuilder;
-import ch.idsia.crema.model.Strides;
 
 public class CredalFactors {
     public static void main(String[] args) {
@@ -53,3 +53,4 @@ public class CredalFactors {
 
     }
 }
+//56

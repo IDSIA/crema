@@ -1,3 +1,4 @@
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -7,7 +8,7 @@ import ch.idsia.crema.inference.approxlp.Inference;
 import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
-import ch.idsia.crema.model.Strides;
+import ch.idsia.crema.model.graphical.DAGModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class CredalInferenceExample {
         /*  CN defined with vertex Factor  */
 
         // Define the model (with vertex factors)
-        SparseModel model = new SparseModel();
+        DAGModel model = new DAGModel();
         int u = model.addVariable(3);
         int x = model.addVariable(2);
         model.addParent(x,u);
@@ -63,7 +64,7 @@ public class CredalInferenceExample {
         /* Interval Factors  */
         // ApproxlP works but with numerical stability problems
 
-        model = new SparseModel();
+        model = new DAGModel();
         x = model.addVariable(2);
         u = model.addVariable(3);
         model.addParent(x,u);
@@ -88,7 +89,7 @@ public class CredalInferenceExample {
 
         /* CN with factors specified with constraints  */
 
-        model = new SparseModel();
+        model = new DAGModel();
         x = model.addVariable(2);
         u = model.addVariable(3);
         model.addParent(x,u);
@@ -145,7 +146,6 @@ public class CredalInferenceExample {
 
         System.out.println(Arrays.toString(approxLP2.query(model, x).getUpper()));         //
         System.out.println(Arrays.toString(approxLP2.query(model, x).getLower()));         //
-
 
 
     }
