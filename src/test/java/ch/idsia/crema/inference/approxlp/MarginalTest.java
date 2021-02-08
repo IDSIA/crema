@@ -40,8 +40,8 @@ public class MarginalTest {
 		assertArrayEquals(new double[]{0.11, 0.36, 0.18}, factor.getLower(), 0.000000001);
 		assertArrayEquals(new double[]{0.28, 0.71, 0.53}, factor.getUpper(), 0.000000001);
 
-		// this is resolved in Approxpl2!!!!
-		assertThrows(NoFeasibleSolutionException.class, ()-> inference.query(model, 1));
+		// should work now
+		inference.query(model, 1);
 	}
 
 	@Test
