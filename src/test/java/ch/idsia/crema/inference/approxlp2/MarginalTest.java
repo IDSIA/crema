@@ -67,7 +67,7 @@ public class MarginalTest {
 		model.setFactor(1, f1);
 		model.setFactor(2, f2);
 
-		Inference<GenericFactor> inference = new Inference<>();
+		ApproxLP2 inference = new ApproxLP2();
 		IntervalFactor factor = inference.query(model, 0);
 
 		assertArrayEquals(new double[]{0.082, 0.31, 0.165}, factor.getLower(), 0.000000001);
@@ -108,7 +108,7 @@ public class MarginalTest {
 		f2.set(new double[]{0.3, 0.4}, new double[]{0.6, 0.7}, 2);
 		model.setFactor(n2, f2);
 
-		Inference<GenericFactor> inference = new Inference<>();
+		ApproxLP2 inference = new ApproxLP2();
 		IntervalFactor factor = inference.query(model, n0);
 
 		assertArrayEquals(new double[]{0.139, 0.3192, 0.155}, factor.getLower(), 0.000000001);
@@ -138,12 +138,8 @@ public class MarginalTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence bin = new BinarizeEvidence();
-		model = bin.execute(model, evidence, 2, false);
-		int ev = bin.getLeafDummy();
-
-		Inference<GenericFactor> inference = new Inference<>();
-		IntervalFactor factor = inference.query(model, n1, ev);
+		ApproxLP2 inference = new ApproxLP2();
+		IntervalFactor factor = inference.query(model, n1, evidence);
 
 		assertArrayEquals(new double[]{0.954545454545, 0}, factor.getLower(), 0.000000001);
 		assertArrayEquals(new double[]{1, 0.0454545454545454}, factor.getUpper(), 0.000000001);
