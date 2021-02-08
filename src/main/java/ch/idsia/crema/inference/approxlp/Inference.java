@@ -11,6 +11,13 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Perform inference using ApproxLP
+ * 
+ * @deprecated in favour of {@link ch.idsia.crema.inference.approxlp2.ApproxLP2}
+ */
+@Deprecated(forRemoval = true)
 public class Inference<F extends GenericFactor> implements SingleInference<F, IntervalFactor> {
 
 	public static double EPS = 0.0;

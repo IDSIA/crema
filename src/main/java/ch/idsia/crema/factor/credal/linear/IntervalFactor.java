@@ -201,9 +201,19 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 
 	@Override
 	public String toString() {
-		String str = "P(" + Arrays.toString(getDataDomain().getVariables()) + " | " + Arrays.toString(getSeparatingDomain().getVariables()) + ")";
-		str += "\n\t" + Arrays.toString(lower[0]) + "\n\t" + Arrays.toString(upper[0]);
-		return str;
+	   StringBuilder sb = new StringBuilder();
+	   sb.append("P(")
+			 .append(Arrays.toString(getDataDomain().getVariables()))
+			 .append(" | ")
+			 .append(Arrays.toString(getSeparatingDomain().getVariables()))
+			 .append(")");
+	   sb.append("\n\t");
+	   for (double[] x : lower)
+		  sb.append(Arrays.toString(x));
+	   sb.append("\n\t");
+	   for (double[] x : upper)
+		  sb.append(Arrays.toString(x));
+	   return sb.toString();
 	}
 
 	public double[][] getDataLower() {

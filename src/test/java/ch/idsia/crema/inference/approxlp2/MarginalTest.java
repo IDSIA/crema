@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.approxlp;
+package ch.idsia.crema.inference.approxlp2;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
@@ -10,9 +10,6 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 
 public class MarginalTest {
 
@@ -34,14 +31,16 @@ public class MarginalTest {
 		model.setFactor(0, f0);
 		model.setFactor(1, f1);
 
-		Inference<GenericFactor> inference = new Inference<>();
-		IntervalFactor factor = inference.query(model, 0);
+		ApproxLP2 inference = new ApproxLP2();
+		
+		// this should work now!
+		IntervalFactor factor = inference.query(model, 1);
+		assertArrayEquals(new double[]{0.1, 0.3, 0.1}, factor.getLower(), 0.000000001);
+		assertArrayEquals(new double[]{0.6, 0.8, 0.4}, factor.getUpper(), 0.000000001);
 
+		factor = inference.query(model, 0);
 		assertArrayEquals(new double[]{0.11, 0.36, 0.18}, factor.getLower(), 0.000000001);
 		assertArrayEquals(new double[]{0.28, 0.71, 0.53}, factor.getUpper(), 0.000000001);
-
-		// this is resolved in Approxpl2!!!!
-		assertThrows(NoFeasibleSolutionException.class, ()-> inference.query(model, 1));
 	}
 
 	@Test
