@@ -1,14 +1,12 @@
-package ch.idsia.crema.inference.bp;
-
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.map.hash.TIntIntHashMap;
 
-public class BeliefPropagationTest {
+public class BeliefPropagation{
 
 	public static void main(String[] args) {
 		/* Define your Bayesian Network model */
-
+/*
 		BayesianNetwork model = new BayesianNetwork();
 		A = model.addVariable(2);
 		B = model.addVariable(2);
@@ -31,7 +29,7 @@ public class BeliefPropagationTest {
 		// Assign factors to model
 		model.setFactors(factors);
 
-		/* Instantiate the inference algorithm over BayesianFactors using the model */
+		// Instantiate the inference algorithm over BayesianFactors using the model
 
 		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(model);
 
@@ -44,14 +42,14 @@ public class BeliefPropagationTest {
 		// perform the collection step
 		BayesianFactor factor = bp.collectingEvidence();
 
-		/* Simple Inference */
+		// Simple Inference
 
 		// P(A)
 		bp.clearEvidence(); //  this will clear previous evidence on the model
 
 		BayesianFactor pA = bp.query(A);
 
-		/* Inference with evidence */
+		// Inference with evidence
 
 		// P(A | B=0)
 		TIntIntHashMap evidence = new TIntIntHashMap();
@@ -67,5 +65,8 @@ public class BeliefPropagationTest {
 		bp.setEvidence(evidence);
 
 		BayesianFactor bp.query(A);
+
+	*/
+
 	}
 }
