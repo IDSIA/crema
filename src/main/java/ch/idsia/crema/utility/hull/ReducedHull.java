@@ -1,119 +1,175 @@
 package ch.idsia.crema.utility.hull;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.lang3.time.StopWatch;
+
+import java.util.*;
 import java.util.stream.IntStream;
 
 import static ch.idsia.crema.utility.ProbabilityUtil.infoLoss;
 
-public class ReducedHull implements ConvexHull{
+public class ReducedHull implements ConvexHull {
 
     private int numPoints = -1;
-    ArrayList<double[]> vertices;
-    HashMap<double[], Map<double[], Double>> dist;
-    HashMap<double[], Map<double[], double[]>>  repl;
 
 
-    private void init(double[][] vertices){
+    private List<double[]> points;
+    private double[][] dist;
+    private double[][][] repl;
+
+    private int dim;
+    private int N;
+
+    private boolean fixedNumPoints = false;
+
+    public ReducedHull() {
+    }
+
+    public ReducedHull(int numPoints) {
+        this.numPoints = numPoints;
+        fixedNumPoints = true;
+    }
+
+    private void init(double[][] vertices) {
 
         // Get list structures: points, distances, midpoint
-        this.dist = new HashMap<double[], Map<double[], Double>> ();
-        this.repl = new HashMap<double[], Map<double[], double[]>> ();
-        this.vertices = new ArrayList<>();
 
-        for(int i=0; i<vertices.length; i++) {
-            addInfoPoint(vertices[i]);
+        this.dim = vertices[0].length;
+        this.N = vertices.length;
+
+        this.dist = new double[N][N];
+        this.repl = new double[N][N][dim];
+        this.points = new ArrayList<>(N);
+
+        for (double[] v : vertices)
+            this.points.add(v);
+
+        for (int i = 0; i < N - 1; i++) {
+            for (int j = i; j < N; j++) {
+                updateInfo(i, j);
+            }
+        }
+
+        System.out.println();
+
+    }
+
+    private void updatePoint(int i, double[] point) {
+        this.points.set(i, point);
+    }
+
+    private void updateInfo(int i) {
+        for (int j = 0; j < N; j++)
+            if (i != j)
+                updateInfo(i, j);
+    }
+
+    private void updateInfo(int i, int j) {
+
+        double q[] = null;
+        double d;
+
+
+        if (areValid(i, j)) {
+
+            double[] pi = points.get(i);
+            double[] pj = points.get(j);
+            q = IntStream.range(0, pi.length).mapToDouble(k -> 0.5 * (pi[k] + pj[k])).toArray();
+            d = infoLoss(pi, pj, q, true);
+        } else {
+            q = null;
+            d = Double.NaN;
+        }
+
+        if (i < j) {
+            dist[i][j] = d;
+            repl[i][j] = q;
+        } else {
+            dist[j][i] = d;
+            repl[j][i] = q;
         }
 
     }
 
-    private void removeNeighbour(){
+    private double getDist(int i, int j) {
+        if (i < j) return this.dist[i][j];
+        return this.dist[j][i];
+    }
 
+    private double[] getRepl(int i, int j) {
+        if (i < j) return this.repl[i][j];
+        return this.repl[j][i];
+    }
+
+    private boolean areValid(int... idx) {
+        for (int i : idx)
+            if (this.points.get(i) == null)
+                return false;
+        return true;
+    }
+
+
+    private void removeNeighbour() {
         double minDist = Double.POSITIVE_INFINITY;
-        double[] p1=null, p2=null;
-        double[] q = null;
+
+        int idx1 = -1;
+        int idx2 = -1;
 
         // find the pair of point with the minimal loss
-        for(int i=0; i<vertices.size()-1; i++){
-            for(int j=i+1; j<vertices.size(); j++) {
-                double d = dist.get(vertices.get(i)).get(vertices.get(j));
-                if(minDist>d){
-                    minDist = d;
-                    p1 = vertices.get(i);
-                    p2 = vertices.get(j);
+        for (int i = 0; i < N - 1; i++) {
+            for (int j = i + 1; j < N; j++) {
+                if (areValid(i, j)) {
+                    double d = getDist(i, j);
+                    if (minDist > d) {
+                        minDist = d;
+                        idx1 = i;
+                        idx2 = j;
+                    }
                 }
             }
         }
 
-        // get the replacement
-        q = repl.get(p1).get(p2);
+        updatePoint(idx1, getRepl(idx1, idx2));
+        updatePoint(idx2, null);
 
-        // remove the existing information
-        removeInfoPoint(p1);
-        removeInfoPoint(p2);
+        updateInfo(idx1);
+        updateInfo(idx2);
 
-        // add new point and update distances
-        addInfoPoint(q);
-    }
-
-
-    private void removeInfoPoint(double[] p){
-        vertices.remove(p);
-        repl.remove(p);
-        dist.remove(p);
-        for(double[] pi : vertices){
-            repl.get(pi).remove(p);
-            dist.get(pi).remove(p);
-        }
-    }
-
-
-    private void addInfoPoint(double[] p){
-        dist.put(p, new HashMap<double[], Double>());
-        repl.put(p, new HashMap<double[], double[]>());
-
-        for(double[] pi : vertices) {
-            // Compute replacement point
-            double q[] = IntStream.range(0,pi.length).mapToDouble(k -> 0.5*(p[k] + pi[k])).toArray();
-            double d = infoLoss(p, pi, q, true);
-            dist.get(p).put(pi, d);
-            dist.get(pi).put(p, d);
-            repl.get(p).put(pi, q);
-            repl.get(pi).put(p, q);
-
-        }
-        vertices.add(p);
+        if (idx2 == 1)
+            System.out.println();
     }
 
 
     /**
      * Set the number of points
+     *
      * @param numPoints
      * @return
      */
     public ReducedHull setNumPoints(int numPoints) {
+        if (fixedNumPoints)
+            throw new IllegalStateException("Number of points cannot be changed when fixed in the constructor");
         this.numPoints = numPoints;
         return this;
     }
 
     /**
      * Method that applies the given convex hull method to a list of vertices.
+     *
      * @param vertices: 2D array of doubles where the first dimension is the number of points and the second
-     *                is the dimensionality of the points.
+     *                  is the dimensionality of the points.
      * @return Array of vertices after applying the convex hull method.
      */
     @Override
     public double[][] apply(double[][] vertices) {
         double[][] hull = ConvexHull.as(Method.LP_CONVEX_HULL).apply(vertices);
         int m = numPoints;
-        if(m<0) m = hull.length-1;
-        init(vertices);
-        while(this.vertices.size()>m)
+        if (m < 0) m = vertices.length / 2;
+        init(hull);
+        for (int i = 0; i < (hull.length - m); i++)
             removeNeighbour();
-        return this.vertices.toArray(double[][]::new);
+        return this.points.stream().filter(p -> p != null).toArray(double[][]::new);
     }
+
 
 }

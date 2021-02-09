@@ -15,6 +15,7 @@ import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import ch.idsia.crema.utility.SeparateIndexIterator;
+import ch.idsia.crema.utility.hull.ConvexHull;
 import ch.idsia.crema.utility.hull.LPConvexHull;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
@@ -42,7 +43,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
     private final double[][][] data;
 
-    public static boolean CONVEX_HULL_MARG = false;
+    private static ConvexHull.Method CONVEX_HULL_MARG = null;
 
     public VertexFactor(Strides left, Strides right) {
         this.separatedDomain = right;
@@ -297,8 +298,8 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
         VertexFactor f = new VertexFactor(left, getSeparatingDomain(), target_data);
 
-        if (CONVEX_HULL_MARG)
-            f.applyConvexHull(true);
+        if (CONVEX_HULL_MARG != null)
+            f.applyConvexHull(CONVEX_HULL_MARG);
 
         return f;
     }
@@ -415,7 +416,8 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
             }
         }
 
-        return new VertexFactor(left, right, target_data);
+        VertexFactor f = new VertexFactor(left, right, target_data);
+        return f;
     }
 
     /**
@@ -503,6 +505,19 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
     public double[][] getVerticesAt(int i) {
         return data[i];
+    }
+
+    /**
+     * Set the convexhull method applied after marginalization. None by default.
+     *
+     * @param convexHullMarg
+     */
+    public static void setConvexHullMarg(ConvexHull.Method convexHullMarg) {
+        CONVEX_HULL_MARG = convexHullMarg;
+    }
+
+    public static ConvexHull.Method getConvexHullMarg() {
+        return CONVEX_HULL_MARG;
     }
 
     /**
@@ -600,15 +615,17 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
         return new BayesianFactor(newDomain, data);
     }
 
-    public void applyConvexHull(boolean simplex) {
-        for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
-            data[i] = LPConvexHull.compute(data[i]);
+    public void applyConvexHull(ConvexHull.Method m) {
+        if (m != null) {
+            for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
+                data[i] = ConvexHull.as(m).apply(data[i]);
+            }
         }
     }
 
-    public VertexFactor convexHull(boolean simplex) {
+    public VertexFactor convexHull(ConvexHull.Method m) {
         VertexFactor f = this.copy();
-        f.applyConvexHull(simplex);
+        f.applyConvexHull(m);
         return f;
     }
 
@@ -713,22 +730,23 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
                     .map(m -> new BayesianToVertex().apply(m.getFactor(v), v))
                     .toArray(VertexFactor[]::new));
             if (convexHull)
-                f = f.convexHull(true);
+                f = f.convexHull(ConvexHull.Method.DEFAULT);
 
             vmodel.setFactor(v, f);
         }
         return vmodel;
     }
 
-	/**
-	 * Method for generating a random VertexFactor of a conditional credal set.
-	 * @param leftDomain: strides of the conditionated variables.
-	 * @param rightDomain: strides of the conditioning variables.
-	 * @param k: number of vertices
-	 * @param num_decimals: number of decimals in the probability values.
-	 * @param zero_allowed: flag to control if random probabilities can be zero.
-	 * @return
-	 */
+    /**
+     * Method for generating a random VertexFactor of a conditional credal set.
+     *
+     * @param leftDomain:   strides of the conditionated variables.
+     * @param rightDomain:  strides of the conditioning variables.
+     * @param k:            number of vertices
+     * @param num_decimals: number of decimals in the probability values.
+     * @param zero_allowed: flag to control if random probabilities can be zero.
+     * @return
+     */
     public static VertexFactor random(Strides leftDomain, Strides rightDomain, int k, int num_decimals, boolean zero_allowed) {
         // array for storing the vertices
         double data[][][] = new double[rightDomain.getCombinations()][][];
@@ -739,14 +757,15 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
         return new VertexFactor(leftDomain, rightDomain, data);
     }
 
-	/**
-	 * Method for generating a random VertexFactor of a joint credal set.
-	 * @param leftDomain: strides of the variables.
-	 * @param k: number of vertices
-	 * @param num_decimals: number of decimals in the probability values.
-	 * @param zero_allowed: flag to control if random probabilities can be zero.
-	 * @return
-	 */
+    /**
+     * Method for generating a random VertexFactor of a joint credal set.
+     *
+     * @param leftDomain:   strides of the variables.
+     * @param k:            number of vertices
+     * @param num_decimals: number of decimals in the probability values.
+     * @param zero_allowed: flag to control if random probabilities can be zero.
+     * @return
+     */
     public static VertexFactor random(Strides leftDomain, int k, int num_decimals, boolean zero_allowed) {
 
         if (leftDomain.getVariables().length > 1)
@@ -777,7 +796,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
             // merge all the PMFs
             out = VertexFactor
                     .mergeVertices((VertexFactor[]) PMFs.toArray(VertexFactor[]::new))
-                    .convexHull(true);
+                    .convexHull(ConvexHull.Method.DEFAULT);
 
         } while (out.getVerticesAt(0).length < k);
         return out;
