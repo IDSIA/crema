@@ -1,10 +1,11 @@
-0.1.6.d
+0.1.6.e
 ===========
 
 - Fixed #48, an issue with BeliefPropagation caused by wrong management of messages.
 - Fixed a minor issue in BeliefPropagation (introduced in 0.1.6.b)
 - Added a parser for the BIF format ( #51 )
 - Fixed #56,
+- Minor change to BayesianNetworkSampling
 
 0.1.6
 ===========
