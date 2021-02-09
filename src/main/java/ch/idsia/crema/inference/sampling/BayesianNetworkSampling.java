@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -20,9 +20,11 @@ public class BayesianNetworkSampling {
 	 * @param vars
 	 * @return
 	 */
-	public TIntIntMap sample(GraphicalModel<BayesianFactor> model, int... vars) {
+	public TIntIntMap sample(BayesianNetwork model, int... vars) {
 		TIntIntMap obs = new TIntIntHashMap();
-		for (Integer integer : model.getVariables()) {
+
+		// follow DAG in topological order
+		for (Integer integer : model.getNetwork()) {
 			BayesianFactor f = model.getFactor(integer).copy();
 			for (int pa : model.getParents(integer)) {
 				f = f.filter(pa, obs.get(pa));
@@ -46,7 +48,7 @@ public class BayesianNetworkSampling {
 	 * @param vars
 	 * @return
 	 */
-	public TIntIntMap[] samples(GraphicalModel<BayesianFactor> model, int N, int... vars) {
+	public TIntIntMap[] samples(BayesianNetwork model, int N, int... vars) {
 		return IntStream.range(0, N).mapToObj(i -> sample(model, vars)).toArray(TIntIntMap[]::new);
 	}
 
