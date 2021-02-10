@@ -14,70 +14,70 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> implements Inference<M, VertexFactor> {
 
-    private final M model;
+	private final M model;
 
-    private ConvexHull.Method convexHullMarg = null;
+	private ConvexHull.Method convexHullMarg = null;
 
-    public CredalVariableElimination(M model) {
-        this.model = model;
-    }
+	public CredalVariableElimination(M model) {
+		this.model = model;
+	}
 
 
-    @Override
-    public M getInferenceModel(int target, TIntIntMap evidence) {
-        CutObserved cutObserved = new CutObserved();
-        // run making a copy of the model
-        M infModel = cutObserved.execute(model, evidence);
+	@Override
+	public M getInferenceModel(int target, TIntIntMap evidence) {
+		CutObserved cutObserved = new CutObserved();
+		// run making a copy of the model
+		M infModel = cutObserved.execute(model, evidence);
 
-        RemoveBarren removeBarren = new RemoveBarren();
-        // no more need to make a copy of the model
-        removeBarren.executeInline(infModel, target, evidence);
+		RemoveBarren removeBarren = new RemoveBarren();
+		// no more need to make a copy of the model
+		removeBarren.executeInline(infModel, target, evidence);
 
-        return infModel;
-    }
+		return infModel;
+	}
 
-    /**
-     * Query K(target|evidence) in the model provided to the constructor
-     *
-     * @param target   int the target variable
-     * @param evidence {@link TIntIntMap} a map of evidence in the form variable-state
-     * @return
-     */
-    public VertexFactor query(int target, TIntIntMap evidence) {
-        M infModel = getInferenceModel(target, evidence);
+	/**
+	 * Query K(target|evidence) in the model provided to the constructor
+	 *
+	 * @param target   int the target variable
+	 * @param evidence {@link TIntIntMap} a map of evidence in the form variable-state
+	 * @return
+	 */
+	public VertexFactor query(int target, TIntIntMap evidence) {
+		M infModel = getInferenceModel(target, evidence);
 
-        TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
+		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
 
-        // update the evidence
-        for (int v : evidence.keys()) {
-            if (ArrayUtils.contains(infModel.getVariables(), v)) {
-                filteredEvidence.put(v, evidence.get(v));
-            }
-        }
+		// update the evidence
+		for (int v : evidence.keys()) {
+			if (ArrayUtils.contains(infModel.getVariables(), v)) {
+				filteredEvidence.put(v, evidence.get(v));
+			}
+		}
 
-        MinFillOrdering minfill = new MinFillOrdering();
-        int[] order = minfill.apply(infModel);
+		MinFillOrdering minfill = new MinFillOrdering();
+		int[] order = minfill.apply(infModel);
 
-        FactorVariableElimination<VertexFactor> ve = new FactorVariableElimination<>(order);
-        ve.setEvidence(filteredEvidence);
-        ve.setFactors(infModel.getFactors());
-        ve.setNormalize(false);
+		FactorVariableElimination<VertexFactor> ve = new FactorVariableElimination<>(order);
+		ve.setEvidence(filteredEvidence);
+		ve.setFactors(infModel.getFactors());
+		ve.setNormalize(false);
 
-        // Set the convex hull method
-        ConvexHull.Method old_method = VertexFactor.getConvexHullMarg();
-        VertexFactor.setConvexHullMarg(convexHullMarg);
-        // run the query
-        VertexFactor output = ve.run(target);
+		// Set the convex hull method
+		ConvexHull.Method old_method = VertexFactor.getConvexHullMarg();
+		VertexFactor.setConvexHullMarg(convexHullMarg);
+		// run the query
+		VertexFactor output = ve.run(target);
 
-        // restore the previous convex hull method
-        VertexFactor.setConvexHullMarg(old_method);
+		// restore the previous convex hull method
+		VertexFactor.setConvexHullMarg(old_method);
 
-        return output.normalize();
-    }
+		return output.normalize();
+	}
 
-    public void setConvexHullMarg(ConvexHull.Method convexHullMarg) {
-        this.convexHullMarg = convexHullMarg;
-    }
+	public void setConvexHullMarg(ConvexHull.Method convexHullMarg) {
+		this.convexHullMarg = convexHullMarg;
+	}
 
 
 }
