@@ -602,7 +602,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * Creates a stride with one or more variables excluded. Note that the
-	 * variable must not be missing in the provided domain.
+	 * variable must not be missing in this domain.
 	 *
 	 * @param offset
 	 */

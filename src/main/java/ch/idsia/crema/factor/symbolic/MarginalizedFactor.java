@@ -19,4 +19,8 @@ public class MarginalizedFactor extends SymbolicFactor {
 	public int getVariable() {
 		return variable;
 	}
+
+	public SymbolicFactor[] getSources() {
+		return new SymbolicFactor[] { source };
+	}
 }

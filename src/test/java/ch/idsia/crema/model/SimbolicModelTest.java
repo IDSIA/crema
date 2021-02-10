@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.symbolic.serialize.NLSerializer;
 import ch.idsia.crema.factor.symbolic.CombinedFactor;
 import ch.idsia.crema.factor.symbolic.MarginalizedFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
@@ -21,5 +22,8 @@ public class SimbolicModelTest {
 
         CombinedFactor combined = priorA.combine(priorB);
         MarginalizedFactor marginal = combined.marginalize(1);
+
+        NLSerializer serialize = new NLSerializer();
+        System.out.println(serialize.serialize(marginal));
     }
 }

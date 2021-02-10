@@ -42,4 +42,10 @@ public abstract class SymbolicFactor implements Factor<SymbolicFactor> {
 	public DividedFactor divide(SymbolicFactor factor) {
 		return new DividedFactor(this, factor);
 	}
+
+	/**
+	 * Return the factors that originated this factor. 
+	 * @return
+	 */
+	public abstract SymbolicFactor[] getSources();
 }
