@@ -4,6 +4,7 @@ import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.inference.SingleInference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.search.impl.GreedyWithRandomRestart;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
@@ -11,6 +12,11 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Perform inference using ApproxLP
+ * 
+ */
 public class Inference<F extends GenericFactor> implements SingleInference<F, IntervalFactor> {
 
 	public static double EPS = 0.0;
@@ -20,11 +26,17 @@ public class Inference<F extends GenericFactor> implements SingleInference<F, In
 	}
 
 	/**
-	 * Preconditions: model reduction (barren and root node observations, single
-	 * node evidence. Factors must be of type ExtensiveLinearFactors,
-	 * BayesianFactor or SeparateLinearFactor
+	 * Preconditions:
+	 * <ul>
+	 * <li>single evidence node
+	 * <li>Factors must be one of <ul>
+	 * 		<li>ExtensiveLinearFactors,
+	 * 		<li>BayesianFactor or
+	 * 		<li> SeparateLinearFactor
+	 * </ul></ul>
 	 * <p>
-	 * XXX must support multiple evidence here and in the variable elimination
+	 * 
+	 * XXX must support multiple evidence here and in the variable elimination (see {@link ch.idsia.crema.inference.approxlp2.ApproxLP2})
 	 *
 	 * @param model    the data model
 	 * @param query    the variable whose intervals we are interested in
@@ -33,7 +45,10 @@ public class Inference<F extends GenericFactor> implements SingleInference<F, In
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public IntervalFactor query(GraphicalModel<? extends GenericFactor> model, int query, int evidence) throws InterruptedException {
+	public IntervalFactor query(GraphicalModel<? extends GenericFactor> originalModel, int query, int evidence) throws InterruptedException {
+		RemoveBarren remove = new RemoveBarren();
+		GraphicalModel<? extends GenericFactor> model = remove.execute(originalModel, query, evidence);
+
 		int states = model.getSize(query);
 
 		double[] lowers = new double[states];
