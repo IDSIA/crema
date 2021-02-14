@@ -8,6 +8,7 @@ import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.SolverFactory;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.RandomUtil;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 import java.util.Random;
@@ -32,7 +33,7 @@ public class SeparateLinearToRandomBayesian implements Converter<SeparateLinearF
 	private boolean log = false;
 
 	public SeparateLinearToRandomBayesian() {
-		random = new Random();
+		random = RandomUtil.getRandom();
 	}
 
 	public SeparateLinearToRandomBayesian(int seed) {
