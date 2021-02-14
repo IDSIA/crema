@@ -50,8 +50,6 @@ public class ReducedHull implements ConvexHull {
 			}
 		}
 
-		System.out.println();
-
 	}
 
 	private void updatePoint(int i, double[] point) {
@@ -135,8 +133,6 @@ public class ReducedHull implements ConvexHull {
 		updateInfo(idx1);
 		updateInfo(idx2);
 
-		if (idx2 == 1)
-			System.out.println();
 	}
 
 

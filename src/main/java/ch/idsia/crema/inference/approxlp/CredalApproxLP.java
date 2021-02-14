@@ -33,7 +33,7 @@ public class CredalApproxLP<M extends GraphicalModel<? super Factor<?>>> impleme
 
 		M infModel = getInferenceModel(target, evidence);
 
-		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
+		TIntIntMap filteredEvidence = new TIntIntHashMap();
 
 		// update the evidence
 		for (int v : evidence.keys()) {

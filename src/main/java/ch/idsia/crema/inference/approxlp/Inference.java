@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class Inference<F extends GenericFactor> implements SingleInference<F, IntervalFactor> {
 
-	public static double EPS = 0.0;
+	public static double EPS = 0.000000001;
 
 	public IntervalFactor query(GraphicalModel<? extends GenericFactor> model, int query) throws InterruptedException {
 		return query(model, query, -1);
@@ -60,7 +60,7 @@ public class Inference<F extends GenericFactor> implements SingleInference<F, In
 
 			if (evidence == -1) {
 				// without evidence we are looking for a marginal
-				EPS = 0.0;
+				EPS = 0.000000001;
 				lower = new Marginal(model, GoalType.MINIMIZE, query, state);
 				upper = new Marginal(model, GoalType.MAXIMIZE, query, state);
 			} else {
