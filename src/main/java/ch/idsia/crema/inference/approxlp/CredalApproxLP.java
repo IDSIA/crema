@@ -29,11 +29,16 @@ public class CredalApproxLP<M extends GraphicalModel<? super Factor<?>>> impleme
 	}
 
 	@Override
+	public IntervalFactor query(int target) throws InterruptedException{
+		return query(target, new TIntIntHashMap());
+	}
+
+	@Override
 	public IntervalFactor query(int target, TIntIntMap evidence) throws InterruptedException {
 
 		M infModel = getInferenceModel(target, evidence);
 
-		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
+		TIntIntMap filteredEvidence = new TIntIntHashMap();
 
 		// update the evidence
 		for (int v : evidence.keys()) {
