@@ -1,5 +1,9 @@
 package ch.idsia.crema.preprocess;
 
+import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.SeparateFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.iterator.TIntIntIterator;
@@ -11,7 +15,7 @@ import gnu.trove.map.TIntIntMap;
  *
  * @author rcabanas
  */
-public class CutObservedSepHalfspace {
+public class CutObservedGeneric {
 
 	/**
 	 * Execute the operation on the provided network.
@@ -36,8 +40,17 @@ public class CutObservedSepHalfspace {
 			final int[] affected = model.getChildren(observed);
 
 			for (final int variable : affected) {
-				final SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor) model.getFactor(variable))
-                        .filter(observed, state);
+
+				GenericFactor f = model.getFactor(variable);
+				GenericFactor new_factor = null;
+
+				if(f instanceof  SeparateHalfspaceFactor)
+					new_factor = ((SeparateHalfspaceFactor) f).filter(observed, state);
+				else if(f instanceof IntervalFactor)
+					new_factor = ((IntervalFactor) f).filter(observed, state);
+				else
+					new_factor= ((Factor)f).filter(observed,state);
+
 				if (variable != observed)
 				    model.removeParent(variable, observed);
 				model.setFactor(variable, new_factor);

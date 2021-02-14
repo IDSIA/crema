@@ -2,14 +2,15 @@ package ch.idsia.crema.inference.approxlp;
 
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import ch.idsia.crema.preprocess.BinarizeEvidence;
-import ch.idsia.crema.preprocess.CutObservedSepHalfspace;
-import ch.idsia.crema.preprocess.RemoveBarren;
+import ch.idsia.crema.preprocess.*;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.stream.Stream;
 
 public class CredalApproxLP<M extends GraphicalModel<? super Factor<?>>> implements Inference<M, IntervalFactor> {
 
@@ -24,8 +25,9 @@ public class CredalApproxLP<M extends GraphicalModel<? super Factor<?>>> impleme
 	public M getInferenceModel(int target, TIntIntMap evidence) {
 		// preprocessing
 		RemoveBarren removeBarren = new RemoveBarren();
-
-		return (M) removeBarren.execute(new CutObservedSepHalfspace().execute(model, evidence), target, evidence);
+		M infModel = (M) new CutObservedGeneric().execute(model, evidence);
+		removeBarren.executeInline(infModel, target, evidence);
+		return infModel;
 	}
 
 	@Override
