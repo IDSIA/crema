@@ -11,6 +11,8 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.stream.IntStream;
+
 
 public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> implements Inference<M, VertexFactor> {
 
@@ -46,7 +48,7 @@ public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> i
 	public VertexFactor query(int target, TIntIntMap evidence) {
 		M infModel = getInferenceModel(target, evidence);
 
-		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
+		TIntIntMap filteredEvidence = new TIntIntHashMap();
 
 		// update the evidence
 		for (int v : evidence.keys()) {
@@ -68,6 +70,12 @@ public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> i
 		VertexFactor.setConvexHullMarg(convexHullMarg);
 		// run the query
 		VertexFactor output = ve.run(target);
+
+
+		for(double[][] d :output.getData())
+			if(d.length==0)
+				throw new IllegalStateException("Zero-vertices in result");
+
 
 		// restore the previous convex hull method
 		VertexFactor.setConvexHullMarg(old_method);
