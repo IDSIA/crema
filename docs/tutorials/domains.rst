@@ -53,13 +53,20 @@ Laveraging the ellipses of Java the :code:`DomainBuilder` class avoids the expli
 
 Strides
 =======
+
 A more sophisticated and more frequently used implementation of the :code:`Domain` interface is the :code:`Strides` class.
 In addition to the arrays of variables and their cardinality, this class caches the cumulative sizes of the variables in the provided order.
-The access to this additional array is seldomly required by the end-user. They are mostly used 
+The access to this additional array is seldomly required by the end-user. They are mostly required 
 to index parts of a probability table. 
 
-The Strides class offers a much richer set of functionalities both 
+The :code:`Strides` class offers a much richer set of functionalities both 
 related to the domain itself and the aforementioned indexing of probability tables.
+
+
+Creating Strides
+~~~~~~~~~~~~~~~~
+
+We we first look at how :code:`Strides` instances can be created conveniently. 
 
 .. Note::
     The variable's cardinalities are accumlated starting from the variable at index 0.
@@ -85,4 +92,16 @@ Alternative ways to create strides are based on operations on them. Generally Do
     :start-after: [strides-remove]
     :end-before: [strides-remove]
     :dedent: 8
+
+A number of common set operations are available:
+
+- union
+- intersect
+- remove
+
+.. _Enhanced domain:
+Working with Strides
+--------------------
+
+
 

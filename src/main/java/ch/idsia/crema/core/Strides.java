@@ -722,7 +722,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * Helper to allow concatenation of var().add().add()
-	 *
+	 * Insertion is sorted. Resulting domain is ordered!
 	 * @param var
 	 * @param size
 	 * @return
@@ -806,8 +806,29 @@ public final class Strides implements Domain {
 	}
 
 
-	public boolean isCompatible(int index, TIntIntMap obs) {
+	/** 
+	 * get the list of states for the specified offset within all the 
+	 * combinations of the domain
+	 */
+	public int[] getStatesFor(int offset) {
+		int[] states = new int[getSize()];
+		int index = 0;
+		for (int cardinality : sizes) {
+			states[index ++] = offset % cardinality;
+			offset = offset / cardinality;
+		}
+		return states;
+	}
 
+	/**
+	 * Test wether the specified index (within the exanded domain) is present 
+	 * in the provied observations map
+	 * 
+	 * @param index
+	 * @param obs
+	 * @return
+	 */
+	public boolean isCompatible(int index, TIntIntMap obs) {
 		int[] obsfiltered = IntStream.of(this.getVariables()).sorted()
 				.map(x -> {
 					if (obs.containsKey(x))
@@ -829,6 +850,12 @@ public final class Strides implements Domain {
 		return compatible;
 	}
 
+	/**
+	 * Get all indices that are addressed by the specified observations map
+	 * 
+	 * @param obs
+	 * @return
+	 */
 	public int[] getCompatibleIndexes(TIntIntMap obs) {
 		return IntStream.range(0, this.getCombinations()).filter(i -> this.isCompatible(i, obs)).toArray();
 	}

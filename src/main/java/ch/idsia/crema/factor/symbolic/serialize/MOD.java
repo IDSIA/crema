@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.symbolic.CombinedFactor;
 import ch.idsia.crema.factor.symbolic.DividedFactor;
@@ -25,7 +26,7 @@ public class MOD implements SolverSerializer {
 
     private String getName(SymbolicFactor factor, int offset) {
         String name;
-        if (!factorname.containsKey(factor) {
+        if (!factorname.containsKey(factor)) {
             name = "f" + factorname.size();
             factorname.put(factor, name);
         } else { 
@@ -64,7 +65,7 @@ public class MOD implements SolverSerializer {
 
     private void processCombinedFactor(CombinedFactor combined) {
 
-    }
+    }  
 
     private void processPriorFactor(PriorFactor prior) {
         GenericFactor factor = prior.getFactor();
