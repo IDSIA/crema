@@ -30,7 +30,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
-	private final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
+	protected final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
 
 	public BeliefPropagation(DAGModel<F> model) {
 		this.model = model;
@@ -80,6 +80,10 @@ public class BeliefPropagation<F extends Factor<F>> {
 		);
 
 		fullyPropagated = false;
+	}
+
+	public JunctionTree<F> getJunctionTree() {
+		return junctionTree;
 	}
 
 	public void setEvidence(TIntIntMap evidence) {
