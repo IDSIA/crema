@@ -19,6 +19,7 @@ following picture.
     digraph example1 {
         A -> C;
         B -> C;
+    }
 
 
 Graphical Networks are implemented in the :code:`models.graphical` package and they extend the :code:`Graph` class. 
@@ -28,10 +29,13 @@ parametrise the relationships between variables defined by the network.
 There are currenlty 2 concrete implementations of graphical networks that differ in the underlying storage of the edges and nodes. 
 From an inference and algorithmic point of view the actual implementation is irrelevant. 
 
-SparseModel
+DAG Models
 -----------
 
-The :code:`SparseModel` is a Sparse list based implementation of a graphical model. 
+The main implementation for directed acyclic graphs is the :code:`DAGModel` class. 
+Crema uses `JGraphT`_ SimpleGraph to store the actual graph.
+
+.. _JGraphT: https://jgrapht.org/
 
 For a Bayesian Network we will use a :code:`BayesianFactor`.
 
@@ -39,32 +43,11 @@ For a Bayesian Network we will use a :code:`BayesianFactor`.
     :start-after: [creating-sparse-model]
     :end-before: [creating-sparse-model]
     :dedent: 8
+    :language: java
 
 
 .. Note::
     
     In its current implementation crema stores networks using a double adjacency lists. This is for each node in the network we store 
     the collection of parents and children. 
-
-
-
-SparseDirectedAcyclicGraph
------------
-
-The :code:`SparseModel` is a Sparse list based implementation of a graphical model. 
-
-For a Bayesian Network we will use a :code:`BayesianFactor`.
-
-.. literalinclude:: ../../src/test/java/ch/idsia/crema/tutorial/NetworkTutorial.java
-    :start-after: [creating-sparse-model]
-    :end-before: [creating-sparse-model]
-    :dedent: 8
-
-
-.. Note::
-    
-    In its current implementation crema stores networks using a double adjacency lists. This is for each node in the network we store 
-    the collection of parents and children. 
-
-
 
