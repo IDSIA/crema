@@ -11,28 +11,26 @@ public class MODTest {
 
     @Test
     public void testLinear() {
-        Strides domain = Strides.var(0, 3);
+        Strides domain = Strides.var(1, 2);
 
         IntervalFactor iFactor = new IntervalFactor(domain, Strides.EMPTY);
-        iFactor.setLower(new double[]{ 0.4, 0.2, 0.6 });
-        iFactor.setUpper(new double[]{ 0.6, 0.3, 0.7 });
+        iFactor.setLower(new double[]{ 0.4, 0.1 });
+        iFactor.setUpper(new double[]{ 0.9, 0.6 });
 
         SymbolicFactor A = new PriorFactor(iFactor);
 
-        iFactor = new IntervalFactor(Strides.var(1,2), domain);
-        iFactor.setLower(new double[]{ 0.4, 0.2 }, 0);
-        iFactor.setUpper(new double[]{ 0.8, 0.6 }, 0);
-        iFactor.setLower(new double[]{ 0.1, 0.2 }, 1);
-        iFactor.setUpper(new double[]{ 0.8, 0.9 }, 1);
-        iFactor.setLower(new double[]{ 0.4, 0.5 }, 2);
-        iFactor.setUpper(new double[]{ 0.5, 0.6 }, 2);
+        iFactor = new IntervalFactor(Strides.var(0,3), domain);
+        iFactor.setLower(new double[]{ 0.4, 0.2, 0.1 }, 0);
+        iFactor.setUpper(new double[]{ 0.8, 0.6, 0.5 }, 0);
+        iFactor.setLower(new double[]{ 0.1, 0.2, 0.6 }, 1);
+        iFactor.setUpper(new double[]{ 0.3, 0.5, 0.8 }, 1);
         
         SymbolicFactor B_A = new PriorFactor(iFactor);
         
         SymbolicFactor BA = B_A.combine(A);
-        SymbolicFactor B = BA.marginalize(0);
+        SymbolicFactor B = BA.marginalize(1);
 
-        String out = new MOD().serialize(B, 1, true);
-        System.out.println(out);
+        String out = new MOD().serialize(B, 0, true);
+        
     }
 }

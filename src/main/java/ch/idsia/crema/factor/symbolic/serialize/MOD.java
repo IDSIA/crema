@@ -112,7 +112,7 @@ public class MOD implements SolverSerializer {
 
         int states = old_dom.getCardinality(var);
 
-        int[] vars = ArraysUtil.append(new_dom.getVariables(), var);
+        int[] vars = ArraysUtil.preAppend(new_dom.getVariables(), var);
 
         IndexIterator sourceIter = old_dom.getReorderedIterator(vars);
         IndexIterator targetIter = new_dom.getIterator();
@@ -124,6 +124,7 @@ public class MOD implements SolverSerializer {
             String[] items = new String[states];
             for (int state = 0; state < states; state++) {
                 int src_offset = sourceIter.next();
+                //System.out.println(src_offset + Arrays.toString(old_dom.getStatesFor(src_offset)));
                 items[state] = getVariable(factor.getSource(), src_offset);
             }
             addSum(name, items);

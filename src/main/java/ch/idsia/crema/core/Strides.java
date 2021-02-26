@@ -232,9 +232,10 @@ public final class Strides implements Domain {
 	/**
 	 * Create an iterator over an enlarged domain but with same strides and
 	 * sizes.
-	 *
+	 * 
 	 * @param targetDomain
 	 * @return
+	 * @deprecated please use {@link Strides::getIterator(targetDomain)}
 	 */
 	@Deprecated
 	public final IndexIterator getSupersetIndexIterator(Strides targetDomain) {
@@ -242,14 +243,23 @@ public final class Strides implements Domain {
 				targetDomain.getCombinations());
 	}
 
-	@Deprecated
+	
+	/**
+	 * Create an iterator over the domain defined by the specified vars and cardinalities.
+	 * The cardinalities of matching variables must be equal.
+	 * 
+	 * @return
+	 * @deprecated please use {@link Strides::getIterator(variables, cardinalities)}
+	 */
+	/*@Deprecated
 	public final IndexIterator getSupersetIndexIterator(int[] variables, int[] cardinalities) {
 		int combs = 1;
 		for (int card : cardinalities)
 			combs *= card;
 		return getSupersetIndexIterator(variables, cardinalities, combs);
 	}
-
+	*/
+	
 	private IndexIterator getSupersetIndexIterator(final int[] over, final int[] target_size, int combinations) {
 		final int[] target_strides = new int[over.length];
 
@@ -271,7 +281,6 @@ public final class Strides implements Domain {
 	 * @param state    the desired state
 	 * @return an iterator
 	 */
-	@Deprecated
 	public IndexIterator getFiteredIndexIterator(final int variable, final int state) {
 		int[] new_strides = new int[strides.length - 1];
 		int[] new_sizes = new int[sizes.length - 1];
@@ -650,7 +659,7 @@ public final class Strides implements Domain {
 	 * moving.
 	 *
 	 * @param str    the target domain
-	 * @param locked the that should be locked
+	 * @param locked the variables that should be locked
 	 * @return
 	 */
 	public IndexIterator getIterator(Strides str, int... locked) {

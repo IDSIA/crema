@@ -13,7 +13,7 @@ public class NetworkTutorial {
 	@Test
 	public void createSparseNetwork() {
 		// [creating-sparse-model]
-		DAGModel<BayesianFactor> model = new DAGModel<>();
+        DAGModel<BayesianFactor> model = new DAGModel<>();
 
 		model.addVariable(2); // C
 		model.addVariable(3); // A

@@ -64,7 +64,7 @@ public class NLSerializer implements SolverSerializer {
 	}
 
 	protected void serialize(CombinedFactor factor, StringBuilder builder) {
-		SymbolicFactor[] sources = factor.getFactors();
+		SymbolicFactor[] sources = factor.getSources();
 		IndexIterator[] iterators = new IndexIterator[sources.length];
 
 		for (int source = 0; source < sources.length; ++source) {
