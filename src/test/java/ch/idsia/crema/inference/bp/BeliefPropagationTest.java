@@ -3,15 +3,22 @@ package ch.idsia.crema.inference.bp;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
+import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.io.bif.BIFParser;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -265,6 +272,31 @@ public class BeliefPropagationTest {
 		System.out.println("query=" + q);
 
 		assertEquals(res, q);
+	}
+
+	@Test
+	public void testAlloyNumberOfFactorsPerClique() throws IOException {
+		final BayesianNetwork network = BIFParser.read("models/bif/alloy.bif").network;
+
+		final BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(network);
+
+		final long factors = bp.potentialsPerClique.values().stream()
+				.mapToLong(Set::size)
+				.sum();
+
+		assertEquals(bp.potentialsPerClique.size(), bp.getJunctionTree().vertexSet().size());
+
+		for (Clique clique : bp.getJunctionTree().vertexSet()) {
+			assertTrue(clique + " not found!", bp.potentialsPerClique.containsKey(clique));
+		}
+
+		assertEquals(network.getVariables().length, factors);
+
+		bp.potentialsPerClique.forEach((c, f) -> {
+			assertNotNull(f);
+			assertNotNull(c);
+			assertTrue(f.size() > 0);
+		});
 	}
 
 }

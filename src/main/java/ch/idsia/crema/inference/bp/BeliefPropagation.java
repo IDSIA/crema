@@ -7,9 +7,7 @@ import ch.idsia.crema.inference.bp.junction.Separator;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,7 +28,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 
 	private TIntIntMap evidence = new TIntIntHashMap();
 
-	private final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
+	protected final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
 
 	public BeliefPropagation(DAGModel<F> model) {
 		this.model = model;
@@ -45,41 +43,33 @@ public class BeliefPropagation<F extends Factor<F>> {
 		pipeline.setInput(model.getNetwork());
 		junctionTree = pipeline.exec();
 
+		// when we assign a potential to a clique, we put this clique at the end of the list
+		final LinkedList<Clique> cliques = junctionTree.vertexSet().stream()
+				.sorted(Comparator.comparingInt(a -> -junctionTree.edgesOf(a).size()))
+				.collect(Collectors.toCollection(LinkedList::new));
+
 		// distribute potentials
-		TIntObjectMap<Clique> factorsPerClique = new TIntObjectHashMap<>();
+		for (F factor : model.getFactors()) {
+			final int[] dom = factor.getDomain().getVariables();
 
-		if (junctionTree.vertexSet().size() == 2) {
-			junctionTree.vertexSet().forEach(clique -> {
-				for (int v : clique.getVariables()) {
+			for (Clique clique : cliques) {
+				if (clique.getVariables().length < dom.length)
+					continue;
 
-					factorsPerClique.put(v, clique);
+				if (clique.containsAll(dom)) {
+					potentialsPerClique.computeIfAbsent(clique, i -> new HashSet<>()).add(factor);
+					cliques.remove(clique);
+					cliques.addLast(clique);
+					break;
 				}
-			});
-		} else {
-			final List<Clique> cliques = junctionTree.vertexSet().stream()
-					.sorted(Comparator.comparingInt(a -> -junctionTree.edgesOf(a).size()))
-					.collect(Collectors.toList());
-
-			cliques.forEach(clique -> {
-				final Set<Separator<F>> edges = junctionTree.edgesOf(clique);
-				final int[] ints = edges.stream()
-						.map(Separator::getVariables)
-						.flatMapToInt(Arrays::stream)
-						.toArray();
-				for (int v : clique.getVariables()) {
-					if (edges.size() == 1 && ArraysUtil.contains(v, ints)) {
-						continue;
-					}
-					factorsPerClique.put(v, clique);
-				}
-			});
+			}
 		}
 
-		model.getFactorsMap().forEachEntry(
-				(v, f) -> potentialsPerClique.computeIfAbsent(factorsPerClique.get(v), i -> new HashSet<>()).add(f)
-		);
-
 		fullyPropagated = false;
+	}
+
+	public JunctionTree<F> getJunctionTree() {
+		return junctionTree;
 	}
 
 	public void setEvidence(TIntIntMap evidence) {

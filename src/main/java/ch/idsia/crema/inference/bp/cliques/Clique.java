@@ -53,11 +53,25 @@ public class Clique {
 	 * Checks if this {@link Clique} contains, between its variables, the given variable.
 	 *
 	 * @param variable variable to search for
-	 * @return true if the variable is found, false otherwise
+	 * @return true if the variable is found, otherwise false
 	 */
 	public boolean contains(int variable) {
 		int i = Arrays.binarySearch(variables, variable);
 		return i >= 0;
+	}
+
+	/**
+	 * Checks if this {@link Clique} contains all the given variables.
+	 *
+	 * @param variables variables to check for
+	 * @return true if all the variables are found, otherwise false
+	 */
+	public boolean containsAll(int[] variables) {
+		for (int v : variables) {
+			if (!contains(v))
+				return false;
+		}
+		return true;
 	}
 
 	/**
