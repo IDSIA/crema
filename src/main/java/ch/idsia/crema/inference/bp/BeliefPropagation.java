@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.junction.JunctionTree;
 import ch.idsia.crema.inference.bp.junction.Separator;
@@ -18,7 +19,7 @@ import java.util.stream.IntStream;
  * Project: CreMA
  * Date:    14.02.2018 10:03
  */
-public class BeliefPropagation<F extends Factor<F>> {
+public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
 
 	private final DAGModel<F> model;
 
@@ -72,6 +73,11 @@ public class BeliefPropagation<F extends Factor<F>> {
 		return junctionTree;
 	}
 
+	@Override
+	public DAGModel<F> getInferenceModel(int target, TIntIntMap evidence) {
+		return model;
+	}
+
 	public void setEvidence(TIntIntMap evidence) {
 		this.evidence = evidence;
 		fullyPropagated = false;
@@ -112,6 +118,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 * @param variable variable to query
 	 * @return the marginal probability of the given query
 	 */
+	@Override
 	public F query(int variable) {
 		F f;
 
@@ -124,6 +131,7 @@ public class BeliefPropagation<F extends Factor<F>> {
 		return f;
 	}
 
+	@Override
 	public F query(int variable, TIntIntMap evidence) {
 		setEvidence(evidence);
 		return query(variable);
