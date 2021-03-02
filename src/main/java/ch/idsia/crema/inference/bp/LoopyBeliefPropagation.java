@@ -8,9 +8,9 @@ import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
+import org.jgrapht.graph.SimpleGraph;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -34,6 +34,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 
 	protected final DAGModel<F> model;
 	protected final DirectedAcyclicGraph<Integer, DefaultEdge> network;
+	final SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
 
 	protected int iterations = 5;
 
@@ -47,52 +48,69 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	}
 
 	protected void init() {
-		for (Integer v : network) {
-			// iter in topological order
-			final Set<DefaultEdge> edges = network.edgesOf(v);
-			final F f = model.getFactor(v);
+		// copy network into an undirected (simple) graph
+		// add all the vertices to the new graph
+		network.vertexSet().forEach(graph::addVertex);
 
-			for (DefaultEdge edge : edges) {
-				final Integer a = network.getEdgeSource(edge);
-				final Integer b = network.getEdgeTarget(edge);
+		// add all the edges to the new graph
+		network.vertexSet().forEach(v -> {
+			for (DefaultEdge e1 : network.incomingEdgesOf(v)) {
+				int parent = network.getEdgeSource(e1);
+				graph.addEdge(parent, v);
+			}
+		});
 
-				final Integer i = a.equals(v) ? a : b;
-				final Integer j = b.equals(v) ? a : b;
+		// build mailboxes
+		for (Integer i : graph.vertexSet()) {
+			for (Integer j : graph.vertexSet()) {
+				if (model.getNetwork().getEdge(i, j) == null)
+					// this edge does not exist
+					continue;
 
 				final F fi = model.getFactor(i);
 				final F fj = model.getFactor(j);
+
 				final int[] vars = ArraysUtil.intersectionSorted(fi.getDomain().getVariables(), fj.getDomain().getVariables());
 
-				// message from i to j
-				final ImmutablePair<Integer, Integer> key = new ImmutablePair<>(i, j);
-
-				// build the neighbourhood: all the incoming edges that are not equals to the target j node
-				Neighbour n = new Neighbour(i, j, vars);
-
-				for (DefaultEdge e : edges) {
-					final Integer s = network.getEdgeSource(e);
-					final Integer t = network.getEdgeTarget(e);
-
-					final Integer target = t.equals(i) ? s : t;
-
-					if (!target.equals(j))
-						n.incoming.add(target);
-				}
-
-				neighbours.put(key, n);
-
-				// init all messages with the same value of the current node i
-				final int[] ints = variablesNotInSeparator(f.getDomain().getVariables(), n.variables);
-				messages.put(key, f.marginalize(ints));
+				addMailbox(i, j, fi, vars);
+				addMailbox(j, i, fj, vars);
 			}
 		}
 	}
 
+	/**
+	 * @param i     source node
+	 * @param j     destination node
+	 * @param fi    factor assigned to source node
+	 * @param vars  variables shared between source and destination node
+	 */
+	private void addMailbox(Integer i, Integer j, F fi, int[] vars) {
+		final Neighbour nij = new Neighbour(i, j, vars);
+		final int[] ints_i = outerIntersection(fi.getDomain().getVariables(), vars);
+		final ImmutablePair<Integer, Integer> key_ij = new ImmutablePair<>(i, j); // (i, j)
+
+		for (DefaultEdge e : graph.edgesOf(i)) {
+			final Integer s = graph.getEdgeSource(e);
+			final Integer t = graph.getEdgeTarget(e);
+
+			final Integer target = t.equals(i) ? s : t;
+
+			if (!target.equals(j))
+				nij.incoming.add(target);
+		}
+		neighbours.put(key_ij, nij);
+		// init all messages with the same value of the current node i
+		messages.put(key_ij, fi.marginalize(ints_i));
+	}
+
+	/**
+	 * @param iterations max number of iterations to do until convergence
+	 */
 	public void setIterations(int iterations) {
 		this.iterations = iterations;
 	}
 
-	public int[] variablesNotInSeparator(int[] vars, int[] sep) {
+	protected int[] outerIntersection(int[] vars, int[] sep) {
 		return Arrays.stream(vars)
 				.filter(x -> !ArraysUtil.contains(x, sep))
 				.toArray();
@@ -105,55 +123,50 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 
 	@Override
 	public F query(int variable, TIntIntMap evidence) {
+		final F v = model.getFactor(variable);
 
 		if (evidence.containsKey(variable)) {
-			return model.getFactor(variable).filter(evidence).normalize();
+			return v.filter(evidence).normalize();
 		}
-
-		final Map<ImmutablePair<Integer, Integer>, F> new_messages = new HashMap<>();
 
 		// iterate and update messages
 		for (int it = 0; it < iterations; it++) {
-			// iter in topological order
-			for (Integer i : network) {
-				for (Integer j : network) {
+			final Map<ImmutablePair<Integer, Integer>, F> new_messages = new HashMap<>();
+
+			for (Integer i : network) { // xi
+				for (Integer j : network) { // xj
 					if (i.equals(j))
 						// impossible edges
 						continue;
 
-					if (model.getNetwork().getEdge(i, j) == null)
+					if (graph.getEdge(i, j) == null)
 						// this edge does not exist
 						continue;
 
-					// send message to i from j
-					final ImmutablePair<Integer, Integer> key = new ImmutablePair<>(i, j);
+					// send message from i to j
+					final ImmutablePair<Integer, Integer> key = new ImmutablePair<>(i, j); // (i, j)
 					final Neighbour neighbour = neighbours.get(key);
 					final F f = model.getFactor(i);
 
-					F Mij;
+					F Mij = f; // gi(xi)
+
+					if (!neighbour.incoming.isEmpty()) {
+						// collect messages and propagate: PROD Mki_old(xi)
+						F Mki = neighbour.incoming.stream()
+								.map(k -> new ImmutablePair<>(k, i))
+								.map(messages::get)
+								.reduce(Factor::combine)
+								.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
+
+						Mij = Mij.combine(Mki).normalize(); // h(xi) = gi(xi) * PROD Mki_old(xi)
+					}
 
 					if (evidence.containsKey(i)) {
 						// propagate evidence
-						Mij = f.filter(evidence);
-
-					} else if (neighbour.incoming.isEmpty()) {
-						Mij = f;
-
-					} else {
-						// collect messages and propagate
-						Mij = Stream.concat(
-								Stream.of(f),
-								neighbour.incoming.stream()
-										.map(k -> new ImmutablePair<>(k, i))
-										.map(messages::get)
-						)
-								.reduce(Factor::combine)
-								.orElseThrow(() -> new IllegalStateException("Empty F after combination"))
-								.normalize();
-
+						Mij = Mij.filter(evidence);
 					}
 
-					final int[] ints = variablesNotInSeparator(f.getDomain().getVariables(), neighbour.variables);
+					final int[] ints = outerIntersection(f.getDomain().getVariables(), neighbour.variables);
 					Mij = Mij.marginalize(ints);
 
 					new_messages.put(key, Mij);
@@ -162,20 +175,21 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 
 			// update all messages and go to the next iteration
 			messages.putAll(new_messages);
+			// TODO: add check to stop when we converged (new_messages are equal to old_messages)
 		}
 
-		final F M = network.edgesOf(variable).stream()
+		final F M = graph.edgesOf(variable).stream()
 				.map(edge -> {
-					final Integer s = network.getEdgeSource(edge);
-					final Integer t = network.getEdgeTarget(edge);
+					final Integer s = graph.getEdgeSource(edge);
+					final Integer t = graph.getEdgeTarget(edge);
 
 					return s.equals(variable) ? t : s;
 				})
-				.map(s -> new ImmutablePair<>(variable, s))
+				.map(s -> new ImmutablePair<>(s, variable))
 				.map(messages::get)
 				.reduce(Factor::combine)
 				.orElseThrow(() -> new IllegalStateException("Empty F after message combination"));
 
-		return model.getFactor(variable).combine(M).normalize();
+		return v.combine(M).normalize();
 	}
 }

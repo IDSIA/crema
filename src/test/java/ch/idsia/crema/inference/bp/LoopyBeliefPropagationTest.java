@@ -2,12 +2,15 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jgrapht.graph.DefaultEdge;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -67,5 +70,106 @@ public class LoopyBeliefPropagationTest {
 		BayesianFactor factor = lbp.query(A0);
 
 		assertEquals(factors[A0], factor);
+	}
+
+	@Test
+	public void testCollectingEvidenceWithObs() {
+		BayesianNetwork model = new BayesianNetwork();
+		int A = model.addVariable(2);
+		int B = model.addVariable(2);
+		int C = model.addVariable(2);
+
+		model.addParent(B, A);
+		model.addParent(C, A);
+
+		BayesianFactor[] factors = new BayesianFactor[model.getVariables().length];
+
+		factors[A] = new BayesianFactor(model.getDomain(A), new double[]{.4, .6});
+		factors[B] = new BayesianFactor(model.getDomain(A, B), new double[]{.3, .9, .7, .1});
+		factors[C] = new BayesianFactor(model.getDomain(A, C), new double[]{.2, .7, .8, .3});
+
+		model.setFactors(factors);
+
+		LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(model);
+
+		// P(A):
+		TIntIntHashMap obs = new TIntIntHashMap();
+		BayesianFactor q = lbp.query(A, obs);
+		System.out.println("P(A):              " + q);
+		assertArrayEquals(new double[]{.4, .6}, q.getData(), 1e-6);
+
+		// P(A | B=0)
+		obs.put(B, 0);
+		q = lbp.query(A, obs);
+		System.out.println("P(A | B=0):       " + q);
+		assertArrayEquals(new double[]{.1818, .8182}, q.getData(), 1e-3);
+
+		// P(A | B=1)
+		obs.put(B, 1);
+		q = lbp.query(A, obs);
+		System.out.println("P(A | B=1):       " + q);
+		assertArrayEquals(new double[]{.8235, .1765}, q.getData(), 1e-3);
+
+		// P(A | B=0, C=0)
+		obs.put(B, 0);
+		obs.put(C, 0);
+		q = lbp.query(A, obs);
+		System.out.println("P(A | B=0, C=0): " + q);
+		assertArrayEquals(new double[]{.0597, .9403}, q.getData(), 1e-3);
+
+		// P(A | B=1, C=1)
+		obs.put(B, 1);
+		obs.put(C, 1);
+		q = lbp.query(A, obs);
+		System.out.println("P(A | B=1, C=1): " + q);
+		assertArrayEquals(new double[]{.9256, .0744}, q.getData(), 1e-3);
+	}
+
+	@Test
+	public void bayesianNetworkFromExercise41() {
+		BayesianNetwork bn = new BayesianNetwork();
+		int A = bn.addVariable(2);
+		int B = bn.addVariable(2);
+		int C = bn.addVariable(2);
+		int D = bn.addVariable(2);
+
+		bn.addParent(B, A);
+		bn.addParent(C, B);
+		bn.addParent(D, C);
+
+		BayesianFactor[] factors = new BayesianFactor[bn.getVariables().length];
+		factors[A] = new BayesianFactor(bn.getDomain(A), new double[]{.2, .8});
+		factors[B] = new BayesianFactor(bn.getDomain(A, B), new double[]{.2, .6, .8, .4});
+		factors[C] = new BayesianFactor(bn.getDomain(B, C), new double[]{.3, .2, .7, .8});
+		factors[D] = new BayesianFactor(bn.getDomain(C, D), new double[]{.9, .6, .1, .4});
+
+		bn.setFactors(factors);
+
+		// computations by hand
+		final BayesianFactor phi1 = factors[D].filter(D, 0);   // Sum_D P(D|C) * e_d
+		final BayesianFactor phi2 = factors[C].combine(phi1);       // P(C|B) * phi1
+		final BayesianFactor phi3 = phi2.marginalize(C);            // Sum_C phi2
+		final BayesianFactor phi4 = factors[B].combine(phi3);       // P(B|A) * phi3
+		final BayesianFactor phi5 = phi4.marginalize(B);            // Sum_B phi4
+		final BayesianFactor phi6 = factors[A].combine(phi5);       // P(A) * phi5
+		final BayesianFactor res1 = phi6.normalize();
+
+		// computations by hand using messages
+		final BayesianFactor psi1 = factors[D].filter(D, 0);
+		final BayesianFactor psi2 = factors[B].combine(factors[C]).combine(psi1).marginalize(C);
+		final BayesianFactor phiS = factors[A].combine(psi2).marginalize(B);
+		final BayesianFactor res = phiS.normalize();
+
+		assertEquals(res1, res);
+
+		// computation using Belief Propagation
+		LoopyBeliefPropagation<BayesianFactor> inf = new LoopyBeliefPropagation<>(bn);
+
+		TIntIntMap obs = new TIntIntHashMap();
+		obs.put(D, 0);
+		final BayesianFactor q = inf.query(A, obs);
+		System.out.println("query=" + q);
+
+		assertEquals(res, q);
 	}
 }
