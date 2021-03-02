@@ -171,12 +171,17 @@ public class Posterior extends Manager {
 		try {
 			solver.solve(numerator, 0.0, denominator, 0.0);
 		} catch (NoFeasibleSolutionException e) {
-			System.err.println("WARNING:     Posterior\n" +
-					"exception: " + e.getMessage() + "\n" +
-					"numerator: " + Arrays.toString(numerator) + "\n" +
-					"numerator: " + Arrays.toString(denominator) + "\n" +
-					"alpha:     " + 0.0 + "\n" +
-					"beta:      " + 0.0
+			System.err.println("WARNING:     Posterior" +
+					"\nexception:   " + e.getMessage() +
+					"\nnumerator:   " + Arrays.toString(numerator) +
+					"\ndenominator: " + Arrays.toString(denominator) +
+					"\nalpha:       " + 0.0 +
+					"\nbeta:        " + 0.0 +
+					"\nconditions:" +
+					"\n\t" + (pindex >= 0 && evidence.containsKey(free)) +
+					"\n\t" + (pindex >= 0) +
+					"\n\t" + (free == x0) +
+					"\n\t" + (evidence.containsKey(free))
 			);
 			throw e;
 		}

@@ -104,11 +104,11 @@ public class Marginal extends Manager {
 		try {
 			solver.solve(objective, 0.0);
 		} catch (NoFeasibleSolutionException e) {
-			System.err.println("WARNING:     Marginal\n" +
-					"exception: " + e.getMessage() + "\n" +
-					"objective: " + Arrays.toString(objective) + "\n" +
-					"constant:  " + 0.0 + "\n" +
-					"free:      " + free
+			System.err.println("WARNING:     Marginal" +
+					"\nexception: " + e.getMessage() +
+					"\nobjective: " + Arrays.toString(objective) +
+					"\nconstant:  " + 0.0 +
+					"\nfree:      " + free
 			);
 		}
 

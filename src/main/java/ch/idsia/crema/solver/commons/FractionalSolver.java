@@ -1,25 +1,19 @@
 package ch.idsia.crema.solver.commons;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
+import ch.idsia.crema.solver.LinearFractionalSolver;
+import ch.idsia.crema.utility.ArraysUtil;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.OpenMapRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.LinearConstraintSet;
-import org.apache.commons.math3.optim.linear.LinearObjectiveFunction;
-import org.apache.commons.math3.optim.linear.NonNegativeConstraint;
-import org.apache.commons.math3.optim.linear.Relationship;
-import org.apache.commons.math3.optim.linear.SimplexSolver;
+import org.apache.commons.math3.optim.linear.*;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
-import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
-import ch.idsia.crema.solver.LinearFractionalSolver;
-import ch.idsia.crema.utility.ArraysUtil;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Charnes-Cooper transformation
@@ -35,12 +29,13 @@ public class FractionalSolver implements LinearFractionalSolver {
 	private Collection<LinearConstraint> base;
 
 	@Override
+	@SuppressWarnings("rawtypes")
 	public void loadProblem(ExtensiveLinearFactor factor, GoalType type) {
 		loadProblem(factor.getLinearProblem(), type);
 	}
 
 	@Override
-	public void loadProblem(LinearConstraintSet data, GoalType type) {
+	public void loadProblem(LinearConstraintSet data, GoalType type) throws NoFeasibleSolutionException {
 		this.problem = data;
 		this.goalType = type;
 		size = 0;
@@ -82,15 +77,36 @@ public class FractionalSolver implements LinearFractionalSolver {
 
 		//constraints = (ArrayList<LinearConstraint>) SeparateHalfspaceFactor.getNoisedConstraintSet(constraints, 0.00001);
 
+		try {
+			SimplexSolver solver = new SimplexSolver();
 
-		SimplexSolver solver = new SimplexSolver();
+			solution = solver.optimize(
+					new LinearConstraintSet(constraints),
+					new LinearObjectiveFunction(numerator, 0),
+					goalType,
+					new NonNegativeConstraint(true)
+			);
+		} catch (NoFeasibleSolutionException e) {
+			System.err.println("WARNING:   FractionalSolver" +
+					"\nexception:   " + e.getMessage() +
+					"\nnumerator:   " + Arrays.toString(numerator) +
+					"\ndenominator: " + Arrays.toString(denominator) +
+					"\nmult:        " + mult +
+					"\ngoalType:    " + goalType +
+					"\nconstant:    " + 0 +
+					"\nconstraints: " +
+					constraints.stream()
+							.map(c -> Arrays.toString(c.getCoefficients().toArray()) + " " + c.getRelationship() + " " + c.getValue())
+							.collect(Collectors.joining("\n\t"))
+			);
 
-		solution = solver.optimize(new LinearConstraintSet(constraints), new LinearObjectiveFunction(numerator, 0), goalType, new NonNegativeConstraint(true));
+			throw e;
+		}
 	}
 
 	@Override
 	public void solve(double[] numerator, double num_const, double[] denominator, double denom_const) {
-		solve(ArraysUtil.append(numerator, num_const), ArraysUtil.append(denominator, denom_const),1);
+		solve(ArraysUtil.append(numerator, num_const), ArraysUtil.append(denominator, denom_const), 1);
 	}
 
 	@Override
