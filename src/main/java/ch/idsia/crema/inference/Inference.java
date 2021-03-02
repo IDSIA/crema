@@ -7,7 +7,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 /**
  * Common interface of inference algorithm. Any model preprocessing requirements of the final
- * inference algorithm must be performed byt the doQuery method.
+ * inference algorithm must be performed byt the query method.
  *
  * @param <M> The model
  * @param <F> The actual Factor type
