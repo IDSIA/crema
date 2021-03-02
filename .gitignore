@@ -15,13 +15,12 @@
 log/
 target/
 
-
 # custom ignoring patterns
 *_ignored*
 *_ig*
 *_old.py
 
-
 #docs
 */docs/_build/*
 
+.vscode/
