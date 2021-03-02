@@ -3,19 +3,22 @@ package ch.idsia.crema.factor.symbolic.serialize;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
 import ch.idsia.crema.factor.symbolic.*;
+import ch.idsia.crema.model.Model;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+
+
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 
 import java.util.HashMap;
 import java.util.StringJoiner;
 
-public class NLSerializer implements Serializer {
+public class NLSerializer implements SolverSerializer {
 
 	private final HashMap<SymbolicFactor, Integer> ids = new HashMap<>();
 
 	@Override
-	public String serialize(SymbolicFactor factor) {
+	public String serialize(SymbolicFactor factor, int state, boolean maximize) {
 		StringBuilder builder = new StringBuilder();
 
 		serializeAny(factor, builder);
@@ -61,7 +64,7 @@ public class NLSerializer implements Serializer {
 	}
 
 	protected void serialize(CombinedFactor factor, StringBuilder builder) {
-		SymbolicFactor[] sources = factor.getFactors();
+		SymbolicFactor[] sources = factor.getSources();
 		IndexIterator[] iterators = new IndexIterator[sources.length];
 
 		for (int source = 0; source < sources.length; ++source) {
@@ -157,4 +160,5 @@ public class NLSerializer implements Serializer {
 		}
 		return "V" + id + "S" + configuration;
 	}
+
 }

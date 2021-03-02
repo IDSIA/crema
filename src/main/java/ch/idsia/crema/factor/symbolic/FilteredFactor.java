@@ -9,7 +9,9 @@ public class FilteredFactor extends SymbolicFactor {
 	private final SymbolicFactor source;
 
 	public FilteredFactor(SymbolicFactor source, int variable, int state) {
-		super(new Strides(source.getDomain(), source.getDomain().indexOf(variable)));
+		// super(new Strides(source.getDomain(), source.getDomain().indexOf(variable)));
+		super(source.getDomain().remove(variable));
+		
 		this.source = source;
 		this.variable = variable;
 		this.state = state;
@@ -27,4 +29,8 @@ public class FilteredFactor extends SymbolicFactor {
 		return state;
 	}
 
+	@Override
+	public SymbolicFactor[] getSources() {
+		return new SymbolicFactor[] { source };
+	}
 }

@@ -12,7 +12,8 @@ public class CombinedFactor extends SymbolicFactor {
 		this.factor2 = factor2;
 	}
 
-	public SymbolicFactor[] getFactors() {
+	
+	public SymbolicFactor[] getSources() {
 		return new SymbolicFactor[]{factor1, factor2};
 	}
 }

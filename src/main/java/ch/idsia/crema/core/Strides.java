@@ -232,9 +232,10 @@ public final class Strides implements Domain {
 	/**
 	 * Create an iterator over an enlarged domain but with same strides and
 	 * sizes.
-	 *
+	 * 
 	 * @param targetDomain
 	 * @return
+	 * @deprecated please use {@link Strides::getIterator(targetDomain)}
 	 */
 	@Deprecated
 	public final IndexIterator getSupersetIndexIterator(Strides targetDomain) {
@@ -242,14 +243,23 @@ public final class Strides implements Domain {
 				targetDomain.getCombinations());
 	}
 
-	@Deprecated
+	
+	/**
+	 * Create an iterator over the domain defined by the specified vars and cardinalities.
+	 * The cardinalities of matching variables must be equal.
+	 * 
+	 * @return
+	 * @deprecated please use {@link Strides::getIterator(variables, cardinalities)}
+	 */
+	/*@Deprecated
 	public final IndexIterator getSupersetIndexIterator(int[] variables, int[] cardinalities) {
 		int combs = 1;
 		for (int card : cardinalities)
 			combs *= card;
 		return getSupersetIndexIterator(variables, cardinalities, combs);
 	}
-
+	*/
+	
 	private IndexIterator getSupersetIndexIterator(final int[] over, final int[] target_size, int combinations) {
 		final int[] target_strides = new int[over.length];
 
@@ -271,7 +281,6 @@ public final class Strides implements Domain {
 	 * @param state    the desired state
 	 * @return an iterator
 	 */
-	@Deprecated
 	public IndexIterator getFiteredIndexIterator(final int variable, final int state) {
 		int[] new_strides = new int[strides.length - 1];
 		int[] new_sizes = new int[sizes.length - 1];
@@ -602,7 +611,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * Creates a stride with one or more variables excluded. Note that the
-	 * variable must not be missing in the provided domain.
+	 * variable must not be missing in this domain.
 	 *
 	 * @param offset
 	 */
@@ -650,7 +659,7 @@ public final class Strides implements Domain {
 	 * moving.
 	 *
 	 * @param str    the target domain
-	 * @param locked the that should be locked
+	 * @param locked the variables that should be locked
 	 * @return
 	 */
 	public IndexIterator getIterator(Strides str, int... locked) {
@@ -722,7 +731,7 @@ public final class Strides implements Domain {
 
 	/**
 	 * Helper to allow concatenation of var().add().add()
-	 *
+	 * Insertion is sorted. Resulting domain is ordered!
 	 * @param var
 	 * @param size
 	 * @return
@@ -806,8 +815,29 @@ public final class Strides implements Domain {
 	}
 
 
-	public boolean isCompatible(int index, TIntIntMap obs) {
+	/** 
+	 * get the list of states for the specified offset within all the 
+	 * combinations of the domain
+	 */
+	public int[] getStatesFor(int offset) {
+		int[] states = new int[getSize()];
+		int index = 0;
+		for (int cardinality : sizes) {
+			states[index ++] = offset % cardinality;
+			offset = offset / cardinality;
+		}
+		return states;
+	}
 
+	/**
+	 * Test wether the specified index (within the exanded domain) is present 
+	 * in the provied observations map
+	 * 
+	 * @param index
+	 * @param obs
+	 * @return
+	 */
+	public boolean isCompatible(int index, TIntIntMap obs) {
 		int[] obsfiltered = IntStream.of(this.getVariables()).sorted()
 				.map(x -> {
 					if (obs.containsKey(x))
@@ -829,6 +859,12 @@ public final class Strides implements Domain {
 		return compatible;
 	}
 
+	/**
+	 * Get all indices that are addressed by the specified observations map
+	 * 
+	 * @param obs
+	 * @return
+	 */
 	public int[] getCompatibleIndexes(TIntIntMap obs) {
 		return IntStream.range(0, this.getCombinations()).filter(i -> this.isCompatible(i, obs)).toArray();
 	}

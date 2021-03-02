@@ -14,4 +14,9 @@ public class PriorFactor extends SymbolicFactor {
 	public GenericFactor getFactor() {
 		return factor;
 	}
+
+	@Override
+	public SymbolicFactor[] getSources() {
+		return new SymbolicFactor[0];
+	}
 }

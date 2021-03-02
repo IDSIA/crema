@@ -6,6 +6,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
+import ch.idsia.crema.factor.symbolic.serialize.MOD;
 import ch.idsia.crema.factor.symbolic.serialize.NLSerializer;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.math3.util.MathArrays;
@@ -185,7 +186,7 @@ public class VariableEliminationTest {
 		ve.setEvidence(new TIntIntHashMap(new int[]{1}, new int[]{1}));
 
 		SymbolicFactor f = ve.run(1);
-		NLSerializer serial = new NLSerializer();
-		System.out.println(serial.serialize(f));
+		MOD serial = new MOD();
+		System.out.println(serial.serialize(f,1,true));
 	}
 }
