@@ -39,10 +39,14 @@ public abstract class AbstractSearch<M, S> implements ISearch<M, S>, IStatCapabl
 	private double progress;
 	private int steps = 10;
 
-	private LinkedList<ProgressListener> listeners;
+	private final LinkedList<ProgressListener> listeners;
 
 	public AbstractSearch() {
 		listeners = new LinkedList<>();
+	}
+
+	public void setSteps(int steps) {
+		this.steps = steps;
 	}
 
 	@Override

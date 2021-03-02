@@ -15,14 +15,14 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.*;
 
-public class SePolyController extends SearchOperation {
+public class SePolyController implements SearchOperation {
 
-	private TIntObjectMap<List<VertexFactor>> queue;
-	private TIntIntMap evidence;
-	private GraphicalModel<VertexFactor> model;
+	private final TIntObjectMap<List<VertexFactor>> queue;
+	private final TIntIntMap evidence;
+	private final GraphicalModel<VertexFactor> model;
 	private DefaultSeparateAlgebra algebra = null;
-	private ArrayList<NodeInfo> nodeStats;
-	private ArrayList<Integer> order;
+	private final ArrayList<NodeInfo> nodeStats;
+	private final ArrayList<Integer> order;
 
 	private long maxSize = Long.MAX_VALUE;
 	private long maxTime = Long.MAX_VALUE;
@@ -48,7 +48,7 @@ public class SePolyController extends SearchOperation {
 		this.model = model;
 
 		this.queue = new TIntObjectHashMap<>();
-		this.queue.put(-1, new ArrayList<VertexFactor>());
+		this.queue.put(-1, new ArrayList<>());
 
 		this.nodeStats = new ArrayList<>();
 		this.order = new ArrayList<>();
@@ -64,7 +64,7 @@ public class SePolyController extends SearchOperation {
 
 	@Override
 	public void opening(int node, int from) {
-		queue.put(node, new ArrayList<VertexFactor>());
+		queue.put(node, new ArrayList<>());
 	}
 
 	@Override

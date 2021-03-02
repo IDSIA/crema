@@ -14,6 +14,8 @@ import java.util.Map;
 
 public class ApproxLP2 {
 
+	private Map<String, Object> init = null;
+
 	public IntervalFactor query(GraphicalModel<? extends GenericFactor> model, int query) throws InterruptedException {
 		return query(model, query, new TIntIntHashMap());
 	}
@@ -27,7 +29,7 @@ public class ApproxLP2 {
 	 * <p>
 	 * XXX must support multiple evidence here and in the variable elimination
 	 *
-	 * @param model    the data model
+	 * @param originalModel    the data model
 	 * @param query    the variable whose intervals we are interested in
 	 * @param evidence the variable that is to be considered the summarization of the
 	 *                 evidence (-1 if no evidence)
@@ -49,7 +51,7 @@ public class ApproxLP2 {
 			Manager lower;
 			Manager upper;
 
-			if (evidence == null || evidence.isEmpty()) {
+			if (evidence.isEmpty()) {
 				// without evidence we are looking for a marginal
 				lower = new Marginal(model, GoalType.MINIMIZE, query, state);
 				upper = new Marginal(model, GoalType.MAXIMIZE, query, state);
@@ -71,8 +73,6 @@ public class ApproxLP2 {
 		return result;
 	}
 
-
-	
 	private double runSearcher(GraphicalModel<? extends GenericFactor> model, Manager objective) throws InterruptedException {
 
 		Neighbourhood neighbourhood = new Neighbourhood(model);
@@ -92,9 +92,7 @@ public class ApproxLP2 {
 		return searcher.run();
 	}
 
-	private Map<String, Object> init = null;
-
-	public void initialize(Map<String, ? extends Object> params) {
+	public void initialize(Map<String, ?> params) {
 		if (params == null)
 			this.init = new HashMap<>();
 		else

@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class Posterior extends Manager {
 
-	//private static final double BAD = Double.NaN;
+	// private static final double BAD = Double.NaN;
 	private final SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
 	private final TIntIntMap evidence;
@@ -30,7 +30,7 @@ public class Posterior extends Manager {
 	protected LinearFractionalSolver createSolver(int free) {
 		FractionalSolver simplex = new FractionalSolver();
 		GenericFactor f = model.getFactor(free);
-		ExtensiveLinearFactor<?> factor = null;
+		ExtensiveLinearFactor<?> factor;
 		if (f instanceof SeparateLinearFactor) {
 			factor = sep2ext.apply((SeparateLinearFactor<?>) f);
 		} else if (f instanceof ExtensiveLinearFactor) {
@@ -57,7 +57,7 @@ public class Posterior extends Manager {
 	 * </p>
 	 */
 	@Override
-	public double eval(Solution from, Move doing) {
+	public double eval(Solution from, Move doing) throws NoFeasibleSolutionException {
 
 		int free = doing.getFree();
 		int[] parents = model.getParents(free);
@@ -69,15 +69,13 @@ public class Posterior extends Manager {
 		double[] numerator;
 		double[] denominator;
 
-		// note that observed nodes have their outbound links cut before being
-		// binarized.
+		// note that observed nodes have their outbound links cut before being binarized.
 
 		// parents of free contain the query and the free var is observed
 		if (pindex >= 0 && evidence.containsKey(free)) {
 			// x0 (the query) is among the parent of the free variable
 
-			// prepare the full domain by first adding the free var to its
-			// parents
+			// prepare the full domain by first adding the free var to its parents
 			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
 
 			BayesianFactor p_x0xexjpj = calcPosterior(from, xjpj, evidence);
@@ -97,8 +95,7 @@ public class Posterior extends Manager {
 		} else if (pindex >= 0) {
 			// x0 (the query) is among the parent of the free variable
 
-			// prepare the full domain by first adding the free var to its
-			// parents
+			// prepare the full domain by first adding the free var to its parents
 			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
 
 			BayesianFactor p_x0xexjpj = calcPosterior(from, xjpj, evidence);
@@ -111,7 +108,7 @@ public class Posterior extends Manager {
 			// we need to filter the target variable
 			numerator = p_num.filter(x0, x0state).combine(getX0factor()).getData();
 
-			// no need to filter (the sum will elimintate x0)
+			// no need to filter (the sum will eliminate x0)
 			BayesianFactor p_denom = p_x0xexjpj.combine(p_pj);
 			denominator = p_denom.getData();
 
@@ -137,7 +134,6 @@ public class Posterior extends Manager {
 			int[] all = ArraysUtil.addToSortedArray(xjpj, x0);
 
 			// num = [P(x0xE|xj,pj) * P(xE|xj,pj) * P(pj)]
-
 			BayesianFactor p_x0xex0pj = calcPosterior(from, all, evidence);
 			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
 			BayesianFactor p_pj = p_xjpj.marginalize(free);
@@ -150,7 +146,6 @@ public class Posterior extends Manager {
 			// P(xE|xj,pj) * P(pj)
 			BayesianFactor p_denom = p_x0xe_xjpj.marginalize(x0).combine(p_pj);
 			denominator = p_denom.getData();
-
 
 		} else {
 			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
@@ -175,8 +170,15 @@ public class Posterior extends Manager {
 		LinearFractionalSolver solver = createSolver(free);
 		try {
 			solver.solve(numerator, 0.0, denominator, 0.0);
-		} catch (NoFeasibleSolutionException ex) {
-			throw ex;
+		} catch (NoFeasibleSolutionException e) {
+			System.err.println("WARNING:     Posterior\n" +
+					"exception: " + e.getMessage() + "\n" +
+					"numerator: " + Arrays.toString(numerator) + "\n" +
+					"numerator: " + Arrays.toString(denominator) + "\n" +
+					"alpha:     " + 0.0 + "\n" +
+					"beta:      " + 0.0
+			);
+			throw e;
 		}
 
 		BayesianFactor solution = from.getData().get(free);

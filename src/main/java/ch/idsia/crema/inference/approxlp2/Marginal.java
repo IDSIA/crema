@@ -9,7 +9,10 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.commons.Simplex;
 import ch.idsia.crema.utility.ArraysUtil;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+
+import java.util.Arrays;
 
 /**
  * Marginal problem Objective Function. This class implements the evaluation of the moves
@@ -20,10 +23,10 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 public class Marginal extends Manager {
 
 	private static final double BAD = Double.NaN;
-	private SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
 	public Marginal(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state) {
 		super(model, dir, x0, x0state);
+		sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 	}
 
 	/**
@@ -34,7 +37,7 @@ public class Marginal extends Manager {
 	protected LinearSolver createSolver(int free) {
 		Simplex simplex = new Simplex();
 		GenericFactor f = model.getFactor(free);
-		ExtensiveLinearFactor<?> factor = null;
+		ExtensiveLinearFactor<?> factor;
 		if (f instanceof SeparateLinearFactor) {
 			factor = sep2ext.apply((SeparateLinearFactor<?>) f);
 		} else if (f instanceof ExtensiveLinearFactor) {
@@ -47,7 +50,7 @@ public class Marginal extends Manager {
 	}
 
 	@Override
-	public double eval(Solution from, Move doing) {
+	public double eval(Solution from, Move doing) throws NoFeasibleSolutionException {
 		int free = doing.getFree();
 		LinearSolver solver = createSolver(free);//linearProblems[free]; 
 		// not a good move
@@ -55,7 +58,6 @@ public class Marginal extends Manager {
 
 		int[] parent = model.getParents(free);
 		double[] objective;
-		BayesianFactor tmp = null;
 		// int i = Arrays.binarySearch(parent, x0);
 		// x0 is part of the parents of the free variable
 		//		if (i >= 0) {
@@ -98,12 +100,17 @@ public class Marginal extends Manager {
 
 			objective = f.filter(x0, x0state).getData();
 		}
-//		try {
-		solver.solve(objective, 0.0);
-//		}catch (NoFeasibleSolutionException ex) {
-//			System.out.println("ERRO" + Arrays.stream(tmp.getInteralData()).sum());
-//		//	System.err.println(free + "  " + Arrays.toString(objective));	
-//		}
+
+		try {
+			solver.solve(objective, 0.0);
+		} catch (NoFeasibleSolutionException e) {
+			System.err.println("WARNING:     Marginal\n" +
+					"exception: " + e.getMessage() + "\n" +
+					"objective: " + Arrays.toString(objective) + "\n" +
+					"constant:  " + 0.0 + "\n" +
+					"free:      " + free
+			);
+		}
 
 		BayesianFactor solution = from.getData().get(free);
 		solution = new BayesianFactor(solution.getDomain(), solution.isLog());

@@ -17,7 +17,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	public static final double BAD = Double.NaN;
 	private static final double EPS = 0.000000000001;
 
-	protected SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
+	protected SeparateLinearToExtensiveHalfspaceFactor sep2ext;
 
 	// the underlying model
 	protected GraphicalModel<? extends GenericFactor> model;
@@ -37,6 +37,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 		this.x0state = x0state;
 
 		this.sequence = new MinFillOrdering().apply(model);
+		this.sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 	}
 
 	/**

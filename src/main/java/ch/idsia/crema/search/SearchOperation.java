@@ -1,22 +1,22 @@
 package ch.idsia.crema.search;
 
-public class SearchOperation {
+public interface SearchOperation {
 
-	public void opening(int node, int from) {
+	default void opening(int node, int from) {
 	}
 
-	public void closing(int node, int from) {
+	default void closing(int node, int from) {
 	}
 
-	public boolean canVisit(int node, int from) {
+	default boolean canVisit(int node, int from) {
 		return true;
 	}
 
-	public boolean visitChildren(int node) {
+	default boolean visitChildren(int node) {
 		return true;
 	}
 
-	public boolean visitParents(int node) {
+	default boolean visitParents(int node) {
 		return true;
 	}
 

@@ -6,7 +6,7 @@ import java.util.Random;
 public class RandomWalk<M, S> extends AbstractSearch<M, S> {
 
 	private int maxIteration = 1000;
-	private Random generator;
+	private final Random generator; // TODO: use crema's random utils
 
 
 	public RandomWalk() {
