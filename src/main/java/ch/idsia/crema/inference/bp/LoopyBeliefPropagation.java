@@ -11,6 +11,7 @@ import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.SimpleGraph;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -190,6 +191,9 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 				.reduce(Factor::combine)
 				.orElseThrow(() -> new IllegalStateException("Empty F after message combination"));
 
-		return v.combine(M).normalize();
+		final F f = v.combine(M);
+		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
+
+		return f.marginalize(ints).normalize();
 	}
 }

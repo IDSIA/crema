@@ -127,7 +127,7 @@ public class LoopyBeliefPropagationTest {
 	}
 
 	@Test
-	public void bayesianNetworkFromExercise41() {
+	public void testBayesianNetworkFromExercise41() {
 		BayesianNetwork bn = new BayesianNetwork();
 		int A = bn.addVariable(2);
 		int B = bn.addVariable(2);
@@ -175,17 +175,18 @@ public class LoopyBeliefPropagationTest {
 	}
 
 	@Test
-	public void testAlloyNumberOfFactorsPerClique() throws Exception {
+	public void testNumberOfStatesReturned() throws Exception {
 		final BayesianNetwork network = BIFParser.read("models/bif/alloy.bif").network;
 		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(network);
 
-		final BayesianFactor q0 = lbp.query(0);
-		System.out.println(q0);
+//		int[] vs = {4, 5, 25};
 
-		final BayesianFactor q1 = lbp.query(1);
-		System.out.println(q1);
+		for (int v : network.getVariables()) {
+			final BayesianFactor q0 = lbp.query(v);
+//			System.out.println(v + ":\t" + q0.getData().length + "\t" + network.getSize(v));
+//			System.out.println(q0);
 
-		final BayesianFactor q2 = lbp.query(2);
-		System.out.println(q2);
+			assertEquals(network.getSize(v), q0.getData().length);
+		}
 	}
 }
