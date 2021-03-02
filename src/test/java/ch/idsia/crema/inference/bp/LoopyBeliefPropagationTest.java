@@ -2,6 +2,7 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.io.bif.BIFParser;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -171,5 +172,20 @@ public class LoopyBeliefPropagationTest {
 		System.out.println("query=" + q);
 
 		assertEquals(res, q);
+	}
+
+	@Test
+	public void testAlloyNumberOfFactorsPerClique() throws Exception {
+		final BayesianNetwork network = BIFParser.read("models/bif/alloy.bif").network;
+		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(network);
+
+		final BayesianFactor q0 = lbp.query(0);
+		System.out.println(q0);
+
+		final BayesianFactor q1 = lbp.query(1);
+		System.out.println(q1);
+
+		final BayesianFactor q2 = lbp.query(2);
+		System.out.println(q2);
 	}
 }
