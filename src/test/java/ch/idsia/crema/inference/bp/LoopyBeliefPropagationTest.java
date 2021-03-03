@@ -2,6 +2,7 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.io.bif.BIFParser;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -126,7 +127,7 @@ public class LoopyBeliefPropagationTest {
 	}
 
 	@Test
-	public void bayesianNetworkFromExercise41() {
+	public void testBayesianNetworkFromExercise41() {
 		BayesianNetwork bn = new BayesianNetwork();
 		int A = bn.addVariable(2);
 		int B = bn.addVariable(2);
@@ -171,5 +172,21 @@ public class LoopyBeliefPropagationTest {
 		System.out.println("query=" + q);
 
 		assertEquals(res, q);
+	}
+
+	@Test
+	public void testNumberOfStatesReturned() throws Exception {
+		final BayesianNetwork network = BIFParser.read("models/bif/alloy.bif").network;
+		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(network);
+
+//		int[] vs = {4, 5, 25};
+
+		for (int v : network.getVariables()) {
+			final BayesianFactor q0 = lbp.query(v);
+//			System.out.println(v + ":\t" + q0.getData().length + "\t" + network.getSize(v));
+//			System.out.println(q0);
+
+			assertEquals(network.getSize(v), q0.getData().length);
+		}
 	}
 }
