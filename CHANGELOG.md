@@ -1,4 +1,4 @@
-0.1.6.g
+0.1.6.h
 ===========
 
 - Added `Loopy Belief Propagation algorithm ( #63 )
