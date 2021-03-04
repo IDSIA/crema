@@ -3,10 +3,10 @@
   <groupId>ch.idsia</groupId>
   <artifactId>crema</artifactId>
   <versioning>
-    <release>0.1.6.h</release>
+    <release>0.1.6.i</release>
     <versions>
-      <version>0.1.6.h</version>
+      <version>0.1.6.i</version>
     </versions>
-    <lastUpdated>20210303082120</lastUpdated>
+    <lastUpdated>20210304183732</lastUpdated>
   </versioning>
 </metadata>
