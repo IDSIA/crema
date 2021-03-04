@@ -73,8 +73,8 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 
 				final int[] vars = ArraysUtil.intersectionSorted(fi.getDomain().getVariables(), fj.getDomain().getVariables());
 
-				addMailbox(i, j, fi, vars);
-				addMailbox(j, i, fj, vars);
+				addMailbox(i, j, vars);
+				addMailbox(j, i, vars);
 			}
 		}
 	}
@@ -82,12 +82,10 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	/**
 	 * @param i     source node
 	 * @param j     destination node
-	 * @param fi    factor assigned to source node
 	 * @param vars  variables shared between source and destination node
 	 */
-	private void addMailbox(Integer i, Integer j, F fi, int[] vars) {
+	private void addMailbox(Integer i, Integer j, int[] vars) {
 		final Neighbour nij = new Neighbour(i, j, vars);
-		final int[] ints_i = outerIntersection(fi.getDomain().getVariables(), vars);
 		final ImmutablePair<Integer, Integer> key_ij = new ImmutablePair<>(i, j); // (i, j)
 
 		for (DefaultEdge e : graph.edgesOf(i)) {
@@ -100,8 +98,6 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 				nij.incoming.add(target);
 		}
 		neighbours.put(key_ij, nij);
-		// init all messages with the same value of the current node i
-		messages.put(key_ij, fi.marginalize(ints_i));
 	}
 
 	/**
@@ -128,6 +124,14 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 
 		if (evidence.containsKey(variable)) {
 			return v.filter(evidence).normalize();
+		}
+
+		// initialize all messages with the same value of the current node i
+		for (ImmutablePair<Integer, Integer> key : neighbours.keySet()) {
+			final int[] vars = neighbours.get(key).variables;
+			final F fi = model.getFactor(key.getLeft());
+			final int[] ints_i = outerIntersection(fi.getDomain().getVariables(), vars);
+			messages.put(key, fi.marginalize(ints_i));
 		}
 
 		// iterate and update messages
