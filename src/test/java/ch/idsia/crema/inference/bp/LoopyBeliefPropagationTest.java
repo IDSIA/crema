@@ -52,8 +52,6 @@ public class LoopyBeliefPropagationTest {
 		LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(model);
 		lbp.setIterations(1);
 
-		assertEquals(lbp.messages.size(), lbp.neighbours.size());
-
 		for (int i : model.getVariables()) {
 			for (int j : model.getVariables()) {
 				if (i == j) continue;
@@ -63,12 +61,13 @@ public class LoopyBeliefPropagationTest {
 
 				var key = new ImmutablePair<>(i, j);
 
-				assertTrue(lbp.messages.containsKey(key));
 				assertTrue(lbp.neighbours.containsKey(key));
 			}
 		}
 
 		BayesianFactor factor = lbp.query(A0);
+
+		assertEquals(lbp.messages.size(), lbp.neighbours.size());
 
 		assertEquals(factors[A0], factor);
 	}
