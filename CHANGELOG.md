@@ -1,7 +1,7 @@
-0.1.6.h
+0.1.6.i
 ===========
 
-- Added `Loopy Belief Propagation algorithm ( #63 )
+- Added `Loopy Belief Propagation` algorithm ( #63 #64 #65 )
 - Fixed #48, an issue with `Belief Propagation` caused by wrong management of messages.
 - Fixed a minor issue in BeliefPropagation (introduced in 0.1.6.b)
 - Added a parser for the `BIF` format ( #51 )
