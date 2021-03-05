@@ -35,7 +35,6 @@ public class CredalApproxLP<M extends GraphicalModel<? super Factor<?>>> impleme
 
 	@Override
 	public IntervalFactor query(int target, TIntIntMap evidence) throws InterruptedException {
-
 		M infModel = getInferenceModel(target, evidence);
 
 		TIntIntMap filteredEvidence = new TIntIntHashMap();
@@ -51,7 +50,7 @@ public class CredalApproxLP<M extends GraphicalModel<? super Factor<?>>> impleme
 		ch.idsia.crema.inference.approxlp.Inference lp1 = new ch.idsia.crema.inference.approxlp.Inference();
 
 		if (filteredEvidence.size() > 0) {
-			int evbin = new BinarizeEvidence().executeInline(infModel, filteredEvidence, filteredEvidence.size(), false);
+			int evbin = new BinarizeEvidence().executeInplace(infModel, filteredEvidence, filteredEvidence.size(), false);
 			result = lp1.query(infModel, target, evbin);
 
 		} else {

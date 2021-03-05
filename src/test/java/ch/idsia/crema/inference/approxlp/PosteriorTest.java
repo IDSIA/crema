@@ -91,7 +91,7 @@ public class PosteriorTest {
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
 		BinarizeEvidence be = new BinarizeEvidence();
-		int evidence = be.executeInline(model, observation, 2, false);
+		int evidence = be.executeInplace(model, observation, 2, false);
 
 		Inference<GenericFactor> inf = new Inference<>();
 		IntervalFactor ifact = inf.query(model, X0, evidence);
@@ -119,7 +119,7 @@ public class PosteriorTest {
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
 		BinarizeEvidence be = new BinarizeEvidence();
-		int evidence = be.executeInline(model, observation, 2, false);
+		int evidence = be.executeInplace(model, observation, 2, false);
 
 		Inference<GenericFactor> inf = new Inference<>();
 		IntervalFactor ifact = inf.query(model, X0, evidence);
@@ -192,7 +192,7 @@ public class PosteriorTest {
 		evidence.put(n0, 0);
 
 		BinarizeEvidence bin = new BinarizeEvidence();
-		int ev = bin.executeInline(model, evidence, 2, false);
+		int ev = bin.executeInplace(model, evidence, 2, false);
 
 		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n3, ev);
@@ -237,7 +237,7 @@ public class PosteriorTest {
 		evidence.put(n0, 0);
 
 		BinarizeEvidence bin = new BinarizeEvidence();
-		int ev = bin.executeInline(model, evidence, 2, false);
+		int ev = bin.executeInplace(model, evidence, 2, false);
 
 		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n3, ev);
@@ -308,7 +308,7 @@ public class PosteriorTest {
 		evidence.put(n0, 0);
 
 		BinarizeEvidence bin = new BinarizeEvidence();
-		int ev = bin.executeInline(model, evidence, 2, false);
+		int ev = bin.executeInplace(model, evidence, 2, false);
 
 		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n3, ev);
@@ -400,7 +400,7 @@ public class PosteriorTest {
 		model = barren.execute(model, new int[]{n3}, evidence);
 
 		BinarizeEvidence bin = new BinarizeEvidence();
-		int ev = bin.executeInline(model, evidence, 2, false);
+		int ev = bin.executeInplace(model, evidence, 2, false);
 
 		Inference<GenericFactor> inference = new Inference<>();
 		IntervalFactor factor = inference.query(model, n3, ev);

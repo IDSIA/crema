@@ -10,6 +10,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
  * Project: CreMA
  * Date:    22.03.2017 15:38
  */
+// TODO: merge with Inference
 public interface SingleInference<F extends GenericFactor, R extends GenericFactor> {
 
 	R apply(GraphicalModel<F> model, int query, TIntIntMap observations) throws InterruptedException;

@@ -1,7 +1,7 @@
 package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
@@ -42,15 +42,14 @@ public class BinarizeEvidence {
 	 * @param log
 	 * @return
 	 */
-	public <M extends GraphicalModel<? super Factor<?>>> M execute(M model, TIntIntMap evidence, int size, boolean log) {
+	public GraphicalModel<GenericFactor> execute(GraphicalModel<? super GenericFactor> model, TIntIntMap evidence, int size, boolean log) {
 		@SuppressWarnings("unchecked")
-		M copy = (M) model.copy();
-		leafDummy = executeInline(copy, evidence, size, log);
+		GraphicalModel<GenericFactor> copy = (GraphicalModel<GenericFactor>) model.copy();
+		leafDummy = executeInplace(copy, evidence, size, log);
 		return copy;
 	}
 
-	public <M extends GraphicalModel<? super Factor<?>>> int executeInline(M model, TIntIntMap evidence, int size, boolean log) {
-
+	public int executeInplace(GraphicalModel<GenericFactor> model, TIntIntMap evidence, int size, boolean log) {
 		int[] keys = evidence.keys();
 
 		// TODO: XXX do we need to sort the keys????
@@ -98,7 +97,7 @@ public class BinarizeEvidence {
 		}
 	}
 
-	private <M extends GraphicalModel<? super Factor<?>>> int create(M model, List<Instance> parents, boolean log) {
+	private int create(GraphicalModel<? super GenericFactor> model, List<Instance> parents, boolean log) {
 		int conf = 1;
 		int offset = 0;
 

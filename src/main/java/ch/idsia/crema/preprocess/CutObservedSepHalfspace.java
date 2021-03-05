@@ -21,8 +21,7 @@ public class CutObservedSepHalfspace {
 	 * @param evidence a collection of instantiations containing variable - state
 	 *                 pairs
 	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public void executeInplace(final GraphicalModel model, final TIntIntMap evidence) {
+	public void executeInplace(final GraphicalModel<SeparateHalfspaceFactor> model, final TIntIntMap evidence) {
 		final int size = evidence.size();
 
 		final TIntIntIterator iterator = evidence.iterator();
@@ -36,7 +35,7 @@ public class CutObservedSepHalfspace {
 			final int[] affected = model.getChildren(observed);
 
 			for (final int variable : affected) {
-				final SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor) model.getFactor(variable))
+				final SeparateHalfspaceFactor new_factor = model.getFactor(variable)
                         .filter(observed, state);
 				if (variable != observed)
 				    model.removeParent(variable, observed);

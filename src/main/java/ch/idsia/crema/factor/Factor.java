@@ -134,7 +134,7 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * @return
 	 */
 	static Factor deterministic(Strides left, Strides right, int... assignments) {
-		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	/**
@@ -146,7 +146,7 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * @return
 	 */
 	static Factor deterministic(Strides left, int assignment) {
-		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	/**
@@ -156,11 +156,11 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * @return
 	 */
 	default F renameDomain(int... new_vars) {
-		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	default ObservationBuilder sample() {
-		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 }
