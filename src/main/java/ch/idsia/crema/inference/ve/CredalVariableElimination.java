@@ -13,23 +13,34 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> implements Inference<M, VertexFactor> {
 
-	private final M model;
+	private M model;
 
-	public CredalVariableElimination(M model) {
+	/**
+	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
+	 */
+	@Deprecated
+	public void setModel(M model) {
 		this.model = model;
 	}
 
-	@Override
-	public M getInferenceModel(int target, TIntIntMap evidence) {
+	public M getInferenceModel(M model, TIntIntMap evidence, int target) {
 		CutObserved cutObserved = new CutObserved();
 		// run making a copy of the model
 		M infModel = cutObserved.execute(model, evidence);
 
 		RemoveBarren removeBarren = new RemoveBarren();
 		// no more need to make a copy of the model
-		removeBarren.executeInline(infModel, target, evidence);
+		removeBarren.executeInPlace(infModel, target, evidence);
 
 		return infModel;
+	}
+
+	/**
+	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
+	 */
+	@Deprecated
+	public VertexFactor query(int target, TIntIntMap evidence) {
+		return query(model, evidence, target);
 	}
 
 	/**
@@ -39,8 +50,9 @@ public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> i
 	 * @param evidence {@link TIntIntMap} a map of evidence in the form variable-state
 	 * @return
 	 */
-	public VertexFactor query(int target, TIntIntMap evidence) {
-		M infModel = getInferenceModel(target, evidence);
+	@Override
+	public VertexFactor query(M model, TIntIntMap evidence, int target) {
+		M infModel = getInferenceModel(model, evidence, target);
 
 		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
 

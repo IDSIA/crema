@@ -12,6 +12,7 @@ import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 import gnu.trove.stack.TIntStack;
 import gnu.trove.stack.array.TIntArrayStack;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.*;
 
@@ -20,45 +21,22 @@ import java.util.*;
  * Project: CreMA
  * Date:    06.02.2018 14:29
  */
+/*
+	TODO:
+	  - we need a UndirectedGraphicalModel which is the same of a DAGModel but without the concept of parents (only nodes)
+	  - part of the methods of this class are similar to the BeliefPropagation class and the LoopyBeliefPropagation class,
+	    maybe we can gain something if we implement some sort of "MessagePassing" interface...
+ */
 public class EliminationTree {
 
 	// TODO: maybe considering use the Graph interface also for trees?
-
-	private static class DKey {
-		int i, j;
-
-		DKey(int i, int j) {
-			this.i = i;
-			this.j = j;
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
-			DKey dKey = (DKey) o;
-			return i == dKey.i &&
-					j == dKey.j;
-		}
-
-		@Override
-		public int hashCode() {
-
-			return Objects.hash(i, j);
-		}
-
-		@Override
-		public String toString() {
-			return "(" + i + ", " + j + ")";
-		}
-	}
 
 	// i -> nodes connected to i
 	private final Map<Integer, Set<Integer>> neighbour = new HashMap<>();
 	// i -> factor for i
 	private final Map<Integer, BayesianFactor> factors = new HashMap<>();
 	// [i, j] -> message from i to j
-	private final Map<DKey, BayesianFactor> M = new HashMap<>();
+	private final Map<ImmutablePair<Integer, Integer>, BayesianFactor> M = new HashMap<>();
 
 	// in and out are referred to the current root node
 	private Map<Integer, List<Integer>> edgesOut = new HashMap<>();
@@ -327,14 +305,14 @@ public class EliminationTree {
 		// collect phi(root)
 		BayesianFactor phi = phi(root);
 
-		System.out.println("collecting phi(" + root + ")");
+		// System.out.println("collecting phi(" + root + ")");
 
 		// for each edge that ends in root
 		for (Integer i : edgesOut.get(root)) {
 			// collect the message from neighbour i to root
 			BayesianFactor M = collect(i, root);
 
-			System.out.println("combine phi(" + root + ") with + M(" + i + ", " + root + ")");
+			// System.out.println("combine phi(" + root + ") with + M(" + i + ", " + root + ")");
 
 			// combine phi(root) with M(i, root)
 			phi = phi.combine(M);
@@ -342,7 +320,7 @@ public class EliminationTree {
 
 //		phis.put(root, phi);
 
-		System.out.println("returning phi(" + root + "): " + Arrays.toString(phi.getData()));
+		// System.out.println("returning phi(" + root + "): " + Arrays.toString(phi.getData()));
 
 		return phi;
 	}
@@ -358,21 +336,21 @@ public class EliminationTree {
 		// collect phi(i)
 		BayesianFactor phi = phi(i);
 
-		System.out.println("collecting phi(" + i + ")");
+		// System.out.println("collecting phi(" + i + ")");
 
 		// if we have outbound edges from this node we need to compute the messages
 		if (edgesOut.containsKey(i)) {
 			// we need the message from the outs nodes
 			List<Integer> outs = edgesOut.get(i);
 
-			System.out.println("edges: " + outs);
+			// System.out.println("edges: " + outs);
 
 			// for each edge that ends in this node
 			for (Integer o : outs) {
 				// collect the message from o to j
 				BayesianFactor M = collect(o, i);
 
-				System.out.println("combine phi(" + i + ") with + M(" + o + ", " + i + ")");
+				// System.out.println("combine phi(" + i + ") with + M(" + o + ", " + i + ")");
 
 				// combine the message with the current phi
 				phi = phi.combine(M);
@@ -383,9 +361,9 @@ public class EliminationTree {
 
 		// compute the message by projecting phi over the separator(i, j)
 		BayesianFactor Mij = project(phi, separator(i, j));
-		M.put(new DKey(i, j), Mij);
+		M.put(new ImmutablePair<>(i, j), Mij);
 
-		System.out.println("returning M(" + i + ", " + j + "): " + Arrays.toString(Mij.getData()));
+		// System.out.println("returning M(" + i + ", " + j + "): " + Arrays.toString(Mij.getData()));
 
 		return Mij;
 	}
@@ -400,7 +378,7 @@ public class EliminationTree {
 
 			for (Integer i : neighbour.get(root)) {
 				if (!i.equals(j))
-					phi = phi.combine(M.get(new DKey(i, root)));
+					phi = phi.combine(M.get(new ImmutablePair<>(i, root)));
 			}
 
 			BayesianFactor Mij = project(phi, separator(root, j));
@@ -416,8 +394,8 @@ public class EliminationTree {
 	 */
 	private void distribute(int k, int i, BayesianFactor Mki) {
 
-		System.out.println("distributing M(" + k + ", " + i + "): " + Arrays.toString(Mki.getData()));
-		M.put(new DKey(k, i), Mki);
+		// System.out.println("distributing M(" + k + ", " + i + "): " + Arrays.toString(Mki.getData()));
+		M.put(new ImmutablePair<>(k, i), Mki);
 
 		// if we have nodes that need the message from this node i
 		for (Integer j : neighbour.get(i)) {
@@ -426,7 +404,7 @@ public class EliminationTree {
 
 				for (Integer m : neighbour.get(i)) {
 					if (!m.equals(j))
-						phi = phi.combine(M.get(new DKey(m, i)));
+						phi = phi.combine(M.get(new ImmutablePair<>(m, i)));
 				}
 
 				BayesianFactor Mij = project(phi, separator(i, j));
@@ -452,13 +430,13 @@ public class EliminationTree {
 	public BayesianFactor compute(int i) {
 		BayesianFactor phi = phi(i);
 
-		System.out.println("compute phi(" + i + "): " + Arrays.toString(phi.getData()));
+		// System.out.println("compute phi(" + i + "): " + Arrays.toString(phi.getData()));
 
 		if (edgesIn.containsKey(i)) {
 			for (Integer k : edgesIn.get(i)) {
-				BayesianFactor m = M.get(new DKey(k, i));
+				BayesianFactor m = M.get(new ImmutablePair<>(k, i));
 
-				System.out.println("M(" + k + ", " + i + "): " + m);
+				// System.out.println("M(" + k + ", " + i + "): " + m);
 
 				phi = phi.combine(m);
 			}

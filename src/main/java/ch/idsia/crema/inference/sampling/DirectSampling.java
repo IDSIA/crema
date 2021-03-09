@@ -1,8 +1,8 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.Updating;
-import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.inference.Inference;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -19,15 +19,14 @@ import java.util.List;
  * Project: CreMA
  * Date:    05.02.2018 13:32
  */
-public class DirectSampling extends StochasticSampling implements Updating<BayesianFactor, BayesianFactor> {
+public class DirectSampling extends StochasticSampling implements Inference<BayesianNetwork, BayesianFactor> {
 
 	/**
 	 * Algorithm 44 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 *
 	 * @return a map with the computed sampled states over all the variables.
 	 */
-	private TIntIntMap simulateBN() {
-
+	private TIntIntMap simulateBN(BayesianNetwork model) {
 		int[] roots = model.getRoots();
 
 		TIntIntMap map = new TIntIntHashMap();
@@ -72,23 +71,24 @@ public class DirectSampling extends StochasticSampling implements Updating<Bayes
 	 * <p>
 	 * Use Monte Carlo simulation to estimate the expectation of the direct sampling function.
 	 *
+	 * @param model model to use for inference
 	 * @param query variable to query
 	 * @return the distribution of probability on the query
 	 */
-	public Collection<BayesianFactor> run(int... query) {
+	public Collection<BayesianFactor> run(BayesianNetwork model, int... query) {
 		TIntObjectMap<double[]> distributions = new TIntObjectHashMap<>();
 
 		for (int variable : model.getVariables()) {
-			int states = model.getDomain(variable).getCombinations();
-
+			final int states = model.getDomain(variable).getCombinations();
 			distributions.put(variable, new double[states]);
 		}
 
 		for (int i = 0; i < iterations; i++) {
-			TIntIntMap x = simulateBN();
+			TIntIntMap x = simulateBN(model);
 
 			for (int variable : x.keys()) {
-				distributions.get(variable)[x.get(variable)] += 1. / iterations;
+				final int state = x.get(variable);
+				distributions.get(variable)[state] += 1. / iterations;
 			}
 		}
 
@@ -101,14 +101,30 @@ public class DirectSampling extends StochasticSampling implements Updating<Bayes
 		return factors;
 	}
 
-	@Override
-	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query) {
-		setModel(model);
-		return run(query);
+	/**
+	 * @deprecated use method {@link #query(BayesianNetwork, int[])}
+	 */
+	@Deprecated
+	public Collection<BayesianFactor> apply(BayesianNetwork model, int[] query) {
+		return run(model, query);
 	}
 
 	@Override
-	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query, TIntIntMap observations) {
-		throw new IllegalArgumentException("DirectSampling doesn't allow observations!");
+	public BayesianFactor query(BayesianNetwork model, int target) {
+		return run(model, target).stream()
+				.findFirst()
+				.orElseThrow(IllegalStateException::new);
+	}
+
+	@Override
+	public BayesianFactor query(BayesianNetwork model, int... targets) {
+		return run(model, targets).stream()
+				.reduce(BayesianFactor::combine)
+				.orElseThrow(IllegalStateException::new);
+	}
+
+	@Override
+	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int target) {
+		throw new IllegalArgumentException("Inference with evidence is not allowed!");
 	}
 }

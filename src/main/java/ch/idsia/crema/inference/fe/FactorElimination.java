@@ -1,7 +1,6 @@
 package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.Updating;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 
@@ -14,8 +13,9 @@ import java.util.stream.Collectors;
  * Project: CreMA
  * Date:    07.02.2018 15:50
  */
-// TODO: we have three types of FactorElimination... keep just one
-public class FactorElimination implements Updating<BayesianFactor, BayesianFactor> {
+// TODO: see TODO in EliminationTree
+@Deprecated
+public class FactorElimination {
 
 	private TIntIntMap evidence;
 	private EliminationTree tree;
@@ -52,12 +52,10 @@ public class FactorElimination implements Updating<BayesianFactor, BayesianFacto
 		return Arrays.stream(query).mapToObj(i -> tree.compute(i)).collect(Collectors.toList());
 	}
 
-	@Override
 	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query) {
 		return FE(query);
 	}
 
-	@Override
 	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query, TIntIntMap observations) {
 		setEvidence(observations);
 		return FE(query);

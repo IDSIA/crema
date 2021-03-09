@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.ve;
 import ch.idsia.crema.factor.FactorUtil;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.JoinInference;
+import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.ve.order.OrderingStrategy;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.math.Operation;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class VariableElimination<F extends GenericFactor> implements JoinInference<F, F> {
+public class VariableElimination<F extends GenericFactor> implements Inference<GraphicalModel<F>, F> {
 
 	private int[] sequence;
 
@@ -130,7 +130,8 @@ public class VariableElimination<F extends GenericFactor> implements JoinInferen
 				last = FactorUtil.combine(operator, var_factors);
 
 				if (Arrays.binarySearch(query, variable) >= 0) {
-					// query var // nothing to do
+					// query var
+					// nothing to do
 				} else if (evidence != null && evidence.containsKey(variable)) {
 					int state = evidence.get(variable);
 					last = operator.filter(last, variable, state);
@@ -149,8 +150,21 @@ public class VariableElimination<F extends GenericFactor> implements JoinInferen
 		return last;
 	}
 
-	@Override
+	/**
+	 * @deprecated use method {@link #query(GraphicalModel, TIntIntMap, int)}
+	 */
+	@Deprecated
 	public F apply(GraphicalModel<F> model, int[] query, TIntIntMap observations) throws InterruptedException {
+		return query(model, observations, query);
+	}
+
+	@Override
+	public F query(GraphicalModel<F> model, TIntIntMap evidence, int target) {
+		return query(model, evidence, new int[]{target});
+	}
+
+	@Override
+	public F query(GraphicalModel<F> model, TIntIntMap observations, int... query) {
 		setEvidence(observations);
 		setFactors(model.getFactors());
 		return run(query);

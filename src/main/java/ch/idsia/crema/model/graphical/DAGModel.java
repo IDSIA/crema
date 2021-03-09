@@ -314,7 +314,6 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		return factors.get(variable);
 	}
 
-
 	@Override
 	public void setFactor(int variable, F factor) {
 		int[] vars = factor.getDomain().getVariables();

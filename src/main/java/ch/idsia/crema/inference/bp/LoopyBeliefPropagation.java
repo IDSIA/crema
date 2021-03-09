@@ -33,8 +33,8 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		}
 	}
 
-	protected final DAGModel<F> model;
-	protected final DirectedAcyclicGraph<Integer, DefaultEdge> network;
+	protected DAGModel<F> model;
+	protected DirectedAcyclicGraph<Integer, DefaultEdge> network;
 	final SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
 
 	protected int iterations = 5;
@@ -42,13 +42,10 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	protected final Map<ImmutablePair<Integer, Integer>, F> messages = new HashMap<>();
 	protected final Map<ImmutablePair<Integer, Integer>, Neighbour> neighbours = new HashMap<>();
 
-	public LoopyBeliefPropagation(DAGModel<F> model) {
+	protected void setModel(DAGModel<F> model) {
 		this.model = model;
 		this.network = model.getNetwork();
-		init();
-	}
 
-	protected void init() {
 		// copy network into an undirected (simple) graph
 		// add all the vertices to the new graph
 		network.vertexSet().forEach(graph::addVertex);
@@ -113,13 +110,13 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 				.toArray();
 	}
 
-	@Override
-	public DAGModel<F> getInferenceModel(int target, TIntIntMap evidence) {
-		return null;
-	}
-
-	@Override
-	public F query(int variable, TIntIntMap evidence) {
+	/**
+	 * This method can be used to run multiple query with the same model structure
+	 * @param evidence known evidence on the model
+	 * @param variable variable to query
+	 * @return the marginal probability of the given query
+	 */
+	public F query(TIntIntMap evidence, int variable) {
 		final F v = model.getFactor(variable);
 
 		if (evidence.containsKey(variable)) {
@@ -199,5 +196,11 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
 
 		return f.marginalize(ints).normalize();
+	}
+
+	@Override
+	public F query(DAGModel<F> model, TIntIntMap evidence, int target) {
+		setModel(model);
+		return query(evidence, target);
 	}
 }

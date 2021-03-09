@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
  */
 public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
 
-	private final DAGModel<F> model;
+	private DAGModel<F> model;
 
 	private JunctionTree<F> junctionTree;
 
@@ -31,15 +31,12 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 	protected final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
 
-	public BeliefPropagation(DAGModel<F> model) {
-		this.model = model;
-		init();
-	}
-
 	/**
 	 * Builds the {@link JunctionTree} required for the algorithm.
 	 */
-	public void init() {
+	public void setModel(DAGModel<F> model) {
+		this.model = model;
+
 		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
 		pipeline.setInput(model.getNetwork());
 		junctionTree = pipeline.exec();
@@ -71,11 +68,6 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 	public JunctionTree<F> getJunctionTree() {
 		return junctionTree;
-	}
-
-	@Override
-	public DAGModel<F> getInferenceModel(int target, TIntIntMap evidence) {
-		return model;
 	}
 
 	public void setEvidence(TIntIntMap evidence) {
@@ -115,11 +107,16 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 	}
 
 	/**
+	 * This method can be use to perform multiple query on a {@link BeliefPropagation} object that is is alredy
+	 * initialized.
+	 *
 	 * @param variable variable to query
 	 * @return the marginal probability of the given query
 	 */
-	@Override
 	public F query(int variable) {
+		if (model == null)
+			throw new IllegalStateException();
+
 		F f;
 
 		if (fullyPropagated) {
@@ -129,12 +126,6 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 		}
 
 		return f;
-	}
-
-	@Override
-	public F query(int variable, TIntIntMap evidence) {
-		setEvidence(evidence);
-		return query(variable);
 	}
 
 	public F queryFullyPropagated(int variable) {
@@ -344,5 +335,12 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 //		System.out.println("PHI(" + clique + ") = " + phi);
 //		return phi;
+	}
+
+	@Override
+	public F query(DAGModel<F> model, TIntIntMap evidence, int target) {
+		setModel(model);
+		setEvidence(evidence);
+		return query(target);
 	}
 }

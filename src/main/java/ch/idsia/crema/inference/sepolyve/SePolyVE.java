@@ -2,6 +2,7 @@ package ch.idsia.crema.inference.sepolyve;
 
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
+import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.precondition.NetworkReduction;
 import ch.idsia.crema.search.impl.DepthFirst;
@@ -26,7 +27,7 @@ import java.util.Map;
  * @author Jasper De Bock
  */
 @NetworkReduction
-public class SePolyVE {
+public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexFactor> {
 	public static final String MAX_MEM_BYTE = "maxMem";
 	public static final String MAX_TIME_MS = "maxTimeMillis"; // double in
 																// seconds
@@ -55,6 +56,7 @@ public class SePolyVE {
 	public ArrayList<Integer> getOrder() {
 		return collector.getOrder();
 	}
+
 	/**
 	 * Initialize the algorithm with limits. Supported keys are:
 	 * <ul>
@@ -82,6 +84,13 @@ public class SePolyVE {
 		}
 	}
 
+	/**
+	 * @deprecated use method {@link #query(GraphicalModel, TIntIntMap, int)}
+	 */
+	@Deprecated
+	public VertexFactor run(GraphicalModel<VertexFactor> model, int query, TIntIntMap evidence) {
+		return query(model, evidence, query);
+	}
 
 	/**
 	 * Compute the marginal or posterior probability of query given evidence in the model.
@@ -93,7 +102,8 @@ public class SePolyVE {
 	 * @exception MaxMemoryException - when maximum memory usage is reached
 	 * @return the posterior or marginal extensive {@link VertexFactor} 
 	 */
-	public VertexFactor run(GraphicalModel<VertexFactor> model, int query, TIntIntMap evidence) {
+	@Override
+	public VertexFactor query(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int query) {
 		collector = new SePolyController(model, evidence, algebra, maxTime, maxMem);
 
 		DepthFirst ndf = new DepthFirst(model);
