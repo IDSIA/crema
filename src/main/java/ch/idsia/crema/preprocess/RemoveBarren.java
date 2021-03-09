@@ -1,5 +1,6 @@
 package ch.idsia.crema.preprocess;
 
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
 import ch.idsia.crema.search.impl.DepthFirst;
@@ -8,72 +9,27 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 
-public class RemoveBarren {
+public class RemoveBarren<F extends Factor<F>> implements Transformer<GraphicalModel<F>> {
 
 	private int[] deleted;
 
-	public RemoveBarren() {
-
-	}
-
 	/**
-	 * Remove barren variable indicating the observed variables
-	 * Returns a new model
-	 * @param <M>
-	 * @param model the model to be processed
-	 * @param query the variable that will be queried
-	 * @param evidence the observed variables
-	 * @return a new model where unconnected variables have been removed
+	 * @return Returns a copy of the array with the deleted variables.
 	 */
-	@SuppressWarnings("rawtypes")
-	public <M extends GraphicalModel> M execute(M model, int query, int... evidence) {
-		return execute(model, new int[]{query}, evidence);
-	}
-
-	/**
-	 * remove barren variables providing the observed variables as part of an evidence var-state map.
-	 * 
-	 * @param <M>
-	 * @param model the model to be processed 
-	 * @param query the variable that will be queried
-	 * @param evidence the observed variable as a map of variable-states
-	 * @return a new model where unconnected variables have been removed
-	 */
-	@SuppressWarnings("rawtypes")
-	public <M extends GraphicalModel> M execute(M model, int query, TIntIntMap evidence) {
-		return execute(model, new int[]{query}, evidence.keys());
-	}
-
-	@SuppressWarnings("rawtypes")
-	public <M extends GraphicalModel> M execute(M model, int[] query, TIntIntMap evidence) {
-		return execute(model, query, evidence.keys());
-	}
-
-	@SuppressWarnings("rawtypes")
-	public <M extends GraphicalModel> M execute(M model, int[] query, int... evidence) {
-		@SuppressWarnings("unchecked")
-		M copy = (M) model.copy();
-		executeInline(copy, query, evidence);
-		return copy;
+	public int[] getDeleted() {
+		return deleted;
 	}
 
 	/**
 	 * Remove barren variable from the specified model.
 	 *
-	 * @param model
-	 * @param query
-	 * @param evidence
+	 * @param model    the model to be processed
+	 * @param query    the variable that will be queried
+	 * @param evidence the observed variable as a map of variable-states
 	 */
-	public void executeInline(GraphicalModel<?> model, int query, TIntIntMap evidence) {
-		executeInline(model, new int[]{query}, evidence.keys());
-	}
-
-	public void executeInline(GraphicalModel<?> model, int[] query, TIntIntMap evidence) {
-		executeInline(model, query, evidence.keys());
-	}
-
-	public void executeInline(GraphicalModel<?> model, int[] query, int... evidence) {
-		TIntSet retain = cutIndependent(model, query, evidence);
+	@Override
+	public void executeInPlace(GraphicalModel<F> model, TIntIntMap evidence, int... query) {
+		TIntSet retain = cutIndependent(model, query, evidence.keys());
 		TIntArrayList todelete = new TIntArrayList();
 
 		for (int var : model.getVariables()) {
@@ -103,14 +59,14 @@ public class RemoveBarren {
 	}
 
 	/**
-	 * Get all the valid nodes
+	 * Get all the valid nodes.
 	 *
-	 * @param model
-	 * @param query
+	 * @param model    the model to be processed
+	 * @param query    the variable that will be queried
 	 * @param evidence may be null
-	 * @return
+	 * @return a {@link TIntSet} of visited variables
 	 */
-	private TIntSet cutIndependent(final GraphicalModel<?> model, int[] query, int[] evidence) {
+	private TIntSet cutIndependent(final GraphicalModel<F> model, int[] query, int[] evidence) {
 		final TIntSet locked = new TIntHashSet();
 		final TIntSet visited = new TIntHashSet();
 
@@ -164,14 +120,5 @@ public class RemoveBarren {
 
 		// find query disconnected stuff
 		return visited;
-	}
-
-	/**
-	 * Returns a copy of the deleted nodes array.
-	 *
-	 * @return
-	 */
-	public int[] getDeleted() {
-		return deleted;
 	}
 }

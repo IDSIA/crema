@@ -7,12 +7,11 @@ import gnu.trove.iterator.TIntIntIterator;
 import gnu.trove.map.TIntIntMap;
 
 /**
- * A Network alteration step that cuts outbound arcs of observed nodes and
- * filter the children's factors.
+ * A Network alteration step that cuts outbound arcs of observed nodes and filter the children's factors.
  *
  * @author huber
  */
-public class CutObserved {
+public class CutObserved<F extends Factor<F>> implements Transformer<GraphicalModel<F>> {
 
 	/**
 	 * Execute the operation on the provided network.
@@ -22,7 +21,9 @@ public class CutObserved {
 	 * @param evidence a collection of instantiations containing variable - state
 	 *                 pairs
 	 */
-	public <F extends Factor<F>> void executeInplace(GraphicalModel<F> model, TIntIntMap evidence) {
+	// TODO: remove this method in favor of #execute (below)
+	@Override
+	public void executeInPlace(GraphicalModel<F> model, TIntIntMap evidence) {
 		int size = evidence.size();
 
 		TIntIntIterator iterator = evidence.iterator();
@@ -32,7 +33,7 @@ public class CutObserved {
 			final int state = iterator.value();
 
 			for (int variable : model.getChildren(observed)) {
-				model.removeParent(variable, observed, new NullChange<F>() {
+				model.removeParent(variable, observed, new NullChange<>() {
 					@Override
 					public F remove(F factor, int variable) {
 						// probably need to check this earlier
@@ -44,17 +45,17 @@ public class CutObserved {
 	}
 
 	/**
-	 * Execute the algorithm and return the modified NEW network. The original
-	 * network is unchanged!
+	 * Execute the algorithm and return the modified NEW network.
+	 * The original network is unchanged!
 	 *
 	 * @param model    the model to be preprocessed
 	 * @param evidence a collection of instantiations containing variable - state
 	 *                 pairs
 	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	public <F extends GraphicalModel> F execute(F model, TIntIntMap evidence) {
-		F copy = (F) model.copy();
-		executeInplace(copy, evidence);
+	@Override
+	public GraphicalModel<F> execute(GraphicalModel<F> model, TIntIntMap evidence) {
+		GraphicalModel<F> copy = model.copy();
+		executeInPlace(copy, evidence);
 		return copy;
 	}
 }

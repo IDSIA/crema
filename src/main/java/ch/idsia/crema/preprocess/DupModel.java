@@ -1,11 +1,13 @@
 package ch.idsia.crema.preprocess;
 
-import ch.idsia.crema.model.Model;
+import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 
-public class DupModel {
+public class DupModel<F extends Factor<F>> implements Transformer<GraphicalModel<F>> {
 
-	@SuppressWarnings("unchecked")
-	public <T extends Model<?>> T execute(T model) {
-		return (T) model.copy();
+	@Override
+	public GraphicalModel<F> execute(GraphicalModel<F> model) {
+		return model.copy();
 	}
+
 }

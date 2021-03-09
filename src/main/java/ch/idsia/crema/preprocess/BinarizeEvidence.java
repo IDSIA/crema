@@ -20,17 +20,34 @@ import java.util.List;
  * of the factors until the end.
  * </p>
  * <p>
- * TODO we should consider the possibility to specify a method/lambda, or something else, to customize the precise factor creation.
  * Currently we are using {@link BayesianFactor} only.
  *
  * @author david
  */
-public class BinarizeEvidence {
+// TODO we should consider the possibility to specify a method/lambda, or something else, to customize the precise factor creation.
+public class BinarizeEvidence implements Converter<GraphicalModel<? super GenericFactor>, GraphicalModel<GenericFactor>> {
 
 	private int leafDummy;
+	private int size;
+	private boolean log;
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public void setLog(boolean log) {
+		this.log = log;
+	}
 
 	public int getLeafDummy() {
 		return leafDummy;
+	}
+
+	@Deprecated
+	public GraphicalModel<GenericFactor> execute(GraphicalModel<? super GenericFactor> model, TIntIntMap evidence, int size, boolean log) {
+		setSize(size);
+		setLog(log);
+		return execute(model, evidence);
 	}
 
 	/**
@@ -38,18 +55,29 @@ public class BinarizeEvidence {
 	 *
 	 * @param model
 	 * @param evidence
-	 * @param size
-	 * @param log
 	 * @return
 	 */
-	public GraphicalModel<GenericFactor> execute(GraphicalModel<? super GenericFactor> model, TIntIntMap evidence, int size, boolean log) {
+	@Override
+	public GraphicalModel<GenericFactor> execute(GraphicalModel<? super GenericFactor> model, TIntIntMap evidence) {
 		@SuppressWarnings("unchecked")
 		GraphicalModel<GenericFactor> copy = (GraphicalModel<GenericFactor>) model.copy();
-		leafDummy = executeInplace(copy, evidence, size, log);
+		executeInPlace(copy, evidence);
 		return copy;
 	}
 
+	/**
+	 * @deprecated use method{@link #executeInPlace(GraphicalModel, TIntIntMap)}
+	 */
+	@Deprecated
 	public int executeInplace(GraphicalModel<GenericFactor> model, TIntIntMap evidence, int size, boolean log) {
+		setSize(size);
+		setLog(log);
+		executeInPlace(model, evidence);
+		return leafDummy;
+	}
+
+	@Override
+	public void executeInPlace(GraphicalModel<? super GenericFactor> model, TIntIntMap evidence) {
 		int[] keys = evidence.keys();
 
 		// TODO: XXX do we need to sort the keys????
@@ -77,7 +105,6 @@ public class BinarizeEvidence {
 			new_var = create(model, parents, log);
 		}
 		leafDummy = new_var;
-		return new_var;
 	}
 
 	private static class Instance implements Comparable<Instance> {

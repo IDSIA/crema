@@ -11,7 +11,7 @@ import gnu.trove.map.TIntIntMap;
  *
  * @author rcabanas
  */
-public class CutObservedSepHalfspace {
+public class CutObservedSepHalfspace implements Transformer<GraphicalModel<SeparateHalfspaceFactor>> {
 
 	/**
 	 * Execute the operation on the provided network.
@@ -21,7 +21,8 @@ public class CutObservedSepHalfspace {
 	 * @param evidence a collection of instantiations containing variable - state
 	 *                 pairs
 	 */
-	public void executeInplace(final GraphicalModel<SeparateHalfspaceFactor> model, final TIntIntMap evidence) {
+	@Override
+	public void executeInPlace(GraphicalModel<SeparateHalfspaceFactor> model, TIntIntMap evidence) {
 		final int size = evidence.size();
 
 		final TIntIntIterator iterator = evidence.iterator();
@@ -36,28 +37,26 @@ public class CutObservedSepHalfspace {
 
 			for (final int variable : affected) {
 				final SeparateHalfspaceFactor new_factor = model.getFactor(variable)
-                        .filter(observed, state);
+						.filter(observed, state);
 				if (variable != observed)
-				    model.removeParent(variable, observed);
+					model.removeParent(variable, observed);
 				model.setFactor(variable, new_factor);
-
 			}
 		}
 	}
 
 	/**
-	 * Execute the algorithm and return the modified NEW network. The original
-	 * network is unchanged!
+	 * Execute the algorithm and return the modified NEW network.
+	 * The original network is unchanged!
 	 *
 	 * @param model    the model to be preprocessed
 	 * @param evidence a collection of instantiations containing variable - state
 	 *                 pairs
 	 */
-	@SuppressWarnings({"rawtypes"})
-	public GraphicalModel execute(final GraphicalModel model, final TIntIntMap evidence) {
-
-		final GraphicalModel copy = model.copy();
-		executeInplace(copy, evidence);
+	@Override
+	public GraphicalModel<SeparateHalfspaceFactor> execute(GraphicalModel<SeparateHalfspaceFactor> model, TIntIntMap evidence) {
+		final GraphicalModel<SeparateHalfspaceFactor> copy = model.copy();
+		executeInPlace(copy, evidence);
 		return copy;
 	}
 }
