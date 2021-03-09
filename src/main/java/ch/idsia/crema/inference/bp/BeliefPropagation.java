@@ -338,9 +338,9 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 	}
 
 	@Override
-	public F query(DAGModel<F> model, TIntIntMap evidence, int target) {
+	public F query(DAGModel<F> model, TIntIntMap evidence, int query) {
 		setModel(model);
 		setEvidence(evidence);
-		return query(target);
+		return query(query);
 	}
 }

@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.approxlp2;
 
+import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.inference.Inference;
@@ -12,7 +13,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApproxLP2 implements Inference<GraphicalModel<?>, IntervalFactor> {
+public class ApproxLP2<F extends Factor<F>> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
 	private Map<String, Object> init = null;
 
@@ -27,7 +28,7 @@ public class ApproxLP2 implements Inference<GraphicalModel<?>, IntervalFactor> {
 	 * @deprecated use method {@link #query(GraphicalModel, TIntIntMap, int)}
 	 */
 	@Deprecated
-	public IntervalFactor query(GraphicalModel<?> originalModel, int query, TIntIntMap evidence) {
+	public IntervalFactor query(GraphicalModel<F> originalModel, int query, TIntIntMap evidence) {
 		return query(originalModel, evidence, query);
 	}
 
@@ -47,9 +48,9 @@ public class ApproxLP2 implements Inference<GraphicalModel<?>, IntervalFactor> {
 	 * @return
 	 */
 	@Override
-	public IntervalFactor query(GraphicalModel<?> originalModel, TIntIntMap evidence, int query) {
-		RemoveBarren remove = new RemoveBarren();
-		GraphicalModel<?> model = remove.execute(originalModel, query, evidence);
+	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
+		RemoveBarren<F> remove = new RemoveBarren<>();
+		GraphicalModel<F> model = remove.execute(originalModel, evidence, query);
 
 		int states = model.getSize(query);
 

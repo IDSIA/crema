@@ -42,6 +42,13 @@ public class RemoveBarren<F extends Factor<F>> implements Transformer<GraphicalM
 		// deleted is already sorted (as model.getVariables is sorted)
 	}
 
+	@Override
+	public GraphicalModel<F> execute(GraphicalModel<F> model, TIntIntMap evidence, int... query) {
+		final GraphicalModel<F> copy = model.copy();
+		executeInPlace(model, evidence, query);
+		return copy;
+	}
+
 	/**
 	 * Update the evidence removing variable that where eliminated by the barren variables removal.
 	 * This operation is done inplace

@@ -199,8 +199,8 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	}
 
 	@Override
-	public F query(DAGModel<F> model, TIntIntMap evidence, int target) {
+	public F query(DAGModel<F> model, TIntIntMap evidence, int query) {
 		setModel(model);
-		return query(evidence, target);
+		return query(evidence, query);
 	}
 }

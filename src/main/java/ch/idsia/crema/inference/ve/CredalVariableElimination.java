@@ -46,13 +46,13 @@ public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> i
 	/**
 	 * Query K(target|evidence) in the model provided to the constructor
 	 *
-	 * @param target   int the target variable
+	 * @param query   int the target variable
 	 * @param evidence {@link TIntIntMap} a map of evidence in the form variable-state
 	 * @return
 	 */
 	@Override
-	public VertexFactor query(M model, TIntIntMap evidence, int target) {
-		M infModel = getInferenceModel(model, evidence, target);
+	public VertexFactor query(M model, TIntIntMap evidence, int query) {
+		M infModel = getInferenceModel(model, evidence, query);
 
 		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
 
@@ -71,7 +71,7 @@ public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> i
 		ve.setFactors(infModel.getFactors());
 		ve.setNormalize(false);
 
-		VertexFactor output = ve.run(target);
+		VertexFactor output = ve.run(query);
 
 		return output.normalize();
 	}

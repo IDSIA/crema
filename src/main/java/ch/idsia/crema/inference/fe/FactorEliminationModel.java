@@ -24,16 +24,16 @@ public class FactorEliminationModel implements Inference<BayesianNetwork, Bayesi
 	 * Algorithm 9 from "Modeling and Reasoning with BN", Dawiche, p.153
 	 *
 	 * @param model model to work with
-	 * @param target variable to query
+	 * @param query variable to query
 	 * @return the prior marginal on the query variable
 	 */
 	@Override
-	public BayesianFactor query(BayesianNetwork model, int target) {
+	public BayesianFactor query(BayesianNetwork model, int query) {
 		// CPTs of network N
 		List<BayesianFactor> S = new ArrayList<>(model.getFactors());
 
 		// a factor in S that contains variable Q
-		BayesianFactor fr = findAFactor(S, target);
+		BayesianFactor fr = findAFactor(S, query);
 
 		// while S has more than one factor
 		while (S.size() > 1) {
@@ -52,7 +52,7 @@ public class FactorEliminationModel implements Inference<BayesianNetwork, Bayesi
 
 		fr = S.get(0);
 
-		return project(fr, target);
+		return project(fr, query);
 	}
 
 	/**

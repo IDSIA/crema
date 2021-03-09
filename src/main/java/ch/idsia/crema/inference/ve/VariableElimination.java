@@ -159,15 +159,15 @@ public class VariableElimination<F extends GenericFactor> implements Inference<G
 	}
 
 	@Override
-	public F query(GraphicalModel<F> model, TIntIntMap evidence, int target) {
-		return query(model, evidence, new int[]{target});
+	public F query(GraphicalModel<F> model, TIntIntMap evidence, int query) {
+		return query(model, evidence, new int[]{query});
 	}
 
 	@Override
-	public F query(GraphicalModel<F> model, TIntIntMap observations, int... query) {
+	public F query(GraphicalModel<F> model, TIntIntMap observations, int... queries) {
 		setEvidence(observations);
 		setFactors(model.getFactors());
-		return run(query);
+		return run(queries);
 	}
 
 	public F conditionalQuery(int target, int... conditioning) {

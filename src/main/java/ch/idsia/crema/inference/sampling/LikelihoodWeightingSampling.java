@@ -172,15 +172,15 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements I
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int target) {
-		return run(model, evidence, target).stream()
+	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int query) {
+		return run(model, evidence, query).stream()
 				.findFirst()
 				.orElseThrow(IllegalStateException::new);
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int... targets) {
-		return run(model, evidence, targets).stream()
+	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int... queries) {
+		return run(model, evidence, queries).stream()
 				.reduce(BayesianFactor::combine)
 				.orElseThrow(IllegalStateException::new);
 	}

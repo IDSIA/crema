@@ -15,19 +15,47 @@ import gnu.trove.map.hash.TIntIntHashMap;
  */
 public interface Inference<M extends GraphicalModel<?>, F extends GenericFactor> {
 
-	F query(M model, TIntIntMap evidence, int target);
+	/**
+	 * Perform an inference.
+	 *
+	 * @param model    the model to be processed
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the result of the inference
+	 */
+	F query(M model, TIntIntMap evidence, int query);
 
-	default F query(M model, int target) {
-		return query(model, new TIntIntHashMap(), target);
+	/**
+	 * Perform an inference.
+	 *
+	 * @param model the model to be processed
+	 * @param query the variable that will be queried
+	 * @return the result of the inference
+	 */
+	default F query(M model, int query) {
+		return query(model, new TIntIntHashMap(), query);
 	}
 
+	/**
+	 * Perform an inference.
+	 *
+	 * @param model    the model to be processed
+	 * @param evidence the observed variable as a map of variable-states
+	 * @return the result of the inference
+	 */
 	// TODO: thinking about separate this in another interface...
-	default F query(M model, TIntIntMap evidence, int... targets) {
+	default F query(M model, TIntIntMap evidence, int... queries) {
 		// TODO: maybe combine a join there instead of raising an exception?
 		throw new UnsupportedOperationException();
 	}
 
-	default F query(M model, int... targets) {
-		return query(model, new TIntIntHashMap(), targets);
+	/**
+	 * Perform an inference.
+	 *
+	 * @param model the model to be processed
+	 * @return the result of the inference
+	 */
+	default F query(M model, int... queries) {
+		return query(model, new TIntIntHashMap(), queries);
 	}
 }

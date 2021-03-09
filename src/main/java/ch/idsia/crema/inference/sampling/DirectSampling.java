@@ -110,21 +110,21 @@ public class DirectSampling extends StochasticSampling implements Inference<Baye
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, int target) {
-		return run(model, target).stream()
+	public BayesianFactor query(BayesianNetwork model, int query) {
+		return run(model, query).stream()
 				.findFirst()
 				.orElseThrow(IllegalStateException::new);
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, int... targets) {
-		return run(model, targets).stream()
+	public BayesianFactor query(BayesianNetwork model, int... queries) {
+		return run(model, queries).stream()
 				.reduce(BayesianFactor::combine)
 				.orElseThrow(IllegalStateException::new);
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int target) {
+	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int query) {
 		throw new IllegalArgumentException("Inference with evidence is not allowed!");
 	}
 }
