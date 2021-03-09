@@ -35,12 +35,15 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 
 	protected final DAGModel<F> model;
 	protected final DirectedAcyclicGraph<Integer, DefaultEdge> network;
-	final SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+	protected final SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
 
 	protected int iterations = 5;
 
 	protected final Map<ImmutablePair<Integer, Integer>, F> messages = new HashMap<>();
 	protected final Map<ImmutablePair<Integer, Integer>, Neighbour> neighbours = new HashMap<>();
+
+	protected TIntIntMap evidence;
+	protected Boolean updated = false;
 
 	public LoopyBeliefPropagation(DAGModel<F> model) {
 		this.model = model;
@@ -71,7 +74,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 				final F fi = model.getFactor(i);
 				final F fj = model.getFactor(j);
 
-				final int[] vars = ArraysUtil.intersectionSorted(fi.getDomain().getVariables(), fj.getDomain().getVariables());
+				final int[] vars = ArraysUtil.intersection(fi.getDomain().getVariables(), fj.getDomain().getVariables());
 
 				addMailbox(i, j, vars);
 				addMailbox(j, i, vars);
@@ -80,9 +83,9 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	}
 
 	/**
-	 * @param i     source node
-	 * @param j     destination node
-	 * @param vars  variables shared between source and destination node
+	 * @param i    source node
+	 * @param j    destination node
+	 * @param vars variables shared between source and destination node
 	 */
 	private void addMailbox(Integer i, Integer j, int[] vars) {
 		final Neighbour nij = new Neighbour(i, j, vars);
@@ -105,6 +108,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	 */
 	public void setIterations(int iterations) {
 		this.iterations = iterations;
+		this.updated = false;
 	}
 
 	protected int[] outerIntersection(int[] vars, int[] sep) {
@@ -118,20 +122,44 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		return null;
 	}
 
+	private void checkEvidence(TIntIntMap evidence) {
+		if (this.evidence != null && !this.evidence.equals(evidence)) {
+			this.evidence = evidence;
+			this.updated = false;
+		}
+	}
+
 	@Override
 	public F query(int variable, TIntIntMap evidence) {
 		final F v = model.getFactor(variable);
 
-		if (evidence.containsKey(variable)) {
-			return v.filter(evidence).normalize();
+		if (evidence.isEmpty()) {
+			// just perform a marginalization
+			int[] ints = IntStream.of(v.getDomain().getVariables()).filter(x -> x != variable).toArray();
+			return v.marginalize(ints).normalize();
 		}
 
+		if (evidence.containsKey(variable)) {
+			// TODO
+			int[] ints = IntStream.of(v.getDomain().getVariables()).filter(x -> x != variable).toArray();
+			return v.marginalize(ints).filter(evidence).normalize();
+		}
+
+		checkEvidence(evidence);
+
+		if (!updated)
+			messagePassing(evidence);
+
+		return variableMarginal(variable, v);
+	}
+
+	private void messagePassing(TIntIntMap evidence) {
 		// initialize all messages with the same value of the current node i
 		for (ImmutablePair<Integer, Integer> key : neighbours.keySet()) {
 			final int[] vars = neighbours.get(key).variables;
 			final F fi = model.getFactor(key.getLeft());
 			final int[] ints_i = outerIntersection(fi.getDomain().getVariables(), vars);
-			messages.put(key, fi.marginalize(ints_i));
+			messages.put(key, fi.marginalize(ints_i).normalize());
 		}
 
 		// iterate and update messages
@@ -145,7 +173,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 						continue;
 
 					if (graph.getEdge(i, j) == null)
-						// this edge does not exist
+						// non existing edges
 						continue;
 
 					// send message from i to j
@@ -160,7 +188,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 						F Mki = neighbour.incoming.stream()
 								.map(k -> new ImmutablePair<>(k, i))
 								.map(messages::get)
-								.reduce(Factor::combine)
+								.reduce(F::combine)
 								.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
 
 						Mij = Mij.combine(Mki).normalize(); // h(xi) = gi(xi) * PROD Mki_old(xi)
@@ -172,7 +200,10 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 					}
 
 					final int[] ints = outerIntersection(f.getDomain().getVariables(), neighbour.variables);
-					Mij = Mij.marginalize(ints);
+					Mij = Mij.marginalize(ints).normalize();
+
+					if (Mij.getDomain().getSize() == 0)
+						throw new IllegalStateException("Message defined over any variable");
 
 					new_messages.put(key, Mij);
 				}
@@ -183,6 +214,10 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 			// TODO: add check to stop when we converged (new_messages are equal to old_messages)
 		}
 
+		updated = true;
+	}
+
+	private F variableMarginal(int variable, F v) {
 		final F M = graph.edgesOf(variable).stream()
 				.map(edge -> {
 					final Integer s = graph.getEdgeSource(edge);
@@ -192,7 +227,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 				})
 				.map(s -> new ImmutablePair<>(s, variable))
 				.map(messages::get)
-				.reduce(Factor::combine)
+				.reduce(F::combine)
 				.orElseThrow(() -> new IllegalStateException("Empty F after message combination"));
 
 		final F f = v.combine(M);
