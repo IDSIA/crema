@@ -9,7 +9,8 @@ import static ch.idsia.crema.inference.fe.FactorEliminationUtils.project;
  * Project: CreMA
  * Date:    06.02.2018 15:29
  */
-// TODO: remove this class in favor of FactorElimination and FactorEliminationModel
+// TODO: this class works with EliminationTrees, we can create a better support for this kind of objects (tree interface
+//  based on graph) or remove this class in favor of FactorElimination and FactorEliminationModel
 @Deprecated
 public class FactorElimination2 {
 

@@ -1,5 +1,6 @@
 package ch.idsia.crema.tutorial;
 
+import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
@@ -36,7 +37,7 @@ public class NetworkTutorial {
 	@Test
 	public void createSparseDAG() {
 		// [creating-sparse-dag-model]
-		DAGModel model = new DAGModel();
+		DAGModel<GenericFactor> model = new DAGModel<>();
 
 		model.addVariable(2); // C
 		model.addVariable(3); // A

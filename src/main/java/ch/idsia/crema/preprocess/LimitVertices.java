@@ -7,7 +7,8 @@ import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import ch.idsia.crema.utility.hull.LPConvexHull;
 
-public class LimitVertices implements Transformer<GraphicalModel<VertexFactor>> {
+public class LimitVertices implements TransformerModel<VertexFactor, GraphicalModel<VertexFactor>>,
+		PreprocessorModel<VertexFactor, GraphicalModel<VertexFactor>> {
 
 	protected int max = 10;
 
@@ -19,12 +20,13 @@ public class LimitVertices implements Transformer<GraphicalModel<VertexFactor>> 
 	}
 
 	/**
-	 * @deprecated set the parameter {@link #max} with {@link #setMax(int)} and use method {@link #execute(GraphicalModel, int)}
+	 * @deprecated set the parameter {@link #max} with {@link #setMax(int)} and use method {@link #execute(GraphicalModel)}
+	 * or {@link #executeInPlace(GraphicalModel)}
 	 */
 	@Deprecated
 	public GraphicalModel<VertexFactor> apply(GraphicalModel<VertexFactor> model, int max) {
 		setMax(max);
-		return execute(model, -1);
+		return execute(model);
 	}
 
 	@Override

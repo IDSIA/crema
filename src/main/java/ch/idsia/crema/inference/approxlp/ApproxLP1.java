@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.approxlp;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Perform inference using ApproxLP
  */
-public class ApproxLP1<F extends Factor<F>> implements Inference<GraphicalModel<F>, IntervalFactor> {
+public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
 	public static double EPS = 0.0;
 

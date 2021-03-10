@@ -3,7 +3,9 @@ package ch.idsia.crema.preprocess;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.model.graphical.MixedModel;
 import gnu.trove.map.TIntIntMap;
 
 import java.util.ArrayList;
@@ -25,12 +27,13 @@ import java.util.List;
  * @author david
  */
 // TODO we should consider the possibility to specify a method/lambda, or something else, to customize the precise factor creation.
-public class BinarizeEvidence implements Converter<GraphicalModel<? super GenericFactor>, GraphicalModel<GenericFactor>> {
+public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvidence<F, GenericFactor, GraphicalModel<F>, MixedModel> {
 
-	private int leafDummy;
-	private int size;
-	private boolean log;
+	private int evidenceNode;
+	private int size = 2;
+	private boolean log = false;
 
+	// TODO: what is this? It is just the size of evidence?
 	public void setSize(int size) {
 		this.size = size;
 	}
@@ -39,45 +42,38 @@ public class BinarizeEvidence implements Converter<GraphicalModel<? super Generi
 		this.log = log;
 	}
 
-	public int getLeafDummy() {
-		return leafDummy;
+	public int getEvidenceNode() {
+		return evidenceNode;
 	}
 
 	@Deprecated
-	public GraphicalModel<GenericFactor> execute(GraphicalModel<? super GenericFactor> model, TIntIntMap evidence, int size, boolean log) {
+	public GraphicalModel<GenericFactor> execute(GraphicalModel<F> model, TIntIntMap evidence, int size, boolean log) {
 		setSize(size);
 		setLog(log);
 		return execute(model, evidence);
 	}
 
 	/**
-	 * Execute the binarization and return a new Factor
-	 *
-	 * @param model
-	 * @param evidence
-	 * @return
+	 * @deprecated use method{@link #execute(GraphicalModel, TIntIntMap)}
 	 */
-	@Override
-	public GraphicalModel<GenericFactor> execute(GraphicalModel<? super GenericFactor> model, TIntIntMap evidence) {
-		@SuppressWarnings("unchecked")
-		GraphicalModel<GenericFactor> copy = (GraphicalModel<GenericFactor>) model.copy();
-		executeInPlace(copy, evidence);
-		return copy;
+	@Deprecated
+	public int executeInplace(GraphicalModel<F> model, TIntIntMap evidence, int size, boolean log) {
+		setSize(size);
+		setLog(log);
+		execute(model, evidence);
+		return evidenceNode;
 	}
 
 	/**
-	 * @deprecated use method{@link #executeInPlace(GraphicalModel, TIntIntMap)}
+	 * Execute the binarization and return a new Factor
+	 *
+	 * @param original the model to be processed
+	 * @param evidence the observed variable as a map of variable-states
+	 * @return a mixed model where a new node of type {@link BayesianFactor} is added to collect all the evidence
 	 */
-	@Deprecated
-	public int executeInplace(GraphicalModel<GenericFactor> model, TIntIntMap evidence, int size, boolean log) {
-		setSize(size);
-		setLog(log);
-		executeInPlace(model, evidence);
-		return leafDummy;
-	}
-
 	@Override
-	public void executeInPlace(GraphicalModel<? super GenericFactor> model, TIntIntMap evidence) {
+	public MixedModel execute(GraphicalModel<F> original, TIntIntMap evidence) {
+		MixedModel model = new MixedModel((DAGModel<GenericFactor>) original.copy());
 		int[] keys = evidence.keys();
 
 		// TODO: XXX do we need to sort the keys????
@@ -91,7 +87,7 @@ public class BinarizeEvidence implements Converter<GraphicalModel<? super Generi
 
 			parents.add(new Instance(var, var_size, var_obs));
 			if (parents.size() == size) {
-				new_var = create(model, parents, log);
+				new_var = create(model, parents);
 				parents.clear();
 				parents.add(new Instance(new_var, 2, 1));
 			}
@@ -99,12 +95,13 @@ public class BinarizeEvidence implements Converter<GraphicalModel<? super Generi
 
 		// when no dummy has been created we must create it
 		// when we did create dummies, the parents array will contain the last
-		// created
-		// dummy and all vars not yet dummied
+		// created dummy and all vars not yet dummied
 		if (new_var == -1 || parents.size() > 1) {
-			new_var = create(model, parents, log);
+			new_var = create(model, parents);
 		}
-		leafDummy = new_var;
+		evidenceNode = new_var;
+
+		return model;
 	}
 
 	private static class Instance implements Comparable<Instance> {
@@ -124,7 +121,7 @@ public class BinarizeEvidence implements Converter<GraphicalModel<? super Generi
 		}
 	}
 
-	private int create(GraphicalModel<? super GenericFactor> model, List<Instance> parents, boolean log) {
+	private int create(MixedModel model, List<Instance> parents) {
 		int conf = 1;
 		int offset = 0;
 

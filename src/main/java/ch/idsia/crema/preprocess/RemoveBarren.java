@@ -1,6 +1,6 @@
 package ch.idsia.crema.preprocess;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
 import ch.idsia.crema.search.impl.DepthFirst;
@@ -9,7 +9,7 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 
-public class RemoveBarren<F extends Factor<F>> implements Transformer<GraphicalModel<F>> {
+public class RemoveBarren<F extends GenericFactor> implements PreprocessorQuery<F, GraphicalModel<F>>, TransformerQuery<F, GraphicalModel<F>> {
 
 	private int[] deleted;
 

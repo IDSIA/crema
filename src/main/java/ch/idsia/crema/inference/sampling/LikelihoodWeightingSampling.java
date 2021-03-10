@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.Inference;
+import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
@@ -20,7 +20,7 @@ import java.util.List;
  * Project: CreMA
  * Date:    05.02.2018 13:33
  */
-public class LikelihoodWeightingSampling extends StochasticSampling implements Inference<BayesianNetwork, BayesianFactor> {
+public class LikelihoodWeightingSampling extends StochasticSampling implements InferenceJoined<BayesianNetwork, BayesianFactor> {
 
 	/**
 	 * Algorithm 44 from "Modeling and Reasoning with BN", Dawiche, p.380

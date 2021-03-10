@@ -11,9 +11,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Random;
 
 /**
@@ -40,7 +38,7 @@ public class LWSvsVE {
 	}
 
 	@Test
-	public void vsVariableElimination() throws InterruptedException {
+	public void vsVariableElimination() {
 
 		// TODO: this test has an issue with variable elimination and empty nodes
 
@@ -63,12 +61,10 @@ public class LWSvsVE {
 			}
 
 			LikelihoodWeightingSampling lws = new LikelihoodWeightingSampling();
-			Collection<BayesianFactor> collLWS = lws.apply(model, query, evidence);
-
-			BayesianFactor resLWS = new ArrayList<>(collLWS).get(0);
+			BayesianFactor resLWS = lws.query(model, evidence, query);
 
 			VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(seq);
-			BayesianFactor resVE = ve.apply(model, query, evidence);
+			BayesianFactor resVE = ve.query(model, evidence, query);
 
 			double distance = resLWS.getData()[0] - resVE.getData()[0];
 

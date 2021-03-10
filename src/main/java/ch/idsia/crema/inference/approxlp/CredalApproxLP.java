@@ -1,11 +1,11 @@
 package ch.idsia.crema.inference.approxlp;
 
-import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.model.graphical.MixedModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.CutObservedSepHalfspace;
 import ch.idsia.crema.preprocess.RemoveBarren;
@@ -14,14 +14,19 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
 // TODO: this class works only for SeparateHalfspaceFactor?
-public class CredalApproxLP<F extends Factor<F>> implements Inference<GraphicalModel<F>, IntervalFactor> {
+public class CredalApproxLP implements Inference<GraphicalModel<SeparateHalfspaceFactor>, IntervalFactor> {
 
-	private GraphicalModel<F> model;
+	private GraphicalModel<SeparateHalfspaceFactor> model;
 
 	public CredalApproxLP() {
 	}
 
-	public CredalApproxLP(GraphicalModel<F> model) {
+	@Deprecated
+	public CredalApproxLP(GraphicalModel<SeparateHalfspaceFactor> model) {
+		setModel(model);
+	}
+
+	public void setModel(GraphicalModel<SeparateHalfspaceFactor> model) {
 		this.model = model;
 	}
 
@@ -36,47 +41,19 @@ public class CredalApproxLP<F extends Factor<F>> implements Inference<GraphicalM
 	}
 
 	@Deprecated
-	public IntervalFactor query(int target) throws InterruptedException{
+	public IntervalFactor query(int target) throws InterruptedException {
 		return query(target, new TIntIntHashMap());
 	}
 
 	@Deprecated
 	public IntervalFactor query(int target, TIntIntMap evidence) throws InterruptedException {
-		GraphicalModel<GenericFactor> infModel = getInferenceModel(target, evidence);
-
-		TIntIntMap filteredEvidence = new TIntIntHashMap();
-
-		// update the evidence
-		for (int v : evidence.keys()) {
-			if (ArrayUtils.contains(infModel.getVariables(), v)) {
-				filteredEvidence.put(v, evidence.get(v));
-			}
-		}
-
-		IntervalFactor result;
-		ApproxLP1<F> lp1 = new ApproxLP1<>();
-
-		if (filteredEvidence.size() > 0) {
-			int evbin = new BinarizeEvidence().executeInplace(infModel, filteredEvidence, filteredEvidence.size(), false);
-			result = lp1.query(infModel, target, evbin);
-
-		} else {
-			result = lp1.query(infModel, target);
-		}
-
-		return result;
+		return query(model, evidence, target);
 	}
 
 	@Override
-	public IntervalFactor query(M model, TIntIntMap evidence, int target) {
-		// preprocessing
-		final CutObservedSepHalfspace cut = new CutObservedSepHalfspace();
-		final GraphicalModel<?> cutm = cut.execute(model, evidence);
-
-		RemoveBarren rb = new RemoveBarren();
-		M infModel = (M) rb.execute(cutm, target, evidence);
-
-		TIntIntMap filteredEvidence = new TIntIntHashMap();
+	public IntervalFactor query(GraphicalModel<SeparateHalfspaceFactor> model, TIntIntMap evidence, int query) {
+		final GraphicalModel<SeparateHalfspaceFactor> infModel = getInferenceModel(query, evidence);
+		final TIntIntMap filteredEvidence = new TIntIntHashMap();
 
 		// update the evidence
 		for (int v : evidence.keys()) {
@@ -85,18 +62,21 @@ public class CredalApproxLP<F extends Factor<F>> implements Inference<GraphicalM
 			}
 		}
 
-		ApproxLP1<GenericFactor> approxLP1 = new ApproxLP1<>();
-		IntervalFactor result;
-
 		if (filteredEvidence.size() > 0) {
-			final BinarizeEvidence be = new BinarizeEvidence();
-			int evbin = be.executeInplace((GraphicalModel<GenericFactor>) infModel, filteredEvidence, filteredEvidence.size(), false);
-			result = approxLP1.query(infModel, target, evbin);
+			final BinarizeEvidence<SeparateHalfspaceFactor> be = new BinarizeEvidence<>();
+			be.setSize(filteredEvidence.size());
+			be.setLog(false);
+			MixedModel mixedModel = be.execute(model, filteredEvidence);
+			final int evbin = be.getEvidenceNode();
 
-		} else {
-			result = approxLP1.query(infModel, target);
+			final ApproxLP1<GenericFactor> alp1 = new ApproxLP1<>();
+			alp1.setEvidenceNode(evbin);
+			return alp1.query(mixedModel, query);
+
 		}
 
-		return result;
+		final ApproxLP1<SeparateHalfspaceFactor> alp1 = new ApproxLP1<>();
+		return alp1.query(infModel, query);
 	}
+
 }

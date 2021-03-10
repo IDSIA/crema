@@ -1,6 +1,5 @@
 package ch.idsia.crema.inference.approxlp2;
 
-import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.inference.Inference;
@@ -13,7 +12,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApproxLP2<F extends Factor<F>> implements Inference<GraphicalModel<F>, IntervalFactor> {
+public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
 	private Map<String, Object> init = null;
 
@@ -83,7 +82,7 @@ public class ApproxLP2<F extends Factor<F>> implements Inference<GraphicalModel<
 		return result;
 	}
 
-	private double runSearcher(GraphicalModel<? extends GenericFactor> model, Manager objective) {
+	private double runSearcher(GraphicalModel<F> model, Manager objective) {
 		Neighbourhood neighbourhood = new Neighbourhood(model);
 
 		GreedyWithRandomRestart<Move, Solution> searcher = new GreedyWithRandomRestart<>();

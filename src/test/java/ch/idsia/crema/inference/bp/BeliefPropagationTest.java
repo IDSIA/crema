@@ -58,8 +58,8 @@ public class BeliefPropagationTest {
 
 		model.setFactors(factors);
 
-		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(model);
-		BayesianFactor factor = bp.query(A0);
+		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>();
+		BayesianFactor factor = bp.query(model, A0);
 
 		assertEquals(factors[A0], factor);
 
@@ -84,37 +84,37 @@ public class BeliefPropagationTest {
 
 		model.setFactors(factors);
 
-		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(model);
+		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>();
 
 		// P(A):
 		TIntIntHashMap obs = new TIntIntHashMap();
-		BayesianFactor q = bp.query(A, obs);
+		BayesianFactor q = bp.query(model, obs, A);
 		System.out.println("P(A):              " + q);
 		assertArrayEquals(new double[]{.4, .6}, q.getData(), 1e-6);
 
 		// P(A | B=0)
 		obs.put(B, 0);
-		q = bp.query(A, obs);
+		q = bp.query(model, obs, A);
 		System.out.println("P(A | B=0):       " + q);
 		assertArrayEquals(new double[]{.1818, .8182}, q.getData(), 1e-3);
 
 		// P(A | B=1)
 		obs.put(B, 1);
-		q = bp.query(A, obs);
+		q = bp.query(model, obs, A);
 		System.out.println("P(A | B=1):       " + q);
 		assertArrayEquals(new double[]{.8235, .1765}, q.getData(), 1e-3);
 
 		// P(A | B=0, C=0)
 		obs.put(B, 0);
 		obs.put(C, 0);
-		q = bp.query(A, obs);
+		q = bp.query(model, obs, A);
 		System.out.println("P(A | B=0, C=0): " + q);
 		assertArrayEquals(new double[]{.0597, .9403}, q.getData(), 1e-3);
 
 		// P(A | B=1, C=1)
 		obs.put(B, 1);
 		obs.put(C, 1);
-		q = bp.query(A, obs);
+		q = bp.query(model, obs, A);
 		System.out.println("P(A | B=1, C=1): " + q);
 		assertArrayEquals(new double[]{.9256, .0744}, q.getData(), 1e-3);
 	}
@@ -142,7 +142,8 @@ public class BeliefPropagationTest {
 		m.setFactor(B, pBC);
 		m.setFactor(C, pC);
 
-		BeliefPropagation<SymbolicFactor> bp = new BeliefPropagation<>(m);
+		BeliefPropagation<SymbolicFactor> bp = new BeliefPropagation<>();
+		bp.setModel(m);
 		SymbolicFactor factor = bp.fullPropagation();
 
 		System.out.println(factor);
@@ -166,8 +167,6 @@ public class BeliefPropagationTest {
 
 		bn.setFactors(factors);
 
-		BeliefPropagation<BayesianFactor> inf = new BeliefPropagation<>(bn);
-
 		assertArrayEquals(new int[]{B, C}, bn.getChildren(A));
 		assertArrayEquals(new int[]{A}, bn.getParents(C));
 		assertArrayEquals(new int[]{A}, bn.getParents(B));
@@ -175,53 +174,56 @@ public class BeliefPropagationTest {
 		TIntIntMap obs = new TIntIntHashMap();
 		BayesianFactor q;
 
-		q = inf.query(A, obs);
+		BeliefPropagation<BayesianFactor> inf = new BeliefPropagation<>();
+		inf.setModel(bn);
+
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.5, .5}, q.getData(), 1e-6);
 
 		obs.put(C, 0);
-		q = inf.query(A, obs);
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.4, .6}, q.getData(), 1e-6);
 
 		obs.put(C, 1);
-		q = inf.query(A, obs);
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.6, .4}, q.getData(), 1e-6);
 
 		obs = new TIntIntHashMap();
 
 		obs.put(B, 0);
-		q = inf.query(A, obs);
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.8, .2}, q.getData(), 1e-6);
 
 		obs.put(B, 1);
-		q = inf.query(A, obs);
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.2, .8}, q.getData(), 1e-6);
 
 		obs.put(C, 1);
 		obs.put(B, 1);
-		q = inf.query(A, obs);
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.2727, .7273}, q.getData(), 1e-3);
 
 		obs.put(C, 0);
 		obs.put(B, 1);
-		q = inf.query(A, obs);
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.1429, .8571}, q.getData(), 1e-3);
 
 		obs.put(C, 1);
 		obs.put(B, 0);
-		q = inf.query(A, obs);
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.8571, .1429}, q.getData(), 1e-3);
 
 		obs.put(C, 0);
 		obs.put(B, 0);
-		q = inf.query(A, obs);
+		q = inf.query(bn, obs, A);
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.7272, .2728}, q.getData(), 1e-3);
 	}
@@ -264,11 +266,12 @@ public class BeliefPropagationTest {
 		assertEquals(res1, res);
 
 		// computation using Belief Propagation
-		BeliefPropagation<BayesianFactor> inf = new BeliefPropagation<>(bn);
+		BeliefPropagation<BayesianFactor> inf = new BeliefPropagation<>();
+		inf.setModel(bn);
 
 		TIntIntMap obs = new TIntIntHashMap();
 		obs.put(D, 0);
-		final BayesianFactor q = inf.query(A, obs);
+		final BayesianFactor q = inf.query(bn, obs, A);
 		System.out.println("query=" + q);
 
 		assertEquals(res, q);
@@ -278,7 +281,8 @@ public class BeliefPropagationTest {
 	public void testAlloyNumberOfFactorsPerClique() throws IOException {
 		final BayesianNetwork network = BIFParser.read("models/bif/alloy.bif").network;
 
-		final BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(network);
+		final BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>();
+		bp.setModel(network);
 
 		final long factors = bp.potentialsPerClique.values().stream()
 				.mapToLong(Set::size)

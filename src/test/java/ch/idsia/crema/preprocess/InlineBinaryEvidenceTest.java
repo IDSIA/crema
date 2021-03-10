@@ -1,9 +1,9 @@
 package ch.idsia.crema.preprocess;
 
-import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.MixedModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.Test;
@@ -15,7 +15,7 @@ public class InlineBinaryEvidenceTest {
 	@Test
 	public void test1_0() {
 		for (int i = 0; i < 3; ++i) {
-			DAGModel<GenericFactor> model = new DAGModel<>();
+			DAGModel<IntervalFactor> model = new DAGModel<>();
 
 			int n0 = model.addVariable(3);
 
@@ -26,11 +26,13 @@ public class InlineBinaryEvidenceTest {
 			TIntIntMap evidence = new TIntIntHashMap();
 			evidence.put(n0, i);
 
-			BinarizeEvidence bin = new BinarizeEvidence();
-			model = bin.execute(model, evidence, 2, false);
-			int ev = bin.getLeafDummy();
+			BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
+			bin.setSize(2);
+			bin.setLog(false);
+			MixedModel mixedModel = bin.execute(model, evidence);
+			int ev = bin.getEvidenceNode();
 
-			BayesianFactor f = (BayesianFactor) model.getFactor(ev);
+			BayesianFactor f = mixedModel.getConvertedFactor(BayesianFactor.class, ev);
 
 			assertTrue(ev > n0);
 			assertArrayEquals(new int[]{n0, ev}, f.getDomain().getVariables());
@@ -45,7 +47,7 @@ public class InlineBinaryEvidenceTest {
 
 	@Test
 	public void test2() {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		DAGModel<IntervalFactor> model = new DAGModel<>();
 
 		TIntIntMap evidence = new TIntIntHashMap();
 
@@ -59,11 +61,13 @@ public class InlineBinaryEvidenceTest {
 			evidence.put(n, 0);
 		}
 
-		BinarizeEvidence bin = new BinarizeEvidence();
-		model = bin.execute(model, evidence, 2, false);
-		int ev = bin.getLeafDummy();
+		BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
+		bin.setSize(2);
+		bin.setLog(false);
+		MixedModel mixedModel = bin.execute(model, evidence);
+		int ev = bin.getEvidenceNode();
 
-		BayesianFactor f = (BayesianFactor) model.getFactor(ev);
+		BayesianFactor f = mixedModel.getConvertedFactor(BayesianFactor.class, ev);
 
 		assertEquals(2, ev);
 
@@ -75,7 +79,7 @@ public class InlineBinaryEvidenceTest {
 	 */
 	@Test
 	public void test2_1() {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		DAGModel<IntervalFactor> model = new DAGModel<>();
 
 		TIntIntMap evidence = new TIntIntHashMap();
 
@@ -89,11 +93,13 @@ public class InlineBinaryEvidenceTest {
 			evidence.put(n, 1);
 		}
 
-		BinarizeEvidence bin = new BinarizeEvidence();
-		model = bin.execute(model, evidence, 2, false);
-		int ev = bin.getLeafDummy();
+		BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
+		bin.setSize(2);
+		bin.setLog(false);
+		MixedModel mixedModel = bin.execute(model, evidence);
+		int ev = bin.getEvidenceNode();
 
-		BayesianFactor f = (BayesianFactor) model.getFactor(ev);
+		BayesianFactor f = mixedModel.getConvertedFactor(BayesianFactor.class, ev);
 
 		assertEquals(2, ev);
 
@@ -105,7 +111,7 @@ public class InlineBinaryEvidenceTest {
 	 */
 	@Test
 	public void test3() {
-		DAGModel<GenericFactor> model = new DAGModel<>();
+		DAGModel<IntervalFactor> model = new DAGModel<>();
 
 		TIntIntMap evidence = new TIntIntHashMap();
 
@@ -119,17 +125,19 @@ public class InlineBinaryEvidenceTest {
 			evidence.put(n, 0);
 		}
 
-		BinarizeEvidence bin = new BinarizeEvidence();
-		model = bin.execute(model, evidence, 2, false);
-		int ev = bin.getLeafDummy();
+		BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
+		bin.setSize(2);
+		bin.setLog(false);
+		MixedModel mixedModel = bin.execute(model, evidence);
+		int ev = bin.getEvidenceNode();
 
-		BayesianFactor f = (BayesianFactor) model.getFactor(ev);
+		BayesianFactor f = mixedModel.getConvertedFactor(BayesianFactor.class, ev);
 
 		assertEquals(4, ev);
 
 		assertArrayEquals(new double[]{1, 1, 0, 1, 0, 0, 1, 0}, f.getData(), 0);
 
-		BayesianFactor f2 = (BayesianFactor) model.getFactor(ev - 1);
+		BayesianFactor f2 = mixedModel.getConvertedFactor(BayesianFactor.class, ev - 1);
 		assertArrayEquals(new double[]{0, 1, 1, 1, 1, 0, 0, 0}, f2.getData(), 0);
 	}
 

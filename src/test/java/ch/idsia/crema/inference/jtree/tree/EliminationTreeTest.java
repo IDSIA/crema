@@ -89,6 +89,7 @@ public class EliminationTreeTest {
 	}
 
 	private BayesianFactor factorElimination(EliminationTree TA, int Q) {
+		// TODO: see TODO in FactorElimination2
 		FactorElimination2 fe2A = new FactorElimination2();
 		fe2A.setEliminationTree(TA, Q);
 		return fe2A.FE2(Q);

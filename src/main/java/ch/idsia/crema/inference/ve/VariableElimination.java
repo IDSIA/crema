@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.ve;
 import ch.idsia.crema.factor.FactorUtil;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.Inference;
+import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.order.OrderingStrategy;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.math.Operation;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class VariableElimination<F extends GenericFactor> implements Inference<GraphicalModel<F>, F> {
+public class VariableElimination<F extends GenericFactor> implements InferenceJoined<GraphicalModel<F>, F> {
 
 	private int[] sequence;
 
@@ -44,7 +44,7 @@ public class VariableElimination<F extends GenericFactor> implements Inference<G
 	 * factors and the elimination order
 	 *
 	 * @param ops
-	 * @param sequence
+	 * @param sequence the elimination sequence to use
 	 */
 	public VariableElimination(Operation<F> ops, int[] sequence) {
 		setSequence(sequence);
@@ -57,7 +57,7 @@ public class VariableElimination<F extends GenericFactor> implements Inference<G
 	 * <p>Elimination sequencies can be generated with an {@link OrderingStrategy}.
 	 * </p>
 	 *
-	 * @param sequence
+	 * @param sequence the elimination sequence to use
 	 */
 	public void setSequence(int[] sequence) {
 		this.sequence = sequence;
@@ -67,7 +67,7 @@ public class VariableElimination<F extends GenericFactor> implements Inference<G
 	 * Populate the problem with the factors to be considered.
 	 * Collection version.
 	 *
-	 * @param factors
+	 * @param factors a collection of factors
 	 */
 	public void setFactors(Collection<? extends F> factors) {
 		this.factors = new ArrayList<>(factors);
@@ -77,7 +77,7 @@ public class VariableElimination<F extends GenericFactor> implements Inference<G
 	 * Populate the problem with the factors to be considered.
 	 * Array version.
 	 *
-	 * @param factors
+	 * @param factors an array of factors
 	 */
 	public void setFactors(F[] factors) {
 		this.factors = Arrays.asList(factors);
@@ -87,7 +87,7 @@ public class VariableElimination<F extends GenericFactor> implements Inference<G
 	 * Fix some evidence. The provided argument is a map of variable - state
 	 * associations.
 	 *
-	 * @param evidence
+	 * @param evidence the observed variable as a map of variable-states
 	 */
 	public void setEvidence(TIntIntMap evidence) {
 		this.evidence = evidence;
@@ -98,7 +98,7 @@ public class VariableElimination<F extends GenericFactor> implements Inference<G
 	 * Specify if the resulting value should be normalized.
 	 * Will result in asking K(Q|e) vs K(Qe)
 	 *
-	 * @param norm
+	 * @param norm a boolean
 	 */
 	public void setNormalize(boolean norm) {
 		normalize = norm;
@@ -111,8 +111,8 @@ public class VariableElimination<F extends GenericFactor> implements Inference<G
 	 * <p>
 	 * The elimination sequence is to be specified via {@link VariableElimination#setSequence(int[])}.
 	 *
-	 * @param query
-	 * @return
+	 * @param query variables to use as query
+	 * @return the joint marginal or posterior probability of the queried variables
 	 */
 	public F run(int... query) {
 		// variables should be sorted

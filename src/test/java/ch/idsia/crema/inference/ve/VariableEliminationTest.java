@@ -7,7 +7,6 @@ import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.factor.symbolic.serialize.MOD;
-import ch.idsia.crema.factor.symbolic.serialize.NLSerializer;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.math3.util.MathArrays;
 import org.junit.Test;
@@ -49,7 +48,6 @@ public class VariableEliminationTest {
 
 			BayesianFactor fa = ve.run(0);
 			assertArrayEquals(new double[]{0.4678, 0.5322}, fa.getData(), 0.0000000000001);
-
 		}
 	}
 

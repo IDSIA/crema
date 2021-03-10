@@ -39,12 +39,12 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 	private long maxMem = Long.MAX_VALUE;
 
 	/**
-	 * Run the algorithm round the factors to the specified tollerance.
+	 * Run the algorithm round the factors to the specified tolerance.
 	 * 
-	 * @param tollerance
+	 * @param tolerance the specified tolerance value
 	 */
-	public SePolyVE(double tollerance) {
-		algebra = new DefaultSeparateAlgebra(tollerance);
+	public SePolyVE(double tolerance) {
+		algebra = new DefaultSeparateAlgebra(tolerance);
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 	 * @param params
 	 *            a map with initialization options (can be NULL)
 	 */
-	public void init(Map<String, ? extends Object> params) {
+	public void init(Map<String, ?> params) {
 		if (params != null) {
 			if (params.containsKey(MAX_MEM_BYTE)) {
 				maxMem = Utils.tryParse(params.get(MAX_MEM_BYTE), maxMem);
@@ -94,10 +94,10 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 
 	/**
 	 * Compute the marginal or posterior probability of query given evidence in the model.
-	 * 
-	 * @param model
-	 * @param query
-	 * @param evidence
+	 *
+	 * @param model the model to use for inference
+	 * @param query    the variable that will be queried
+	 * @param evidence the observed variable as a map of variable-states
 	 * @exception MaxTimeException - when maximum execution time is reached 
 	 * @exception MaxMemoryException - when maximum memory usage is reached
 	 * @return the posterior or marginal extensive {@link VertexFactor} 

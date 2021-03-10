@@ -11,7 +11,8 @@ import gnu.trove.map.TIntIntMap;
  *
  * @author huber
  */
-public class CutObserved<F extends Factor<F>> implements Transformer<GraphicalModel<F>> {
+public class CutObserved<F extends Factor<F>> implements TransformerEvidence<F, GraphicalModel<F>>,
+		PreprocessorEvidence<F, GraphicalModel<F>> {
 
 	/**
 	 * Execute the operation on the provided network.

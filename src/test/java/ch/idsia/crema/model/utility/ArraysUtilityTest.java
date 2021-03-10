@@ -8,7 +8,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class ArraysUtilityTest {
 

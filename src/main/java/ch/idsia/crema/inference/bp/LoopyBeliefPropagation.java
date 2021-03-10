@@ -2,9 +2,11 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.Inference;
+import ch.idsia.crema.inference.InferenceCascade;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
@@ -18,7 +20,7 @@ import java.util.stream.IntStream;
  * Project: crema
  * Date:    01.03.2021 17:35
  */
-public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
+public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F>, InferenceCascade<DAGModel<F>, F> {
 
 	protected static class Neighbour {
 		final Integer i;
@@ -42,7 +44,11 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	protected final Map<ImmutablePair<Integer, Integer>, F> messages = new HashMap<>();
 	protected final Map<ImmutablePair<Integer, Integer>, Neighbour> neighbours = new HashMap<>();
 
-	protected void setModel(DAGModel<F> model) {
+	private TIntIntMap evidence = new TIntIntHashMap();
+
+	@Override
+	public void setModel(DAGModel<F> model) {
+		// TODO check if this work has already been done!
 		this.model = model;
 		this.network = model.getNetwork();
 
@@ -76,10 +82,23 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		}
 	}
 
+	// TODO: perform pre-processing!
+	@Override
+	public void setModel(DAGModel<F> model, TIntIntMap evidence) {
+		setEvidence(evidence);
+		setModel(model);
+	}
+
+	// TODO: perform pre-processing!
+	@Override
+	public void setEvidence(TIntIntMap evidence) {
+		this.evidence = evidence;
+	}
+
 	/**
-	 * @param i     source node
-	 * @param j     destination node
-	 * @param vars  variables shared between source and destination node
+	 * @param i    source node
+	 * @param j    destination node
+	 * @param vars variables shared between source and destination node
 	 */
 	private void addMailbox(Integer i, Integer j, int[] vars) {
 		final Neighbour nij = new Neighbour(i, j, vars);
@@ -111,12 +130,13 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	}
 
 	/**
-	 * This method can be used to run multiple query with the same model structure
-	 * @param evidence known evidence on the model
+	 * This method can be used to run multiple query with the same model structure.
+	 *
 	 * @param variable variable to query
 	 * @return the marginal probability of the given query
 	 */
-	public F query(TIntIntMap evidence, int variable) {
+	@Override
+	public F query(int variable) {
 		final F v = model.getFactor(variable);
 
 		if (evidence.containsKey(variable)) {
@@ -198,9 +218,22 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		return f.marginalize(ints).normalize();
 	}
 
+	/**
+	 * @param model    the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the marginal probability of the given query
+	 */
 	@Override
 	public F query(DAGModel<F> model, TIntIntMap evidence, int query) {
 		setModel(model);
-		return query(evidence, query);
+		setEvidence(evidence);
+		return query(query);
 	}
+
+	@Override
+	public F query(DAGModel<F> model, int query) {
+		return query(model, new TIntIntHashMap(), query);
+	}
+
 }

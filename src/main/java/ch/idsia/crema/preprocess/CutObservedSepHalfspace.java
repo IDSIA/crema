@@ -11,8 +11,8 @@ import gnu.trove.map.TIntIntMap;
  *
  * @author rcabanas
  */
-public class CutObservedSepHalfspace implements Transformer<GraphicalModel<SeparateHalfspaceFactor>> {
-
+public class CutObservedSepHalfspace implements TransformerEvidence<SeparateHalfspaceFactor, GraphicalModel<SeparateHalfspaceFactor>>,
+		PreprocessorEvidence<SeparateHalfspaceFactor, GraphicalModel<SeparateHalfspaceFactor>> {
 	/**
 	 * Execute the operation on the provided network.
 	 * You should not use the inplace method! it is bad!

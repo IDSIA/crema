@@ -7,7 +7,7 @@ import ch.idsia.crema.factor.convert.VertexToInterval;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
-import ch.idsia.crema.inference.approxlp.Inference;
+import ch.idsia.crema.inference.approxlp.ApproxLP1;
 import ch.idsia.crema.inference.sepolyve.MaxMemoryException;
 import ch.idsia.crema.inference.sepolyve.MaxTimeException;
 import ch.idsia.crema.inference.sepolyve.NodeInfo;
@@ -88,7 +88,7 @@ public class RandomNetworks {
 		String error = "";
 		VertexFactor marg = null;
 		try {
-			marg = ve.run(vmodel2, query, evidence);
+			marg = ve.query(vmodel2, evidence, query);
 			marg = marg.normalize();
 		} catch (MaxTimeException mte) {
 			error = "-1";
@@ -189,7 +189,7 @@ public class RandomNetworks {
 
 		DAGModel<GenericFactor> imodel = vmodel2.convert(new VertexToInterval()).convert((x, v) -> x);
 
-		Inference<VertexFactor> approxlp = new Inference<>();
+		ApproxLP1<GenericFactor> approxlp = new ApproxLP1<>();
 		approxlp.initialize(new HashMap<>() {
 			{
 				put(ISearch.MAX_TIME, state_time);
@@ -200,10 +200,13 @@ public class RandomNetworks {
 
 		try {
 			if (evidence != null) {
-				BinarizeEvidence bin = new BinarizeEvidence();
+				BinarizeEvidence<GenericFactor> bin = new BinarizeEvidence<>();
+				bin.setSize(2);
+				bin.setLog(false);
 
-				GraphicalModel<GenericFactor> gmodel = bin.execute(imodel, evidence, 2, false);
-				interval = approxlp.query(gmodel, query, bin.getLeafDummy());
+				GraphicalModel<GenericFactor> gmodel = bin.execute(imodel, evidence);
+				approxlp.setEvidenceNode(bin.getEvidenceNode());
+				interval = approxlp.query(gmodel, query);
 			} else {
 				interval = approxlp.query(imodel, query);
 			}
@@ -235,10 +238,11 @@ public class RandomNetworks {
 	}
 
 	public static void processLeaf(String modelname, DAGModel<VertexFactor> vmodel, int query,
-	                                     FileWriter ve_output, FileWriter summary_output, FileWriter stats_output) throws IOException {
+	                               FileWriter ve_output, FileWriter summary_output, FileWriter stats_output) throws IOException {
 		System.out.println("K_VE(" + query + ")");
 		// remove disconnected stuff
-		DAGModel<VertexFactor> vmodel2 = new RemoveBarren().execute(vmodel, query);
+		final RemoveBarren<VertexFactor> removeBarren = new RemoveBarren<>();
+		DAGModel<VertexFactor> vmodel2 = (DAGModel<VertexFactor>) removeBarren.execute(vmodel, new TIntIntHashMap() , query);
 
 		// run polyve
 		long duration = processSePolyVE(modelname, vmodel2, query, null, ve_output, summary_output, stats_output);
@@ -257,8 +261,8 @@ public class RandomNetworks {
 			}
 		}
 
-		RemoveBarren rb = new RemoveBarren();
-		DAGModel<VertexFactor> vmodel2 = rb.execute(vmodel, query, evidence);
+		RemoveBarren<VertexFactor> rb = new RemoveBarren<>();
+		DAGModel<VertexFactor> vmodel2 = (DAGModel<VertexFactor>) rb.execute(vmodel, evidence, query);
 		rb.filter(evidence); // remove barren from evidence (not really needed)
 		System.out.println("K_VE_R(" + query + ")");
 
@@ -292,6 +296,7 @@ public class RandomNetworks {
 	 * TODO: eventualmente run ApproxLP con un min time giusto per ottenere qualcosa quando seployve era super veloce
 	 * TODO ev salvare in CSV i vertici dei credal set usati nella benchamrk
 	 */
+
 	/**
 	 * tipo: node name;conditioning index;vertex data(values separated by
 	 * different char)?
@@ -326,7 +331,9 @@ public class RandomNetworks {
 			DAGModel<VertexFactor> vmodel = model.convert(RandomNetworks::converti);
 			serialize(vmodel, path + prefix + sample + "-model.csv");
 
-			vmodel = (DAGModel<VertexFactor>) new LimitVertices().apply(vmodel, 10);
+			final LimitVertices limitVertices = new LimitVertices();
+			limitVertices.setMax(10);
+			vmodel = (DAGModel<VertexFactor>) limitVertices.execute(vmodel);
 			System.out.println(new DotSerialize().run(vmodel));
 
 

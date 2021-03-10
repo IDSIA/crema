@@ -11,26 +11,26 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
 
-public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> implements Inference<M, VertexFactor> {
+public class CredalVariableElimination implements Inference<GraphicalModel<VertexFactor>, VertexFactor> {
 
-	private M model;
+	private GraphicalModel<VertexFactor> model;
 
 	/**
 	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
 	 */
 	@Deprecated
-	public void setModel(M model) {
+	public void setModel(GraphicalModel<VertexFactor> model) {
 		this.model = model;
 	}
 
-	public M getInferenceModel(M model, TIntIntMap evidence, int target) {
-		CutObserved cutObserved = new CutObserved();
+	public GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
+		CutObserved<VertexFactor> cutObserved = new CutObserved<>();
 		// run making a copy of the model
-		M infModel = cutObserved.execute(model, evidence);
+		GraphicalModel<VertexFactor> infModel = cutObserved.execute(model, evidence);
 
-		RemoveBarren removeBarren = new RemoveBarren();
+		RemoveBarren<VertexFactor> removeBarren = new RemoveBarren<>();
 		// no more need to make a copy of the model
-		removeBarren.executeInPlace(infModel, target, evidence);
+		removeBarren.executeInPlace(infModel, evidence, target);
 
 		return infModel;
 	}
@@ -46,13 +46,13 @@ public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> i
 	/**
 	 * Query K(target|evidence) in the model provided to the constructor
 	 *
-	 * @param query   int the target variable
+	 * @param query    int the target variable
 	 * @param evidence {@link TIntIntMap} a map of evidence in the form variable-state
 	 * @return
 	 */
 	@Override
-	public VertexFactor query(M model, TIntIntMap evidence, int query) {
-		M infModel = getInferenceModel(model, evidence, query);
+	public VertexFactor query(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int query) {
+		GraphicalModel<VertexFactor> infModel = getInferenceModel(model, evidence, query);
 
 		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
 

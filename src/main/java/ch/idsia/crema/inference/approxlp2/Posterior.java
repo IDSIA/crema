@@ -30,7 +30,7 @@ public class Posterior extends Manager {
 	protected LinearFractionalSolver createSolver(int free) {
 		FractionalSolver simplex = new FractionalSolver();
 		GenericFactor f = model.getFactor(free);
-		ExtensiveLinearFactor<?> factor = null;
+		ExtensiveLinearFactor<?> factor;
 		if (f instanceof SeparateLinearFactor) {
 			factor = sep2ext.apply((SeparateLinearFactor<?>) f);
 		} else if (f instanceof ExtensiveLinearFactor) {

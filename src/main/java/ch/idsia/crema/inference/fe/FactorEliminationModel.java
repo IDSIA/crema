@@ -2,7 +2,7 @@ package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.Inference;
-import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
@@ -18,7 +18,7 @@ import static ch.idsia.crema.inference.fe.FactorEliminationUtils.project;
  * Date:    06.02.2018 09:37
  */
 // TODO: this is the main FactorElimination since it works with a GraphicalModel
-public class FactorEliminationModel implements Inference<BayesianNetwork, BayesianFactor> {
+public class FactorEliminationModel implements Inference<DAGModel<BayesianFactor>, BayesianFactor> {
 
 	/**
 	 * Algorithm 9 from "Modeling and Reasoning with BN", Dawiche, p.153
@@ -28,7 +28,7 @@ public class FactorEliminationModel implements Inference<BayesianNetwork, Bayesi
 	 * @return the prior marginal on the query variable
 	 */
 	@Override
-	public BayesianFactor query(BayesianNetwork model, int query) {
+	public BayesianFactor query(DAGModel<BayesianFactor> model, int query) {
 		// CPTs of network N
 		List<BayesianFactor> S = new ArrayList<>(model.getFactors());
 
@@ -114,7 +114,7 @@ public class FactorEliminationModel implements Inference<BayesianNetwork, Bayesi
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int query) {
+	public BayesianFactor query(DAGModel<BayesianFactor> model, TIntIntMap evidence, int query) {
 		throw new IllegalArgumentException(this.getClass().getName() + " doesn't support evidence");
 	}
 }

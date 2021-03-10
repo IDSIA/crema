@@ -1,21 +1,18 @@
 package ch.idsia.crema.factor.convert;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.LinearConstraintSet;
-import org.apache.commons.math3.optim.linear.Relationship;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.junit.Test;
-
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.ExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.solver.commons.Simplex;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.Relationship;
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.junit.Test;
+
+import java.util.Collection;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class SeparateLinearToExtensiveHalfspace {
