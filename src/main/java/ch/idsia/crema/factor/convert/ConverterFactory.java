@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor.convert;
 
-import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.GenericFactor;
 import org.apache.commons.math3.util.Pair;
 
@@ -46,21 +46,25 @@ public class ConverterFactory {
 	}
 
 	/**
-	 * @param source
-	 * @param target
+	 * @param source source type class
+	 * @param target target type class
 	 * @param <S>    source type
 	 * @param <T>    target type
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	protected <S extends GenericFactor, T extends GenericFactor> Converter<S, T> getConverter(Class<S> source, Class<T> target) {
-		Pair<Class<S>, Class<T>> map = new Pair<>(source, target);
+		final Pair<Class<S>, Class<T>> map = new Pair<>(source, target);
+
+		if (!converters.containsKey(map))
+			throw new UnsupportedOperationException("Could not find converter from " + source.getName() + " to " + target.getName());
+
 		return (Converter<S, T>) converters.get(map);
 	}
 
 	/**
-	 * @param source
-	 * @param target
+	 * @param source source type class
+	 * @param target target type class
 	 * @param var
 	 * @param <S>    source type
 	 * @param <T>    target type
