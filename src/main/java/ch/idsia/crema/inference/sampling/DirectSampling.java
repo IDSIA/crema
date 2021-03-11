@@ -116,9 +116,12 @@ public class DirectSampling extends StochasticSampling implements InferenceJoine
 				.orElseThrow(IllegalStateException::new);
 	}
 
+	/**
+	 * @throws UnsupportedOperationException since this sampling does not work with evidence
+	 */
 	@Override
 	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int... queries) {
-		throw new IllegalArgumentException("Inference with evidence is not allowed!");
+		throw new UnsupportedOperationException("Inference with evidence is not allowed!");
 	}
 
 	@Override
@@ -128,8 +131,11 @@ public class DirectSampling extends StochasticSampling implements InferenceJoine
 				.orElseThrow(IllegalStateException::new);
 	}
 
+	/**
+	 * @throws UnsupportedOperationException since this sampling does not work with evidence
+	 */
 	@Override
 	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int query) {
-		throw new IllegalArgumentException("Inference with evidence is not allowed!");
+		throw new UnsupportedOperationException("Inference with evidence is not allowed!");
 	}
 }

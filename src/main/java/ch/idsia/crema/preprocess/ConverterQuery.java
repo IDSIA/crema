@@ -9,10 +9,10 @@ import gnu.trove.map.TIntIntMap;
  * Project: crema
  * Date:    09.03.2021 16:29
  * <p>
- * A {@link TransformerQuery} is an algorithm for pre-processing a {@link GraphicalModel} and produces a new different
+ * A {@link ConverterQuery} is an algorithm for pre-processing a {@link GraphicalModel} and produces a new different
  * {@link GraphicalModel} that can be of a complete different type.
  */
-public interface TransformerQuery<F extends GenericFactor, M extends GraphicalModel<F>> extends ConverterQuery<F, F, M, M> {
+public interface ConverterQuery<F extends GenericFactor, G extends GenericFactor, IN extends GraphicalModel<F>, OUT extends GraphicalModel<G>> extends Converter<F, G, IN, OUT> {
 
 	/**
 	 * Perform a pre-processing operation and return a new model with the modifications.
@@ -22,8 +22,7 @@ public interface TransformerQuery<F extends GenericFactor, M extends GraphicalMo
 	 * @param query    the variable that will be queried
 	 * @return a new modified model
 	 */
-	@Override
-	default M execute(M model, TIntIntMap evidence, int query) {
+	default OUT execute(IN model, TIntIntMap evidence, int query) {
 		return execute(model, evidence, new int[]{query});
 	}
 
@@ -35,7 +34,6 @@ public interface TransformerQuery<F extends GenericFactor, M extends GraphicalMo
 	 * @param query    the variables that will be queried
 	 * @return a new modified model
 	 */
-	@Override
-	M execute(M model, TIntIntMap evidence, int... query);
+	OUT execute(IN model, TIntIntMap evidence, int... query);
 
 }

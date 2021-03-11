@@ -8,10 +8,10 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
  * Project: crema
  * Date:    09.03.2021 16:29
  * <p>
- * A {@link TransformerModel} is an algorithm for pre-processing a {@link GraphicalModel} and produces a new different
+ * A {@link ConverterModel} is an algorithm for pre-processing a {@link GraphicalModel} and produces a new different
  * {@link GraphicalModel} that can be of a complete different type.
  */
-public interface TransformerModel<F extends GenericFactor, M extends GraphicalModel<F>> extends ConverterModel<F, F, M, M> {
+public interface ConverterModel<F extends GenericFactor, G extends GenericFactor, IN extends GraphicalModel<F>, OUT extends GraphicalModel<G>> extends Converter<F, G, IN, OUT> {
 
 	/**
 	 * Perform a pre-processing operation and return a new model with the modifications.
@@ -19,7 +19,6 @@ public interface TransformerModel<F extends GenericFactor, M extends GraphicalMo
 	 * @param model the model to be processed
 	 * @return a new modified model
 	 */
-	@Override
-	M execute(M model);
+	OUT execute(IN model);
 
 }
