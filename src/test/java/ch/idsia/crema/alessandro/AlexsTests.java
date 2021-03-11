@@ -11,14 +11,14 @@ import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
 import ch.idsia.crema.inference.approxlp.ApproxLP1;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.search.ISearch;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-@Ignore
+@Disabled
 public class AlexsTests {
 
 	public static void main(String[] args) {
@@ -71,7 +71,6 @@ public class AlexsTests {
 */
 
 	@Test
-
 	public void twoNodesTernary() {
 		DAGModel<GenericFactor> model = new DAGModel<>();
 		int varA = model.addVariable(3); // Variables

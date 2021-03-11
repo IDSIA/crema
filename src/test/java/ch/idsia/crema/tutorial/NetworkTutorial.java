@@ -5,16 +5,16 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class NetworkTutorial {
 
 	@Test
 	public void createSparseNetwork() {
 		// [creating-sparse-model]
-        DAGModel<BayesianFactor> model = new DAGModel<>();
+		DAGModel<BayesianFactor> model = new DAGModel<>();
 
 		model.addVariable(2); // C
 		model.addVariable(3); // A

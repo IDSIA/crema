@@ -5,13 +5,10 @@ import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.io.bif.BIFParser;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.jgrapht.graph.DefaultEdge;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -52,6 +49,8 @@ public class LoopyBeliefPropagationTest {
 		LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
 		lbp.setIterations(1);
 
+		/*
+		TODO: we are using pre-processing so these checks are not valid anymore
 		for (int i : model.getVariables()) {
 			for (int j : model.getVariables()) {
 				if (i == j) continue;
@@ -65,9 +64,10 @@ public class LoopyBeliefPropagationTest {
 			}
 		}
 
-		BayesianFactor factor = lbp.query(model, A0);
-
 		assertEquals(lbp.messages.size(), lbp.neighbours.size());
+		 */
+
+		BayesianFactor factor = lbp.query(model, A0);
 		assertEquals(factors[A0], factor);
 	}
 

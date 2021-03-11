@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor.convert;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Author:  Claudio "Dna" Bonesana

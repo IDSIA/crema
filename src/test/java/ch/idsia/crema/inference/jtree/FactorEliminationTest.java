@@ -2,10 +2,11 @@ package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.fe.EliminationTree;
+import ch.idsia.crema.inference.fe.FactorElimination;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -19,7 +20,7 @@ public class FactorEliminationTest {
 	TIntIntHashMap evidence;
 	int Q;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		BayesianNetworkContainer bn = BayesianNetworkContainer.mix5Variables();
 		BayesianFactor[] f = bn.factors;
@@ -94,13 +95,13 @@ public class FactorEliminationTest {
 //		T.addEdge(K, G);
 //	}
 
-	@Ignore // TODO: see TODO in FactorElimination class
+	@Disabled // TODO: see TODO in FactorElimination class
 	@Test
 	public void testMessagePassing() {
-//		FactorElimination fe = new FactorElimination();
-//		fe.setEvidence(evidence);
-//		fe.setTree(T);
-//		fe.setRoot(Q);
-//		fe.query(Q);
+		FactorElimination fe = new FactorElimination();
+		fe.setEvidence(evidence);
+		fe.setTree(T);
+		fe.setRoot(Q);
+		fe.FE(Q);
 	}
 }

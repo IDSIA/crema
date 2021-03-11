@@ -1,14 +1,15 @@
 package ch.idsia.crema.inference.bp.cliques;
 
 import ch.idsia.crema.inference.bp.triangulation.TriangulatedGraph;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -19,7 +20,7 @@ public class FindCliquesTest {
 	TriangulatedGraph graph;
 	int[] eliminationSequence;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		// source: Jensen, p. 123, Fig 4.14
 		graph = new TriangulatedGraph();

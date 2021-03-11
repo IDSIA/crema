@@ -9,12 +9,12 @@ import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.factor.symbolic.serialize.MOD;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.math3.util.MathArrays;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class VariableEliminationTest {
 
@@ -102,7 +102,7 @@ public class VariableEliminationTest {
 		ve.setFactors(Collections.singletonList(f));
 
 		BayesianFactor fa = ve.run(3);
-		assertArrayEquals(new double[]{0.3, 0.7}, fa.getData(), 0);
+		assertArrayEquals(new double[]{0.3, 0.7}, fa.getData(), 1e-9);
 	}
 
 	/**
@@ -185,6 +185,6 @@ public class VariableEliminationTest {
 
 		SymbolicFactor f = ve.run(1);
 		MOD serial = new MOD();
-		System.out.println(serial.serialize(f,1,true));
+		System.out.println(serial.serialize(f, 1, true));
 	}
 }

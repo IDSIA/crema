@@ -12,11 +12,11 @@ import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class PosteriorTest {
 
@@ -44,9 +44,7 @@ public class PosteriorTest {
 		model.setFactor(X0, fx0);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>();
-		be.setSize(2);
-		be.setLog(false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
 		GraphicalModel<GenericFactor> bmodel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
 
@@ -99,9 +97,7 @@ public class PosteriorTest {
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>();
-		be.setSize(2);
-		be.setLog(false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
 
@@ -136,9 +132,7 @@ public class PosteriorTest {
 		model.setFactor(X0, fx0);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>();
-		be.setSize(2);
-		be.setLog(false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
 
@@ -178,9 +172,7 @@ public class PosteriorTest {
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>();
-		be.setSize(2);
-		be.setLog(false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
 
@@ -226,9 +218,7 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>();
-		be.setSize(2);
-		be.setLog(false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
 		MixedModel mixedModel = be.execute(model, evidence);
 		int ev = be.getEvidenceNode();
 
@@ -247,7 +237,7 @@ public class PosteriorTest {
 
 	@Test
 	public void testDiamondBayesianPosteriorQuery3() {
-		GraphicalModel<GenericFactor> model = new DAGModel<>();
+		MixedModel model = new MixedModel();
 
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(3);
@@ -280,16 +270,14 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>();
-		be.setSize(2);
-		be.setLog(false);
-		MixedModel mixedModel = be.execute(model, evidence);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		model = be.execute(model, evidence);
 		int ev = be.getEvidenceNode();
 
 		try {
 			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
 			inference.setEvidenceNode(ev);
-			IntervalFactor factor = inference.query(mixedModel, n3);
+			IntervalFactor factor = inference.query(model, n3);
 
 			assertArrayEquals(new double[]{0.22050585639124004, 0.6383476227590834}, factor.getLower(), 0.001);
 			assertArrayEquals(new double[]{0.3616523772409166, 0.7794941436087599}, factor.getUpper(), 0.001);
@@ -299,14 +287,13 @@ public class PosteriorTest {
 		}
 
 		RemoveBarren<GenericFactor> barren = new RemoveBarren<>();
-		model = barren.execute(model, ObservationBuilder.vars(ev).states(1), n1);
+		GraphicalModel<GenericFactor> barrenModel = barren.execute(model, ObservationBuilder.vars(ev).states(1), n1);
 
 		try {
 			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
 			inference.setEvidenceNode(ev);
-
 			// no need to update n1 as we use the sparse model
-			IntervalFactor factor = inference.query(model, n1);
+			IntervalFactor factor = inference.query(barrenModel, n1);
 
 			assertArrayEquals(new double[]{0.24827348066293425, 0.20153743315534500, 0.3076654443861050}, factor.getLower(), 0.001);
 			assertArrayEquals(new double[]{0.48011911017679076, 0.36128775834693705, 0.5276243093920449}, factor.getUpper(), 0.001);
@@ -367,9 +354,7 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>();
-		be.setSize(2);
-		be.setLog(false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
 		MixedModel mixedModel = be.execute(model, evidence);
 		int ev = be.getEvidenceNode();
 
@@ -387,12 +372,12 @@ public class PosteriorTest {
 
 		try {
 			RemoveBarren<GenericFactor> barren = new RemoveBarren<>();
-			barren.execute(model, ObservationBuilder.vars(ev).states(1), n1);
+			GraphicalModel<GenericFactor> barrenModel = barren.execute(mixedModel, ObservationBuilder.vars(ev).states(1), n1);
 
 			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
 			inference.setEvidenceNode(ev);
 			// no need to update n1 as we use the sparse model
-			IntervalFactor factor = inference.query(model, n1);
+			IntervalFactor factor = inference.query(barrenModel, n1);
 
 			assertArrayEquals(new double[]{0.23845184770432107, 0.1682985757886567, 0.28836654178948645}, factor.getLower(), 0.001);
 			assertArrayEquals(new double[]{0.5354735898541261, 0.3697586787464407, 0.5279955207164615}, factor.getUpper(), 0.001);
@@ -404,12 +389,10 @@ public class PosteriorTest {
 
 	/**
 	 * Network with unconnected parts will work after barren
-	 *
-	 * @
 	 */
 	@Test()
 	public void testLeftOver() {
-		GraphicalModel<GenericFactor> model = new DAGModel<>();
+		MixedModel model = new MixedModel();
 		int n = model.addVariable(3);
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(3);
@@ -471,18 +454,16 @@ public class PosteriorTest {
 		evidence.put(n0, 0);
 
 		RemoveBarren<GenericFactor> barren = new RemoveBarren<>();
-		model = barren.execute(model, evidence, n3);
+		final GraphicalModel<GenericFactor> modelBarren = barren.execute(model, evidence, n3);
 
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>();
-		be.setSize(2);
-		be.setLog(false);
-		MixedModel mixedModel = be.execute(model, evidence);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		model = be.execute(modelBarren, evidence);
 		int ev = be.getEvidenceNode();
 
 		try {
 			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
 			inference.setEvidenceNode(ev);
-			IntervalFactor factor = inference.query(mixedModel, n3);
+			IntervalFactor factor = inference.query(model, n3);
 
 			assertArrayEquals(new double[]{0.09702615320599722, 0.5996234703482123}, factor.getLower(), 0.001);
 			assertArrayEquals(new double[]{0.4003765296517877, 0.9029738467940027}, factor.getUpper(), 0.001);

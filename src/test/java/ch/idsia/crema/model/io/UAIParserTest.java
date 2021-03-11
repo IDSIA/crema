@@ -58,7 +58,7 @@ public class UAIParserTest {
 	@Test
 	void checkBayesNormalized() {
 		BayesianNetwork bnet = (BayesianNetwork) models.get("simple-bayes.uai");
-		Assertions.assertArrayEquals(bnet.getFactor(1).marginalize(1).getData(), new double[]{1., 1., 1.}, 0.0);
+		Assertions.assertArrayEquals(bnet.getFactor(1).marginalize(1).getData(), new double[]{1., 1., 1.}, 1e-9);
 	}
 
 	@Test

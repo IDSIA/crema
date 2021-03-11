@@ -5,12 +5,13 @@ import ch.idsia.crema.inference.fe.EliminationTree;
 import ch.idsia.crema.inference.fe.FactorElimination2;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -22,7 +23,7 @@ public class EliminationTreeTest {
 	private EliminationTree T;
 	private int A, B, C, D, E;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		// This model is based on "Modeling and Reasoning with BN", Dawiche, p.155
 		DAGModel<BayesianFactor> model = new DAGModel<>();

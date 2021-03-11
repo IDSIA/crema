@@ -3,10 +3,10 @@ package ch.idsia.crema.inference.jtree;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.fe.FactorEliminationModel;
 import ch.idsia.crema.model.graphical.DAGModel;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -24,7 +24,7 @@ public class FactorEliminationModelTest {
 	/**
 	 * Example in Figure7.1 p. 154
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		model = new DAGModel<>();
 		BayesianFactor[] f = new BayesianFactor[3];

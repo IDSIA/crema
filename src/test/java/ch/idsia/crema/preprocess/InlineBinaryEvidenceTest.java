@@ -6,9 +6,9 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.MixedModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class InlineBinaryEvidenceTest {
 
@@ -41,7 +41,7 @@ public class InlineBinaryEvidenceTest {
 			expect[i] = 0;
 			expect[i + 3] = 1;
 
-			assertArrayEquals("not as expected: " + i, expect, f.getData(), 0);
+			assertArrayEquals(expect, f.getData(), 1e-9, "not as expected: " + i);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class InlineBinaryEvidenceTest {
 
 		assertEquals(2, ev);
 
-		assertArrayEquals(new double[]{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, f.getData(), 0);
+		assertArrayEquals(new double[]{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, f.getData(), 1e-9);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class InlineBinaryEvidenceTest {
 
 		assertEquals(2, ev);
 
-		assertArrayEquals(new double[]{1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0}, f.getData(), 0);
+		assertArrayEquals(new double[]{1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0}, f.getData(), 1e-9);
 	}
 
 	/**
@@ -135,10 +135,10 @@ public class InlineBinaryEvidenceTest {
 
 		assertEquals(4, ev);
 
-		assertArrayEquals(new double[]{1, 1, 0, 1, 0, 0, 1, 0}, f.getData(), 0);
+		assertArrayEquals(new double[]{1, 1, 0, 1, 0, 0, 1, 0}, f.getData(), 1e-9);
 
 		BayesianFactor f2 = mixedModel.getConvertedFactor(BayesianFactor.class, ev - 1);
-		assertArrayEquals(new double[]{0, 1, 1, 1, 1, 0, 0, 0}, f2.getData(), 0);
+		assertArrayEquals(new double[]{0, 1, 1, 1, 1, 0, 0, 0}, f2.getData(), 1e-9);
 	}
 
 }

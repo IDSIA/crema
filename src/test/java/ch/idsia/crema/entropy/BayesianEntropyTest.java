@@ -1,10 +1,10 @@
 package ch.idsia.crema.entropy;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static ch.idsia.crema.entropy.BayesianEntropy.H;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Author:  Claudio "Dna" Bonesana

@@ -6,10 +6,11 @@ import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultExtensiveAlgebra;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class GraphicalModelTest {
 
@@ -29,7 +30,8 @@ public class GraphicalModelTest {
 		assertNull(model.getFactor(1));
 	}
 
-	//	@Test
+	@Disabled
+	@Test
 	public void testAlessandro() {
 		DAGModel<VertexFactor> model = new DAGModel<>();
 		int v1 = model.addVariable(3);

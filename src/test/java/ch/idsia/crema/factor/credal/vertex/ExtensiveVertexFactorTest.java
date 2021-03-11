@@ -3,11 +3,11 @@ package ch.idsia.crema.factor.credal.vertex;
 import ch.idsia.crema.core.DomainBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultExtensiveAlgebra;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class ExtensiveVertexFactorTest {
 
@@ -19,7 +19,7 @@ public class ExtensiveVertexFactorTest {
 		factor.addInternalVertex(new double[]{0.2, 0.1, 0.2, 0.5});
 		factor = factor.marginalize(1);
 
-		assertArrayEquals(new double[]{0.3, 0.7}, factor.getInternalVertices().get(0), 0.000000000001);
+		assertArrayEquals(new double[]{0.3, 0.7}, factor.getInternalVertices().get(0), 1e-9);
 
 		// TODO: not working yet since we have no convex hull
 		// assertEquals(1, factor.getInternalVertices().size());

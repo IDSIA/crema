@@ -3,9 +3,9 @@ package ch.idsia.crema.model.graphical;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Author:  Claudio "Dna" Bonesana

@@ -2,7 +2,7 @@ package ch.idsia.crema.tutorial;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.IndexIterator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

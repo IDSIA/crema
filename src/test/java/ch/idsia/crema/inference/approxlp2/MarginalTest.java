@@ -6,9 +6,9 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MarginalTest {
 
@@ -34,12 +34,12 @@ public class MarginalTest {
 
 		// this should work now!
 		IntervalFactor factor = inference.query(model, 1);
-		assertArrayEquals(new double[]{0.1, 0.3, 0.1}, factor.getLower(), 0.000000001);
-		assertArrayEquals(new double[]{0.6, 0.8, 0.4}, factor.getUpper(), 0.000000001);
+		assertArrayEquals(new double[]{0.1, 0.3, 0.1}, factor.getLower(), 1e-9);
+		assertArrayEquals(new double[]{0.6, 0.8, 0.4}, factor.getUpper(), 1e-9);
 
 		factor = inference.query(model, 0);
-		assertArrayEquals(new double[]{0.11, 0.36, 0.18}, factor.getLower(), 0.000000001);
-		assertArrayEquals(new double[]{0.28, 0.71, 0.53}, factor.getUpper(), 0.000000001);
+		assertArrayEquals(new double[]{0.11, 0.36, 0.18}, factor.getLower(), 1e-9);
+		assertArrayEquals(new double[]{0.28, 0.71, 0.53}, factor.getUpper(), 1e-9);
 	}
 
 	@Test
@@ -69,8 +69,8 @@ public class MarginalTest {
 		ApproxLP2<GenericFactor> inference = new ApproxLP2<>();
 		IntervalFactor factor = inference.query(model, 0);
 
-		assertArrayEquals(new double[]{0.082, 0.31, 0.165}, factor.getLower(), 0.000000001);
-		assertArrayEquals(new double[]{0.43, 0.642, 0.56}, factor.getUpper(), 0.000000001);
+		assertArrayEquals(new double[]{0.082, 0.31, 0.165}, factor.getLower(), 1e-9);
+		assertArrayEquals(new double[]{0.43, 0.642, 0.56}, factor.getUpper(), 1e-9);
 	}
 
 	@Test
@@ -110,8 +110,8 @@ public class MarginalTest {
 		ApproxLP2<GenericFactor> inference = new ApproxLP2<>();
 		IntervalFactor factor = inference.query(model, n0);
 
-		assertArrayEquals(new double[]{0.139, 0.3192, 0.155}, factor.getLower(), 0.000000001);
-		assertArrayEquals(new double[]{0.440, 0.6288, 0.504}, factor.getUpper(), 0.000000001);
+		assertArrayEquals(new double[]{0.139, 0.3192, 0.155}, factor.getLower(), 1e-9);
+		assertArrayEquals(new double[]{0.440, 0.6288, 0.504}, factor.getUpper(), 1e-9);
 	}
 
 	double zero = 0.0000000001;
@@ -140,8 +140,8 @@ public class MarginalTest {
 		ApproxLP2<GenericFactor> inference = new ApproxLP2<>();
 		IntervalFactor factor = inference.query(model, evidence, n1);
 
-		//assertArrayEquals(new double[]{0.954545454545, 0}, factor.getLower(), 0.000000001);
-		//assertArrayEquals(new double[]{1, 0.0454545454545454}, factor.getUpper(), 0.000000001);
+		//assertArrayEquals(new double[]{0.954545454545, 0}, factor.getLower(), 1e-9);
+		//assertArrayEquals(new double[]{1, 0.0454545454545454}, factor.getUpper(), 1e-9);
 	}
 
 }

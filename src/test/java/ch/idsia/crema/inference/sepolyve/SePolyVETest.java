@@ -7,7 +7,8 @@ import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SePolyVETest {
 
@@ -127,12 +128,16 @@ public class SePolyVETest {
 		System.out.println(vd.getDomain());
 		System.out.println(vd.getVertices().length);
 
+		Assertions.assertEquals(11, vd.getVertices().length);
+
 		VertexToInterval converter = new VertexToInterval();
 		DAGModel<IntervalFactor> model2 = model.convert(converter);
 
 		final RemoveBarren<IntervalFactor> rb = new RemoveBarren<>();
 
 		rb.executeInPlace(model2, evidence, sixth);
+
+		// TODO: and then?
 	}
 
 }

@@ -9,16 +9,13 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.bif.BIFParser;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -109,17 +106,17 @@ public class BeliefPropagationTest {
 		obs.put(C, 0);
 		q = bp.query(model, obs, A);
 		System.out.println("P(A | B=0, C=0): " + q);
-		assertArrayEquals(new double[]{.0597, .9403}, q.getData(), 1e-3);
+		assertArrayEquals(new double[]{.0406, .9593}, q.getData(), 1e-3);
 
 		// P(A | B=1, C=1)
 		obs.put(B, 1);
 		obs.put(C, 1);
 		q = bp.query(model, obs, A);
 		System.out.println("P(A | B=1, C=1): " + q);
-		assertArrayEquals(new double[]{.9256, .0744}, q.getData(), 1e-3);
+		assertArrayEquals(new double[]{.8924, .1075}, q.getData(), 1e-3);
 	}
 
-	@Ignore // TODO: this need method filter() implemented for SymbolicFactors
+	@Disabled // TODO: this need method filter() implemented for SymbolicFactors
 	@Test
 	public void testPropagationSymbolic() {
 		DAGModel<SymbolicFactor> m = new DAGModel<>();
@@ -291,7 +288,7 @@ public class BeliefPropagationTest {
 		assertEquals(bp.potentialsPerClique.size(), bp.getJunctionTree().vertexSet().size());
 
 		for (Clique clique : bp.getJunctionTree().vertexSet()) {
-			assertTrue(clique + " not found!", bp.potentialsPerClique.containsKey(clique));
+			assertTrue(bp.potentialsPerClique.containsKey(clique), clique + " not found!");
 		}
 
 		assertEquals(network.getVariables().length, factors);

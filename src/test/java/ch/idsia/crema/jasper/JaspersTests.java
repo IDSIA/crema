@@ -9,7 +9,7 @@ import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.linear.Relationship;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
@@ -140,7 +140,7 @@ public class JaspersTests {
 		}
 
 		//assertEquals(-12, solver.getValue(), 0.00000001);
-		//assertArrayEquals(new double[] { 7, 0 }, solver.getVertex(), 0.0000001);
+		//assertArrayEquals(new double[] { 7, 0 }, solver.getVertex(), 1e-7);
 
 		// marginalize everything and we have to end up with [1]
 		//ExtensiveVertexFactor f5 = algebra.marginalize(f4, 0);
