@@ -33,6 +33,14 @@ public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvide
 	private int size = 2;
 	private boolean log = false;
 
+	public BinarizeEvidence() {
+	}
+
+	public BinarizeEvidence(int size, boolean log) {
+		setSize(size);
+		setLog(log);
+	}
+
 	// TODO: what is this? It is just the size of evidence?
 	public void setSize(int size) {
 		this.size = size;

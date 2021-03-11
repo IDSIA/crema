@@ -467,7 +467,13 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	}
 
 	public String toString() {
-		return "" + this.getFactors() + "\n";
+		return this.getClass().getSimpleName() + "\n" +
+				Arrays.stream(getVariables())
+						.mapToObj(x -> {
+							F f = getFactor(x);
+							return String.format("\t(%3d)\t%s %s", x, f.getClass().getSimpleName(), f.toString());
+						})
+						.collect(Collectors.joining("\n"));
 	}
 
 }

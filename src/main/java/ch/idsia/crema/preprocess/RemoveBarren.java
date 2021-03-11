@@ -30,22 +30,22 @@ public class RemoveBarren<F extends GenericFactor> implements PreprocessorQuery<
 	@Override
 	public void executeInPlace(GraphicalModel<F> model, TIntIntMap evidence, int... query) {
 		TIntSet retain = cutIndependent(model, query, evidence.keys());
-		TIntArrayList todelete = new TIntArrayList();
+		TIntArrayList toDelete = new TIntArrayList();
 
 		for (int var : model.getVariables()) {
 			if (retain.contains(var)) continue;
-			todelete.add(var);
+			toDelete.add(var);
 			model.removeVariable(var);
 		}
 
-		deleted = todelete.toArray();
+		deleted = toDelete.toArray();
 		// deleted is already sorted (as model.getVariables is sorted)
 	}
 
 	@Override
 	public GraphicalModel<F> execute(GraphicalModel<F> model, TIntIntMap evidence, int... query) {
 		final GraphicalModel<F> copy = model.copy();
-		executeInPlace(model, evidence, query);
+		executeInPlace(copy, evidence, query);
 		return copy;
 	}
 

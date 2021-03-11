@@ -215,22 +215,25 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 		final Clique root = getRoot(variable);
 
-		// collect messages
-		F psis = junctionTree.edgesOf(root).stream()
-				.map(edge -> cliqueFromDirection(root, edge))
-				.map(i -> collect(/* from */ i, /* to */root))
-				.reduce(F::combine)
-				.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
-
 		F phis = phi(root);
 
-		// combine by potential
-		F f = psis.combine(phis);
+		if (junctionTree.vertexSet().size() > 1) {
+			// collect messages
+			F psis = junctionTree.edgesOf(root).stream()
+					.map(edge -> cliqueFromDirection(root, edge))
+					.map(i -> collect(/* from */ i, /* to */root))
+					.peek(System.out::println)
+					.reduce(F::combine)
+					.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
+
+			// combine by potential
+			phis = psis.combine(phis);
+		}
 
 		// marginalize out what is not needed
-		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
+		int[] ints = IntStream.of(phis.getDomain().getVariables()).filter(x -> x != variable).toArray();
 
-		return f.marginalize(ints).normalize();
+		return phis.marginalize(ints).normalize();
 	}
 
 	/**
@@ -388,6 +391,10 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 		setModel(rm);
 		setEvidence(evidence);
+
+		if (rm.getVariables().length == 1 && rm.getFactor(query) != null)
+			return rm.getFactor(query);
+
 		return query(query);
 	}
 

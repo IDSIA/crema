@@ -36,6 +36,22 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 	}
 
 	/**
+	 * Perform a {@link RemoveBarren} on the input model given the query and the evidence before calling the method
+	 * {@link #query(GraphicalModel, int)};
+	 *
+	 * @param originalModel the inference model
+	 * @param evidence      the observed variable as a map of variable-states
+	 * @param query         the variable that will be queried
+	 * @return
+	 */
+	@Override
+	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
+		final RemoveBarren<F> remove = new RemoveBarren<>();
+		final GraphicalModel<F> model = remove.execute(originalModel, evidence, query);
+		return query(model, query);
+	}
+
+	/**
 	 * Preconditions:
 	 * <ul>
 	 * <li>single evidence node
@@ -49,18 +65,14 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 	 *     of the evidence (-1 if no evidence).
 	 * <p>
 	 *
-	 * @param originalModel the data model
-	 * @param evidence      the observed variable as a map of variable-states
-	 * @param query         the variable whose intervals we are interested in
+	 * @param model the inference model
+	 * @param query the variable whose intervals we are interested in
 	 * @return
 	 */
 	// TODO must support multiple evidence here and in the variable elimination (see {@link ch.idsia.crema.inference.approxlp2.ApproxLP2})
 	// TODO: should we binarize the evidence?
 	@Override
-	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
-		final RemoveBarren<F> remove = new RemoveBarren<>();
-		final GraphicalModel<F> model = remove.execute(originalModel, evidence, query);
-
+	public IntervalFactor query(GraphicalModel<F> model, int query) {
 		int states = model.getSize(query);
 
 		double[] lowers = new double[states];
@@ -76,7 +88,7 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 				lower = new Marginal(model, GoalType.MINIMIZE, query, state);
 				upper = new Marginal(model, GoalType.MAXIMIZE, query, state);
 			} else {
-				EPS = 0.000000001;
+				EPS = 1e-9;
 				lower = new Posterior(model, GoalType.MINIMIZE, query, state, evidenceNode);
 				upper = new Posterior(model, GoalType.MAXIMIZE, query, state, evidenceNode);
 			}
