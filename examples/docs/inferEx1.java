@@ -32,9 +32,9 @@ fa.addVertex(new double[]{0.2, 0.8}, 2);
 fa.addVertex(new double[]{0.1, 0.9}, 2);
 cnet.setFactor(X0,fa);
 // set up the inference and run the queries
-Inference inf = new CredalVariableElimination(cnet);
-VertexFactor res1 = (VertexFactor) inf.query(X1, ObservationBuilder.observe(X0, 0));
-VertexFactor res2 = (VertexFactor) inf.query(X0);
+Inference inf = new CredalVariableElimination();
+VertexFactor res1 = (VertexFactor) inf.query(cnet, ObservationBuilder.observe(X0, 0), X1);
+VertexFactor res2 = (VertexFactor) inf.query(cnet, X0);
 
 double[][][] vertices = res1.getData();
 

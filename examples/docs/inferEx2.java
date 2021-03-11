@@ -45,9 +45,9 @@ fa.addConstraint(new double[]{0,1}, Relationship.LEQ, 0.9, 2);
 cnet.setFactor(X0,fa);
 
 // set up the inference and run the queries
-Inference inf = new CredalApproxLP(cnet);
-IntervalFactor res1 = (IntervalFactor) inf.query(X1, ObservationBuilder.observe(X0, 0));
-IntervalFactor res2 = (IntervalFactor) inf.query(X1);
+Inference inf = new CredalApproxLP();
+IntervalFactor res1 = (IntervalFactor) inf.query(cnet, ObservationBuilder.observe(X0, 0), X1);
+IntervalFactor res2 = (IntervalFactor) inf.query(cnet, X1);
 
 double[] lbound = res1.getLower();
 double[] ubound = res1.getUpper();

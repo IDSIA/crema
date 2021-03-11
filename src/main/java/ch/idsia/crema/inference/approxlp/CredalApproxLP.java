@@ -52,6 +52,7 @@ public class CredalApproxLP implements Inference<GraphicalModel<SeparateHalfspac
 
 	@Override
 	public IntervalFactor query(GraphicalModel<SeparateHalfspaceFactor> model, TIntIntMap evidence, int query) {
+		setModel(model);
 		final GraphicalModel<SeparateHalfspaceFactor> infModel = getInferenceModel(query, evidence);
 		final TIntIntMap filteredEvidence = new TIntIntHashMap();
 
