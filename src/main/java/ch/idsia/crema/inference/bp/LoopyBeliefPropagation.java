@@ -4,6 +4,9 @@ import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.InferenceCascade;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -35,7 +38,9 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		}
 	}
 
+	protected DAGModel<F> original;
 	protected DAGModel<F> model;
+
 	protected DirectedAcyclicGraph<Integer, DefaultEdge> network;
 	final SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
 
@@ -148,18 +153,6 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	public F query(int variable) {
 		final F v = model.getFactor(variable);
 
-		if (evidence.isEmpty()) {
-			// just perform a marginalization
-			int[] ints = IntStream.of(v.getDomain().getVariables()).filter(x -> x != variable).toArray();
-			return v.marginalize(ints).normalize();
-		}
-
-		if (evidence.containsKey(variable)) {
-			// TODO
-			int[] ints = IntStream.of(v.getDomain().getVariables()).filter(x -> x != variable).toArray();
-			return v.marginalize(ints).filter(evidence).normalize();
-		}
-
 		checkEvidence(evidence);
 
 		if (!updated)
@@ -261,9 +254,24 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	public F query(DAGModel<F> model, TIntIntMap evidence, int query) {
 		setModel(model);
 		setEvidence(evidence);
+
+		final CutObserved<F> co = new CutObserved<>();
+		final RemoveBarren<F> rb = new RemoveBarren<>();
+
+		final GraphicalModel<F> cutted = co.execute(model, evidence);
+		final DAGModel<F> removed = (DAGModel<F>) rb.execute(cutted, evidence, query);
+
+		setModel(removed);
+
 		return query(query);
 	}
 
+	/**
+	 *
+	 * @param model the model to use for inference
+	 * @param query the variable that will be queried
+	 * @return
+	 */
 	@Override
 	public F query(DAGModel<F> model, int query) {
 		return query(model, new TIntIntHashMap(), query);

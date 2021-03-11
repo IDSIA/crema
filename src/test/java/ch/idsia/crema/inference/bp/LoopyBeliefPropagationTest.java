@@ -8,6 +8,7 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.jupiter.api.Test;
 
+import static ch.idsia.crema.entropy.BayesianEntropy.H;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -193,26 +194,28 @@ public class LoopyBeliefPropagationTest {
 	@Test
 	public void testExactInference() throws Exception {
 		final BIFObject bif = BIFParser.read("models/bif/bnD.em.bif");
-		final BayesianNetwork network = bif.network;
-		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(network);
+		final BayesianNetwork model = bif.network;
+		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
 
 		final Integer distress_1 = bif.variableName.get("distress_1");
-//		final Integer lack_vit_1 = bif.variableName.get("lack_vit_1");
-//		final Integer psico_event2_1 = bif.variableName.get("psico_event2_1");
+		final Integer lack_vit_1 = bif.variableName.get("lack_vit_1");
+		final Integer psico_event2_1 = bif.variableName.get("psico_event2_1");
 
 		TIntIntMap obs = new TIntIntHashMap();
 		obs.put(distress_1, 1);
 
-		final BayesianFactor fdistress_1 = lbp.query(distress_1, obs);
-//		final BayesianFactor flack_vit_1 = lbp.query(lack_vit_1, obs);
-//		final BayesianFactor fpsico_event2_1 = lbp.query(psico_event2_1, obs);
+		lbp.setModel(model, obs);
 
-//		final double H = (H(fdistress_1) + H(flack_vit_1) + H(fpsico_event2_1)) / 3.;
+		final BayesianFactor fdistress_1 = lbp.query(distress_1);
+		final BayesianFactor flack_vit_1 = lbp.query(lack_vit_1);
+		final BayesianFactor fpsico_event2_1 = lbp.query(psico_event2_1);
+
+		final double H = (H(fdistress_1) + H(flack_vit_1) + H(fpsico_event2_1)) / 3.;
 
 		System.out.printf("\t%2d distress_1:     %s%n", distress_1, fdistress_1);
-//		System.out.printf("\t%2d lack_vit_1:     %s%n", lack_vit_1, flack_vit_1);
-//		System.out.printf("\t%2d psico_event2_1: %s%n", psico_event2_1, fpsico_event2_1);
-//		System.out.printf("\t   H:              %s%n", H);
+		System.out.printf("\t%2d lack_vit_1:     %s%n", lack_vit_1, flack_vit_1);
+		System.out.printf("\t%2d psico_event2_1: %s%n", psico_event2_1, fpsico_event2_1);
+		System.out.printf("\t   H:              %s%n", H);
 
 	}
 }
