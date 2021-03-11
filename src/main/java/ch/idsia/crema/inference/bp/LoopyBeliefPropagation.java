@@ -2,9 +2,11 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.Inference;
+import ch.idsia.crema.inference.InferenceCascade;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
@@ -18,7 +20,7 @@ import java.util.stream.IntStream;
  * Project: crema
  * Date:    01.03.2021 17:35
  */
-public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
+public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F>, InferenceCascade<DAGModel<F>, F> {
 
 	protected static class Neighbour {
 		final Integer i;
@@ -33,25 +35,24 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		}
 	}
 
-	protected final DAGModel<F> model;
-	protected final DirectedAcyclicGraph<Integer, DefaultEdge> network;
-	protected final SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+	protected DAGModel<F> model;
+	protected DirectedAcyclicGraph<Integer, DefaultEdge> network;
+	final SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
 
 	protected int iterations = 5;
 
 	protected final Map<ImmutablePair<Integer, Integer>, F> messages = new HashMap<>();
 	protected final Map<ImmutablePair<Integer, Integer>, Neighbour> neighbours = new HashMap<>();
 
-	protected TIntIntMap evidence;
+	private TIntIntMap evidence = new TIntIntHashMap();
 	protected Boolean updated = false;
 
-	public LoopyBeliefPropagation(DAGModel<F> model) {
+	@Override
+	public void setModel(DAGModel<F> model) {
+		// TODO check if this work has already been done!
 		this.model = model;
 		this.network = model.getNetwork();
-		init();
-	}
 
-	protected void init() {
 		// copy network into an undirected (simple) graph
 		// add all the vertices to the new graph
 		network.vertexSet().forEach(graph::addVertex);
@@ -80,6 +81,19 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 				addMailbox(j, i, vars);
 			}
 		}
+	}
+
+	// TODO: perform pre-processing!
+	@Override
+	public void setModel(DAGModel<F> model, TIntIntMap evidence) {
+		setEvidence(evidence);
+		setModel(model);
+	}
+
+	// TODO: perform pre-processing!
+	@Override
+	public void setEvidence(TIntIntMap evidence) {
+		this.evidence = evidence;
 	}
 
 	/**
@@ -117,11 +131,6 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 				.toArray();
 	}
 
-	@Override
-	public DAGModel<F> getInferenceModel(int target, TIntIntMap evidence) {
-		return null;
-	}
-
 	private void checkEvidence(TIntIntMap evidence) {
 		if (this.evidence != null && !this.evidence.equals(evidence)) {
 			this.evidence = evidence;
@@ -129,8 +138,14 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		}
 	}
 
+	/**
+	 * This method can be used to run multiple query with the same model structure.
+	 *
+	 * @param variable variable to query
+	 * @return the marginal probability of the given query
+	 */
 	@Override
-	public F query(int variable, TIntIntMap evidence) {
+	public F query(int variable) {
 		final F v = model.getFactor(variable);
 
 		if (evidence.isEmpty()) {
@@ -235,4 +250,23 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 
 		return f.marginalize(ints).normalize();
 	}
+
+	/**
+	 * @param model    the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the marginal probability of the given query
+	 */
+	@Override
+	public F query(DAGModel<F> model, TIntIntMap evidence, int query) {
+		setModel(model);
+		setEvidence(evidence);
+		return query(query);
+	}
+
+	@Override
+	public F query(DAGModel<F> model, int query) {
+		return query(model, new TIntIntHashMap(), query);
+	}
+
 }

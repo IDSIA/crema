@@ -2,11 +2,10 @@ package ch.idsia.crema.model;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BayesianFactorTest {
 
@@ -20,16 +19,16 @@ public class BayesianFactorTest {
 		BayesianFactor ibf = new BayesianFactor(new Strides(vars, size), true);
 		ibf.setData(vals);
 
-		Assert.assertArrayEquals(new double[]{0.45, 0.2, 0.35}, ibf.marginalize(1).getData(), 0.0000001);
-		Assert.assertArrayEquals(new double[]{0.4, 0.2, 0.4}, ibf.marginalize(2).getData(), 0.0000001);
+		assertArrayEquals(new double[]{0.45, 0.2, 0.35}, ibf.marginalize(1).getData(), 1e-7);
+		assertArrayEquals(new double[]{0.4, 0.2, 0.4}, ibf.marginalize(2).getData(), 1e-7);
 
-		Assert.assertArrayEquals(new double[]{1}, ibf.marginalize(2).marginalize(1).getData(), 0.0000001);
-		Assert.assertArrayEquals(new double[]{1}, ibf.marginalize(1).marginalize(2).getData(), 0.0000001);
+		assertArrayEquals(new double[]{1}, ibf.marginalize(2).marginalize(1).getData(), 1e-7);
+		assertArrayEquals(new double[]{1}, ibf.marginalize(1).marginalize(2).getData(), 1e-7);
 
-		Assert.assertArrayEquals(new int[]{}, ibf.marginalize(1).marginalize(2).getDomain().getVariables());
+		assertArrayEquals(new int[]{}, ibf.marginalize(1).marginalize(2).getDomain().getVariables());
 
-		Assert.assertArrayEquals(new int[]{1}, ibf.marginalize(2).getDomain().getVariables());
-		Assert.assertArrayEquals(new int[]{2}, ibf.marginalize(1).getDomain().getVariables());
+		assertArrayEquals(new int[]{1}, ibf.marginalize(2).getDomain().getVariables());
+		assertArrayEquals(new int[]{2}, ibf.marginalize(1).getDomain().getVariables());
 
 		vars = new int[]{1, 2, 3};
 		size = new int[]{2, 2, 2};
@@ -38,18 +37,18 @@ public class BayesianFactorTest {
 		ibf = new BayesianFactor(new Strides(vars, size), true);
 		ibf.setData(vals);
 
-		Assert.assertArrayEquals(new double[]{0.2, 0.35, 0.1, 0.35}, ibf.marginalize(1).getData(), 0.0000001);
-		Assert.assertArrayEquals(new double[]{0.4, 0.15, 0.2, 0.25}, ibf.marginalize(2).getData(), 0.0000001);
-		Assert.assertArrayEquals(new double[]{0.2, 0.10, 0.4, 0.30}, ibf.marginalize(3).getData(), 0.0000001);
+		assertArrayEquals(new double[]{0.2, 0.35, 0.1, 0.35}, ibf.marginalize(1).getData(), 1e-7);
+		assertArrayEquals(new double[]{0.4, 0.15, 0.2, 0.25}, ibf.marginalize(2).getData(), 1e-7);
+		assertArrayEquals(new double[]{0.2, 0.10, 0.4, 0.30}, ibf.marginalize(3).getData(), 1e-7);
 
-		Assert.assertArrayEquals(new double[]{0.55, 0.45}, ibf.marginalize(1).marginalize(2).getData(), 0.0000001);
-		Assert.assertArrayEquals(new double[]{0.3, 0.7}, ibf.marginalize(1).marginalize(3).getData(), 0.0000001);
+		assertArrayEquals(new double[]{0.55, 0.45}, ibf.marginalize(1).marginalize(2).getData(), 1e-7);
+		assertArrayEquals(new double[]{0.3, 0.7}, ibf.marginalize(1).marginalize(3).getData(), 1e-7);
 
-		Assert.assertArrayEquals(new double[]{0.55, 0.45}, ibf.marginalize(2).marginalize(1).getData(), 0.0000001);
-		Assert.assertArrayEquals(new double[]{0.6, 0.4}, ibf.marginalize(2).marginalize(3).getData(), 0.0000001);
+		assertArrayEquals(new double[]{0.55, 0.45}, ibf.marginalize(2).marginalize(1).getData(), 1e-7);
+		assertArrayEquals(new double[]{0.6, 0.4}, ibf.marginalize(2).marginalize(3).getData(), 1e-7);
 
-		Assert.assertArrayEquals(new double[]{0.3, 0.7}, ibf.marginalize(3).marginalize(1).getData(), 0.0000001);
-		Assert.assertArrayEquals(new double[]{0.6, 0.4}, ibf.marginalize(3).marginalize(2).getData(), 0.0000001);
+		assertArrayEquals(new double[]{0.3, 0.7}, ibf.marginalize(3).marginalize(1).getData(), 1e-7);
+		assertArrayEquals(new double[]{0.6, 0.4}, ibf.marginalize(3).marginalize(2).getData(), 1e-7);
 
 	}
 
@@ -83,7 +82,7 @@ public class BayesianFactorTest {
 		assertArrayEquals(new int[]{1, 2, 3}, r.getDomain().getVariables());
 		assertArrayEquals(new int[]{2, 3, 2}, r.getDomain().getSizes());
 
-		assertArrayEquals(data, r.getData(), 0.000000001);
+		assertArrayEquals(data, r.getData(), 1e-9);
 	}
 
 
@@ -114,7 +113,7 @@ public class BayesianFactorTest {
 		assertArrayEquals(new int[]{1, 2, 3}, r.getDomain().getVariables());
 		assertArrayEquals(new int[]{2, 3, 2}, r.getDomain().getSizes());
 
-		assertArrayEquals(data, r.getData(), 0.000000001);
+		assertArrayEquals(data, r.getData(), 1e-9);
 
 		// a * b / b = a
 		r = r.divide(ibf2);

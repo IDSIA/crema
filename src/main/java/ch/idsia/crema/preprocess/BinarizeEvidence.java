@@ -1,9 +1,11 @@
 package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.model.graphical.MixedModel;
 import gnu.trove.map.TIntIntMap;
 
 import java.util.ArrayList;
@@ -20,37 +22,66 @@ import java.util.List;
  * of the factors until the end.
  * </p>
  * <p>
- * TODO we should consider the possibility to specify a method/lambda, or something else, to customize the precise factor creation.
  * Currently we are using {@link BayesianFactor} only.
  *
  * @author david
  */
-public class BinarizeEvidence {
+// TODO we should consider the possibility to specify a method/lambda, or something else, to customize the precise factor creation.
+public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvidence<F, GenericFactor, GraphicalModel<F>, MixedModel> {
 
-	private int leafDummy;
+	private int evidenceNode;
+	private int size = 2;
+	private boolean log = false;
 
-	public int getLeafDummy() {
-		return leafDummy;
+	public BinarizeEvidence() {
+	}
+
+	public BinarizeEvidence(int size, boolean log) {
+		setSize(size);
+		setLog(log);
+	}
+
+	// TODO: what is this? It is just the size of evidence?
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public void setLog(boolean log) {
+		this.log = log;
+	}
+
+	public int getEvidenceNode() {
+		return evidenceNode;
+	}
+
+	@Deprecated
+	public GraphicalModel<GenericFactor> execute(GraphicalModel<F> model, TIntIntMap evidence, int size, boolean log) {
+		setSize(size);
+		setLog(log);
+		return execute(model, evidence);
+	}
+
+	/**
+	 * @deprecated use method{@link #execute(GraphicalModel, TIntIntMap)}
+	 */
+	@Deprecated
+	public int executeInplace(GraphicalModel<F> model, TIntIntMap evidence, int size, boolean log) {
+		setSize(size);
+		setLog(log);
+		execute(model, evidence);
+		return evidenceNode;
 	}
 
 	/**
 	 * Execute the binarization and return a new Factor
 	 *
-	 * @param model
-	 * @param evidence
-	 * @param size
-	 * @param log
-	 * @return
+	 * @param original the model to be processed
+	 * @param evidence the observed variable as a map of variable-states
+	 * @return a mixed model where a new node of type {@link BayesianFactor} is added to collect all the evidence
 	 */
-	public <M extends GraphicalModel<? super Factor<?>>> M execute(M model, TIntIntMap evidence, int size, boolean log) {
-		@SuppressWarnings("unchecked")
-		M copy = (M) model.copy();
-		leafDummy = executeInline(copy, evidence, size, log);
-		return copy;
-	}
-
-	public <M extends GraphicalModel<? super Factor<?>>> int executeInline(M model, TIntIntMap evidence, int size, boolean log) {
-
+	@Override
+	public MixedModel execute(GraphicalModel<F> original, TIntIntMap evidence) {
+		MixedModel model = new MixedModel((DAGModel<GenericFactor>) original.copy());
 		int[] keys = evidence.keys();
 
 		// TODO: XXX do we need to sort the keys????
@@ -64,7 +95,7 @@ public class BinarizeEvidence {
 
 			parents.add(new Instance(var, var_size, var_obs));
 			if (parents.size() == size) {
-				new_var = create(model, parents, log);
+				new_var = create(model, parents);
 				parents.clear();
 				parents.add(new Instance(new_var, 2, 1));
 			}
@@ -72,13 +103,13 @@ public class BinarizeEvidence {
 
 		// when no dummy has been created we must create it
 		// when we did create dummies, the parents array will contain the last
-		// created
-		// dummy and all vars not yet dummied
+		// created dummy and all vars not yet dummied
 		if (new_var == -1 || parents.size() > 1) {
-			new_var = create(model, parents, log);
+			new_var = create(model, parents);
 		}
-		leafDummy = new_var;
-		return new_var;
+		evidenceNode = new_var;
+
+		return model;
 	}
 
 	private static class Instance implements Comparable<Instance> {
@@ -98,7 +129,7 @@ public class BinarizeEvidence {
 		}
 	}
 
-	private <M extends GraphicalModel<? super Factor<?>>> int create(M model, List<Instance> parents, boolean log) {
+	private int create(MixedModel model, List<Instance> parents) {
 		int conf = 1;
 		int offset = 0;
 

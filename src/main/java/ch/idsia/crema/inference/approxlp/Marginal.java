@@ -21,7 +21,7 @@ public class Marginal extends Manager {
 
 	private static final double BAD = Double.NaN;
 
-	private SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
+	private final SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
 	public Marginal(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state) {
 		super(model, dir, x0, x0state);
@@ -35,7 +35,7 @@ public class Marginal extends Manager {
 	protected LinearSolver createSolver(int free) {
 		Simplex simplex = new Simplex();
 		GenericFactor f = model.getFactor(free);
-		ExtensiveLinearFactor<?> factor = null;
+		ExtensiveLinearFactor<?> factor;
 		if (f instanceof SeparateLinearFactor) {
 			factor = sep2ext.apply((SeparateLinearFactor<?>) f);
 		} else if (f instanceof ExtensiveLinearFactor) {

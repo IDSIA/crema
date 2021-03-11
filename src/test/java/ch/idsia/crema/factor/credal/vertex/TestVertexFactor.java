@@ -3,9 +3,9 @@ package ch.idsia.crema.factor.credal.vertex;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestVertexFactor {
 
@@ -147,7 +147,7 @@ public class TestVertexFactor {
 		for (; s < source.length; ++s) {
 			assertEquals(source[s].length, destination[s].length);
 			for (int v = 0; v < source[s].length; ++v) {
-				assertArrayEquals(source[s][v], destination[s][v], 0.0000001);
+				assertArrayEquals(source[s][v], destination[s][v], 1e-7);
 			}
 		}
 
@@ -221,9 +221,9 @@ public class TestVertexFactor {
 		VertexFactor v2 = vf.filter(5, 0).filter(0, 1);
 		double[][] d = v2.getVertices();
 		assertEquals(3, d.length);
-		assertArrayEquals(new double[]{0.1, 0.1, 0.7, 0.1}, d[0], 0.0000001);
-		assertArrayEquals(new double[]{0.4, 0.2, 0.2, 0.2}, d[1], 0.0000001);
-		assertArrayEquals(new double[]{0.3, 0.3, 0.3, 0.1}, d[2], 0.0000001);
+		assertArrayEquals(new double[]{0.1, 0.1, 0.7, 0.1}, d[0], 1e-7);
+		assertArrayEquals(new double[]{0.4, 0.2, 0.2, 0.2}, d[1], 1e-7);
+		assertArrayEquals(new double[]{0.3, 0.3, 0.3, 0.1}, d[2], 1e-7);
 	}
 
 	@Test
@@ -249,34 +249,34 @@ public class TestVertexFactor {
 
 		assertEquals(4, v2_1.getVertices(0).length);
 		assertArrayEquals(new double[]{0.3 * 0.5, 0.7 * 0.5, 0.4 * 0.5, 0.6 * 0.5}, v2_1.getVertices(0)[0],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.3 * 0.5, 0.7 * 0.5, 0.7 * 0.5, 0.3 * 0.5}, v2_1.getVertices(0)[1],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.3 * 0.6, 0.7 * 0.6, 0.4 * 0.4, 0.6 * 0.4}, v2_1.getVertices(0)[2],
-				0.0000000001);
+				1e-10);
 		assertArrayEquals(new double[]{0.3 * 0.6, 0.7 * 0.6, 0.7 * 0.4, 0.3 * 0.4}, v2_1.getVertices(0)[3],
-				0.0000000001);
+				1e-10);
 
 		assertEquals(8, v2_1.getVertices(1).length);
 
 		// first looping on the argument's vertices
 		assertArrayEquals(new double[]{0.9 * 0.2, 0.1 * 0.2, 0.5 * 0.8, 0.5 * 0.8}, v2_1.getVertices(1)[0],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.6 * 0.2, 0.4 * 0.2, 0.5 * 0.8, 0.5 * 0.8}, v2_1.getVertices(1)[1],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.9 * 0.2, 0.1 * 0.2, 0.9 * 0.8, 0.1 * 0.8}, v2_1.getVertices(1)[2],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.6 * 0.2, 0.4 * 0.2, 0.9 * 0.8, 0.1 * 0.8}, v2_1.getVertices(1)[3],
-				0.00000001);
+				1e-8);
 
 		assertArrayEquals(new double[]{0.9 * 0.3, 0.1 * 0.3, 0.5 * 0.7, 0.5 * 0.7}, v2_1.getVertices(1)[4],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.6 * 0.3, 0.4 * 0.3, 0.5 * 0.7, 0.5 * 0.7}, v2_1.getVertices(1)[5],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.9 * 0.3, 0.1 * 0.3, 0.9 * 0.7, 0.1 * 0.7}, v2_1.getVertices(1)[6],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.6 * 0.3, 0.4 * 0.3, 0.9 * 0.7, 0.1 * 0.7}, v2_1.getVertices(1)[7],
-				0.00000001);
+				1e-8);
 
 		VertexFactor v2_2 = v2_1.marginalize(5);
 		//	v2_2.convex();
@@ -305,13 +305,13 @@ public class TestVertexFactor {
 
 		assertEquals(4, v2_1.getVertices(0).length);
 		assertArrayEquals(new double[]{0.3 * 0.5, 0.7 * 0.5, 0.4 * 0.5, 0.6 * 0.5}, v2_1.getVertices(0)[0],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.3 * 0.5, 0.7 * 0.5, 0.7 * 0.5, 0.3 * 0.5}, v2_1.getVertices(0)[1],
-				0.00000001);
+				1e-8);
 		assertArrayEquals(new double[]{0.3 * 0.6, 0.7 * 0.6, 0.4 * 0.4, 0.6 * 0.4}, v2_1.getVertices(0)[2],
-				0.0000000001);
+				1e-10);
 		assertArrayEquals(new double[]{0.3 * 0.6, 0.7 * 0.6, 0.7 * 0.4, 0.3 * 0.4}, v2_1.getVertices(0)[3],
-				0.0000000001);
+				1e-10);
 
 		assertEquals(8, v2_1.getVertices(1).length);
 //

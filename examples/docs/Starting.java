@@ -35,8 +35,8 @@ public class Starting {
         model.setFactor(B,fx);
 
         // Run exact inference
-        CredalVariableElimination inf = new CredalVariableElimination(model);
-        inf.query(A, ObservationBuilder.observe(B,0));
+        CredalVariableElimination inf = new CredalVariableElimination();
+        inf.query(model, ObservationBuilder.observe(B,0), A);
 
     }
 }

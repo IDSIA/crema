@@ -2,7 +2,7 @@ package ch.idsia.crema.model.io.uai;
 
 
 import gnu.trove.map.TIntIntMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 

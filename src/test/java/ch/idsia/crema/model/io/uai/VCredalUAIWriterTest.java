@@ -2,7 +2,7 @@ package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.IO;
 import ch.idsia.crema.model.graphical.DAGModel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -17,14 +17,13 @@ public class VCredalUAIWriterTest {
 	public void writeSimpleVCredalUai() throws IOException {
 		String fileName = "./models/simple-vcredal_";
 
-		DAGModel model;
+		DAGModel<?> model;
 
-		model = (DAGModel) UAIParser.read(fileName + ".uai");
+		model = UAIParser.read(fileName + ".uai");
 		UAIWriter.write(model, fileName + "2.uai");
 
-		model = (DAGModel) UAIParser.read(fileName + "2.uai");
+		model = UAIParser.read(fileName + "2.uai");
 		IO.write(model, fileName + "3.uai");
 	}
-
 
 }

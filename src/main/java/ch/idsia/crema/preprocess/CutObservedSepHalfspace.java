@@ -11,8 +11,8 @@ import gnu.trove.map.TIntIntMap;
  *
  * @author rcabanas
  */
-public class CutObservedSepHalfspace {
-
+public class CutObservedSepHalfspace implements TransformerEvidence<SeparateHalfspaceFactor, GraphicalModel<SeparateHalfspaceFactor>>,
+		PreprocessorEvidence<SeparateHalfspaceFactor, GraphicalModel<SeparateHalfspaceFactor>> {
 	/**
 	 * Execute the operation on the provided network.
 	 * You should not use the inplace method! it is bad!
@@ -21,8 +21,8 @@ public class CutObservedSepHalfspace {
 	 * @param evidence a collection of instantiations containing variable - state
 	 *                 pairs
 	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public void executeInplace(final GraphicalModel model, final TIntIntMap evidence) {
+	@Override
+	public void executeInPlace(GraphicalModel<SeparateHalfspaceFactor> model, TIntIntMap evidence) {
 		final int size = evidence.size();
 
 		final TIntIntIterator iterator = evidence.iterator();
@@ -36,29 +36,27 @@ public class CutObservedSepHalfspace {
 			final int[] affected = model.getChildren(observed);
 
 			for (final int variable : affected) {
-				final SeparateHalfspaceFactor new_factor = ((SeparateHalfspaceFactor) model.getFactor(variable))
-                        .filter(observed, state);
+				final SeparateHalfspaceFactor new_factor = model.getFactor(variable)
+						.filter(observed, state);
 				if (variable != observed)
-				    model.removeParent(variable, observed);
+					model.removeParent(variable, observed);
 				model.setFactor(variable, new_factor);
-
 			}
 		}
 	}
 
 	/**
-	 * Execute the algorithm and return the modified NEW network. The original
-	 * network is unchanged!
+	 * Execute the algorithm and return the modified NEW network.
+	 * The original network is unchanged!
 	 *
 	 * @param model    the model to be preprocessed
 	 * @param evidence a collection of instantiations containing variable - state
 	 *                 pairs
 	 */
-	@SuppressWarnings({"rawtypes"})
-	public GraphicalModel execute(final GraphicalModel model, final TIntIntMap evidence) {
-
-		final GraphicalModel copy = model.copy();
-		executeInplace(copy, evidence);
+	@Override
+	public GraphicalModel<SeparateHalfspaceFactor> execute(GraphicalModel<SeparateHalfspaceFactor> model, TIntIntMap evidence) {
+		final GraphicalModel<SeparateHalfspaceFactor> copy = model.copy();
+		executeInPlace(copy, evidence);
 		return copy;
 	}
 }

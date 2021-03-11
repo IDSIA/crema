@@ -2,9 +2,9 @@ package ch.idsia.crema.inference.bp.triangulation;
 
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -33,7 +33,7 @@ public class TriangulateTest {
 		assertEquals(2, triangulated.edgeSet().size());
 
 		int[] eliminationSequence = t.getEliminationSequence();
-		assertEquals("Elimination sequence doesn't cover all vertex", graph.vertexSet().size(), eliminationSequence.length);
+		assertEquals(graph.vertexSet().size(), eliminationSequence.length, "Elimination sequence doesn't cover all vertex");
 	}
 
 	@Test
@@ -61,11 +61,11 @@ public class TriangulateTest {
 		// obtaining a triangulated graph for G
 		TriangulatedGraph triangulated = t.exec();
 
-		assertEquals("TriangulatedGraph has a different number of vertex", graph.vertexSet().size(), triangulated.vertexSet().size());
-		assertEquals("TriangulatedGraph has missing edges", graph.edgeSet().size() + 1, triangulated.edgeSet().size());
+		assertEquals(graph.vertexSet().size(), triangulated.vertexSet().size(), "TriangulatedGraph has a different number of vertex");
+		assertEquals(graph.edgeSet().size() + 1, triangulated.edgeSet().size(), "TriangulatedGraph has missing edges");
 
 		int[] eliminationSequence = t.getEliminationSequence();
-		assertEquals("Elimination sequence doesn't cover all vertex", graph.vertexSet().size(), eliminationSequence.length);
+		assertEquals(graph.vertexSet().size(), eliminationSequence.length, "Elimination sequence doesn't cover all vertex");
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class TriangulateTest {
 		assertEquals(7, triangulated.edgeSet().size());
 
 		int[] eliminationSequence = t.getEliminationSequence();
-		assertEquals("Elimination sequence doesn't cover all vertex", graph.vertexSet().size(), eliminationSequence.length);
+		assertEquals(graph.vertexSet().size(), eliminationSequence.length, "Elimination sequence doesn't cover all vertex");
 	}
 
 	@Test
@@ -134,8 +134,8 @@ public class TriangulateTest {
 		// obtaining a triangulated graph for G
 		TriangulatedGraph triangulated = t.exec();
 
-		assertEquals("TriangulatedGraph has a different number of vertex", graph.vertexSet().size(), triangulated.vertexSet().size());
-		assertEquals("TriangulatedGraph has missing edges", 14, triangulated.edgeSet().size());
+		assertEquals(graph.vertexSet().size(), triangulated.vertexSet().size(), "TriangulatedGraph has a different number of vertex");
+		assertEquals(14, triangulated.edgeSet().size(), "TriangulatedGraph has missing edges");
 
 		int newEdges = 0;
 		if (triangulated.getEdge(2, 7) != null) newEdges++;
@@ -144,9 +144,9 @@ public class TriangulateTest {
 		if (triangulated.getEdge(3, 7) != null) newEdges++;
 		if (triangulated.getEdge(4, 6) != null) newEdges++;
 
-		assertEquals("Not enough new edges added", 2, newEdges);
+		assertEquals(2, newEdges, "Not enough new edges added");
 
 		int[] eliminationSequence = t.getEliminationSequence();
-		assertEquals("Elimination sequence doesn't cover all vertex", graph.vertexSet().size(), eliminationSequence.length);
+		assertEquals(graph.vertexSet().size(), eliminationSequence.length, "Elimination sequence doesn't cover all vertex");
 	}
 }

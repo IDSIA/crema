@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor.credal.vertex.generator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 

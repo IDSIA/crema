@@ -1,7 +1,7 @@
 package ch.idsia.crema.model.io.bif;
 
 import ch.idsia.crema.model.graphical.BayesianNetwork;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;

@@ -53,11 +53,11 @@ public class CredalInferenceExample {
         // AproxLP will not work
 
         Inference inference = new Inference();
-        double[] upper = inference.query(model, x).getUpper();
+        double[] upper = ((IntervalFactor)inference.query(model, x)).getUpper();
         System.out.println(Arrays.toString(upper));         // [NaN, NaN]
 
         ApproxLP2 approxLP2 = new ApproxLP2();
-        upper = approxLP2.query(model, x).getUpper();
+        upper = ((IntervalFactor)approxLP2.query(model, x)).getUpper();
         System.out.println(Arrays.toString(upper));         // [NaN, NaN]
 
 
@@ -144,8 +144,8 @@ public class CredalInferenceExample {
 
         approxLP2 = new ApproxLP2();
 
-        System.out.println(Arrays.toString(approxLP2.query(model, x).getUpper()));         //
-        System.out.println(Arrays.toString(approxLP2.query(model, x).getLower()));         //
+        System.out.println(Arrays.toString(((IntervalFactor)approxLP2.query(model, x)).getUpper()));         //
+        System.out.println(Arrays.toString(((IntervalFactor)approxLP2.query(model, x)).getLower()));         //
 
 
     }

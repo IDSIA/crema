@@ -13,6 +13,8 @@ import java.util.stream.IntStream;
  * Project: crema
  * Date:    27.11.2020 17:01
  */
+// TODO: this should not be under the inference package
+// TODO: this class need a test...
 public class BayesianNetworkSampling {
 
 	/**

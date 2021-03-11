@@ -41,12 +41,12 @@ public class PGMpaper {
 
 
         // set up the inference engine
-        Inference inf = new CredalVariableElimination(cnet);
+        Inference inf = new CredalVariableElimination();
 
         // compute P(B | A = 0)
-        VertexFactor res1 = (VertexFactor) inf.query(b, ObservationBuilder.observe(a, 0));
+        VertexFactor res1 = (VertexFactor) inf.query(cnet,  ObservationBuilder.observe(a, 0), b);
         // compute P(B | A = 0)
-        VertexFactor res2 = (VertexFactor) inf.query(a);
+        VertexFactor res2 = (VertexFactor) inf.query(cnet, a);
 
 
         double[][][] vertices = res1.getData();

@@ -2,10 +2,14 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.Inference;
+import ch.idsia.crema.inference.InferenceCascade;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.junction.JunctionTree;
 import ch.idsia.crema.inference.bp.junction.Separator;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -19,9 +23,10 @@ import java.util.stream.IntStream;
  * Project: CreMA
  * Date:    14.02.2018 10:03
  */
-public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
+public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F>, InferenceCascade<DAGModel<F>, F> {
 
-	private final DAGModel<F> model;
+	private DAGModel<F> original;
+	private DAGModel<F> model;
 
 	private JunctionTree<F> junctionTree;
 
@@ -31,15 +36,13 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 	protected final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
 
-	public BeliefPropagation(DAGModel<F> model) {
-		this.model = model;
-		init();
-	}
-
 	/**
 	 * Builds the {@link JunctionTree} required for the algorithm.
 	 */
-	public void init() {
+	@Override
+	public void setModel(DAGModel<F> model) {
+		this.model = model;
+
 		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
 		pipeline.setInput(model.getNetwork());
 		junctionTree = pipeline.exec();
@@ -69,15 +72,31 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 		fullyPropagated = false;
 	}
 
+	/**
+	 * No preprocess applied
+	 * @param model    the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 */
+	// TODO: apply preprocess
+	@Override
+	public void setModel(DAGModel<F> model, TIntIntMap evidence) {
+		this.original = model;
+		setEvidence(evidence);
+		final CutObserved<F> co = new CutObserved<>();
+		final DAGModel<F> cm = (DAGModel<F>) co.execute(model, evidence);
+		setModel(cm);
+	}
+
 	public JunctionTree<F> getJunctionTree() {
 		return junctionTree;
 	}
 
+	/**
+	 * No preprocess applied.
+	 * @param evidence the observed variable as a map of variable-states
+	 */
+	// TODO: apply preprocess!
 	@Override
-	public DAGModel<F> getInferenceModel(int target, TIntIntMap evidence) {
-		return model;
-	}
-
 	public void setEvidence(TIntIntMap evidence) {
 		this.evidence = evidence;
 		fullyPropagated = false;
@@ -115,11 +134,20 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 	}
 
 	/**
+	 * This method can be use to perform multiple query on a {@link BeliefPropagation} object that is is already
+	 * initialized.
+	 *
+	 * This method does not perform pre-processing.
+	 *
 	 * @param variable variable to query
 	 * @return the marginal probability of the given query
 	 */
+	// TODO: perform pre-processing
 	@Override
 	public F query(int variable) {
+		if (model == null)
+			throw new IllegalStateException();
+
 		F f;
 
 		if (fullyPropagated) {
@@ -129,12 +157,6 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 		}
 
 		return f;
-	}
-
-	@Override
-	public F query(int variable, TIntIntMap evidence) {
-		setEvidence(evidence);
-		return query(variable);
 	}
 
 	public F queryFullyPropagated(int variable) {
@@ -193,22 +215,25 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 		final Clique root = getRoot(variable);
 
-		// collect messages
-		F psis = junctionTree.edgesOf(root).stream()
-				.map(edge -> cliqueFromDirection(root, edge))
-				.map(i -> collect(/* from */ i, /* to */root))
-				.reduce(F::combine)
-				.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
-
 		F phis = phi(root);
 
-		// combine by potential
-		F f = psis.combine(phis);
+		if (junctionTree.vertexSet().size() > 1) {
+			// collect messages
+			F psis = junctionTree.edgesOf(root).stream()
+					.map(edge -> cliqueFromDirection(root, edge))
+					.map(i -> collect(/* from */ i, /* to */root))
+					.peek(System.out::println)
+					.reduce(F::combine)
+					.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
+
+			// combine by potential
+			phis = psis.combine(phis);
+		}
 
 		// marginalize out what is not needed
-		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
+		int[] ints = IntStream.of(phis.getDomain().getVariables()).filter(x -> x != variable).toArray();
 
-		return f.marginalize(ints).normalize();
+		return phis.marginalize(ints).normalize();
 	}
 
 	/**
@@ -344,5 +369,37 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 //		System.out.println("PHI(" + clique + ") = " + phi);
 //		return phi;
+	}
+
+	/**
+	 * Pre-process the model with {@link CutObserved} and {@link RemoveBarren}.
+	 *
+	 * @param model    the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the marginal probability of the query variable
+	 */
+	@Override
+	public F query(DAGModel<F> model, TIntIntMap evidence, int query) {
+		this.original = model;
+
+		final CutObserved<F> co = new CutObserved<>();
+		final GraphicalModel<F> cm = co.execute(model, evidence);
+
+		final RemoveBarren<F> rb = new RemoveBarren<>();
+		final DAGModel<F> rm = (DAGModel<F>) rb.execute(cm, evidence, query);
+
+		setModel(rm);
+		setEvidence(evidence);
+
+		if (rm.getVariables().length == 1 && rm.getFactor(query) != null)
+			return rm.getFactor(query);
+
+		return query(query);
+	}
+
+	@Override
+	public F query(DAGModel<F> model, int query) {
+		return query(model, new TIntIntHashMap(), query);
 	}
 }
