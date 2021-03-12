@@ -6,7 +6,6 @@ import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.junction.JunctionTree;
 import ch.idsia.crema.inference.bp.junction.Separator;
 import ch.idsia.crema.model.graphical.DAGModel;
-import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -32,6 +31,26 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 	protected TIntIntMap evidence = new TIntIntHashMap();
 
 	protected final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
+
+	protected Boolean preprocess = true;
+
+	public void setPreprocess(Boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
+	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {
+		DAGModel<F> model = original;
+		if (preprocess) {
+			model = original.copy();
+			final CutObserved<F> co = new CutObserved<>();
+			final RemoveBarren<F> rb = new RemoveBarren<>();
+
+			co.executeInPlace(model, evidence);
+			rb.executeInPlace(model, evidence, query);
+		}
+
+		return model;
+	}
 
 	protected void initModel(DAGModel<F> model) {
 		this.model = model;
@@ -108,11 +127,7 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 	 */
 	@Override
 	public F query(DAGModel<F> original, TIntIntMap evidence, int query) {
-		final CutObserved<F> co = new CutObserved<>();
-		final GraphicalModel<F> cm = co.execute(original, evidence);
-
-		final RemoveBarren<F> rb = new RemoveBarren<>();
-		final DAGModel<F> model = (DAGModel<F>) rb.execute(cm, evidence, query);
+		model = preprocess(original, evidence, query);
 
 		this.evidence = evidence;
 		initModel(model);

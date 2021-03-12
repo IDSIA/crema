@@ -3,7 +3,6 @@ package ch.idsia.crema.inference.bp;
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.DAGModel;
-import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -47,6 +46,8 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	protected DirectedAcyclicGraph<Integer, DefaultEdge> network;
 	protected SimpleGraph<Integer, DefaultEdge> graph;
 
+	protected Boolean preprocess = true;
+
 	protected int iterations = 5;
 
 	protected Map<ImmutablePair<Integer, Integer>, F> messages;
@@ -57,6 +58,24 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	 */
 	public void setIterations(int iterations) {
 		this.iterations = iterations;
+	}
+
+	public void setPreprocess(Boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
+	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {
+		DAGModel<F> model = original;
+		if (preprocess) {
+			model = original.copy();
+			final CutObserved<F> co = new CutObserved<>();
+			final RemoveBarren<F> rb = new RemoveBarren<>();
+
+			co.executeInPlace(model, evidence);
+			rb.executeInPlace(model, evidence, query);
+		}
+
+		return model;
 	}
 
 	protected void initModel(DAGModel<F> model) {
@@ -144,11 +163,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	 */
 	@Override
 	public F query(DAGModel<F> original, TIntIntMap evidence, int query) {
-		final CutObserved<F> co = new CutObserved<>();
-		final RemoveBarren<F> rb = new RemoveBarren<>();
-
-		final GraphicalModel<F> cutted = co.execute(original, evidence);
-		final DAGModel<F> model = (DAGModel<F>) rb.execute(cutted, evidence, query);
+		final DAGModel<F> model = preprocess(original, evidence, query);
 
 		initModel(model);
 		messagePassing(evidence);
