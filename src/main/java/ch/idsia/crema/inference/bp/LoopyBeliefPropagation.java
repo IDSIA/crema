@@ -2,8 +2,9 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.inference.Inference;
-import ch.idsia.crema.inference.InferenceCascade;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -12,15 +13,20 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.SimpleGraph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
+
+import static ch.idsia.crema.utility.ArraysUtil.outersection;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: crema
  * Date:    01.03.2021 17:35
  */
-public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F>, InferenceCascade<DAGModel<F>, F> {
+public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
 
 	protected static class Neighbour {
 		final Integer i;
@@ -36,21 +42,49 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	}
 
 	protected DAGModel<F> model;
+
 	protected DirectedAcyclicGraph<Integer, DefaultEdge> network;
-	final SimpleGraph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+	protected SimpleGraph<Integer, DefaultEdge> graph;
+
+	protected Boolean preprocess = true;
 
 	protected int iterations = 5;
 
-	protected final Map<ImmutablePair<Integer, Integer>, F> messages = new HashMap<>();
-	protected final Map<ImmutablePair<Integer, Integer>, Neighbour> neighbours = new HashMap<>();
+	protected Map<ImmutablePair<Integer, Integer>, F> messages;
+	protected Map<ImmutablePair<Integer, Integer>, Neighbour> neighbours;
 
-	private TIntIntMap evidence = new TIntIntHashMap();
+	/**
+	 * @param iterations max number of iterations to do until convergence
+	 */
+	public void setIterations(int iterations) {
+		this.iterations = iterations;
+	}
 
-	@Override
-	public void setModel(DAGModel<F> model) {
+	public void setPreprocess(Boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
+	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {
+		DAGModel<F> model = original;
+		if (preprocess) {
+			model = original.copy();
+			final CutObserved<F> co = new CutObserved<>();
+			final RemoveBarren<F> rb = new RemoveBarren<>();
+
+			co.executeInPlace(model, evidence);
+			rb.executeInPlace(model, evidence, query);
+		}
+
+		return model;
+	}
+
+	protected void initModel(DAGModel<F> model) {
 		// TODO check if this work has already been done!
 		this.model = model;
-		this.network = model.getNetwork();
+		network = model.getNetwork();
+		graph = new SimpleGraph<>(DefaultEdge.class);
+		messages = new HashMap<>();
+		neighbours = new HashMap<>();
 
 		// copy network into an undirected (simple) graph
 		// add all the vertices to the new graph
@@ -74,25 +108,20 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 				final F fi = model.getFactor(i);
 				final F fj = model.getFactor(j);
 
-				final int[] vars = ArraysUtil.intersectionSorted(fi.getDomain().getVariables(), fj.getDomain().getVariables());
+				final int[] vars = ArraysUtil.intersection(fi.getDomain().getVariables(), fj.getDomain().getVariables());
 
 				addMailbox(i, j, vars);
 				addMailbox(j, i, vars);
 			}
 		}
-	}
 
-	// TODO: perform pre-processing!
-	@Override
-	public void setModel(DAGModel<F> model, TIntIntMap evidence) {
-		setEvidence(evidence);
-		setModel(model);
-	}
-
-	// TODO: perform pre-processing!
-	@Override
-	public void setEvidence(TIntIntMap evidence) {
-		this.evidence = evidence;
+		// initialize all messages with the same value of the current node i
+		for (ImmutablePair<Integer, Integer> key : neighbours.keySet()) {
+			final int[] vars = neighbours.get(key).variables;
+			final F fi = model.getFactor(key.getLeft());
+			final int[] ints_i = outersection(fi.getDomain().getVariables(), vars);
+			messages.put(key, fi.marginalize(ints_i).normalize());
+		}
 	}
 
 	/**
@@ -100,7 +129,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	 * @param j    destination node
 	 * @param vars variables shared between source and destination node
 	 */
-	private void addMailbox(Integer i, Integer j, int[] vars) {
+	protected void addMailbox(Integer i, Integer j, int[] vars) {
 		final Neighbour nij = new Neighbour(i, j, vars);
 		final ImmutablePair<Integer, Integer> key_ij = new ImmutablePair<>(i, j); // (i, j)
 
@@ -117,40 +146,31 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	}
 
 	/**
-	 * @param iterations max number of iterations to do until convergence
-	 */
-	public void setIterations(int iterations) {
-		this.iterations = iterations;
-	}
-
-	protected int[] outerIntersection(int[] vars, int[] sep) {
-		return Arrays.stream(vars)
-				.filter(x -> !ArraysUtil.contains(x, sep))
-				.toArray();
-	}
-
-	/**
-	 * This method can be used to run multiple query with the same model structure.
-	 *
-	 * @param variable variable to query
+	 * @param model the model to use for inference
+	 * @param query the variable that will be queried
 	 * @return the marginal probability of the given query
 	 */
 	@Override
-	public F query(int variable) {
-		final F v = model.getFactor(variable);
+	public F query(DAGModel<F> model, int query) {
+		return query(model, new TIntIntHashMap(), query);
+	}
 
-		if (evidence.containsKey(variable)) {
-			return v.filter(evidence).normalize();
-		}
+	/**
+	 * @param original the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the marginal probability of the given query
+	 */
+	@Override
+	public F query(DAGModel<F> original, TIntIntMap evidence, int query) {
+		final DAGModel<F> model = preprocess(original, evidence, query);
 
-		// initialize all messages with the same value of the current node i
-		for (ImmutablePair<Integer, Integer> key : neighbours.keySet()) {
-			final int[] vars = neighbours.get(key).variables;
-			final F fi = model.getFactor(key.getLeft());
-			final int[] ints_i = outerIntersection(fi.getDomain().getVariables(), vars);
-			messages.put(key, fi.marginalize(ints_i));
-		}
+		initModel(model);
+		messagePassing(evidence);
+		return variableMarginal(query);
+	}
 
+	private void messagePassing(TIntIntMap evidence) {
 		// iterate and update messages
 		for (int it = 0; it < iterations; it++) {
 			final Map<ImmutablePair<Integer, Integer>, F> new_messages = new HashMap<>();
@@ -162,7 +182,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 						continue;
 
 					if (graph.getEdge(i, j) == null)
-						// this edge does not exist
+						// non existing edges
 						continue;
 
 					// send message from i to j
@@ -177,7 +197,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 						F Mki = neighbour.incoming.stream()
 								.map(k -> new ImmutablePair<>(k, i))
 								.map(messages::get)
-								.reduce(Factor::combine)
+								.reduce(F::combine)
 								.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
 
 						Mij = Mij.combine(Mki).normalize(); // h(xi) = gi(xi) * PROD Mki_old(xi)
@@ -188,8 +208,11 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 						Mij = Mij.filter(evidence);
 					}
 
-					final int[] ints = outerIntersection(f.getDomain().getVariables(), neighbour.variables);
-					Mij = Mij.marginalize(ints);
+					final int[] ints = outersection(f.getDomain().getVariables(), neighbour.variables);
+					Mij = Mij.marginalize(ints).normalize();
+
+					if (Mij.getDomain().getSize() == 0)
+						throw new IllegalStateException("Message defined over any variable");
 
 					new_messages.put(key, Mij);
 				}
@@ -199,41 +222,27 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 			messages.putAll(new_messages);
 			// TODO: add check to stop when we converged (new_messages are equal to old_messages)
 		}
-
-		final F M = graph.edgesOf(variable).stream()
-				.map(edge -> {
-					final Integer s = graph.getEdgeSource(edge);
-					final Integer t = graph.getEdgeTarget(edge);
-
-					return s.equals(variable) ? t : s;
-				})
-				.map(s -> new ImmutablePair<>(s, variable))
-				.map(messages::get)
-				.reduce(Factor::combine)
-				.orElseThrow(() -> new IllegalStateException("Empty F after message combination"));
-
-		final F f = v.combine(M);
-		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
-
-		return f.marginalize(ints).normalize();
 	}
 
-	/**
-	 * @param model    the model to use for inference
-	 * @param evidence the observed variable as a map of variable-states
-	 * @param query    the variable that will be queried
-	 * @return the marginal probability of the given query
-	 */
-	@Override
-	public F query(DAGModel<F> model, TIntIntMap evidence, int query) {
-		setModel(model);
-		setEvidence(evidence);
-		return query(query);
-	}
+	private F variableMarginal(int query) {
+		F v = model.getFactor(query);
+		if (!graph.edgeSet().isEmpty()) {
+			final F M = graph.edgesOf(query).stream()
+					.map(edge -> {
+						final Integer s = graph.getEdgeSource(edge);
+						final Integer t = graph.getEdgeTarget(edge);
+						return s.equals(query) ? t : s;
+					})
+					.map(s -> new ImmutablePair<>(s, query))
+					.map(messages::get)
+					.reduce(F::combine)
+					.orElseThrow(() -> new IllegalStateException("Empty F after message combination"));
 
-	@Override
-	public F query(DAGModel<F> model, int query) {
-		return query(model, new TIntIntHashMap(), query);
+			v = v.combine(M);
+		}
+
+		int[] ints = IntStream.of(v.getDomain().getVariables()).filter(x -> x != query).toArray();
+		return v.marginalize(ints).normalize();
 	}
 
 }

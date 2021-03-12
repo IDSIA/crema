@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
+import ch.idsia.crema.inference.BayesianNetworkContainer;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.junit.jupiter.api.Disabled;
