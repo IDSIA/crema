@@ -7,6 +7,8 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
+
+
 public class inferEx2 {
 public static void main(String[] args) throws InterruptedException {
 
