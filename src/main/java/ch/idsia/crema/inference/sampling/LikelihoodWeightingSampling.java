@@ -84,7 +84,9 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements I
 	/**
 	 * Algorithm 46 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 */
-	public Collection<BayesianFactor> run(BayesianNetwork model, TIntIntMap evidence, int... query) {
+	public Collection<BayesianFactor> run(BayesianNetwork original, TIntIntMap evidence, int... query) {
+		BayesianNetwork model = preprocess(original, evidence, query);
+
 		if (evidence == null)
 			throw new IllegalArgumentException("Setting the evidence is mandatory!");
 

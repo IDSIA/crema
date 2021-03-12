@@ -2,6 +2,8 @@ package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
 
@@ -17,6 +19,26 @@ public abstract class StochasticSampling {
 	protected TIntIntMap evidence;
 
 	protected long iterations = 100;
+
+	protected Boolean preprocess = true;
+
+	public void setPreprocess(Boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
+	protected BayesianNetwork preprocess(BayesianNetwork original, TIntIntMap evidence, int... query) {
+		BayesianNetwork model = original;
+		if (preprocess) {
+			model = (BayesianNetwork) original.copy();
+			final CutObserved<BayesianFactor> co = new CutObserved<>();
+			final RemoveBarren<BayesianFactor> rb = new RemoveBarren<>();
+
+			co.executeInPlace(model, evidence);
+			rb.executeInPlace(model, evidence, query);
+		}
+
+		return model;
+	}
 
 	/**
 	 * @deprecated

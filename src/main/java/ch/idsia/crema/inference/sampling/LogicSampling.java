@@ -19,14 +19,14 @@ import java.util.List;
  * Project: CreMA
  * Date:    05.02.2018 13:32
  */
-public class DirectSampling extends StochasticSampling implements InferenceJoined<BayesianNetwork, BayesianFactor> {
+public class LogicSampling extends StochasticSampling implements InferenceJoined<BayesianNetwork, BayesianFactor> {
 
 	/**
 	 * Algorithm 44 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 *
 	 * @return a map with the computed sampled states over all the variables.
 	 */
-	private TIntIntMap simulateBN(BayesianNetwork model) {
+	private TIntIntMap simulateBN(BayesianNetwork model, TIntIntMap evidence) {
 		int[] roots = model.getRoots();
 
 		TIntIntMap map = new TIntIntHashMap();
@@ -54,7 +54,11 @@ public class DirectSampling extends StochasticSampling implements InferenceJoine
 					factor = factor.filter(parent, map.get(parent));
 				}
 
-				map.put(node, sample(factor));
+				if (evidence.containsKey(node)) {
+					map.put(node, evidence.get(node));
+				} else {
+					map.put(node, sample(factor));
+				}
 
 				int[] children = model.getChildren(node);
 				slack.addAll(children);
@@ -71,11 +75,13 @@ public class DirectSampling extends StochasticSampling implements InferenceJoine
 	 * <p>
 	 * Use Monte Carlo simulation to estimate the expectation of the direct sampling function.
 	 *
-	 * @param model model to use for inference
-	 * @param query variable to query
+	 * @param original model to use for inference
+	 * @param query    variable to query
 	 * @return the distribution of probability on the query
 	 */
-	public Collection<BayesianFactor> run(BayesianNetwork model, int... query) {
+	public Collection<BayesianFactor> run(BayesianNetwork original, TIntIntMap evidence, int... query) {
+		BayesianNetwork model = preprocess(original, evidence, query);
+
 		TIntObjectMap<double[]> distributions = new TIntObjectHashMap<>();
 
 		for (int variable : model.getVariables()) {
@@ -84,7 +90,7 @@ public class DirectSampling extends StochasticSampling implements InferenceJoine
 		}
 
 		for (int i = 0; i < iterations; i++) {
-			TIntIntMap x = simulateBN(model);
+			TIntIntMap x = simulateBN(model, evidence);
 
 			for (int variable : x.keys()) {
 				final int state = x.get(variable);
@@ -106,36 +112,28 @@ public class DirectSampling extends StochasticSampling implements InferenceJoine
 	 */
 	@Deprecated
 	public Collection<BayesianFactor> apply(BayesianNetwork model, int[] query) {
-		return run(model, query);
+		return run(model, new TIntIntHashMap(), query);
 	}
 
 	@Override
 	public BayesianFactor query(BayesianNetwork model, int query) {
-		return run(model, query).stream()
-				.findFirst()
-				.orElseThrow(IllegalStateException::new);
+		return query(model, new TIntIntHashMap(), new int[]{query});
 	}
 
-	/**
-	 * @throws UnsupportedOperationException since this sampling does not work with evidence
-	 */
 	@Override
-	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int... queries) {
-		throw new UnsupportedOperationException("Inference with evidence is not allowed!");
+	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int... query) {
+		return run(model, evidence, query).stream()
+				.reduce(BayesianFactor::combine)
+				.orElseThrow(() -> new IllegalStateException("Could not produce a joint probability"));
 	}
 
 	@Override
 	public BayesianFactor query(BayesianNetwork model, int... queries) {
-		return run(model, queries).stream()
-				.reduce(BayesianFactor::combine)
-				.orElseThrow(IllegalStateException::new);
+		return query(model, new TIntIntHashMap(), queries);
 	}
 
-	/**
-	 * @throws UnsupportedOperationException since this sampling does not work with evidence
-	 */
 	@Override
 	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int query) {
-		throw new UnsupportedOperationException("Inference with evidence is not allowed!");
+		return query(model, evidence, new int[]{query});
 	}
 }
