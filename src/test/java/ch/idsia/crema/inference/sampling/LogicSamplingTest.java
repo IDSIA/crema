@@ -3,6 +3,7 @@ package ch.idsia.crema.inference.sampling;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,16 +27,17 @@ public class LogicSamplingTest {
 		model = BN.network;
 		ls = new LogicSampling();
 		ls.setPreprocess(false);
-	}
 
-	@Test
-	public void testSamplingIsWorking() {
-		System.out.println("P(Rain) =                                     " + ls.query(model, 2));
+		RandomUtil.setRandomSeed(0);
 	}
 
 	@Test
 	public void testSamplingRaiseException() {
+		ls.setIterations(10000);
+
 		TIntIntMap evidence;
+		System.out.println("P(Rain) =                                     " + ls.query(model, 2));
+
 		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1});
 		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + ls.query(model, evidence, 2));
 
@@ -51,7 +53,7 @@ public class LogicSamplingTest {
 
 	@Test
 	void testLogicSampling() {
-		BayesianNetwork model = new BayesianNetwork();
+		final BayesianNetwork model = new BayesianNetwork();
 
 		final int M = model.addVariable(2);
 		final int S = model.addVariable(2);
