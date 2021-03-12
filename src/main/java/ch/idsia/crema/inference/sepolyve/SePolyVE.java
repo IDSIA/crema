@@ -2,6 +2,7 @@ package ch.idsia.crema.inference.sepolyve;
 
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
+import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.precondition.NetworkReduction;
 import ch.idsia.crema.search.impl.DepthFirst;
@@ -26,7 +27,7 @@ import java.util.Map;
  * @author Jasper De Bock
  */
 @NetworkReduction
-public class SePolyVE {
+public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexFactor> {
 	public static final String MAX_MEM_BYTE = "maxMem";
 	public static final String MAX_TIME_MS = "maxTimeMillis"; // double in
 																// seconds
@@ -38,12 +39,12 @@ public class SePolyVE {
 	private long maxMem = Long.MAX_VALUE;
 
 	/**
-	 * Run the algorithm round the factors to the specified tollerance.
+	 * Run the algorithm round the factors to the specified tolerance.
 	 * 
-	 * @param tollerance
+	 * @param tolerance the specified tolerance value
 	 */
-	public SePolyVE(double tollerance) {
-		algebra = new DefaultSeparateAlgebra(tollerance);
+	public SePolyVE(double tolerance) {
+		algebra = new DefaultSeparateAlgebra(tolerance);
 	}
 
 	/**
@@ -55,6 +56,7 @@ public class SePolyVE {
 	public ArrayList<Integer> getOrder() {
 		return collector.getOrder();
 	}
+
 	/**
 	 * Initialize the algorithm with limits. Supported keys are:
 	 * <ul>
@@ -71,7 +73,7 @@ public class SePolyVE {
 	 * @param params
 	 *            a map with initialization options (can be NULL)
 	 */
-	public void init(Map<String, ? extends Object> params) {
+	public void init(Map<String, ?> params) {
 		if (params != null) {
 			if (params.containsKey(MAX_MEM_BYTE)) {
 				maxMem = Utils.tryParse(params.get(MAX_MEM_BYTE), maxMem);
@@ -82,18 +84,26 @@ public class SePolyVE {
 		}
 	}
 
+	/**
+	 * @deprecated use method {@link #query(GraphicalModel, TIntIntMap, int)}
+	 */
+	@Deprecated
+	public VertexFactor run(GraphicalModel<VertexFactor> model, int query, TIntIntMap evidence) {
+		return query(model, evidence, query);
+	}
 
 	/**
 	 * Compute the marginal or posterior probability of query given evidence in the model.
-	 * 
-	 * @param model
-	 * @param query
-	 * @param evidence
+	 *
+	 * @param model the model to use for inference
+	 * @param query    the variable that will be queried
+	 * @param evidence the observed variable as a map of variable-states
 	 * @exception MaxTimeException - when maximum execution time is reached 
 	 * @exception MaxMemoryException - when maximum memory usage is reached
 	 * @return the posterior or marginal extensive {@link VertexFactor} 
 	 */
-	public VertexFactor run(GraphicalModel<VertexFactor> model, int query, TIntIntMap evidence) {
+	@Override
+	public VertexFactor query(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int query) {
 		collector = new SePolyController(model, evidence, algebra, maxTime, maxMem);
 
 		DepthFirst ndf = new DepthFirst(model);

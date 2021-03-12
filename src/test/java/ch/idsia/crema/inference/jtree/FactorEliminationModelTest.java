@@ -1,19 +1,19 @@
 package ch.idsia.crema.inference.jtree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.fe.FactorElimination1;
+import ch.idsia.crema.inference.fe.FactorEliminationModel;
 import ch.idsia.crema.model.graphical.DAGModel;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    06.02.2018 09:57
  */
-public class FactorElimination1Test {
+public class FactorEliminationModelTest {
 
 	private DAGModel<BayesianFactor> model;
 
@@ -24,7 +24,7 @@ public class FactorElimination1Test {
 	/**
 	 * Example in Figure7.1 p. 154
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		model = new DAGModel<>();
 		BayesianFactor[] f = new BayesianFactor[3];
@@ -47,10 +47,8 @@ public class FactorElimination1Test {
 
 	@Test
 	public void FE1() {
-		FactorElimination1 fe = new FactorElimination1();
-		fe.setModel(model);
-
-		BayesianFactor q = fe.FE1(C);
+		FactorEliminationModel fe = new FactorEliminationModel();
+		BayesianFactor q = fe.query(model, C);
 
 		assertTrue(q.getData()[0] <= .376 + eps);
 		assertTrue(q.getData()[1] <= .624 + eps);

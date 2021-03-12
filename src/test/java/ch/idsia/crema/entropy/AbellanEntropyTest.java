@@ -1,7 +1,8 @@
 package ch.idsia.crema.entropy;
 
-import org.junit.Ignore;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -26,7 +27,7 @@ public class AbellanEntropyTest {
 		new AbellanEntropy().getMaxEntropy(l, u);
 	}
 
-	@Ignore // TODO: this test causes an IndexBoundException in AbellanEntropy:71
+	@Disabled // TODO: this test causes an IndexBoundException in AbellanEntropy:71
 	@Test
 	public void testSimpleEntropy3() {
 		double[] l = new double[]{0.3164556962025316, 0.3164556962025316, 0.05063291139240505, 0.3164556962025316};

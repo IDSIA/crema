@@ -2,7 +2,6 @@ import ch.idsia.crema.IO;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
 import ch.idsia.crema.model.graphical.DAGModel;
 
@@ -13,7 +12,7 @@ public class PGMpaper {
     public static void main(String[] args) throws InterruptedException, IOException {
 
         // define the structure
-        DAGModel cnet = new DAGModel();
+        DAGModel<VertexFactor> cnet = new DAGModel<>();
         int a = cnet.addVariable(2);
         int b = cnet.addVariable(3);
         cnet.addParent(a,b);
@@ -41,12 +40,12 @@ public class PGMpaper {
 
 
         // set up the inference engine
-        Inference inf = new CredalVariableElimination(cnet);
+        CredalVariableElimination inf = new CredalVariableElimination();
 
         // compute P(B | A = 0)
-        VertexFactor res1 = (VertexFactor) inf.query(b, ObservationBuilder.observe(a, 0));
+        VertexFactor res1 = inf.query(cnet,  ObservationBuilder.observe(a, 0), b);
         // compute P(B | A = 0)
-        VertexFactor res2 = (VertexFactor) inf.query(a);
+        VertexFactor res2 = inf.query(cnet, a);
 
 
         double[][][] vertices = res1.getData();

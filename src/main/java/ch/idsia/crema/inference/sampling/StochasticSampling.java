@@ -1,10 +1,9 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
-
-import java.util.Random;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -13,49 +12,30 @@ import java.util.Random;
  */
 public abstract class StochasticSampling {
 
-	protected GraphicalModel<BayesianFactor> model;
+	protected BayesianNetwork model;
 
 	protected TIntIntMap evidence;
 
-	protected long iterations = 1000;
-
-	private Random random;
-	private long seed = 42L;
-
-	public StochasticSampling() {
-		this.random = new Random(seed);
-	}
+	protected long iterations = 100;
 
 	/**
-	 * Set random seed (this re-initialize the random).
-	 *
-	 * @param seed new seed.
+	 * @deprecated
 	 */
-	public void setSeed(long seed) {
-		this.seed = seed;
-		random = new Random(seed);
-	}
-
-	/**
-	 * Fix some evidence. The provided argument is a map of variable - state associations.
-	 *
-	 * @param evidence the map of observations
-	 */
+	@Deprecated
 	public void setEvidence(TIntIntMap evidence) {
 		this.evidence = evidence;
 	}
 
 	/**
-	 * Assign a new model and factors to this {@link StochasticSampling} algorithm.
-	 *
-	 * @param model the new model with factors
+	 * @deprecated
 	 */
-	public void setModel(GraphicalModel<BayesianFactor> model) {
-		this.model = model.copy();
+	@Deprecated
+	public void setModel(BayesianNetwork model) {
+		this.model = (BayesianNetwork) model.copy();
 	}
 
 	/**
-	 * Default value is 1000.
+	 * Default value is 100.
 	 *
 	 * @param iterations number of iterations to do during the sampling
 	 */
@@ -69,9 +49,10 @@ public abstract class StochasticSampling {
 	 * @param factor factor to sample
 	 * @return the index of sampled state
 	 */
+	// TODO: this should not be in an inference package
 	protected int sample(BayesianFactor factor) {
 		double[] data = factor.getData();
-		double p = random.nextDouble();
+		double p = RandomUtil.getRandom().nextDouble();
 
 		double sum = 0.0;
 

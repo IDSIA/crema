@@ -8,18 +8,17 @@ import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
 import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateConvexAlgebra;
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
-import ch.idsia.crema.inference.approxlp.Inference;
+import ch.idsia.crema.inference.approxlp.ApproxLP1;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.search.ISearch;
-import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-@Ignore
+@Disabled
 public class AlexsTests {
 
 	public static void main(String[] args) {
@@ -72,7 +71,6 @@ public class AlexsTests {
 */
 
 	@Test
-
 	public void twoNodesTernary() {
 		DAGModel<GenericFactor> model = new DAGModel<>();
 		int varA = model.addVariable(3); // Variables
@@ -141,16 +139,9 @@ public class AlexsTests {
 		System.out.println("========");
 
 
-		Inference approx = new Inference();
-		IntervalFactor resultsALP = null;
-		try {
-			resultsALP = approx.query(model, 0, dummy);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (NoFeasibleSolutionException e) {
-			e.printStackTrace();
-			return;
-		}
+		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
+		approx.setEvidenceNode(dummy);
+		IntervalFactor resultsALP = approx.query(model, 0);
 		//		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));
@@ -235,14 +226,10 @@ public class AlexsTests {
 			System.out.println(Arrays.toString(vertex));
 		System.out.println("========");
 
-		Inference approx = new Inference();
-		IntervalFactor resultsALP = null;
-		try {
-			resultsALP = approx.query(model, 0, 3);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-//		//		// Results of ApproxLP
+		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
+		approx.setEvidenceNode(3);
+		IntervalFactor resultsALP = approx.query(model, 0);
+		//		//		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));
 		//
@@ -308,13 +295,9 @@ public class AlexsTests {
 		System.out.println("========");
 
 
-		Inference approx = new Inference();
-		IntervalFactor resultsALP = null;
-		try {
-			resultsALP = approx.query(model, 0, 2);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
+		approx.setEvidenceNode(2);
+		IntervalFactor resultsALP = approx.query(model, 0);
 		//		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));
@@ -459,16 +442,11 @@ public class AlexsTests {
 
 		// Inference with ApproxLP
 		System.out.println("--- ApproxLP ---");
-		Inference aprrox = new Inference();
+		ApproxLP1<IntervalFactor> aprrox = new ApproxLP1<>();
 		HashMap<String, Object> init = new HashMap<>();
 		init.put(ISearch.MAX_TIME, "10000");
 		aprrox.initialize(init);
-		IntervalFactor resultsALP = null;
-		try {
-			resultsALP = aprrox.query(model, nVars - 1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		IntervalFactor resultsALP = aprrox.query(model, nVars - 1);
 
 		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
@@ -682,16 +660,12 @@ public class AlexsTests {
 		//		// Inference with ApproxLP
 		System.out.println("--- ApproxLP (Back) ---");
 		//
-		Inference aprrox = new Inference();
+		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
 		HashMap<String, Object> init = new HashMap<>();
 		init.put(ISearch.MAX_TIME, "10000");
-		aprrox.initialize(init);
-		IntervalFactor resultsALP = null;
-		try {
-			resultsALP = aprrox.query(model, 0, dummy);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		approx.initialize(init);
+		approx.setEvidenceNode(dummy);
+		IntervalFactor resultsALP = approx.query(model, 0);
 		//
 		//		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
@@ -846,7 +820,7 @@ public class AlexsTests {
 			System.out.print("/" + vertici_conv2.length);
 			VertexFactor parent = f[i - 1].reseparate(Strides.EMPTY);
 			VertexFactor tmp = alge.combine(bottom, parent);
-			System.out.println("");
+			System.out.println();
 			if (i - 1 == 0) {
 				// processing query
 				tmp = convex_alge.fullConvex(tmp);
@@ -885,16 +859,12 @@ public class AlexsTests {
 		// Inference with ApproxLP
 		System.out.println("--- ApproxLP (Back) ---");
 		//
-		Inference aprrox = new Inference();
+		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
 		HashMap<String, Object> init = new HashMap<>();
 		init.put(ISearch.MAX_TIME, "10000");
-		aprrox.initialize(init);
-		IntervalFactor resultsALP = null;
-		try {
-			resultsALP = aprrox.query(model, 0, dummy);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		approx.initialize(init);
+		approx.setEvidenceNode(dummy);
+		IntervalFactor resultsALP = approx.query(model, 0);
 		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));

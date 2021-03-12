@@ -7,20 +7,21 @@ import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.model.graphical.MixedModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class PosteriorTest {
 
 	@Test
-	public void targetFree2() throws InterruptedException {
+	public void targetFree2() {
 		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int E = model.addVariable(2);
 		int X0 = model.addVariable(2);
@@ -43,27 +44,33 @@ public class PosteriorTest {
 		model.setFactor(X0, fx0);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence be = new BinarizeEvidence();
-		GraphicalModel<GenericFactor> bmodel = be.execute(model, observation, 2, false);
-		int evidence = be.getLeafDummy();
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		GraphicalModel<GenericFactor> bmodel = be.execute(model, observation);
+		int evidence = be.getEvidenceNode();
 
-		Inference<GenericFactor> inf = new Inference<>();
-		IntervalFactor ifact = inf.query(bmodel, X0, evidence);
+		try {
+			ApproxLP1<GenericFactor> inf = new ApproxLP1<>();
+			inf.setEvidenceNode(evidence);
+			IntervalFactor ifact = inf.query(bmodel, X0);
 
 //		assertArrayEquals(new double[] { 0.07 / 0.43, 0.32 / 0.46 }, ifact.getLower(), 0.001);
 //		assertArrayEquals(new double[] { 0.14 / 0.46, 0.36 / 0.43 }, ifact.getUpper(), 0.001);
 
-		ApproxLP2 a2 = new ApproxLP2();
-		a2.initialize(null);
+			ApproxLP2<GenericFactor> a2 = new ApproxLP2<>();
+			a2.initialize(null);
 
-		IntervalFactor i2 = a2.query(model, X0, observation);
-		System.out.println(Arrays.toString(i2.getLower()) + " vs " + Arrays.toString(ifact.getLower()));
-		System.out.println(Arrays.toString(i2.getUpper()) + " vs " + Arrays.toString(ifact.getUpper()));
+			IntervalFactor i2 = a2.query(model, observation, X0);
+			System.out.println(Arrays.toString(i2.getLower()) + " vs " + Arrays.toString(ifact.getLower()));
+			System.out.println(Arrays.toString(i2.getUpper()) + " vs " + Arrays.toString(ifact.getUpper()));
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 	}
 
 
 	@Test
-	public void targetFree2WithParent() throws InterruptedException {
+	public void targetFree2WithParent() {
 		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int E = model.addVariable(3);
 		int X0 = model.addVariable(2);
@@ -90,18 +97,25 @@ public class PosteriorTest {
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence be = new BinarizeEvidence();
-		int evidence = be.executeInline(model, observation, 2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		MixedModel mixedModel = be.execute(model, observation);
+		int evidence = be.getEvidenceNode();
 
-		Inference<GenericFactor> inf = new Inference<>();
-		IntervalFactor ifact = inf.query(model, X0, evidence);
+		try {
+			ApproxLP1<GenericFactor> inf = new ApproxLP1<>();
+			inf.setEvidenceNode(evidence);
+			IntervalFactor ifact = inf.query(mixedModel, X0);
 
-		assertArrayEquals(new double[]{0.6279069767434073, 0.16964285714332666}, ifact.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.8303571428566734, 0.37209302325659266}, ifact.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.6279069767434073, 0.16964285714332666}, ifact.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.8303571428566734, 0.37209302325659266}, ifact.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 	}
 
 	@Test
-	public void targetFree3() throws InterruptedException {
+	public void targetFree3() {
 		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int E = model.addVariable(2);
 		int X0 = model.addVariable(3);
@@ -118,18 +132,25 @@ public class PosteriorTest {
 		model.setFactor(X0, fx0);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence be = new BinarizeEvidence();
-		int evidence = be.executeInline(model, observation, 2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		MixedModel mixedModel = be.execute(model, observation);
+		int evidence = be.getEvidenceNode();
 
-		Inference<GenericFactor> inf = new Inference<>();
-		IntervalFactor ifact = inf.query(model, X0, evidence);
+		try {
+			ApproxLP1<GenericFactor> inf = new ApproxLP1<>();
+			inf.setEvidenceNode(evidence);
+			IntervalFactor ifact = inf.query(mixedModel, X0);
 
-		assertArrayEquals(new double[]{0.21212121212087243, 0.23529411764741176, 0.277777777778395}, ifact.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.4117647058825294, 0.48484848484822773, 0.48275862069158587}, ifact.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.21212121212087243, 0.23529411764741176, 0.277777777778395}, ifact.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.4117647058825294, 0.48484848484822773, 0.48275862069158587}, ifact.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 	}
 
 	@Test
-	public void targetFree2WithChild() throws InterruptedException {
+	public void targetFree2WithChild() {
 		GraphicalModel<GenericFactor> model = new DAGModel<>();
 		int E = model.addVariable(2);
 		int Xj = model.addVariable(2);
@@ -151,19 +172,25 @@ public class PosteriorTest {
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence be = new BinarizeEvidence();
-		model = be.execute(model, observation, 2, false);
-		int evidence = be.getLeafDummy();
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		MixedModel mixedModel = be.execute(model, observation);
+		int evidence = be.getEvidenceNode();
 
-		Inference<GenericFactor> inf = new Inference<>();
-		IntervalFactor ifact = inf.query(model, X0, evidence);
+		try {
+			ApproxLP1<GenericFactor> inf = new ApproxLP1<>();
+			inf.setEvidenceNode(evidence);
+			IntervalFactor ifact = inf.query(mixedModel, X0);
 
-		assertArrayEquals(new double[]{0.24424778761090626, 0.6765799256506011}, ifact.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.3234200743493989, 0.7557522123890937}, ifact.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.24424778761090626, 0.6765799256506011}, ifact.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.3234200743493989, 0.7557522123890937}, ifact.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 	}
 
 	@Test
-	public void testDiamondBayesianPosteriorQuery() throws InterruptedException {
+	public void testDiamondBayesianPosteriorQuery() {
 		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		int n0 = model.addVariable(2);
@@ -191,19 +218,26 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence bin = new BinarizeEvidence();
-		int ev = bin.executeInline(model, evidence, 2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		MixedModel mixedModel = be.execute(model, evidence);
+		int ev = be.getEvidenceNode();
 
-		Inference<GenericFactor> inference = new Inference<>();
-		IntervalFactor factor = inference.query(model, n3, ev);
+		try {
+			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
+			inference.setEvidenceNode(ev);
+			IntervalFactor factor = inference.query(mixedModel, n3);
 
-		assertArrayEquals(new double[]{0.22188969645147497, 0.7781103035492434}, factor.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.22188969645147497, 0.7781103035492434}, factor.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.22188969645147497, 0.7781103035492434}, factor.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.22188969645147497, 0.7781103035492434}, factor.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 	}
 
 	@Test
-	public void testDiamondBayesianPosteriorQuery3() throws InterruptedException {
-		GraphicalModel<GenericFactor> model = new DAGModel<>();
+	public void testDiamondBayesianPosteriorQuery3() {
+		MixedModel model = new MixedModel();
 
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(3);
@@ -236,33 +270,46 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence bin = new BinarizeEvidence();
-		int ev = bin.executeInline(model, evidence, 2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		model = be.execute(model, evidence);
+		int ev = be.getEvidenceNode();
 
-		Inference<GenericFactor> inference = new Inference<>();
-		IntervalFactor factor = inference.query(model, n3, ev);
+		try {
+			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
+			inference.setEvidenceNode(ev);
+			IntervalFactor factor = inference.query(model, n3);
 
-		assertArrayEquals(new double[]{0.22050585639124004, 0.6383476227590834}, factor.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.3616523772409166, 0.7794941436087599}, factor.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.22050585639124004, 0.6383476227590834}, factor.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.3616523772409166, 0.7794941436087599}, factor.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 
-		inference = new Inference<>();
+		RemoveBarren<GenericFactor> barren = new RemoveBarren<>();
+		GraphicalModel<GenericFactor> barrenModel = barren.execute(model, ObservationBuilder.vars(ev).states(1), n1);
 
-		RemoveBarren barren = new RemoveBarren();
-		barren.execute(model, new int[]{n1}, ObservationBuilder.vars(ev).states(1));
-		// no need to update n1 as we use the sparse model
-		factor = inference.query(model, n1, ev);
+		try {
+			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
+			inference.setEvidenceNode(ev);
+			// no need to update n1 as we use the sparse model
+			IntervalFactor factor = inference.query(barrenModel, n1);
 
-		assertArrayEquals(new double[]{0.24827348066293425, 0.20153743315534500, 0.3076654443861050}, factor.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.48011911017679076, 0.36128775834693705, 0.5276243093920449}, factor.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.24827348066293425, 0.20153743315534500, 0.3076654443861050}, factor.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.48011911017679076, 0.36128775834693705, 0.5276243093920449}, factor.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 	}
 
 	/**
 	 * Same as {@link #testDiamondBayesianPosteriorQuery3()} but with parent for n3
 	 *
-	 * @throws InterruptedException
+	 * @
 	 */
 	@Test
-	public void testDiamondBayesianPosteriorQuery4() throws InterruptedException {
+	public void testDiamondBayesianPosteriorQuery4() {
 		GraphicalModel<GenericFactor> model = new DAGModel<>();
 
 		int n0 = model.addVariable(2);
@@ -307,35 +354,45 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence bin = new BinarizeEvidence();
-		int ev = bin.executeInline(model, evidence, 2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		MixedModel mixedModel = be.execute(model, evidence);
+		int ev = be.getEvidenceNode();
 
-		Inference<GenericFactor> inference = new Inference<>();
-		IntervalFactor factor = inference.query(model, n3, ev);
+		try {
+			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
+			inference.setEvidenceNode(ev);
+			IntervalFactor factor = inference.query(mixedModel, n3);
 
-		assertArrayEquals(new double[]{0.09702615320599722, 0.5996234703482123}, factor.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.4003765296517877, 0.9029738467940027}, factor.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.09702615320599722, 0.5996234703482123}, factor.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.4003765296517877, 0.9029738467940027}, factor.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 
-		inference = new Inference<>();
+		try {
+			RemoveBarren<GenericFactor> barren = new RemoveBarren<>();
+			GraphicalModel<GenericFactor> barrenModel = barren.execute(mixedModel, ObservationBuilder.vars(ev).states(1), n1);
 
-		RemoveBarren barren = new RemoveBarren();
-		barren.execute(model, new int[]{n1}, ObservationBuilder.vars(ev).states(1));
-		// no need to update n1 as we use the sparse model
-		factor = inference.query(model, n1, ev);
+			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
+			inference.setEvidenceNode(ev);
+			// no need to update n1 as we use the sparse model
+			IntervalFactor factor = inference.query(barrenModel, n1);
 
-		assertArrayEquals(new double[]{0.23845184770432107, 0.1682985757886567, 0.28836654178948645}, factor.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.5354735898541261, 0.3697586787464407, 0.5279955207164615}, factor.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.23845184770432107, 0.1682985757886567, 0.28836654178948645}, factor.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.5354735898541261, 0.3697586787464407, 0.5279955207164615}, factor.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 	}
-
 
 	/**
 	 * Network with unconnected parts will work after barren
-	 *
-	 * @throws InterruptedException
 	 */
 	@Test()
-	public void testLeftOver() throws InterruptedException {
-		GraphicalModel<GenericFactor> model = new DAGModel<>();
+	public void testLeftOver() {
+		MixedModel model = new MixedModel();
 		int n = model.addVariable(3);
 		int n0 = model.addVariable(2);
 		int n1 = model.addVariable(3);
@@ -396,24 +453,37 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		RemoveBarren barren = new RemoveBarren();
-		model = barren.execute(model, new int[]{n3}, evidence);
+		RemoveBarren<GenericFactor> barren = new RemoveBarren<>();
+		final GraphicalModel<GenericFactor> modelBarren = barren.execute(model, evidence, n3);
 
-		BinarizeEvidence bin = new BinarizeEvidence();
-		int ev = bin.executeInline(model, evidence, 2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		model = be.execute(modelBarren, evidence);
+		int ev = be.getEvidenceNode();
 
-		Inference<GenericFactor> inference = new Inference<>();
-		IntervalFactor factor = inference.query(model, n3, ev);
+		try {
+			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
+			inference.setEvidenceNode(ev);
+			IntervalFactor factor = inference.query(model, n3);
 
-		assertArrayEquals(new double[]{0.09702615320599722, 0.5996234703482123}, factor.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.4003765296517877, 0.9029738467940027}, factor.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.09702615320599722, 0.5996234703482123}, factor.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.4003765296517877, 0.9029738467940027}, factor.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 
-		inference = new Inference<>();
+		try {
+			ApproxLP1<GenericFactor> inference = new ApproxLP1<>();
+			inference.setEvidenceNode(ev);
 
-		// no need to update n1 as we use the sparse model
-		factor = inference.query(model, n1, ev);
+			// no need to update n1 as we use the sparse model
+			IntervalFactor factor = inference.query(model, n1);
 
-		assertArrayEquals(new double[]{0.23845184770432107, 0.1682985757886567, 0.28836654178948645}, factor.getLower(), 0.001);
-		assertArrayEquals(new double[]{0.5354735898541261, 0.3697586787464407, 0.5279955207164615}, factor.getUpper(), 0.001);
+			assertArrayEquals(new double[]{0.23845184770432107, 0.1682985757886567, 0.28836654178948645}, factor.getLower(), 0.001);
+			assertArrayEquals(new double[]{0.5354735898541261, 0.3697586787464407, 0.5279955207164615}, factor.getUpper(), 0.001);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			throw e;
+		}
 	}
 }

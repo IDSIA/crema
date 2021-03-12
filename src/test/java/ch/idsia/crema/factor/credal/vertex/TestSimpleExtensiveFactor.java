@@ -9,10 +9,10 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.math.Operation;
 import ch.idsia.crema.model.vertex.VertexHashStrategy;
 import gnu.trove.set.hash.TCustomHashSet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestSimpleExtensiveFactor {
 

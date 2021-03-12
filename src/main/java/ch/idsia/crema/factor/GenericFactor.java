@@ -33,7 +33,7 @@ public interface GenericFactor {
 	 * @return
 	 */
 	default GenericFactor renameDomain(int... new_vars) {
-		throw new java.lang.UnsupportedOperationException("Not supported yet.");
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 }

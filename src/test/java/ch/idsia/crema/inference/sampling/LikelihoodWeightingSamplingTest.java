@@ -1,16 +1,17 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 
 /**
@@ -18,23 +19,30 @@ import java.util.Collection;
  * Project: CreMA
  * Date:    05.02.2018 14:05
  */
-public class LikelihoodWeightingSamplingTest extends StochasticSamplingTest {
+public class LikelihoodWeightingSamplingTest {
+
+	BayesianNetwork model;
+
+	@BeforeEach
+	public void setUp() {
+		BayesianNetworkContainer BN = BayesianNetworkContainer.mix5Variables();
+
+		model = BN.network;
+	}
 
 	@Test
-	public void vsVariableElimination() throws InterruptedException {
+	public void vsVariableElimination() {
 		TIntIntMap evidence = new TIntIntHashMap(new int[]{3}, new int[]{0});
 
 		for (int query = 0; query < 5; query++) {
 			LikelihoodWeightingSampling lws = new LikelihoodWeightingSampling();
-			Collection<BayesianFactor> collLWS = lws.apply(model, query, evidence);
-
-			BayesianFactor resLWS = new ArrayList<>(collLWS).get(0);
+			BayesianFactor resLWS = lws.query(model, evidence, query);
 
 			MinFillOrdering ordering = new MinFillOrdering();
 			int[] seq = ordering.apply(model);
 
 			VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(seq);
-			BayesianFactor resVE = ve.apply(model, query, evidence);
+			BayesianFactor resVE = ve.query(model, evidence, query);
 
 			double distance0 = resLWS.getData()[0] - resVE.getData()[0];
 
@@ -48,20 +56,19 @@ public class LikelihoodWeightingSamplingTest extends StochasticSamplingTest {
 	public void run() {
 		LikelihoodWeightingSampling lws = new LikelihoodWeightingSampling();
 
-		lws.setModel(model);
-		lws.setEvidence(new TIntIntHashMap());
-		System.out.println("P(Rain) =                                     " + factorsToString(lws.run(2)));
+		TIntIntMap evidence = new TIntIntHashMap();
+		System.out.println("P(Rain) =                                     " + lws.query(model, evidence, 2));
 
-		lws.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1}));
-		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + factorsToString(lws.run(2)));
+		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1});
+		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + lws.query(model, evidence, 2));
 
-		lws.setEvidence(new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0}));
-		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + factorsToString(lws.run(2)));
+		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0});
+		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + lws.query(model, evidence, 2));
 
-		lws.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{1}));
-		System.out.println("P(Rain|Winter = true) =                       " + factorsToString(lws.run(2)));
+		evidence = new TIntIntHashMap(new int[]{0}, new int[]{1});
+		System.out.println("P(Rain|Winter = true) =                       " + lws.query(model, evidence, 2));
 
-		lws.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
-		System.out.println("P(Rain|Winter = false) =                      " + factorsToString(lws.run(2)));
+		evidence = new TIntIntHashMap(new int[]{0}, new int[]{0});
+		System.out.println("P(Rain|Winter = false) =                      " + lws.query(model, evidence, 2));
 	}
 }

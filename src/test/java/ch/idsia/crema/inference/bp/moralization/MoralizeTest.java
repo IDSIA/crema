@@ -3,10 +3,10 @@ package ch.idsia.crema.inference.bp.moralization;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -41,13 +41,13 @@ public class MoralizeTest {
 		// obtaining a domain graph G for BN (moral graph)
 		SimpleGraph<Integer, DefaultEdge> moralGraph = m.exec();
 
-		assertEquals("", 7, moralGraph.edgeSet().size());
-		assertNotNull("MoralGraph edge A1-A2 is null", moralGraph.getEdge(0, 1));
-		assertNotNull("MoralGraph edge A1-A3 is null", moralGraph.getEdge(0, 2));
-		assertNotNull("MoralGraph edge A2-A3 is null", moralGraph.getEdge(1, 2));
-		assertNotNull("MoralGraph edge A2-A4 is null", moralGraph.getEdge(1, 3));
-		assertNotNull("MoralGraph edge A2-A5 is null", moralGraph.getEdge(1, 4));
-		assertNotNull("MoralGraph edge A3-A6 is null", moralGraph.getEdge(2, 5));
+		assertEquals(7, moralGraph.edgeSet().size());
+		assertNotNull(moralGraph.getEdge(0, 1), "MoralGraph edge A1-A2 is null");
+		assertNotNull(moralGraph.getEdge(0, 2), "MoralGraph edge A1-A3 is null");
+		assertNotNull(moralGraph.getEdge(1, 2), "MoralGraph edge A2-A3 is null");
+		assertNotNull(moralGraph.getEdge(1, 3), "MoralGraph edge A2-A4 is null");
+		assertNotNull(moralGraph.getEdge(1, 4), "MoralGraph edge A2-A5 is null");
+		assertNotNull(moralGraph.getEdge(2, 5), "MoralGraph edge A3-A6 is null");
 	}
 
 	@Test

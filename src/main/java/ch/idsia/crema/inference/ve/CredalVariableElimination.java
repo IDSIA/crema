@@ -11,36 +11,48 @@ import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
 
-public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> implements Inference<M, VertexFactor> {
+public class CredalVariableElimination implements Inference<GraphicalModel<VertexFactor>, VertexFactor> {
 
-	private final M model;
+	private GraphicalModel<VertexFactor> model;
 
-	public CredalVariableElimination(M model) {
+	/**
+	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
+	 */
+	@Deprecated
+	public void setModel(GraphicalModel<VertexFactor> model) {
 		this.model = model;
 	}
 
-	@Override
-	public M getInferenceModel(int target, TIntIntMap evidence) {
-		CutObserved cutObserved = new CutObserved();
+	public GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
+		CutObserved<VertexFactor> cutObserved = new CutObserved<>();
 		// run making a copy of the model
-		M infModel = cutObserved.execute(model, evidence);
+		GraphicalModel<VertexFactor> infModel = cutObserved.execute(model, evidence);
 
-		RemoveBarren removeBarren = new RemoveBarren();
+		RemoveBarren<VertexFactor> removeBarren = new RemoveBarren<>();
 		// no more need to make a copy of the model
-		removeBarren.executeInline(infModel, target, evidence);
+		removeBarren.executeInPlace(infModel, evidence, target);
 
 		return infModel;
 	}
 
 	/**
+	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
+	 */
+	@Deprecated
+	public VertexFactor query(int target, TIntIntMap evidence) {
+		return query(model, evidence, target);
+	}
+
+	/**
 	 * Query K(target|evidence) in the model provided to the constructor
 	 *
-	 * @param target   int the target variable
+	 * @param query    int the target variable
 	 * @param evidence {@link TIntIntMap} a map of evidence in the form variable-state
 	 * @return
 	 */
-	public VertexFactor query(int target, TIntIntMap evidence) {
-		M infModel = getInferenceModel(target, evidence);
+	@Override
+	public VertexFactor query(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int query) {
+		GraphicalModel<VertexFactor> infModel = getInferenceModel(model, evidence, query);
 
 		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
 
@@ -59,7 +71,7 @@ public class CredalVariableElimination<M extends GraphicalModel<VertexFactor>> i
 		ve.setFactors(infModel.getFactors());
 		ve.setNormalize(false);
 
-		VertexFactor output = ve.run(target);
+		VertexFactor output = ve.run(query);
 
 		return output.normalize();
 	}

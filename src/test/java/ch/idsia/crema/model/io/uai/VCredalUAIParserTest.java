@@ -2,11 +2,13 @@ package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -20,14 +22,14 @@ public class VCredalUAIParserTest {
 		String fileName = "./models/simple-vcredal2.uai";
 		GraphicalModel<VertexFactor> model = UAIParser.read(fileName);
 
-		Assert.assertEquals("Wrong number of variables", 3, model.getVariablesCount());
-		Assert.assertEquals("P[1] does not have exactly one parent", 1, model.getParents(1).length);
-		Assert.assertEquals("P[2] does not have exactly two parents", 2, model.getParents(2).length);
+		assertEquals(3, model.getVariablesCount(), "Wrong number of variables");
+		assertEquals(1, model.getParents(1).length, "P[1] does not have exactly one parent");
+		assertEquals(2, model.getParents(2).length, "P[2] does not have exactly two parents");
 
 		// checks for parents
-		Assert.assertTrue(Arrays.stream(model.getParents(1)).anyMatch(x -> x == 0));
-		Assert.assertTrue(Arrays.stream(model.getParents(2)).anyMatch(x -> x == 0));
-		Assert.assertTrue(Arrays.stream(model.getParents(2)).anyMatch(x -> x == 1));
+		assertTrue(Arrays.stream(model.getParents(1)).anyMatch(x -> x == 0));
+		assertTrue(Arrays.stream(model.getParents(2)).anyMatch(x -> x == 0));
+		assertTrue(Arrays.stream(model.getParents(2)).anyMatch(x -> x == 1));
 
 		// TODO: check content of factors
 

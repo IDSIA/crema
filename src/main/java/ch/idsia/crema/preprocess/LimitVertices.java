@@ -4,22 +4,45 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.IndexIterator;
+import ch.idsia.crema.utility.RandomUtil;
 import ch.idsia.crema.utility.hull.LPConvexHull;
 
-import java.util.Random;
+public class LimitVertices implements TransformerModel<VertexFactor, GraphicalModel<VertexFactor>>,
+		PreprocessorModel<VertexFactor, GraphicalModel<VertexFactor>> {
 
-public class LimitVertices {
+	protected int max = 10;
 
-	private final Random picker = new Random();
+	/**
+	 * @param max set the max value (default = 10).
+	 */
+	public void setMax(int max) {
+		this.max = max;
+	}
 
+	/**
+	 * @deprecated set the parameter {@link #max} with {@link #setMax(int)} and use method {@link #execute(GraphicalModel)}
+	 * or {@link #executeInPlace(GraphicalModel)}
+	 */
+	@Deprecated
 	public GraphicalModel<VertexFactor> apply(GraphicalModel<VertexFactor> model, int max) {
-		GraphicalModel<VertexFactor> m2 = model.copy();
-		for (int variable : m2.getVariables()) {
-			VertexFactor factor = reduce(m2.getFactor(variable), max);
+		setMax(max);
+		return execute(model);
+	}
+
+	@Override
+	public void executeInPlace(GraphicalModel<VertexFactor> model) {
+		for (int variable : model.getVariables()) {
+			VertexFactor factor = reduce(model.getFactor(variable), max);
 			System.out.println("factor over " + factor.getDomain() + " has " + factor.getVertices().length + " vertices");
-			m2.setFactor(variable, factor);
+			model.setFactor(variable, factor);
 		}
-		return m2;
+	}
+
+	@Override
+	public GraphicalModel<VertexFactor> execute(GraphicalModel<VertexFactor> model) {
+		GraphicalModel<VertexFactor> copy = model.copy();
+		executeInPlace(copy);
+		return copy;
 	}
 
 	/**
@@ -55,7 +78,7 @@ public class LimitVertices {
 			// prepare randoms
 			int[] rands = new int[data.length];
 			for (int j = 0; j < rands.length; ++j) {
-				rands[j] = picker.nextInt(data[j].length);
+				rands[j] = RandomUtil.getRandom().nextInt(data[j].length);
 			}
 
 			for (int j = 0; j < Dl.getCombinations(); ++j) {

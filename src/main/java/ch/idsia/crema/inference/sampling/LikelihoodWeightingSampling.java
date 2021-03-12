@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.Updating;
+import ch.idsia.crema.inference.InferenceJoined;
+import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
@@ -19,15 +20,14 @@ import java.util.List;
  * Project: CreMA
  * Date:    05.02.2018 13:33
  */
-public class LikelihoodWeightingSampling extends StochasticSampling implements Updating<BayesianFactor, BayesianFactor> {
+public class LikelihoodWeightingSampling extends StochasticSampling implements InferenceJoined<BayesianNetwork, BayesianFactor> {
 
 	/**
 	 * Algorithm 44 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 *
 	 * @return a map with the computed sampled states over all the variables.
 	 */
-	private TIntIntMap simulateBN() {
-
+	private TIntIntMap simulateBN(BayesianNetwork model, TIntIntMap evidence) {
 		int[] roots = model.getRoots();
 
 		TIntIntMap map = new TIntIntHashMap();
@@ -84,7 +84,7 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements U
 	/**
 	 * Algorithm 46 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 */
-	public Collection<BayesianFactor> run(int... query) {
+	public Collection<BayesianFactor> run(BayesianNetwork model, TIntIntMap evidence, int... query) {
 		if (evidence == null)
 			throw new IllegalArgumentException("Setting the evidence is mandatory!");
 
@@ -111,7 +111,7 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements U
 		}
 
 		for (int i = 0; i < n; i++) {
-			TIntIntMap x = simulateBN();
+			TIntIntMap x = simulateBN(model, evidence);
 
 			// product of all network parameters theta_e|u where E in _E_ and eu ~ x
 			double W = 1;
@@ -155,19 +155,34 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements U
 		return factors;
 	}
 
-	@Override
-	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query) {
-		setModel(model);
-		setEvidence(new TIntIntHashMap());
+	/**
+	 * @deprecated use method {@link #query(BayesianNetwork, TIntIntMap, int)}
+	 */
+	@Deprecated
+	public Collection<BayesianFactor> apply(BayesianNetwork model, int[] query) {
+		return run(model, new TIntIntHashMap(), query);
+	}
 
-		return run(query);
+	/**
+	 * @deprecated use method {@link #query(BayesianNetwork, TIntIntMap, int[])}
+	 */
+	@Deprecated
+	public Collection<BayesianFactor> apply(BayesianNetwork model, int[] query, TIntIntMap observations) {
+		return run(model, observations, query);
 	}
 
 	@Override
-	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query, TIntIntMap observations) {
-		setModel(model);
-		setEvidence(observations);
-
-		return run(query);
+	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int query) {
+		return run(model, evidence, query).stream()
+				.findFirst()
+				.orElseThrow(IllegalStateException::new);
 	}
+
+	@Override
+	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int... queries) {
+		return run(model, evidence, queries).stream()
+				.reduce(BayesianFactor::combine)
+				.orElseThrow(IllegalStateException::new);
+	}
+
 }

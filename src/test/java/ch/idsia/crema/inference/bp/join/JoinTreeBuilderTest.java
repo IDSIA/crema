@@ -5,13 +5,13 @@ import ch.idsia.crema.inference.bp.cliques.CliqueSet;
 import ch.idsia.crema.utility.ArraysUtil;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -22,7 +22,7 @@ public class JoinTreeBuilderTest {
 
 	CliqueSet cliques;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		// source: Jensen, p.123, Fig. 4.15
 		int A = 0, B = 1, C = 2, D = 3, E = 4, F = 5, G = 6, H = 7, I = 8, J = 9;
@@ -47,10 +47,10 @@ public class JoinTreeBuilderTest {
 
 			int[] intersection = ArraysUtil.intersection(source.getVariables(), target.getVariables());
 
-			assertTrue("No variables shared between " + source + " and " + target, intersection.length > 0);
+			assertTrue(intersection.length > 0, "No variables shared between " + source + " and " + target);
 		}
 
-		assertEquals("Not all cliques are covered", cliques.size(), coveredCliques.size());
+		assertEquals(cliques.size(), coveredCliques.size(), "Not all cliques are covered");
 	}
 
 	@Test

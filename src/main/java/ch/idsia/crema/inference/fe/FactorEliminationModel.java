@@ -1,8 +1,8 @@
 package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.SingleInference;
-import ch.idsia.crema.model.graphical.GraphicalModel;
+import ch.idsia.crema.inference.Inference;
+import ch.idsia.crema.model.graphical.DAGModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
@@ -10,28 +10,25 @@ import gnu.trove.set.hash.TIntHashSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ch.idsia.crema.inference.fe.FactorEliminationUtils.project;
+
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    06.02.2018 09:37
  */
-// TODO: we have three types of FactorElimination... keep just one
-public class FactorElimination1 implements SingleInference<BayesianFactor, BayesianFactor> {
-
-	private GraphicalModel<BayesianFactor> model;
-
-	public void setModel(GraphicalModel<BayesianFactor> model) {
-		this.model = model.copy();
-	}
+// TODO: this is the main FactorElimination since it works with a GraphicalModel
+public class FactorEliminationModel implements Inference<DAGModel<BayesianFactor>, BayesianFactor> {
 
 	/**
 	 * Algorithm 9 from "Modeling and Reasoning with BN", Dawiche, p.153
 	 *
+	 * @param model model to work with
 	 * @param query variable to query
 	 * @return the prior marginal on the query variable
 	 */
-	public BayesianFactor FE1(int query) {
-
+	@Override
+	public BayesianFactor query(DAGModel<BayesianFactor> model, int query) {
 		// CPTs of network N
 		List<BayesianFactor> S = new ArrayList<>(model.getFactors());
 
@@ -116,33 +113,8 @@ public class FactorElimination1 implements SingleInference<BayesianFactor, Bayes
 		return fiVariables;
 	}
 
-	/**
-	 * Given a {@link BayesianFactor} Fr, marginalize all the variables of this factor that are not equals to the
-	 * query variable Q.
-	 *
-	 * @param Fr the target factor
-	 * @param Q  the query variable
-	 * @return a factor over the query variable
-	 */
-	private BayesianFactor project(BayesianFactor Fr, int Q) {
-
-		TIntSet variables = new TIntHashSet(Fr.getDomain().getVariables());
-		variables.remove(Q);
-
-		for (int v : variables.toArray())
-			Fr = Fr.marginalize(v);
-
-		return Fr;
-	}
-
 	@Override
-	public BayesianFactor apply(GraphicalModel<BayesianFactor> model, int query, TIntIntMap observations) {
-		throw new IllegalArgumentException("Factor Elimination 1 doesn't support observations!");
-	}
-
-	@Override
-	public BayesianFactor apply(GraphicalModel<BayesianFactor> model, int query) {
-		setModel(model);
-		return FE1(query);
+	public BayesianFactor query(DAGModel<BayesianFactor> model, TIntIntMap evidence, int query) {
+		throw new IllegalArgumentException(this.getClass().getName() + " doesn't support evidence");
 	}
 }

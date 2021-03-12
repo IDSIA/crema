@@ -8,12 +8,9 @@ import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Random;
 
 /**
@@ -23,8 +20,6 @@ import java.util.Random;
  */
 public class LWSvsVE {
 
-	private BayesianNetwork model;
-
 	private final Random random = new Random(42);
 
 	private static final int e = 5;
@@ -32,15 +27,10 @@ public class LWSvsVE {
 	private static final int n = 10;
 	private static final int p = 3;
 
-	@Before
-	public void setUp() {
-		BayesianNetworkContainer BN = BayesianNetworkContainer.random(42, n, p);
-
-		model = BN.network;
-	}
-
 	@Test
-	public void vsVariableElimination() throws InterruptedException {
+	public void vsVariableElimination() {
+		final BayesianNetworkContainer BN = BayesianNetworkContainer.random(42, n, p);
+		final BayesianNetwork model = BN.network;
 
 		// TODO: this test has an issue with variable elimination and empty nodes
 
@@ -63,12 +53,10 @@ public class LWSvsVE {
 			}
 
 			LikelihoodWeightingSampling lws = new LikelihoodWeightingSampling();
-			Collection<BayesianFactor> collLWS = lws.apply(model, query, evidence);
-
-			BayesianFactor resLWS = new ArrayList<>(collLWS).get(0);
+			BayesianFactor resLWS = lws.query(model, evidence, query);
 
 			VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(seq);
-			BayesianFactor resVE = ve.apply(model, query, evidence);
+			BayesianFactor resVE = ve.query(model, evidence, query);
 
 			double distance = resLWS.getData()[0] - resVE.getData()[0];
 

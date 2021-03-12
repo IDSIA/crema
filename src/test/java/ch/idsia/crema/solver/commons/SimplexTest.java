@@ -4,12 +4,12 @@ import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.linear.Relationship;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SimplexTest {
 
@@ -36,7 +36,7 @@ public class SimplexTest {
 		solver.loadProblem(new LinearConstraintSet(constraints), GoalType.MINIMIZE);
 		solver.solve(numerator, 2);
 		assertEquals(-12, solver.getValue(), 0.00000001);
-		assertArrayEquals(new double[]{7, 0}, solver.getVertex(), 0.0000001);
+		assertArrayEquals(new double[]{7, 0}, solver.getVertex(), 1e-7);
 	}
 
 	@Test
@@ -61,7 +61,7 @@ public class SimplexTest {
 			solver.solve(numerator, i);
 
 			assertEquals(6315.625 + i, solver.getValue(), 0.00000001);
-			assertArrayEquals(new double[]{21.875, 53.125}, solver.getVertex(), 0.0000001);
+			assertArrayEquals(new double[]{21.875, 53.125}, solver.getVertex(), 1e-7);
 		}
 	}
 }

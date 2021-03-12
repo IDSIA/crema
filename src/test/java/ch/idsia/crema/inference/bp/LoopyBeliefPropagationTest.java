@@ -5,13 +5,10 @@ import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.io.bif.BIFParser;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.jgrapht.graph.DefaultEdge;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -21,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 public class LoopyBeliefPropagationTest {
 
 	@Test
-	public void testPropagationQuery() throws Exception {
+	public void testPropagationQuery() {
 		// source: Jensen, p.110, Fig. 4.1 "A simple Bayesian network BN".
 		BayesianNetwork model = new BayesianNetwork();
 		int A0 = model.addVariable(2);
@@ -49,9 +46,11 @@ public class LoopyBeliefPropagationTest {
 
 		model.setFactors(factors);
 
-		LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(model);
+		LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
 		lbp.setIterations(1);
 
+		/*
+		TODO: we are using pre-processing so these checks are not valid anymore
 		for (int i : model.getVariables()) {
 			for (int j : model.getVariables()) {
 				if (i == j) continue;
@@ -65,10 +64,10 @@ public class LoopyBeliefPropagationTest {
 			}
 		}
 
-		BayesianFactor factor = lbp.query(A0);
-
 		assertEquals(lbp.messages.size(), lbp.neighbours.size());
+		 */
 
+		BayesianFactor factor = lbp.query(model, A0);
 		assertEquals(factors[A0], factor);
 	}
 
@@ -90,37 +89,38 @@ public class LoopyBeliefPropagationTest {
 
 		model.setFactors(factors);
 
-		LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(model);
+		LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
+		lbp.setModel(model);
 
 		// P(A):
 		TIntIntHashMap obs = new TIntIntHashMap();
-		BayesianFactor q = lbp.query(A, obs);
+		BayesianFactor q = lbp.query(model, obs, A);
 		System.out.println("P(A):              " + q);
 		assertArrayEquals(new double[]{.4, .6}, q.getData(), 1e-6);
 
 		// P(A | B=0)
 		obs.put(B, 0);
-		q = lbp.query(A, obs);
+		q = lbp.query(model, obs, A);
 		System.out.println("P(A | B=0):       " + q);
 		assertArrayEquals(new double[]{.1818, .8182}, q.getData(), 1e-3);
 
 		// P(A | B=1)
 		obs.put(B, 1);
-		q = lbp.query(A, obs);
+		q = lbp.query(model, obs, A);
 		System.out.println("P(A | B=1):       " + q);
 		assertArrayEquals(new double[]{.8235, .1765}, q.getData(), 1e-3);
 
 		// P(A | B=0, C=0)
 		obs.put(B, 0);
 		obs.put(C, 0);
-		q = lbp.query(A, obs);
+		q = lbp.query(model, obs, A);
 		System.out.println("P(A | B=0, C=0): " + q);
 		assertArrayEquals(new double[]{.0597, .9403}, q.getData(), 1e-3);
 
 		// P(A | B=1, C=1)
 		obs.put(B, 1);
 		obs.put(C, 1);
-		q = lbp.query(A, obs);
+		q = lbp.query(model, obs, A);
 		System.out.println("P(A | B=1, C=1): " + q);
 		assertArrayEquals(new double[]{.9256, .0744}, q.getData(), 1e-3);
 	}
@@ -163,11 +163,11 @@ public class LoopyBeliefPropagationTest {
 		assertEquals(res1, res);
 
 		// computation using Belief Propagation
-		LoopyBeliefPropagation<BayesianFactor> inf = new LoopyBeliefPropagation<>(bn);
+		LoopyBeliefPropagation<BayesianFactor> inf = new LoopyBeliefPropagation<>();
 
 		TIntIntMap obs = new TIntIntHashMap();
 		obs.put(D, 0);
-		final BayesianFactor q = inf.query(A, obs);
+		final BayesianFactor q = inf.query(bn, obs, A);
 		System.out.println("query=" + q);
 
 		assertEquals(res, q);
@@ -176,12 +176,12 @@ public class LoopyBeliefPropagationTest {
 	@Test
 	public void testNumberOfStatesReturned() throws Exception {
 		final BayesianNetwork network = BIFParser.read("models/bif/alloy.bif").network;
-		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(network);
+		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
 
 //		int[] vs = {4, 5, 25};
 
 		for (int v : network.getVariables()) {
-			final BayesianFactor q0 = lbp.query(v);
+			final BayesianFactor q0 = lbp.query(network, v);
 //			System.out.println(v + ":\t" + q0.getData().length + "\t" + network.getSize(v));
 //			System.out.println(q0);
 

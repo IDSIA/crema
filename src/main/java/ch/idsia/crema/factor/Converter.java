@@ -1,4 +1,4 @@
-package ch.idsia.crema.core;
+package ch.idsia.crema.factor;
 
 import java.util.function.BiFunction;
 

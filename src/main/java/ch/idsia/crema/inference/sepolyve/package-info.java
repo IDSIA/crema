@@ -1,7 +1,4 @@
 /**
- * 
- */
-/**
  * Polytree variable elimination for Separately specified vertex based factors.
  * 
  * @author huber

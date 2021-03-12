@@ -17,12 +17,12 @@ import java.util.*;
 
 public class SePolyController extends SearchOperation {
 
-	private TIntObjectMap<List<VertexFactor>> queue;
-	private TIntIntMap evidence;
-	private GraphicalModel<VertexFactor> model;
+	private final TIntObjectMap<List<VertexFactor>> queue;
+	private final TIntIntMap evidence;
+	private final GraphicalModel<VertexFactor> model;
 	private DefaultSeparateAlgebra algebra = null;
-	private ArrayList<NodeInfo> nodeStats;
-	private ArrayList<Integer> order;
+	private final ArrayList<NodeInfo> nodeStats;
+	private final ArrayList<Integer> order;
 
 	private long maxSize = Long.MAX_VALUE;
 	private long maxTime = Long.MAX_VALUE;
@@ -32,9 +32,11 @@ public class SePolyController extends SearchOperation {
 	 * As we are running in online mode, we do not use the other operations of the
 	 * algebra!
 	 *
-	 * @param model
-	 * @param evidence
+	 * @param model the model used for inference
+	 * @param evidence the observed variable as a map of variable-states
 	 * @param rounding
+	 * @param maxTime
+	 * @param maxMem
 	 */
 	public SePolyController(GraphicalModel<VertexFactor> model, TIntIntMap evidence, DefaultSeparateAlgebra rounding, long maxTime, long maxMem) {
 		this(model, evidence);

@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class DefaultSeparateAlgebra implements Operation<VertexFactor> {
 
-	private double tollerance = 0.0000001;
+	private double tollerance = 1e-7;
 
 	public DefaultSeparateAlgebra() {
 	}

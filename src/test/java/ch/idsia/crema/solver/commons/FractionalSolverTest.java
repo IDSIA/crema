@@ -8,12 +8,12 @@ import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.linear.Relationship;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FractionalSolverTest {
 
@@ -37,20 +37,20 @@ public class FractionalSolverTest {
 		solver.loadProblem(new SeparateLinearToExtensiveHalfspaceFactor().apply(f0), GoalType.MINIMIZE);
 		solver.solve(num, 0, denom, 0);
 
-		assertEquals(0.184175234689316, solver.getValue(), 0.000000001);
+		assertEquals(0.184175234689316, solver.getValue(), 1e-9);
 
 		double[] expected = {0.1, 0.3, 0.6, 0.3, 0.5, 0.2};// 0.7, 0.3, 0.1,
 		// 0.9, 0.1, 0.9
 		// };
-		assertArrayEquals(expected, solver.getVertex(), 0.000000001);
+		assertArrayEquals(expected, solver.getVertex(), 1e-9);
 		num = new double[]{0.052, 0.12, 0.0, 0.0, 0.0, 0.0};
 		denom = new double[]{0.052, 0.12, 0.126, 0.28, 0.024, 0.0545};
 
 		solver.solve(num, 0, denom, 0);
 
 		// nothing changed just called solve with other signature
-		assertEquals(0.184175234689316, solver.getValue(), 0.000000001);
-		assertArrayEquals(expected, solver.getVertex(), 0.000000001);
+		assertEquals(0.184175234689316, solver.getValue(), 1e-9);
+		assertArrayEquals(expected, solver.getVertex(), 1e-9);
 	}
 
 	@Test
@@ -76,8 +76,8 @@ public class FractionalSolverTest {
 		solver.loadProblem(new LinearConstraintSet(constraints), GoalType.MINIMIZE);
 		solver.solve(numerator, 2, denominator, 4);
 
-		assertArrayEquals(new double[]{7, 0}, solver.getVertex(), 0.0000001);
-		assertEquals(-1.090909090909, solver.getValue(), 0.0000001);
+		assertArrayEquals(new double[]{7, 0}, solver.getVertex(), 1e-7);
+		assertEquals(-1.090909090909, solver.getValue(), 1e-7);
 	}
 
 }

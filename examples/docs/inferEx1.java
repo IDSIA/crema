@@ -1,18 +1,18 @@
-package docs;
-
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
+
+
 
 
 public class inferEx1 {
 public static void main(String[] args) throws InterruptedException {
 
 // define the structure
-DAGModel cnet = new DAGModel();
+GraphicalModel<VertexFactor> cnet = new DAGModel<>();
 int X0 = cnet.addVariable(2);
 int X1 = cnet.addVariable(3);
 cnet.addParent(X0,X1);
@@ -32,9 +32,9 @@ fa.addVertex(new double[]{0.2, 0.8}, 2);
 fa.addVertex(new double[]{0.1, 0.9}, 2);
 cnet.setFactor(X0,fa);
 // set up the inference and run the queries
-Inference inf = new CredalVariableElimination(cnet);
-VertexFactor res1 = (VertexFactor) inf.query(X1, ObservationBuilder.observe(X0, 0));
-VertexFactor res2 = (VertexFactor) inf.query(X0);
+CredalVariableElimination inf = new CredalVariableElimination();
+VertexFactor res1 = inf.query(cnet, ObservationBuilder.observe(X0, 0), X1);
+VertexFactor res2 = inf.query(cnet, X0);
 
 double[][][] vertices = res1.getData();
 
