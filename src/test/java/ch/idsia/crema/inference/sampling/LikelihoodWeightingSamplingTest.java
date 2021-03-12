@@ -6,12 +6,15 @@ import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -22,12 +25,17 @@ import java.util.Arrays;
 public class LikelihoodWeightingSamplingTest {
 
 	BayesianNetwork model;
+	LikelihoodWeightingSampling lws;
 
 	@BeforeEach
 	public void setUp() {
 		BayesianNetworkContainer BN = BayesianNetworkContainer.mix5Variables();
 
 		model = BN.network;
+		lws = new LikelihoodWeightingSampling();
+		lws.setPreprocess(false);
+
+		RandomUtil.setRandomSeed(0);
 	}
 
 	@Test
@@ -35,7 +43,6 @@ public class LikelihoodWeightingSamplingTest {
 		TIntIntMap evidence = new TIntIntHashMap(new int[]{3}, new int[]{0});
 
 		for (int query = 0; query < 5; query++) {
-			LikelihoodWeightingSampling lws = new LikelihoodWeightingSampling();
 			BayesianFactor resLWS = lws.query(model, evidence, query);
 
 			MinFillOrdering ordering = new MinFillOrdering();
@@ -54,21 +61,51 @@ public class LikelihoodWeightingSamplingTest {
 
 	@Test
 	public void run() {
-		LikelihoodWeightingSampling lws = new LikelihoodWeightingSampling();
+		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 2, 0});
+		lws.setIterations(100000);
 
-		TIntIntMap evidence = new TIntIntHashMap();
-		System.out.println("P(Rain) =                                     " + lws.query(model, evidence, 2));
+		TIntIntMap evidence;
+		BayesianFactor Qlws;
+		BayesianFactor Qve;
+
+		evidence = new TIntIntHashMap();
+		Qlws = lws.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("P(Rain) =                                     " + Qlws);
+		System.out.println("P(Rain) =                                     " + Qve);
+
+		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1});
-		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + lws.query(model, evidence, 2));
+		Qlws = lws.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Qlws);
+		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Qve);
+
+		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0});
-		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + lws.query(model, evidence, 2));
+		Qlws = lws.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Qlws);
+		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Qve);
+
+		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{0}, new int[]{1});
-		System.out.println("P(Rain|Winter = true) =                       " + lws.query(model, evidence, 2));
+		Qlws = lws.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("P(Rain|Winter = true) =                       " + Qlws);
+		System.out.println("P(Rain|Winter = true) =                       " + Qve);
+
+		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{0}, new int[]{0});
-		System.out.println("P(Rain|Winter = false) =                      " + lws.query(model, evidence, 2));
+		Qlws = lws.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("P(Rain|Winter = false) =                      " + Qlws);
+		System.out.println("P(Rain|Winter = false) =                      " + Qve);
+
+		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 	}
 }

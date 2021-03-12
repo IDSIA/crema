@@ -1,12 +1,8 @@
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.BayesianNetwork;
-import gnu.trove.map.hash.TIntIntHashMap;
-
 public class BeliefPropagation{
 
 	public static void main(String[] args) {
 		/* Define your Bayesian Network model */
-/*
+
 		BayesianNetwork model = new BayesianNetwork();
 		A = model.addVariable(2);
 		B = model.addVariable(2);
@@ -66,7 +62,7 @@ public class BeliefPropagation{
 
 		BayesianFactor bp.query(A);
 
-	*/
+
 
 	}
 }

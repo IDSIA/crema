@@ -1,12 +1,7 @@
-package docs;
-
 import ch.idsia.crema.core.DomainBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-
-
 import ch.idsia.crema.model.graphical.DAGModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
@@ -69,7 +64,7 @@ f0_constr.addConstraint(new double[]{0., 0., 1.,}, Relationship.GEQ, 0);
 
 // Define the structure
 
-DAGModel cnet = new DAGModel();
+DAGModel<VertexFactor> cnet = new DAGModel<>();
 int X0 = cnet.addVariable(3);
 int X1 = cnet.addVariable(2);
 cnet.addParent(X1,X0);

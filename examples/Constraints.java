@@ -10,7 +10,7 @@ public class Constraints {
         double p = 0.2;
 
         // Define the model
-        DAGModel model = new DAGModel();
+        DAGModel<SeparateHalfspaceFactor> model = new DAGModel<>();
         int u = model.addVariable(3);
 
         SeparateHalfspaceFactor fu_constr = new SeparateHalfspaceFactor(model.getDomain(u), Strides.empty());
