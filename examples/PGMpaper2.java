@@ -3,9 +3,7 @@ import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
-import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.approxlp.CredalApproxLP;
-
 import ch.idsia.crema.model.graphical.DAGModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 
@@ -16,7 +14,7 @@ public class PGMpaper2 {
     public static void main(String[] args) throws InterruptedException, IOException {
 
         // define the structure
-        DAGModel cnet = new DAGModel();
+        DAGModel<SeparateHalfspaceFactor> cnet = new DAGModel<>();
         int a = cnet.addVariable(2);
         int b = cnet.addVariable(3);
         cnet.addParent(a, b);
@@ -55,9 +53,9 @@ public class PGMpaper2 {
         IO.write(cnet, "./models/pgm-hcredal.uai");
 
         // set up the inference and run the queries
-        Inference inf = new CredalApproxLP();
-        IntervalFactor res1 = (IntervalFactor) inf.query(cnet,ObservationBuilder.observe(a, 0), b);
-        IntervalFactor res2 = (IntervalFactor) inf.query(cnet, b);
+        CredalApproxLP inf = new CredalApproxLP();
+        IntervalFactor res1 = inf.query(cnet,ObservationBuilder.observe(a, 0), b);
+        IntervalFactor res2 = inf.query(cnet, b);
 
         System.out.println(res1);
         System.out.println(res2);

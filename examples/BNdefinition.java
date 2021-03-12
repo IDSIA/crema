@@ -1,8 +1,6 @@
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 
-import java.util.Arrays;
-
 
 public class BNdefinition {
     public static void main(String[] args) {

@@ -1,5 +1,3 @@
-package docs;
-
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
@@ -13,7 +11,7 @@ public class Starting {
         /*  CN defined with vertex Factor  */
 
         // Define the model (with vertex factors)
-        DAGModel model = new DAGModel();
+        DAGModel<VertexFactor> model = new DAGModel<>();
         int A = model.addVariable(3);
         int B = model.addVariable(2);
         model.addParent(B,A);
