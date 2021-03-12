@@ -1,12 +1,14 @@
-0.1.6.i
+0.1.7.RC1
 ===========
 
-- Added `Loopy Belief Propagation` algorithm ( #63 #64 #65 )
+- Refactoring of `Inference` and `Preprocessing` hierarchies ( #66 )  
+- Added `Loopy Belief Propagation` algorithm ( #63 #64 #65 #67 )
 - Fixed #48, an issue with `Belief Propagation` caused by wrong management of messages.
 - Fixed a minor issue in BeliefPropagation (introduced in 0.1.6.b)
 - Added a parser for the `BIF` format ( #51 )
 - Fixed #56, #62
 - Minor change to `BayesianNetworkSampling` class
+- Updated `Sampling`algorithms ( #67 )
 
 0.1.6
 ===========
