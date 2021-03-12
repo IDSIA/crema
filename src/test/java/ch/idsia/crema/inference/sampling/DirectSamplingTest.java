@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.sampling;
 
-import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
+import ch.idsia.crema.inference.BayesianNetworkContainer;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;

@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.jtree.tree;
+package ch.idsia.crema.inference.fe.tree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.fe.EliminationTree;

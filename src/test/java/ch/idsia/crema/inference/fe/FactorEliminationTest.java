@@ -1,8 +1,7 @@
-package ch.idsia.crema.inference.jtree;
+package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.fe.EliminationTree;
-import ch.idsia.crema.inference.fe.FactorElimination;
+import ch.idsia.crema.inference.BayesianNetworkContainer;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.jtree;
+package ch.idsia.crema.inference;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;

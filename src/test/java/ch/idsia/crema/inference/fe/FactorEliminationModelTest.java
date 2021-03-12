@@ -1,7 +1,6 @@
-package ch.idsia.crema.inference.jtree;
+package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.fe.FactorEliminationModel;
 import ch.idsia.crema.model.graphical.DAGModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
