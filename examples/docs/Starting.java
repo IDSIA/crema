@@ -3,6 +3,8 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
 import ch.idsia.crema.model.graphical.DAGModel;
+
+
 public class Starting {
     public static void main(String[] args) {
         double p = 0.2;
@@ -38,4 +40,3 @@ public class Starting {
 
     }
 }
-//43

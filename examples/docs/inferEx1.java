@@ -6,6 +6,8 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 
 
+
+
 public class inferEx1 {
 public static void main(String[] args) throws InterruptedException {
 
