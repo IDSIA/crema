@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.jtree.BayesianNetworkContainer;
+import ch.idsia.crema.inference.BayesianNetworkContainer;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
