@@ -61,7 +61,7 @@ public class LikelihoodWeightingSamplingTest {
 
 	@Test
 	public void run() {
-		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 2, 0});
+		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
 		lws.setIterations(100000);
 
 		TIntIntMap evidence;
