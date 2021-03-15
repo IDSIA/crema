@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.sampling;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
-import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.preprocess.CutObserved;
 import gnu.trove.map.TIntDoubleMap;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
@@ -28,14 +28,11 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements I
 	@Override
 	public Collection<BayesianFactor> run(BayesianNetwork original, TIntIntMap evidence, int... query) {
 		final BayesianNetwork model = preprocess(original, evidence, query);
-		final DAGModel<BayesianFactor> N = model.copy();
 
-		// remove connections between node with evidence and parents
-		for (int node : evidence.keys()) {
-			int[] parents = N.getParents(node);
-			for (int parent : parents) {
-				N.removeParent(node, parent);
-			}
+		if (!preprocess) {
+			// this is mandatory
+			final CutObserved<BayesianFactor> co = new CutObserved<>();
+			co.executeInPlace(model, evidence);
 		}
 
 		// P[x] <- 0 for each value x of variable X in network N {estimate for Pr(x,e)}}
@@ -53,6 +50,9 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements I
 
 			// collect likelihood of evidence
 			for (int key : evidence.keys()) {
+				if (model.getSize(key) == 0)
+					continue;
+
 				final int state = evidence.get(key);
 				final int[] parents = model.getParents(key);
 				BayesianFactor factor = model.getFactor(key);
