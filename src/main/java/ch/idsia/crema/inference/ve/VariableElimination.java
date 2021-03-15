@@ -33,7 +33,7 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Constructs a variable elimination specifying the algebra.
 	 * Factors, evidence and elimnation sequence must be specified with setters.
 	 *
-	 * @param ops
+	 * @param ops algebra to use
 	 */
 	public VariableElimination(Operation<F> ops) {
 		this.operator = ops;
@@ -43,7 +43,7 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Constructs a variable elimination specifying the algebra to be used for the
 	 * factors and the elimination order
 	 *
-	 * @param ops
+	 * @param ops      algebra to use
 	 * @param sequence the elimination sequence to use
 	 */
 	public VariableElimination(Operation<F> ops, int[] sequence) {
@@ -54,13 +54,15 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	/**
 	 * Set the elimination sequence to be used. Variables will be eliminated in this order.
 	 * The sequence may include the query!
-	 * <p>Elimination sequencies can be generated with an {@link OrderingStrategy}.
+	 * <p>Elimination sequences can be generated with an {@link OrderingStrategy}.
 	 * </p>
 	 *
 	 * @param sequence the elimination sequence to use
+	 * @return the same object that can be chained during the configuration
 	 */
-	public void setSequence(int[] sequence) {
+	public VariableElimination<F> setSequence(int[] sequence) {
 		this.sequence = sequence;
+		return this;
 	}
 
 	/**
@@ -68,9 +70,11 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Collection version.
 	 *
 	 * @param factors a collection of factors
+	 * @return the same object that can be chained during the configuration
 	 */
-	public void setFactors(Collection<? extends F> factors) {
+	public VariableElimination<F> setFactors(Collection<? extends F> factors) {
 		this.factors = new ArrayList<>(factors);
+		return this;
 	}
 
 	/**
@@ -78,9 +82,11 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Array version.
 	 *
 	 * @param factors an array of factors
+	 * @return the same object that can be chained during the configuration
 	 */
-	public void setFactors(F[] factors) {
+	public VariableElimination<F> setFactors(F[] factors) {
 		this.factors = Arrays.asList(factors);
+		return this;
 	}
 
 	/**
@@ -88,9 +94,11 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * associations.
 	 *
 	 * @param evidence the observed variable as a map of variable-states
+	 * @return the same object that can be chained during the configuration
 	 */
-	public void setEvidence(TIntIntMap evidence) {
+	public VariableElimination<F> setEvidence(TIntIntMap evidence) {
 		this.evidence = evidence;
+		return this;
 	}
 
 
@@ -99,9 +107,11 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Will result in asking K(Q|e) vs K(Qe)
 	 *
 	 * @param norm a boolean
+	 * @return the same object that can be chained during the configuration
 	 */
-	public void setNormalize(boolean norm) {
+	public VariableElimination<F> setNormalize(boolean norm) {
 		normalize = norm;
+		return this;
 	}
 
 	/**

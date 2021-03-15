@@ -14,9 +14,11 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 
 	/**
 	 * @param max set the max value (default = 10).
+	 * @return the same object that can be chained during the configuration
 	 */
-	public void setMax(int max) {
+	public LimitVertices setMax(int max) {
 		this.max = max;
+		return this;
 	}
 
 	/**
@@ -49,7 +51,7 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 	 * Probably generates max vertices!
 	 *
 	 * @param factor
-	 * @param max
+	 * @param max    internal {@link #max} value
 	 * @return
 	 */
 	private VertexFactor reduce(VertexFactor factor, int max) {

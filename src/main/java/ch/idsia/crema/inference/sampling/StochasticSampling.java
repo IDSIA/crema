@@ -28,6 +28,10 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 
 	protected Boolean preprocess = true;
 
+	/**
+	 * @param preprocess true to activate pre-processing, default is true.
+	 * @return the same object that can be chained during the configuration
+	 */
 	public StochasticSampling setPreprocess(Boolean preprocess) {
 		this.preprocess = preprocess;
 		return this;
@@ -121,16 +125,16 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 				}
 
 				// check for evidence in this child node
-				if (!evidence.containsKey(node)) {
+				if (evidence.containsKey(node)) {
+					// with evidence the state is fixed
+					map.put(node, evidence.get(node));
+				} else {
 					// check for parent state in this child node
 					final TIntIntMap obs = new TIntIntHashMap();
 					for (int p : parents)
 						obs.put(p, map.get(p));
 
 					map.put(node, sample(model.getFactor(node), obs));
-				} else {
-					// with evidence the state is fixed
-					map.put(node, evidence.get(node));
 				}
 
 				final int[] children = model.getChildren(node);

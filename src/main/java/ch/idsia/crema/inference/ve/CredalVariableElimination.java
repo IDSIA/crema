@@ -48,7 +48,7 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 	 *
 	 * @param query    int the target variable
 	 * @param evidence {@link TIntIntMap} a map of evidence in the form variable-state
-	 * @return
+	 * @return the result of the query
 	 */
 	@Override
 	public VertexFactor query(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int query) {

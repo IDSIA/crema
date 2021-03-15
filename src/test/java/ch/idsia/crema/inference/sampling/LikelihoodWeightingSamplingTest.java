@@ -79,32 +79,32 @@ public class LikelihoodWeightingSamplingTest {
 		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
-		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Qlws);
-		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Qve);
+		System.out.println("LWS: P(Rain|Wet Grass = false, Slippery = true) =  " + Qlws);
+		System.out.println("VE:  P(Rain|Wet Grass = false, Slippery = true) =  " + Qve);
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
-		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Qlws);
-		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Qve);
+		System.out.println("LWS: P(Rain|Wet Grass = false, Slippery = false) = " + Qlws);
+		System.out.println("VE:  P(Rain|Wet Grass = false, Slippery = false) = " + Qve);
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{0}, new int[]{1});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
-		System.out.println("P(Rain|Winter = true) =                       " + Qlws);
-		System.out.println("P(Rain|Winter = true) =                       " + Qve);
+		System.out.println("LWS: P(Rain|Winter = true) =                       " + Qlws);
+		System.out.println("VE:  P(Rain|Winter = true) =                       " + Qve);
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{0}, new int[]{0});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
-		System.out.println("P(Rain|Winter = false) =                      " + Qlws);
-		System.out.println("P(Rain|Winter = false) =                      " + Qve);
+		System.out.println("LWS: P(Rain|Winter = false) =                      " + Qlws);
+		System.out.println("VE:  P(Rain|Winter = false) =                      " + Qve);
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 	}

@@ -41,13 +41,23 @@ public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvide
 		setLog(log);
 	}
 
+	/**
+	 * @param size the size of the binarized evidence
+	 * @return the same object that can be chained during the configuration
+	 */
 	// TODO: what is this? It is just the size of evidence?
-	public void setSize(int size) {
+	public BinarizeEvidence<F> setSize(int size) {
 		this.size = size;
+		return this;
 	}
 
-	public void setLog(boolean log) {
+	/**
+	 * @param log true if the evidence node should use the log probabilities
+	 * @return the same object that can be chained during the configuration
+	 */
+	public BinarizeEvidence<F> setLog(boolean log) {
 		this.log = log;
+		return this;
 	}
 
 	public int getEvidenceNode() {

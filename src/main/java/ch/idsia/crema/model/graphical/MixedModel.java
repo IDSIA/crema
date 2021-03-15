@@ -17,6 +17,11 @@ public class MixedModel extends DAGModel<GenericFactor> {
 		super(original);
 	}
 
+	@Override
+	public MixedModel copy() {
+		return new MixedModel(this);
+	}
+
 	public boolean checkSignature(Class<? extends GenericFactor>... types) {
 		for (var type : types) {
 			for (GenericFactor g : getFactors()) {
@@ -33,4 +38,5 @@ public class MixedModel extends DAGModel<GenericFactor> {
 		final GenericFactor f = getFactor(variable);
 		return ConverterFactory.INSTANCE.convert(f, target, variable);
 	}
+
 }

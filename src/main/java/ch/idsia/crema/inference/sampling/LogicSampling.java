@@ -37,7 +37,7 @@ public class LogicSampling extends StochasticSampling {
 			Px.put(variable, new double[states]);
 		}
 
-		for (int i = 0; i < iterations; i++) {
+		for (int it = 0; it < iterations; it++) {
 			final TIntIntMap x = simulateBN(model, evidence);
 
 			for (int variable : x.keys()) {

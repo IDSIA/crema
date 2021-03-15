@@ -23,6 +23,11 @@ public class BayesianNetwork extends DAGModel<BayesianFactor> {
 		super(original);
 	}
 
+	@Override
+	public BayesianNetwork copy() {
+		return new BayesianNetwork(this);
+	}
+
 	public double[] logProb(TIntIntMap[] data) {
 		return IntStream.of(this.getVariables()).mapToDouble(v -> this.getFactor(v).logProb(data, v)).toArray();
 	}
