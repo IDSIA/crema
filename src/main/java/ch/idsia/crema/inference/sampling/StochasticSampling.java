@@ -28,14 +28,15 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 
 	protected Boolean preprocess = true;
 
-	public void setPreprocess(Boolean preprocess) {
+	public StochasticSampling setPreprocess(Boolean preprocess) {
 		this.preprocess = preprocess;
+		return this;
 	}
 
 	protected BayesianNetwork preprocess(BayesianNetwork original, TIntIntMap evidence, int... query) {
 		BayesianNetwork model = original;
 		if (preprocess) {
-			model = (BayesianNetwork) original.copy();
+			model = new BayesianNetwork(original.copy());
 			final CutObserved<BayesianFactor> co = new CutObserved<>();
 			final RemoveBarren<BayesianFactor> rb = new RemoveBarren<>();
 
@@ -67,8 +68,9 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 	 *
 	 * @param iterations number of iterations to do during the sampling
 	 */
-	public void setIterations(long iterations) {
+	public StochasticSampling setIterations(long iterations) {
 		this.iterations = iterations;
+		return this;
 	}
 
 	/**

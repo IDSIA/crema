@@ -16,6 +16,13 @@ import java.util.stream.IntStream;
  */
 public class BayesianNetwork extends DAGModel<BayesianFactor> {
 
+	public BayesianNetwork() {
+	}
+
+	public BayesianNetwork(DAGModel<BayesianFactor> original) {
+		super(original);
+	}
+
 	public double[] logProb(TIntIntMap[] data) {
 		return IntStream.of(this.getVariables()).mapToDouble(v -> this.getFactor(v).logProb(data, v)).toArray();
 	}

@@ -56,12 +56,14 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	/**
 	 * @param iterations max number of iterations to do until convergence
 	 */
-	public void setIterations(int iterations) {
+	public LoopyBeliefPropagation<F> setIterations(int iterations) {
 		this.iterations = iterations;
+		return this;
 	}
 
-	public void setPreprocess(Boolean preprocess) {
+	public LoopyBeliefPropagation<F> setPreprocess(Boolean preprocess) {
 		this.preprocess = preprocess;
+		return this;
 	}
 
 	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {

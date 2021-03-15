@@ -34,8 +34,9 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 
 	protected Boolean preprocess = true;
 
-	public void setPreprocess(Boolean preprocess) {
+	public BeliefPropagation<F> setPreprocess(Boolean preprocess) {
 		this.preprocess = preprocess;
+		return this;
 	}
 
 	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {
