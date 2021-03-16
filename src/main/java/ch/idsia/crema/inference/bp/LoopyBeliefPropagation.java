@@ -92,8 +92,6 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 			rb.executeInPlace(model, evidence, query);
 		}
 
-		System.out.println("before: " + original.getVariables().length + " after: " + model.getVariables().length);
-
 		return model;
 	}
 

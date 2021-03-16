@@ -163,7 +163,7 @@ public class Posterior extends Manager {
 		try {
 			solver.solve(numerator, 0.0, denominator, 0.0);
 		} catch (NoFeasibleSolutionException ex) {
-			System.out.println(free + " " + (Arrays.stream(tmp.getData()).sum() == 1.0) + " " + Arrays.toString(tmp.getData()));
+			System.err.println("NoFeasibleSolution: " + free + " " + (Arrays.stream(tmp.getData()).sum() == 1.0) + " " + Arrays.toString(tmp.getData()));
 			throw ex;
 		}
 		BayesianFactor solution = from.getData().get(free);

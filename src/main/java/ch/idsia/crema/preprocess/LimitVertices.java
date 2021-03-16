@@ -40,7 +40,7 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 	public void executeInPlace(GraphicalModel<VertexFactor> model) {
 		for (int variable : model.getVariables()) {
 			VertexFactor factor = reduce(model.getFactor(variable), max);
-			System.out.println("factor over " + factor.getDomain() + " has " + factor.getVertices().length + " vertices");
+//			System.out.println("factor over " + factor.getDomain() + " has " + factor.getVertices().length + " vertices");
 			model.setFactor(variable, factor);
 		}
 	}
