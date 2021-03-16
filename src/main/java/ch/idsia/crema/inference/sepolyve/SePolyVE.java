@@ -21,7 +21,7 @@ import java.util.Map;
  * The algorithm supports HARD limints on memory usage and execution time.
  * Reaching such a limit will trigger a runtime exception.
  * </p>
- * 
+ *
  * @author david huber
  * @author Alessandro Antonucci
  * @author Jasper De Bock
@@ -29,8 +29,7 @@ import java.util.Map;
 @NetworkReduction
 public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexFactor> {
 	public static final String MAX_MEM_BYTE = "maxMem";
-	public static final String MAX_TIME_MS = "maxTimeMillis"; // double in
-																// seconds
+	public static final String MAX_TIME_MS = "maxTimeMillis"; // double in seconds
 
 	private DefaultSeparateAlgebra algebra = null;
 	private SePolyController collector;
@@ -40,7 +39,7 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 
 	/**
 	 * Run the algorithm round the factors to the specified tolerance.
-	 * 
+	 *
 	 * @param tolerance the specified tolerance value
 	 */
 	public SePolyVE(double tolerance) {
@@ -65,13 +64,12 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 	 * <li>{@link SePolyVE#MAX_TIME_MS}: max execution time in milliseconds</li>
 	 * </ul>
 	 * Values may be expressed as strings or numerics.
-	 * 
+	 *
 	 * <p>
 	 * NOTE: a call to init is not required for the algorithm to function!
 	 * </p>
-	 * 
-	 * @param params
-	 *            a map with initialization options (can be NULL)
+	 *
+	 * @param params a map with initialization options (can be NULL)
 	 */
 	public void init(Map<String, ?> params) {
 		if (params != null) {
@@ -95,12 +93,12 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 	/**
 	 * Compute the marginal or posterior probability of query given evidence in the model.
 	 *
-	 * @param model the model to use for inference
+	 * @param model    the model to use for inference
 	 * @param query    the variable that will be queried
 	 * @param evidence the observed variable as a map of variable-states
-	 * @exception MaxTimeException - when maximum execution time is reached 
-	 * @exception MaxMemoryException - when maximum memory usage is reached
-	 * @return the posterior or marginal extensive {@link VertexFactor} 
+	 * @return the posterior or marginal extensive {@link VertexFactor}
+	 * @throws MaxTimeException   - when maximum execution time is reached
+	 * @throws MaxMemoryException - when maximum memory usage is reached
 	 */
 	@Override
 	public VertexFactor query(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int query) {

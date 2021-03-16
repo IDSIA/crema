@@ -12,8 +12,15 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 
 	protected int max = 10;
 
+	public LimitVertices() {
+	}
+
+	public LimitVertices(int max) {
+		setMax(max);
+	}
+
 	/**
-	 * @param max set the max value (default = 10).
+	 * @param max set the max value, default is 10.
 	 */
 	public void setMax(int max) {
 		this.max = max;
@@ -33,7 +40,7 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 	public void executeInPlace(GraphicalModel<VertexFactor> model) {
 		for (int variable : model.getVariables()) {
 			VertexFactor factor = reduce(model.getFactor(variable), max);
-			System.out.println("factor over " + factor.getDomain() + " has " + factor.getVertices().length + " vertices");
+//			System.out.println("factor over " + factor.getDomain() + " has " + factor.getVertices().length + " vertices");
 			model.setFactor(variable, factor);
 		}
 	}
@@ -49,7 +56,7 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 	 * Probably generates max vertices!
 	 *
 	 * @param factor
-	 * @param max
+	 * @param max    internal {@link #max} value
 	 * @return
 	 */
 	private VertexFactor reduce(VertexFactor factor, int max) {

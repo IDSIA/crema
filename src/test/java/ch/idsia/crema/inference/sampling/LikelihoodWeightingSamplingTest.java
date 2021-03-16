@@ -9,10 +9,12 @@ import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,22 +26,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class LikelihoodWeightingSamplingTest {
 
-	BayesianNetwork model;
 	LikelihoodWeightingSampling lws;
 
 	@BeforeEach
 	public void setUp() {
-		BayesianNetworkContainer BN = BayesianNetworkContainer.mix5Variables();
-
-		model = BN.network;
-		lws = new LikelihoodWeightingSampling();
-		lws.setPreprocess(false);
-
+		lws = new LikelihoodWeightingSampling(100000, false );
 		RandomUtil.setRandomSeed(0);
 	}
 
 	@Test
-	public void vsVariableElimination() {
+	public void vsVariableElimination1() {
+		BayesianNetwork model = BayesianNetworkContainer.mix5Variables().network;
+
 		TIntIntMap evidence = new TIntIntHashMap(new int[]{3}, new int[]{0});
 
 		for (int query = 0; query < 5; query++) {
@@ -60,9 +58,10 @@ public class LikelihoodWeightingSamplingTest {
 	}
 
 	@Test
-	public void run() {
+	public void vsVariableElimination2() {
+		BayesianNetwork model = BayesianNetworkContainer.mix5Variables().network;
+
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
-		lws.setIterations(100000);
 
 		TIntIntMap evidence;
 		BayesianFactor Qlws;
@@ -79,33 +78,85 @@ public class LikelihoodWeightingSamplingTest {
 		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
-		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Qlws);
-		System.out.println("P(Rain|Wet Grass = false, Slippery = true) =  " + Qve);
+		System.out.println("LWS: P(Rain|Wet Grass = false, Slippery = true) =  " + Qlws);
+		System.out.println("VE:  P(Rain|Wet Grass = false, Slippery = true) =  " + Qve);
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
-		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Qlws);
-		System.out.println("P(Rain|Wet Grass = false, Slippery = false) = " + Qve);
+		System.out.println("LWS: P(Rain|Wet Grass = false, Slippery = false) = " + Qlws);
+		System.out.println("VE:  P(Rain|Wet Grass = false, Slippery = false) = " + Qve);
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{0}, new int[]{1});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
-		System.out.println("P(Rain|Winter = true) =                       " + Qlws);
-		System.out.println("P(Rain|Winter = true) =                       " + Qve);
+		System.out.println("LWS: P(Rain|Winter = true) =                       " + Qlws);
+		System.out.println("VE:  P(Rain|Winter = true) =                       " + Qve);
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
 		evidence = new TIntIntHashMap(new int[]{0}, new int[]{0});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
-		System.out.println("P(Rain|Winter = false) =                      " + Qlws);
-		System.out.println("P(Rain|Winter = false) =                      " + Qve);
+		System.out.println("LWS: P(Rain|Winter = false) =                      " + Qlws);
+		System.out.println("VE:  P(Rain|Winter = false) =                      " + Qve);
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
+	}
+
+	@Test
+	public void vsVariableElimination3() {
+		final Random random = new Random(42);
+
+		final int e = 5;
+		final int m = 1000;
+		final int n = 10;
+		final int p = 3;
+
+		final BayesianNetwork model = BayesianNetworkContainer.random(42, n, p).network;
+
+		// TODO: this test has an issue with variable elimination and empty nodes
+
+		MinFillOrdering ordering = new MinFillOrdering();
+		int[] seq = ordering.apply(model);
+
+		double avg = 0.0;
+
+		for (int q = 0; q < m; q++) {
+			TIntIntMap evidence = new TIntIntHashMap(new int[]{3}, new int[]{0});
+
+			int query = random.nextInt(n);
+
+			for (int i = 0; i < e; i++) {
+				int k = random.nextInt(n);
+				if (k != query) {
+					int v = random.nextInt(2);
+					evidence.put(k, v);
+				}
+			}
+
+			LikelihoodWeightingSampling lws = new LikelihoodWeightingSampling();
+			BayesianFactor resLWS = lws.query(model, evidence, query);
+
+			VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(seq);
+			BayesianFactor resVE = ve.query(model, evidence, query);
+
+			double distance = resLWS.getData()[0] - resVE.getData()[0];
+
+			avg += distance;
+
+			System.out.println("LWS:  " + resLWS);
+			System.out.println("VE:   " + resVE);
+			System.out.println("dist: " + distance);
+		}
+
+		avg /= m;
+
+		System.out.println("Average distance; " + avg);
+		Assertions.assertTrue(Math.abs(avg) < .07);
 	}
 }

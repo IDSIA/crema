@@ -16,6 +16,16 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 
 	private Map<String, Object> init = null;
 
+	public ApproxLP2() {
+	}
+
+	public ApproxLP2(Map<String, ?> params) {
+		initialize(params);
+	}
+
+	/**
+	 * @param params configuration map for the inference engine
+	 */
 	public void initialize(Map<String, ?> params) {
 		if (params == null)
 			this.init = new HashMap<>();
@@ -44,7 +54,7 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 	 * @param evidence      the variable that is to be considered the summarization of the
 	 *                      evidence (-1 if no evidence)
 	 * @param query         the variable whose intervals we are interested in
-	 * @return
+	 * @return the result of the inference
 	 */
 	@Override
 	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {

@@ -18,6 +18,21 @@ import java.util.stream.Collectors;
  */
 public class LogicSampling extends StochasticSampling {
 
+	public LogicSampling() {
+	}
+
+	public LogicSampling(Boolean preprocess) {
+		super(preprocess);
+	}
+
+	public LogicSampling(long iterations) {
+		super(iterations);
+	}
+
+	public LogicSampling(long iterations, Boolean preprocess) {
+		super(iterations, preprocess);
+	}
+
 	/**
 	 * Algorithm 45 from "Modeling and Reasoning with BN", Dawiche, p.385
 	 * <p>
@@ -37,7 +52,7 @@ public class LogicSampling extends StochasticSampling {
 			Px.put(variable, new double[states]);
 		}
 
-		for (int i = 0; i < iterations; i++) {
+		for (int it = 0; it < iterations; it++) {
 			final TIntIntMap x = simulateBN(model, evidence);
 
 			for (int variable : x.keys()) {

@@ -84,8 +84,8 @@ public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, Ver
 			}
 			if (!origin)
 				vertices.add(row);
-			else
-				System.out.println("Removed 000");
+//			else
+//				System.out.println("Removed 000");
 		}
 
 		return vertices.toArray(new double[0][]);

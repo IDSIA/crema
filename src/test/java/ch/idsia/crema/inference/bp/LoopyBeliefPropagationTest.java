@@ -1,21 +1,14 @@
 package ch.idsia.crema.inference.bp;
 
-import ch.idsia.crema.entropy.BayesianEntropy;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.BayesianNetworkContainer;
+import ch.idsia.crema.inference.ve.FactorVariableElimination;
+import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
-import ch.idsia.crema.model.io.bif.BIFObject;
 import ch.idsia.crema.model.io.bif.BIFParser;
-import ch.idsia.crema.model.io.dot.DotSerialize;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.function.Function;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -198,95 +191,61 @@ public class LoopyBeliefPropagationTest {
 		}
 	}
 
-	@Disabled
 	@Test
-	public void testExactInference() throws Exception {
-		final BIFObject bif = BIFParser.read("models/bif/bnD.em.bif");
-		final BayesianNetwork model = bif.network;
-		final Function<String, Integer> v = (String s) -> bif.variableName.get(s);
+	void testVariableElimination() {
+		final BayesianNetwork model = BayesianNetworkContainer.mix5Variables().network;
 
+		final VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
 		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
-		lbp.setIterations(10);
 
-		final String[] tNames = new String[]{"distress_1", "lack_vit_1", "psico_event2_1"};
+		TIntIntMap evidence;
+		BayesianFactor Qlbp;
+		BayesianFactor Qve;
 
-		final int[] targets = Arrays.stream(tNames).map(v).mapToInt(x -> x).toArray();
+		evidence = new TIntIntHashMap();
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain) =                                     " + Qlbp);
+		System.out.println("VE:  P(Rain) =                                     " + Qve);
 
-		final BayesianFactor[] fTargets = new BayesianFactor[tNames.length];
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		for (int i = 0; i < tNames.length; i++) {
-			final String name = tNames[i];
-			final int target = targets[i];
-			fTargets[i] = lbp.query(model, target);
-			System.out.printf("\t%2d %15s: %s%n", target, name, fTargets[i]);
-			Files.write(Paths.get("graph." + name + "." + target + ".dot"), new DotSerialize().run(lbp.model).getBytes());
-		}
+		evidence = new TIntIntHashMap();
+		evidence.put(3, 0);
+		evidence.put(4, 1);
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain|Wet Grass = false, Slippery = true) =  " + Qlbp);
+		System.out.println("VE:  P(Rain|Wet Grass = false, Slippery = true) =  " + Qve);
 
-		double H = Arrays.stream(fTargets).mapToDouble(BayesianEntropy::H).sum() / fTargets.length;
-		System.out.printf("\t   H:              %s%n", H); //
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.05);
 
-		assertEquals(0.2549172, H, 0.01, "Entropy for skills");
+		evidence = new TIntIntHashMap();
+		evidence.put(3, 0);
+		evidence.put(4, 0);
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain|Wet Grass = false, Slippery = false) = " + Qlbp);
+		System.out.println("VE:  P(Rain|Wet Grass = false, Slippery = false) = " + Qve);
 
-		double[] expected = new double[]{0.920117, 0.949444, 0.990979};
-		for (int i = 0; i < targets.length; i++)
-			assertEquals(expected[i], fTargets[i].getValue(0), .01, "Variable: " + tNames[i]);
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		final String[] qNames = new String[]{"noanxiety_0", "illness_0", "ISCO_0", "energy_0"};
-		final int[] qTargets = Arrays.stream(qNames).mapToInt(bif.variableName::get).toArray();
+		evidence = new TIntIntHashMap();
+		evidence.put(0, 1);
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain|Winter = true) =                       " + Qlbp);
+		System.out.println("VE:  P(Rain|Winter = true) =                       " + Qve);
 
-		expected = new double[]{0.2250806, 0.2531826, 0.2538594, 0.2353488};
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		for (int q = 0; q < qNames.length; q++) {
-			final String qName = qNames[q];
-			final int qTarget = qTargets[q];
-			final int states = model.getSize(qTarget);
+		evidence = new TIntIntHashMap();
+		evidence.put(0, 0);
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain|Winter = false) =                      " + Qlbp);
+		System.out.println("VE:  P(Rain|Winter = false) =                      " + Qve);
 
-			final TIntIntMap ev = new TIntIntHashMap();
-
-			final double[] h = new double[states];
-			final double[] pa = new double[states];
-
-			final BayesianFactor pQ = lbp.query(model, qTarget);
-
-			// for (i in 1:length(states))
-			for (int i = 0; i < states; i++) {
-				ev.put(qTarget, i);
-
-				// for (t in 1:length(target))
-				final BayesianFactor[] p = Arrays.stream(targets)
-						.mapToObj(t -> lbp.query(model, ev, t))
-						.toArray(BayesianFactor[]::new);
-
-				h[i] = Arrays.stream(p).mapToDouble(BayesianEntropy::H).sum() / fTargets.length;
-				pa[i] = pQ.getValue(i);
-			}
-
-			final double ch = IntStream.range(0, states)
-					.mapToDouble(i -> h[i] * pa[i])
-					.sum();
-
-			System.out.printf("\t%2d %15s %.4f%n", qTarget, qName, ch);
-
-			assertEquals(expected[q], ch, .01, "Variable: " + qName);
-		}
-
-		System.out.println("choose variable noanxiety_0 -> 10");
-
-		final TIntIntMap obs = new TIntIntHashMap();
-		obs.put(v.apply("noanxiety_0"), 10);
-
-		expected = new double[]{0.083890728, 0.056563958, 0.009261867};
-
-		for (int i = 0; i < tNames.length; i++) {
-			final String name = tNames[i];
-			final int target = targets[i];
-			fTargets[i] = lbp.query(model, obs, target);
-
-			assertEquals(expected[i], fTargets[i].getValue(0), .01, "Variable: " + name);
-		}
-		H = Arrays.stream(fTargets).mapToDouble(BayesianEntropy::H).sum() / fTargets.length;
-
-		System.out.printf("\t   H:              %s%n", H);
-		assertEquals(0.1388963, H, .01);
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 	}
 }

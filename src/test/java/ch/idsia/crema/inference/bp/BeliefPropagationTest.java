@@ -3,7 +3,10 @@ package ch.idsia.crema.inference.bp;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
+import ch.idsia.crema.inference.BayesianNetworkContainer;
 import ch.idsia.crema.inference.bp.cliques.Clique;
+import ch.idsia.crema.inference.ve.FactorVariableElimination;
+import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.bif.BIFParser;
@@ -271,16 +274,12 @@ public class BeliefPropagationTest {
 		assertEquals(res, q);
 	}
 
-	@Disabled
-	/*
-	TODO:
-	 this test does not work with the new inference interface since we cannot get che potentialsPerClique without
-	 performing first a query. The pre-processing also complicates a little the analysis test
-	 */
 	@Test
 	public void testAlloyNumberOfFactorsPerClique() throws IOException {
-		final BayesianNetwork network = BIFParser.read("models/bif/alloy.bif").network;
-		final BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>();
+		final BayesianNetwork model = BIFParser.read("models/bif/alloy.bif").network;
+		final BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(false);
+
+		bp.query(model, 0);
 
 		final long factors = bp.potentialsPerClique.values().stream()
 				.mapToLong(Set::size)
@@ -292,7 +291,7 @@ public class BeliefPropagationTest {
 			assertTrue(bp.potentialsPerClique.containsKey(clique), clique + " not found!");
 		}
 
-		assertEquals(network.getVariables().length, factors);
+		assertEquals(model.getVariables().length, factors);
 
 		bp.potentialsPerClique.forEach((c, f) -> {
 			assertNotNull(f);
@@ -301,4 +300,61 @@ public class BeliefPropagationTest {
 		});
 	}
 
+	@Test
+	void testVariableElimination() {
+		final BayesianNetwork model = BayesianNetworkContainer.mix5Variables().network;
+
+		final VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
+		final BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(false);
+
+		TIntIntMap evidence;
+		BayesianFactor Qlbp;
+		BayesianFactor Qve;
+
+		evidence = new TIntIntHashMap();
+		Qlbp = bp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("BP: P(Rain) =                                     " + Qlbp);
+		System.out.println("VE: P(Rain) =                                     " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
+
+		evidence = new TIntIntHashMap();
+		evidence.put(3, 0);
+		evidence.put(4, 1);
+		Qlbp = bp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("BP: P(Rain|Wet Grass = false, Slippery = true) =  " + Qlbp);
+		System.out.println("VE: P(Rain|Wet Grass = false, Slippery = true) =  " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.05);
+
+		evidence = new TIntIntHashMap();
+		evidence.put(3, 0);
+		evidence.put(4, 0);
+		Qlbp = bp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("BP: P(Rain|Wet Grass = false, Slippery = false) = " + Qlbp);
+		System.out.println("VE: P(Rain|Wet Grass = false, Slippery = false) = " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
+
+		evidence = new TIntIntHashMap();
+		evidence.put(0, 1);
+		Qlbp = bp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("BP: P(Rain|Winter = true) =                       " + Qlbp);
+		System.out.println("VE: P(Rain|Winter = true) =                       " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
+
+		evidence = new TIntIntHashMap();
+		evidence.put(0, 0);
+		Qlbp = bp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("BP: P(Rain|Winter = false) =                      " + Qlbp);
+		System.out.println("VE: P(Rain|Winter = false) =                      " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
+	}
 }

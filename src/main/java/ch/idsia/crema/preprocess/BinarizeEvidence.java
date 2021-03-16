@@ -36,16 +36,30 @@ public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvide
 	public BinarizeEvidence() {
 	}
 
+	public BinarizeEvidence(boolean log) {
+		setLog(log);
+	}
+
+	public BinarizeEvidence(int size) {
+		setSize(size);
+	}
+
 	public BinarizeEvidence(int size, boolean log) {
 		setSize(size);
 		setLog(log);
 	}
 
+	/**
+	 * @param size the size of the binarized evidence
+	 */
 	// TODO: what is this? It is just the size of evidence?
 	public void setSize(int size) {
 		this.size = size;
 	}
 
+	/**
+	 * @param log true if the evidence node should use the log probabilities
+	 */
 	public void setLog(boolean log) {
 		this.log = log;
 	}

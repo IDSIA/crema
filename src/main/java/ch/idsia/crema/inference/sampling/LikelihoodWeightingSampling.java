@@ -22,6 +22,21 @@ import java.util.stream.Collectors;
  */
 public class LikelihoodWeightingSampling extends StochasticSampling implements InferenceJoined<BayesianNetwork, BayesianFactor> {
 
+	public LikelihoodWeightingSampling() {
+	}
+
+	public LikelihoodWeightingSampling(Boolean preprocess) {
+		super(preprocess);
+	}
+
+	public LikelihoodWeightingSampling(long iterations) {
+		super(iterations);
+	}
+
+	public LikelihoodWeightingSampling(long iterations, Boolean preprocess) {
+		super(iterations, preprocess);
+	}
+
 	/**
 	 * Algorithm 46 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 */

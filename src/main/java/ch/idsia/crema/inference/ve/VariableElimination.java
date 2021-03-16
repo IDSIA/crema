@@ -33,7 +33,7 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Constructs a variable elimination specifying the algebra.
 	 * Factors, evidence and elimnation sequence must be specified with setters.
 	 *
-	 * @param ops
+	 * @param ops algebra to use
 	 */
 	public VariableElimination(Operation<F> ops) {
 		this.operator = ops;
@@ -43,7 +43,7 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Constructs a variable elimination specifying the algebra to be used for the
 	 * factors and the elimination order
 	 *
-	 * @param ops
+	 * @param ops      algebra to use
 	 * @param sequence the elimination sequence to use
 	 */
 	public VariableElimination(Operation<F> ops, int[] sequence) {
@@ -54,7 +54,7 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	/**
 	 * Set the elimination sequence to be used. Variables will be eliminated in this order.
 	 * The sequence may include the query!
-	 * <p>Elimination sequencies can be generated with an {@link OrderingStrategy}.
+	 * <p>Elimination sequences can be generated with an {@link OrderingStrategy}.
 	 * </p>
 	 *
 	 * @param sequence the elimination sequence to use
@@ -92,7 +92,6 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	public void setEvidence(TIntIntMap evidence) {
 		this.evidence = evidence;
 	}
-
 
 	/**
 	 * Specify if the resulting value should be normalized.
