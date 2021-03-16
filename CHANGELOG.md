@@ -1,4 +1,4 @@
-0.1.7.RC2
+0.1.7.RC3
 ===========
 
 - Refactoring of `Inference` and `Preprocessing` hierarchies ( #66 )  
