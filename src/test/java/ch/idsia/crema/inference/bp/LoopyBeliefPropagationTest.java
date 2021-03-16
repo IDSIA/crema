@@ -2,6 +2,9 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.entropy.BayesianEntropy;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.inference.BayesianNetworkContainer;
+import ch.idsia.crema.inference.ve.FactorVariableElimination;
+import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.io.bif.BIFObject;
 import ch.idsia.crema.model.io.bif.BIFParser;
@@ -196,6 +199,64 @@ public class LoopyBeliefPropagationTest {
 
 			assertEquals(network.getSize(v), q0.getData().length);
 		}
+	}
+
+	@Test
+	void testVariableElimination() {
+		final BayesianNetwork model = BayesianNetworkContainer.mix5Variables().network;
+
+		final VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
+		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
+
+		TIntIntMap evidence;
+		BayesianFactor Qlbp;
+		BayesianFactor Qve;
+
+		evidence = new TIntIntHashMap();
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain) =                                     " + Qlbp);
+		System.out.println("VE:  P(Rain) =                                     " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
+
+		evidence = new TIntIntHashMap();
+		evidence.put(3, 0);
+		evidence.put(4, 1);
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain|Wet Grass = false, Slippery = true) =  " + Qlbp);
+		System.out.println("VE:  P(Rain|Wet Grass = false, Slippery = true) =  " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.05);
+
+		evidence = new TIntIntHashMap();
+		evidence.put(3, 0);
+		evidence.put(4, 0);
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain|Wet Grass = false, Slippery = false) = " + Qlbp);
+		System.out.println("VE:  P(Rain|Wet Grass = false, Slippery = false) = " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
+
+		evidence = new TIntIntHashMap();
+		evidence.put(0, 1);
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain|Winter = true) =                       " + Qlbp);
+		System.out.println("VE:  P(Rain|Winter = true) =                       " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
+
+		evidence = new TIntIntHashMap();
+		evidence.put(0, 0);
+		Qlbp = lbp.query(model, evidence, 2);
+		Qve = ve.query(model, evidence, 2);
+		System.out.println("LBP: P(Rain|Winter = false) =                      " + Qlbp);
+		System.out.println("VE:  P(Rain|Winter = false) =                      " + Qve);
+
+		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 	}
 
 	@Disabled

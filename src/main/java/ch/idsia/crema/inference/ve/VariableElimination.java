@@ -58,11 +58,9 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * </p>
 	 *
 	 * @param sequence the elimination sequence to use
-	 * @return the same object that can be chained during the configuration
 	 */
-	public VariableElimination<F> setSequence(int[] sequence) {
+	public void setSequence(int[] sequence) {
 		this.sequence = sequence;
-		return this;
 	}
 
 	/**
@@ -70,11 +68,9 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Collection version.
 	 *
 	 * @param factors a collection of factors
-	 * @return the same object that can be chained during the configuration
 	 */
-	public VariableElimination<F> setFactors(Collection<? extends F> factors) {
+	public void setFactors(Collection<? extends F> factors) {
 		this.factors = new ArrayList<>(factors);
-		return this;
 	}
 
 	/**
@@ -82,11 +78,9 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * Array version.
 	 *
 	 * @param factors an array of factors
-	 * @return the same object that can be chained during the configuration
 	 */
-	public VariableElimination<F> setFactors(F[] factors) {
+	public void setFactors(F[] factors) {
 		this.factors = Arrays.asList(factors);
-		return this;
 	}
 
 	/**
@@ -94,24 +88,19 @@ public class VariableElimination<F extends GenericFactor> implements InferenceJo
 	 * associations.
 	 *
 	 * @param evidence the observed variable as a map of variable-states
-	 * @return the same object that can be chained during the configuration
 	 */
-	public VariableElimination<F> setEvidence(TIntIntMap evidence) {
+	public void setEvidence(TIntIntMap evidence) {
 		this.evidence = evidence;
-		return this;
 	}
-
 
 	/**
 	 * Specify if the resulting value should be normalized.
 	 * Will result in asking K(Q|e) vs K(Qe)
 	 *
 	 * @param norm a boolean
-	 * @return the same object that can be chained during the configuration
 	 */
-	public VariableElimination<F> setNormalize(boolean norm) {
+	public void setNormalize(boolean norm) {
 		normalize = norm;
-		return this;
 	}
 
 	/**

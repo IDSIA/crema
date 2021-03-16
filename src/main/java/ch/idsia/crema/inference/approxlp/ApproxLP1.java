@@ -24,25 +24,37 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 
 	protected int evidenceNode = -1;
 
+	public ApproxLP1() {
+	}
+
+	public ApproxLP1(int evidenceNode) {
+		setEvidenceNode(evidenceNode);
+	}
+
+	public ApproxLP1(Map<String, ?> params) {
+		initialize(params);
+	}
+
+	public ApproxLP1(Map<String, ?> params, int evidenceNode) {
+		initialize(params);
+		setEvidenceNode(evidenceNode);
+	}
+
 	/**
 	 * @param params configuration map for the inference engine
-	 * @return the same object that can be chained during the configuration
 	 */
-	public ApproxLP1<F> initialize(Map<String, ?> params) {
+	public void initialize(Map<String, ?> params) {
 		if (params == null)
 			this.init = new HashMap<>();
 		else
 			this.init = new HashMap<>(params);
-		return this;
 	}
 
 	/**
 	 * @param evidenceNode the node found with a {@link ch.idsia.crema.preprocess.BinarizeEvidence} pre-processing
-	 * @return the same object that can be chained during the configuration
 	 */
-	public ApproxLP1<F> setEvidenceNode(int evidenceNode) {
+	public void setEvidenceNode(int evidenceNode) {
 		this.evidenceNode = evidenceNode;
-		return this;
 	}
 
 	/**

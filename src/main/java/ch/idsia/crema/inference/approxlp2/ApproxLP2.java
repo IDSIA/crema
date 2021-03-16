@@ -16,16 +16,21 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 
 	private Map<String, Object> init = null;
 
+	public ApproxLP2() {
+	}
+
+	public ApproxLP2(Map<String, ?> params) {
+		initialize(params);
+	}
+
 	/**
 	 * @param params configuration map for the inference engine
-	 * @return the same object that can be chained during the configuration
 	 */
-	public ApproxLP2<F> initialize(Map<String, ?> params) {
+	public void initialize(Map<String, ?> params) {
 		if (params == null)
 			this.init = new HashMap<>();
 		else
 			this.init = new HashMap<>(params);
-		return this;
 	}
 
 	/**

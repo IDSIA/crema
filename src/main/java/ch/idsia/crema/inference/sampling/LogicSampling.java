@@ -18,6 +18,21 @@ import java.util.stream.Collectors;
  */
 public class LogicSampling extends StochasticSampling {
 
+	public LogicSampling() {
+	}
+
+	public LogicSampling(Boolean preprocess) {
+		super(preprocess);
+	}
+
+	public LogicSampling(long iterations) {
+		super(iterations);
+	}
+
+	public LogicSampling(long iterations, Boolean preprocess) {
+		super(iterations, preprocess);
+	}
+
 	/**
 	 * Algorithm 45 from "Modeling and Reasoning with BN", Dawiche, p.385
 	 * <p>

@@ -28,13 +28,34 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 
 	protected Boolean preprocess = true;
 
+	public StochasticSampling() {
+	}
+
+	public StochasticSampling(Boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
+	public StochasticSampling(long iterations) {
+		this.iterations = iterations;
+	}
+
+	public StochasticSampling(long iterations, Boolean preprocess) {
+		this.iterations = iterations;
+		this.preprocess = preprocess;
+	}
+
 	/**
 	 * @param preprocess true to activate pre-processing, default is true.
-	 * @return the same object that can be chained during the configuration
 	 */
-	public StochasticSampling setPreprocess(Boolean preprocess) {
+	public void setPreprocess(Boolean preprocess) {
 		this.preprocess = preprocess;
-		return this;
+	}
+
+	/**
+	 * @param iterations number to iteration to perform, default value is 100.
+	 */
+	public void setIterations(long iterations) {
+		this.iterations = iterations;
 	}
 
 	protected BayesianNetwork preprocess(BayesianNetwork original, TIntIntMap evidence, int... query) {
@@ -65,16 +86,6 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 	@Deprecated
 	public void setModel(BayesianNetwork model) {
 		this.model = (BayesianNetwork) model.copy();
-	}
-
-	/**
-	 * Default value is 100.
-	 *
-	 * @param iterations number of iterations to do during the sampling
-	 */
-	public StochasticSampling setIterations(long iterations) {
-		this.iterations = iterations;
-		return this;
 	}
 
 	/**

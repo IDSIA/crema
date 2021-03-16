@@ -9,6 +9,7 @@ import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.SimpleGraph;
@@ -50,20 +51,34 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 
 	protected int iterations = 5;
 
-	protected Map<ImmutablePair<Integer, Integer>, F> messages;
-	protected Map<ImmutablePair<Integer, Integer>, Neighbour> neighbours;
+	protected Map<Pair<Integer, Integer>, F> messages;
+	protected Map<Pair<Integer, Integer>, Neighbour> neighbours;
+
+	public LoopyBeliefPropagation() {
+	}
+
+	public LoopyBeliefPropagation(int iterations) {
+		setIterations(iterations);
+	}
+
+	public LoopyBeliefPropagation(Boolean preprocess) {
+		setPreprocess(preprocess);
+	}
+
+	public LoopyBeliefPropagation(Boolean preprocess, int iterations) {
+		setPreprocess(preprocess);
+		setIterations(iterations);
+	}
 
 	/**
 	 * @param iterations max number of iterations to do until convergence
 	 */
-	public LoopyBeliefPropagation<F> setIterations(int iterations) {
+	public void setIterations(int iterations) {
 		this.iterations = iterations;
-		return this;
 	}
 
-	public LoopyBeliefPropagation<F> setPreprocess(Boolean preprocess) {
+	public void setPreprocess(Boolean preprocess) {
 		this.preprocess = preprocess;
-		return this;
 	}
 
 	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {
@@ -76,6 +91,8 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 			co.executeInPlace(model, evidence);
 			rb.executeInPlace(model, evidence, query);
 		}
+
+		System.out.println("before: " + original.getVariables().length + " after: " + model.getVariables().length);
 
 		return model;
 	}
@@ -118,7 +135,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		}
 
 		// initialize all messages with the same value of the current node i
-		for (ImmutablePair<Integer, Integer> key : neighbours.keySet()) {
+		for (Pair<Integer, Integer> key : neighbours.keySet()) {
 			final int[] vars = neighbours.get(key).variables;
 			final F fi = model.getFactor(key.getLeft());
 			final int[] ints_i = outersection(fi.getDomain().getVariables(), vars);
@@ -133,7 +150,7 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 	 */
 	protected void addMailbox(Integer i, Integer j, int[] vars) {
 		final Neighbour nij = new Neighbour(i, j, vars);
-		final ImmutablePair<Integer, Integer> key_ij = new ImmutablePair<>(i, j); // (i, j)
+		final Pair<Integer, Integer> key_ij = new ImmutablePair<>(i, j); // (i, j)
 
 		for (DefaultEdge e : graph.edgesOf(i)) {
 			final Integer s = graph.getEdgeSource(e);
@@ -172,52 +189,52 @@ public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DA
 		return variableMarginal(query);
 	}
 
-	private void messagePassing(TIntIntMap evidence) {
+	protected void sendMessage(int i, int j, DAGModel<F> model, TIntIntMap evidence, Map<Pair<Integer, Integer>, F> new_messages) {
+		// send message from i to j
+		final Pair<Integer, Integer> key = new ImmutablePair<>(i, j); // (i, j)
+		final Neighbour neighbour = neighbours.get(key);
+		final F f = model.getFactor(i);
+
+		F Mij = f; // gi(xi)
+
+		if (!neighbour.incoming.isEmpty()) {
+			// collect messages and propagate: PROD Mki_old(xi)
+			F Mki = neighbour.incoming.stream()
+					.map(k -> new ImmutablePair<>(k, i))
+					.map(messages::get)
+					.reduce(F::combine)
+					.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
+
+			Mij = Mij.combine(Mki).normalize(); // h(xi) = gi(xi) * PROD Mki_old(xi)
+		}
+
+		if (evidence.containsKey(i)) {
+			// propagate evidence
+			Mij = Mij.filter(evidence);
+		}
+
+		final int[] ints = outersection(f.getDomain().getVariables(), neighbour.variables);
+		Mij = Mij.marginalize(ints).normalize();
+
+		if (Mij.getDomain().getSize() == 0)
+			throw new IllegalStateException("Message defined over any variable");
+
+		new_messages.put(key, Mij);
+	}
+
+	protected void messagePassing(TIntIntMap evidence) {
 		// iterate and update messages
 		for (int it = 0; it < iterations; it++) {
-			final Map<ImmutablePair<Integer, Integer>, F> new_messages = new HashMap<>();
+			final Map<Pair<Integer, Integer>, F> new_messages = new HashMap<>();
 
-			for (Integer i : network) { // xi
-				for (Integer j : network) { // xj
-					if (i.equals(j))
-						// impossible edges
-						continue;
+			for (int node : model.getVariables()) {
+				final int[] parents = model.getParents(node);
+				final int[] children = model.getChildren(node);
 
-					if (graph.getEdge(i, j) == null)
-						// non existing edges
-						continue;
-
-					// send message from i to j
-					final ImmutablePair<Integer, Integer> key = new ImmutablePair<>(i, j); // (i, j)
-					final Neighbour neighbour = neighbours.get(key);
-					final F f = model.getFactor(i);
-
-					F Mij = f; // gi(xi)
-
-					if (!neighbour.incoming.isEmpty()) {
-						// collect messages and propagate: PROD Mki_old(xi)
-						F Mki = neighbour.incoming.stream()
-								.map(k -> new ImmutablePair<>(k, i))
-								.map(messages::get)
-								.reduce(F::combine)
-								.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
-
-						Mij = Mij.combine(Mki).normalize(); // h(xi) = gi(xi) * PROD Mki_old(xi)
-					}
-
-					if (evidence.containsKey(i)) {
-						// propagate evidence
-						Mij = Mij.filter(evidence);
-					}
-
-					final int[] ints = outersection(f.getDomain().getVariables(), neighbour.variables);
-					Mij = Mij.marginalize(ints).normalize();
-
-					if (Mij.getDomain().getSize() == 0)
-						throw new IllegalStateException("Message defined over any variable");
-
-					new_messages.put(key, Mij);
-				}
+				for (int parent : parents)
+					sendMessage(node, parent, model, evidence, new_messages);
+				for (int child : children)
+					sendMessage(node, child, model, evidence, new_messages);
 			}
 
 			// update all messages and go to the next iteration

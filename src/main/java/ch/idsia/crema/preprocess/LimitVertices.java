@@ -12,13 +12,18 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 
 	protected int max = 10;
 
+	public LimitVertices() {
+	}
+
+	public LimitVertices(int max) {
+		setMax(max);
+	}
+
 	/**
-	 * @param max set the max value (default = 10).
-	 * @return the same object that can be chained during the configuration
+	 * @param max set the max value, default is 10.
 	 */
-	public LimitVertices setMax(int max) {
+	public void setMax(int max) {
 		this.max = max;
-		return this;
 	}
 
 	/**
