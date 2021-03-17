@@ -1,11 +1,9 @@
 package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
-import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
@@ -28,12 +26,12 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * A Separately specified Vertex based credal factor. TODO: Data is currenlty
- * not logged!
+ * A Separately specified Vertex based credal factor.
  *
  * @author david
  */
-public class VertexFactor implements SeparatelySpecified<VertexFactor>, OperableFactor<VertexFactor> {
+// TODO: Data is currently not logged!
+public class VertexFactor implements IVertexFactor {
     private final static boolean log = false;
 
     private final Strides separatedDomain;
@@ -128,7 +126,6 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
         }
     }
 
-
     @Override
     public VertexFactor copy() {
         double[][][] copy = ArraysUtil.deepClone(data);
@@ -155,6 +152,7 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
         return data[offset];
     }
 
+    @Override
     public double[][][] getData() {
         return data;
     }
@@ -266,6 +264,7 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
      * @param vars
      * @return
      */
+    @Override
     public VertexFactor marginalize(int... vars) {
         //System.out.println("marg "+Arrays.toString(vars)+" from "+toStringSimple());
 
@@ -305,6 +304,7 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
      * @param target the new grouping/separation domain
      * @return
      */
+    @Override
     public VertexFactor reseparate(Strides target) {
         // requested current separation!
         if (Arrays.equals(target.getVariables(), separatedDomain.getVariables())) return this;
@@ -366,7 +366,7 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
     }
 
     @Override
-    public VertexFactor combine(VertexFactor other) {
+    public VertexFactor combine(IVertexFactor other) {
 
         //System.out.println("combine "+toStringSimple()+" with "+other.toStringSimple());
 
@@ -379,8 +379,8 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
         Strides runion = getSeparatingDomain().union(other.getSeparatingDomain());
         Strides right = runion.remove(left);
 
-        VertexFactor reshaped1 = this.reseparate(right);
-        VertexFactor reshaped2 = other.reseparate(right);
+        IVertexFactor reshaped1 = this.reseparate(right);
+        IVertexFactor reshaped2 = other.reseparate(right);
 
         double[][][] target_data = new double[right.getCombinations()][][];
 
@@ -390,8 +390,8 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
         for (int r = 0; r < right.getCombinations(); ++r) {
             int idx1 = iter1.next();
             int idx2 = iter2.next();
-            double[][] data1 = reshaped1.data[idx1];
-            double[][] data2 = reshaped2.data[idx2];
+            double[][] data1 = reshaped1.getData()[idx1];
+            double[][] data2 = reshaped2.getData()[idx2];
             double[][] target = new double[data1.length * data2.length][left.getCombinations()];
             target_data[r] = target;
 
@@ -460,12 +460,9 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
     }
 
     public String toStringSimple() {
-        StringBuilder build = new StringBuilder();
-        build.append("K(vars").append(Arrays.toString(getDataDomain().getVariables()));
-        build.append("|").append(Arrays.toString(getSeparatingDomain().getVariables()));
-        build.append(")");
-
-        return build.toString();
+        return "K(vars" + Arrays.toString(getDataDomain().getVariables()) +
+                "|" + Arrays.toString(getSeparatingDomain().getVariables()) +
+                ")";
     }
 
     public double[][][] getInternalData() {
@@ -473,8 +470,8 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
     }
 
     @Override
-    public VertexFactor divide(VertexFactor other) {
-        //
+    public VertexFactor divide(IVertexFactor other) {
+        // TODO
         return null;
     }
 
@@ -728,7 +725,7 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
 	 */
     public static VertexFactor random(Strides leftDomain, Strides rightDomain, int k, int num_decimals, boolean zero_allowed) {
         // array for storing the vertices
-        double data[][][] = new double[rightDomain.getCombinations()][][];
+        double[][][] data = new double[rightDomain.getCombinations()][][];
         // generate independently for each parent
         for (int i = 0; i < data.length; i++)
             data[i] = VertexFactor.random(leftDomain, k, num_decimals, zero_allowed).getData()[0];
@@ -756,7 +753,7 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
             k = Math.min(k, 2);
 
         // generate k precise factor
-        List PMFs = IntStream.range(0, k - 1)
+        List<VertexFactor> PMFs = IntStream.range(0, k - 1)
                 .mapToObj(i -> BayesianFactor.random(leftDomain, Strides.empty(), num_decimals, zero_allowed))
                 .map(f -> new BayesianToVertex().apply(f, leftVar))
                 .collect(Collectors.toList());
@@ -779,6 +776,5 @@ public class VertexFactor implements SeparatelySpecified<VertexFactor>, Operable
         } while (out.getVerticesAt(0).length < k);
         return out;
     }
-
 
 }

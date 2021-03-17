@@ -2,6 +2,7 @@ package ch.idsia.crema.factor.credal.linear;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.credal.vertex.IIntervalFactor;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Doubles;
@@ -15,12 +16,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class IntervalFactor extends SeparateFactor<IntervalFactor> implements SeparateLinearFactor<IntervalFactor> {
+public class IntervalFactor implements IIntervalFactor {
+
+	protected Strides dataDomain;
+
+	protected Strides groupDomain;
+
 	private final double[][] lower;
 	private final double[][] upper;
 
 	public IntervalFactor(Strides content, Strides separation) {
-		super(content, separation);
+		setConditioningDomain(content);
+		setDataDomain(separation);
 
 		this.lower = new double[groupDomain.getCombinations()][content.getCombinations()];
 		this.upper = new double[groupDomain.getCombinations()][content.getCombinations()];
@@ -33,10 +40,37 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 	}
 
 	public IntervalFactor(Strides content, Strides separation, double[][] lower, double[][] upper) {
-		super(content, separation);
+		setConditioningDomain(content);
+		setDataDomain(separation);
 
 		this.lower = lower;
 		this.upper = upper;
+	}
+
+	public void setDataDomain(Strides dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	public void setConditioningDomain(Strides groupDomain) {
+		if (groupDomain == null) {
+			groupDomain = new Strides(new int[0], new int[0]);
+		}
+		this.groupDomain = groupDomain;
+	}
+
+	@Override
+	public Strides getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public Strides getSeparatingDomain() {
+		return groupDomain;
+	}
+
+	@Override
+	public Strides getDomain() {
+		return dataDomain.union(groupDomain);
 	}
 
 	@Override
@@ -65,18 +99,22 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 		this.upper[offset] = uppers;
 	}
 
+	@Override
 	public double[] getLower(int... states) {
 		return this.lower[groupDomain.getOffset(states)];
 	}
 
+	@Override
 	public double[] getUpper(int... states) {
 		return this.upper[groupDomain.getOffset(states)];
 	}
 
+	@Override
 	public double[] getLowerAt(int group_offset) {
 		return this.lower[group_offset];
 	}
 
+	@Override
 	public double[] getUpperAt(int group_offset) {
 		return this.upper[group_offset];
 	}
@@ -200,25 +238,27 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 
 	@Override
 	public String toString() {
-	   StringBuilder sb = new StringBuilder();
-	   sb.append("P(")
-			 .append(Arrays.toString(getDataDomain().getVariables()))
-			 .append(" | ")
-			 .append(Arrays.toString(getSeparatingDomain().getVariables()))
-			 .append(")");
-	   sb.append("\n\t");
-	   for (double[] x : lower)
-		  sb.append(Arrays.toString(x));
-	   sb.append("\n\t");
-	   for (double[] x : upper)
-		  sb.append(Arrays.toString(x));
-	   return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append("P(")
+				.append(Arrays.toString(getDataDomain().getVariables()))
+				.append(" | ")
+				.append(Arrays.toString(getSeparatingDomain().getVariables()))
+				.append(")");
+		sb.append("\n\t");
+		for (double[] x : lower)
+			sb.append(Arrays.toString(x));
+		sb.append("\n\t");
+		for (double[] x : upper)
+			sb.append(Arrays.toString(x));
+		return sb.toString();
 	}
 
+	@Override
 	public double[][] getDataLower() {
 		return lower;
 	}
 
+	@Override
 	public double[][] getDataUpper() {
 		return upper;
 	}
@@ -229,7 +269,8 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 	 * @param f
 	 * @return
 	 */
-	private IntervalFactor merge(IntervalFactor f) {
+	@Override
+	public IntervalFactor merge(IIntervalFactor f) {
 		if (!ArraysUtil.equals(this.getDomain().getVariables(), f.getDomain().getVariables(), true, true))
 			throw new IllegalArgumentException("Inconsistent domains");
 
@@ -244,28 +285,6 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 		}
 
 		return new IntervalFactor(f.getDataDomain(), f.getSeparatingDomain(), lbounds, ubounds);
-	}
-
-	/**
-	 * Merges the bounds with other interval factors
-	 *
-	 * @param factors
-	 * @return
-	 */
-	public IntervalFactor merge(IntervalFactor... factors) {
-		if (factors.length == 1)
-			return merge(factors[0]);
-
-		IntervalFactor out = this;
-
-		for (IntervalFactor f : factors)
-			out = out.merge(f);
-
-		return out;
-	}
-
-	public static IntervalFactor mergeBounds(IntervalFactor... factors) {
-		return factors[0].merge(factors);
 	}
 
 	public boolean isInside(BayesianFactor f) {

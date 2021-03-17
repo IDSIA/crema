@@ -49,6 +49,4 @@ public abstract class SeparateFactor<F extends SeparateFactor<F>> implements Sep
 		return dataDomain.union(groupDomain);
 	}
 
-	@Override
-	public abstract F copy();
 }

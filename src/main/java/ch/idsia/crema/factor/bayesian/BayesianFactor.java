@@ -3,8 +3,6 @@ package ch.idsia.crema.factor.bayesian;
 import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.OperableFactor;
-import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.vertex.Collector;
 import ch.idsia.crema.model.vertex.Filter;
@@ -32,7 +30,7 @@ import java.util.stream.Stream;
  *
  * @author david
  */
-public class BayesianFactor implements OperableFactor<BayesianFactor>, SeparatelySpecified<BayesianFactor> {
+public class BayesianFactor implements IBayesianFactor {
 
 	private Strides domain;
 	private double[] data;
@@ -138,6 +136,7 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 		}
 	}
 
+	@Override
 	public double[] getData() {
 		if (log) {
 			double[] data = new double[this.data.length];
@@ -165,11 +164,13 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 
 	@Override
 	public Strides getSeparatingDomain() {
+		// TODO
 		return null;
 	}
 
 	@Override
 	public Strides getDataDomain() {
+		// TODO
 		return null;
 	}
 
@@ -361,7 +362,6 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 		return new BayesianFactor(target, result, log);
 	}
 
-
 	/**
 	 * The specialized method that avoids the cast of the input variable.
 	 *
@@ -378,13 +378,13 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 	 * @return
 	 */
 	@Override
-	public BayesianFactor combine(BayesianFactor factor) {
+	public BayesianFactor combine(IBayesianFactor factor) {
 		// domains should be sorted
 		this.sortDomain();
 		factor = factor.copy();
 		factor.sortDomain();
 
-		final Strides target = domain.union(factor.domain);
+		final Strides target = domain.union(factor.getDomain());
 		final int length = target.getSize();
 
 		final int[] limits = new int[length];
@@ -400,10 +400,10 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 			// }
 		}
 
-		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
-			int offset = ArraysUtil.indexOf(factor.domain.getVariables()[vindex], target.getVariables());
+		for (int vindex = 0; vindex < factor.getDomain().getSize(); ++vindex) {
+			int offset = ArraysUtil.indexOf(factor.getDomain().getVariables()[vindex], target.getVariables());
 			// if (offset >= 0) {
-			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
+			stride[offset] += ((long) factor.getDomain().getStrides()[vindex] << 32L);
 			// }
 		}
 
@@ -418,9 +418,9 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 
 		for (int i = 0; i < result.length; ++i) {
 			if (log)
-				result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.data[(int) (idx >>> 32L)];
+				result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.getData()[(int) (idx >>> 32L)];
 			else
-				result[i] = data[(int) (idx & 0xFFFFFFFF)] * factor.data[(int) (idx >>> 32L)];
+				result[i] = data[(int) (idx & 0xFFFFFFFF)] * factor.getData()[(int) (idx >>> 32L)];
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {
@@ -452,13 +452,14 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 	 * @param factor
 	 * @return
 	 */
-	public BayesianFactor addition(BayesianFactor factor) {
+	@Override
+	public BayesianFactor addition(IBayesianFactor factor) {
 		// domains should be sorted
 		this.sortDomain();
 		factor = factor.copy();
 		factor.sortDomain();
 
-		final Strides target = domain.union(factor.domain);
+		final Strides target = domain.union(factor.getDomain());
 		final int length = target.getSize();
 
 		final int[] limits = new int[length];
@@ -474,10 +475,10 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 			// }
 		}
 
-		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
-			int offset = ArraysUtil.indexOf(factor.domain.getVariables()[vindex], target.getVariables());
+		for (int vindex = 0; vindex < factor.getDomain().getSize(); ++vindex) {
+			int offset = ArraysUtil.indexOf(factor.getDomain().getVariables()[vindex], target.getVariables());
 			// if (offset >= 0) {
-			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
+			stride[offset] += ((long) factor.getDomain().getStrides()[vindex] << 32L);
 			// }
 		}
 
@@ -491,7 +492,7 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 
 
 		for (int i = 0; i < result.length; ++i) {
-			result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.data[(int) (idx >>> 32L)];
+			result[i] = data[(int) (idx & 0xFFFFFFFF)] + factor.getData()[(int) (idx >>> 32L)];
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {
@@ -516,7 +517,7 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 	 * @return
 	 */
 	@Override
-	public BayesianFactor divide(final BayesianFactor factor) {
+	public BayesianFactor divide(IBayesianFactor factor) {
 		final int length = domain.getSize();
 
 		final int[] limits = new int[length];
@@ -529,9 +530,9 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 			stride[vindex] = domain.getStrides()[vindex];
 		}
 
-		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(domain.getVariables(), factor.domain.getVariables()[vindex]);
-			stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
+		for (int vindex = 0; vindex < factor.getDomain().getSize(); ++vindex) {
+			int offset = Arrays.binarySearch(domain.getVariables(), factor.getDomain().getVariables()[vindex]);
+			stride[offset] += ((long) factor.getDomain().getStrides()[vindex] << 32L);
 		}
 
 		for (int i = 0; i < length; ++i) {
@@ -544,9 +545,9 @@ public class BayesianFactor implements OperableFactor<BayesianFactor>, Separatel
 
 		for (int i = 0; i < result.length; ++i) {
 			if (log)
-				result[i] = data[(int) (idx & 0xFFFFFFFF)] - factor.data[(int) (idx >>> 32L)];
+				result[i] = data[(int) (idx & 0xFFFFFFFF)] - factor.getData()[(int) (idx >>> 32L)];
 			else
-				result[i] = data[(int) (idx & 0xFFFFFFFF)] / factor.data[(int) (idx >>> 32L)];
+				result[i] = data[(int) (idx & 0xFFFFFFFF)] / factor.getData()[(int) (idx >>> 32L)];
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {
