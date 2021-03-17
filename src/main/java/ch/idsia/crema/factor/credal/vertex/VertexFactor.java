@@ -1,12 +1,10 @@
 package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.CredalFactor;
-import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
@@ -34,7 +32,7 @@ import java.util.stream.Stream;
  *
  * @author david
  */
-public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFactor>, Factor<VertexFactor> {
+public class VertexFactor implements CredalFactor<VertexFactor> {
     private final static boolean log = false;
 
     private final Strides separatedDomain;
@@ -540,7 +538,6 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
      * @param assignment int - single value to assign
      * @return
      */
-
     public static VertexFactor deterministic(Strides left, int assignment) {
         return VertexFactor.deterministic(left, Strides.empty(), assignment);
     }
@@ -553,7 +550,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
      * @param assignment int - single value to assign
      * @return
      */
-
+    @Override
     public VertexFactor getDeterministic(int var, int assignment) {
         return VertexFactor.deterministic(this.getDomain().intersection(var), assignment);
     }

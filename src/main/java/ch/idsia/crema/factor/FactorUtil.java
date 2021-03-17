@@ -7,18 +7,16 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * A utility class with function to help with factors. This methods are not part
+ * A utility class with function to help with factors. These methods are not part
  * of the Factor API to avoid clogging.
  *
  * @author david
  */
 public class FactorUtil {
 	/**
-	 * Normalize a Factor over a set of its variable (may be empty)
-	 *
-	 * @param f
-	 * @param over
-	 * @return
+	 * @param f factor to normalize
+	 * @param over set of variables to keep
+	 * @return a normalized {@link GenericFactor} over a set of its variable (may be empty)
 	 */
 	public static <F extends GenericFactor> F normalize(Operation<F> op, F f, int... over) {
 		F div = marginal(op, f, over);
@@ -151,7 +149,7 @@ public class FactorUtil {
 
 
 	/**
-	 * return the marginal of a factors. Not this is a marginalization of all
+	 * return the marginal of a factors. Note this is a marginalization of all
 	 * but the "over" variables
 	 */
 	public static <F extends GenericFactor> F marginal(Operation<F> op, F factor, int... over) {

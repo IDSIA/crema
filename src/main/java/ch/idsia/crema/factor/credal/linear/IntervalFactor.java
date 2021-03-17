@@ -56,13 +56,13 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 	 * Set the lower and upper bounds for a specific conditioning (grouping)
 	 *
 	 * @param lowers
-	 * @param uppsers
+	 * @param uppers
 	 * @param states
 	 */
-	public void set(double[] lowers, double[] uppsers, int... states) {
+	public void set(double[] lowers, double[] uppers, int... states) {
 		int offset = groupDomain.getOffset(states);
 		this.lower[offset] = lowers;
-		this.upper[offset] = uppsers;
+		this.upper[offset] = uppers;
 	}
 
 	public double[] getLower(int... states) {
@@ -125,7 +125,6 @@ public class IntervalFactor extends SeparateFactor<IntervalFactor> implements Se
 		this.lower[offset][dataOffset] = lower;
 		this.upper[offset][dataOffset] = upper;
 	}
-
 
 	@Override
 	public IntervalFactor filter(int variable, int state) {

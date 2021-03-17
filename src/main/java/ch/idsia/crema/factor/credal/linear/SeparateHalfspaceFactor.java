@@ -340,6 +340,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 * @param assignment int - single value to assign
 	 * @return
 	 */
+	@Override
 	public SeparateHalfspaceFactor getDeterministic(int var, int assignment) {
 		return SeparateHalfspaceFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}

@@ -15,7 +15,7 @@ public interface ExtensiveLinearFactor<F extends ExtensiveLinearFactor<F>> exten
 	 * Convert the factor to a single set of LinearProblems. The problem space will be over the
 	 * whole combination of states of the domain.
 	 *
-	 * @return
+	 * @return a set of constraints used in the linear problem
 	 */
 	LinearConstraintSet getLinearProblem();
 }

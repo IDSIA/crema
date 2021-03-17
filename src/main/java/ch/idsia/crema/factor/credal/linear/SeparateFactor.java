@@ -1,7 +1,6 @@
 package ch.idsia.crema.factor.credal.linear;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 
 /**
@@ -10,7 +9,7 @@ import ch.idsia.crema.factor.credal.SeparatelySpecified;
  * @param <F> the managed type. This is usually the type itself.
  * @author david
  */
-public abstract class SeparateFactor<F extends SeparateFactor<F>> implements GenericFactor, SeparatelySpecified<F> {
+public abstract class SeparateFactor<F extends SeparateFactor<F>> implements SeparatelySpecified<F> {
 
 	protected Strides dataDomain;
 

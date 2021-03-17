@@ -1,12 +1,11 @@
 package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.model.vertex.VertexOperation;
 import ch.idsia.crema.utility.ArraysUtil;
 
-public class BooleanFactor implements GenericFactor, SeparatelySpecified<BooleanFactor> {
+public class BooleanFactor implements SeparatelySpecified<BooleanFactor> {
 
 	private final Strides vertexDomain;
 	private final Strides separatedDomain;

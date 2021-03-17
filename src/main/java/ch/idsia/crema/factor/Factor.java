@@ -4,52 +4,18 @@ import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.math.Operable;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Collection;
 
-public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> {
-
-	/**
-	 * <p>
-	 * Filter the factor by selecting only the values where the specified
-	 * variable is in the specified state.
-	 * </p>
-	 *
-	 * <p>
-	 * Can return this if the variable is not part of the domain of the factor.
-	 * </p>
-	 *
-	 * @param variable
-	 * @param state
-	 * @return
-	 */
-	F filter(int variable, int state);
-
-	/**
-	 * <p>
-	 * Filter the factor by selecting only the values where the specified
-	 * variable is in the specified state.
-	 * </p>
-	 *
-	 * <p>
-	 * Can return this if the variables are not part of the domain of the factor.
-	 * </p>
-	 *
-	 * @param obs
-	 * @return
-	 */
-	default F filter(TIntIntMap obs) {
-		throw new NotImplementedException("Not Implemented yet");
-	}
+@SuppressWarnings("unchecked")
+public interface Factor<F extends Factor<F>> extends GenericFilterableFactor<F>, Operable<F> {
 
 	/**
 	 * Combine this factor with the provided one and return the
 	 * result as a new factor.
 	 *
-	 * @param other
-	 * @return
+	 * @param other other factor to combine with this one
+	 * @return a new factor combination of this with the given one
 	 */
 	@Override
 	F combine(F other);
@@ -58,31 +24,36 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * Combine this factor with the provided one and return the
 	 * result as a new factor.
 	 *
-	 * @param other
-	 * @return
+	 * @param others other factors to combine with this one
+	 * @return a new factor, combination of this with the given others factors
 	 */
-	default F combine(F... other) {
-		if (other.length < 1)
-			throw new IllegalArgumentException("wrong number of factors");
+	default F combine(F... others) {
+		if (others.length < 1)
+			return (F) this;
 
 		F out = (F) this;
-		for (F f : other) {
+		for (F f : others) {
 			out = out.combine(f);
 		}
 		return out;
-
 	}
 
-	@SuppressWarnings("unchecked")
-	default F combine(Collection<F> other) {
-		return this.combine((F[]) other.toArray(Factor[]::new));
+	/**
+	 * Combine this factor with the provided one and return the
+	 * result as a new factor.
+	 *
+	 * @param others collection of factors to combine with this one
+	 * @return a new factor, combination of this with the given others factors
+	 */
+	default F combine(Collection<F> others) {
+		return this.combine((F[]) others.toArray(Factor[]::new));
 	}
 
 	/**
 	 * Sum out a variable from the factor.
 	 *
-	 * @param variable
-	 * @return
+	 * @param variable variable to be marginalize out from this factor
+	 * @return a new factor without the given variable
 	 */
 	@Override
 	F marginalize(int variable);
@@ -90,12 +61,11 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	/**
 	 * Sum out a list of variables from the factor.
 	 *
-	 * @param variables
-	 * @return
+	 * @param variables variables to be marginalized out from this factor
+	 * @return a new factor without the given variables
 	 */
 	default F marginalize(int... variables) {
 		if (variables.length < 1)
-//			throw new IllegalArgumentException("wrong number of variables");
 			return (F) this;
 
 		F out = (F) this;
@@ -106,10 +76,8 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	}
 
 	/**
-	 * Divide this factor by the given one
-	 *
-	 * @param factor
-	 * @return
+	 * @param factor given factor to divide by
+	 * @return a new factor resulting in the division of this factor by the given one
 	 */
 	F divide(F factor);
 
@@ -146,16 +114,6 @@ public interface Factor<F extends Factor<F>> extends GenericFactor, Operable<F> 
 	 * @return
 	 */
 	static Factor deterministic(Strides left, int assignment) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	/**
-	 * Replaces the IDs of the variables in the domain
-	 *
-	 * @param new_vars
-	 * @return
-	 */
-	default F renameDomain(int... new_vars) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

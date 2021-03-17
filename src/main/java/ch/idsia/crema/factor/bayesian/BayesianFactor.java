@@ -269,27 +269,6 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 
 	/**
 	 * <p>
-	 * Filter the factor by selecting only the values where the specified
-	 * variable is in the specified state.
-	 * </p>
-	 *
-	 * <p>
-	 * Can return this if the variables are not part of the domain of the factor.
-	 * </p>
-	 *
-	 * @param obs
-	 * @return
-	 */
-	public BayesianFactor filter(TIntIntMap obs) {
-		BayesianFactor f = this.copy();
-		for (int v : obs.keys())
-			if (ArraysUtil.contains(v, f.getDomain().getVariables()))
-				f = f.filter(v, obs.get(v));
-		return f;
-	}
-
-	/**
-	 * <p>
 	 * Marginalize a variable out of the factor. This corresponds to sum all
 	 * parameters that differ only in the state of the marginalized variable.
 	 * </p>
@@ -669,6 +648,7 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return BayesianFactor.deterministic(left, Strides.empty(), assignment);
 	}
 
+	@Override
 	public BayesianFactor getDeterministic(int var, int assignment) {
 		return BayesianFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
