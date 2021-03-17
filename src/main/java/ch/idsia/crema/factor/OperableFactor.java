@@ -8,7 +8,7 @@ import ch.idsia.crema.utility.ArraysUtil;
 import java.util.Collection;
 
 @SuppressWarnings("unchecked")
-public interface Factor<F extends Factor<F>> extends GenericFilterableFactor<F>, Operable<F> {
+public interface OperableFactor<F extends OperableFactor<F>> extends FilterableFactor<F>, Operable<F> {
 
 	/**
 	 * Combine this factor with the provided one and return the
@@ -46,7 +46,7 @@ public interface Factor<F extends Factor<F>> extends GenericFilterableFactor<F>,
 	 * @return a new factor, combination of this with the given others factors
 	 */
 	default F combine(Collection<F> others) {
-		return this.combine((F[]) others.toArray(Factor[]::new));
+		return this.combine((F[]) others.toArray(OperableFactor[]::new));
 	}
 
 	/**
@@ -101,7 +101,7 @@ public interface Factor<F extends Factor<F>> extends GenericFilterableFactor<F>,
 	 * @param assignments assignments of each combination of the parent
 	 * @return
 	 */
-	static Factor deterministic(Strides left, Strides right, int... assignments) {
+	static OperableFactor deterministic(Strides left, Strides right, int... assignments) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
@@ -113,7 +113,7 @@ public interface Factor<F extends Factor<F>> extends GenericFilterableFactor<F>,
 	 * @param assignment int - single value to assign
 	 * @return
 	 */
-	static Factor deterministic(Strides left, int assignment) {
+	static OperableFactor deterministic(Strides left, int assignment) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

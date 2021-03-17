@@ -1,6 +1,6 @@
 package ch.idsia.crema.preprocess;
 
-import ch.idsia.crema.factor.GenericFilterableFactor;
+import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.model.change.NullChange;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.iterator.TIntIntIterator;
@@ -11,7 +11,7 @@ import gnu.trove.map.TIntIntMap;
  *
  * @author huber
  */
-public class CutObserved<F extends GenericFilterableFactor<F>> implements TransformerEvidence<F, GraphicalModel<F>>,
+public class CutObserved<F extends FilterableFactor<F>> implements TransformerEvidence<F, GraphicalModel<F>>,
 		PreprocessorEvidence<F, GraphicalModel<F>> {
 
 	/**

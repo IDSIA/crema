@@ -3,7 +3,8 @@ package ch.idsia.crema.factor.bayesian;
 import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
+import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.vertex.Collector;
 import ch.idsia.crema.model.vertex.Filter;
@@ -31,7 +32,7 @@ import java.util.stream.Stream;
  *
  * @author david
  */
-public class BayesianFactor implements Factor<BayesianFactor> {
+public class BayesianFactor implements OperableFactor<BayesianFactor>, SeparatelySpecified<BayesianFactor> {
 
 	private Strides domain;
 	private double[] data;
@@ -160,6 +161,16 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	public double getValueAt(int index) {
 		double value = data[index];
 		return log ? FastMath.exp(value) : value;
+	}
+
+	@Override
+	public Strides getSeparatingDomain() {
+		return null;
+	}
+
+	@Override
+	public Strides getDataDomain() {
+		return null;
 	}
 
 	public class Helper extends Number {

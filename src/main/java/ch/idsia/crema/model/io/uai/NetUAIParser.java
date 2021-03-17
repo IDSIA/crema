@@ -1,6 +1,6 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
  *
  * @author Rafael Cabañas
  */
-public abstract class NetUAIParser<T extends GraphicalModel<? extends Factor<?>>> extends UAIParser<T> {
+public abstract class NetUAIParser<T extends GraphicalModel<? extends OperableFactor<?>>> extends UAIParser<T> {
 
 	protected int numberOfVariables;
 	protected int[] cardinalities;

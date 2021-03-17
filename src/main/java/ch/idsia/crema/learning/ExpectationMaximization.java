@@ -1,6 +1,6 @@
 package ch.idsia.crema.learning;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -14,7 +14,7 @@ import java.util.List;
  * Author:  Rafael Cabañas and Claudio "Dna" Bonesana
  * Project: CreMA
  */
-public abstract class ExpectationMaximization<F extends Factor<F>> {
+public abstract class ExpectationMaximization<F extends OperableFactor<F>> {
 
 	protected InferenceJoined<GraphicalModel<F>, F> inferenceEngine;
 

@@ -1,14 +1,14 @@
 package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.vertex.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ExtensiveVertexFactor implements Factor<ExtensiveVertexFactor> {
+public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFactor> {
 
 	protected ArrayList<double[]> data;
 	protected Strides domain;

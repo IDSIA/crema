@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.bp;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Pipe;
 import ch.idsia.crema.inference.bp.cliques.FindCliques;
 import ch.idsia.crema.inference.bp.join.JoinTreeBuilderKruskal;
@@ -18,7 +18,7 @@ import java.util.Arrays;
  * Project: crema
  * Date:    16.11.2020 18:22
  */
-public class GraphToJunctionTreePipe<F extends Factor<F>> extends Pipe<DirectedAcyclicGraph<Integer, DefaultEdge>, JunctionTree<F>> {
+public class GraphToJunctionTreePipe<F extends OperableFactor<F>> extends Pipe<DirectedAcyclicGraph<Integer, DefaultEdge>, JunctionTree<F>> {
 
 	public GraphToJunctionTreePipe() {
 		this.stages = Arrays.asList(

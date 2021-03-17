@@ -4,7 +4,7 @@ import ch.idsia.crema.core.Strides;
 
 import java.util.Arrays;
 
-public class VoidFactor implements Factor<VoidFactor> {
+public class VoidFactor implements OperableFactor<VoidFactor> {
 
 	private final Strides domain;
 	private final long max;

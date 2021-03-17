@@ -1,6 +1,6 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
@@ -27,7 +27,7 @@ public abstract class UAIWriter<T> {
 	@SuppressWarnings("unchecked")
 	public static void write(Object target, String filename) throws IOException {
 		if (HCredalUAIWriter.isCompatible(target))
-			new HCredalUAIWriter((DAGModel<? extends Factor<?>>) target, filename).write();
+			new HCredalUAIWriter((DAGModel<? extends OperableFactor<?>>) target, filename).write();
 		else if (VCredalUAIWriter.isCompatible(target))
 			new VCredalUAIWriter((DAGModel<VertexFactor>) target, filename).write();
 		else if (BayesUAIWriter.isCompatible(target))

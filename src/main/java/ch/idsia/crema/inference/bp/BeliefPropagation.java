@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.bp;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.junction.JunctionTree;
@@ -23,7 +23,7 @@ import static ch.idsia.crema.utility.ArraysUtil.difference;
  * Project: CreMA
  * Date:    14.02.2018 10:03
  */
-public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
+public class BeliefPropagation<F extends OperableFactor<F>> implements Inference<DAGModel<F>, F> {
 
 	protected DAGModel<F> model;
 	protected JunctionTree<F> junctionTree;

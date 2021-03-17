@@ -1,10 +1,11 @@
 package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
-import ch.idsia.crema.factor.credal.CredalFactor;
+import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
@@ -32,7 +33,7 @@ import java.util.stream.Stream;
  *
  * @author david
  */
-public class VertexFactor implements CredalFactor<VertexFactor> {
+public class VertexFactor implements SeparatelySpecified<VertexFactor>, OperableFactor<VertexFactor> {
     private final static boolean log = false;
 
     private final Strides separatedDomain;
@@ -53,7 +54,6 @@ public class VertexFactor implements CredalFactor<VertexFactor> {
         this.vertexDomain = left;
         this.data = data;
     }
-
 
     public VertexFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
         this.separatedDomain = Strides.empty();

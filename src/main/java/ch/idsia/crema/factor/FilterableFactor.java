@@ -9,7 +9,7 @@ import gnu.trove.map.TIntIntMap;
  * Date:    17.03.2021 09:49
  */
 // TODO: this can be an interface like Operable<F>?
-public interface GenericFilterableFactor<F extends GenericFilterableFactor<F>> extends GenericFactor {
+public interface FilterableFactor<F extends FilterableFactor<F>> extends GenericFactor {
 
 	/**
 	 * <p>

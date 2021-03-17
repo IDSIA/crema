@@ -1,7 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Rafael Cabañas
  */
-public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Factor<?>>> {
+public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends OperableFactor<?>>> {
 
 	private double[][] aCoeff = new double[numberOfVariables][];
 	private double[][] bCoeff = new double[numberOfVariables][];
@@ -40,7 +40,7 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Fact
 	}
 
 	@Override
-	protected GraphicalModel<? extends  Factor<?>> build() {
+	protected GraphicalModel<? extends OperableFactor<?>> build() {
 		GraphicalModel model = new DAGModel<>();
 
 		// Add the variables

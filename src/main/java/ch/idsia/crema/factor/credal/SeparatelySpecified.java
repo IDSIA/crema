@@ -1,8 +1,8 @@
 package ch.idsia.crema.factor.credal;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.GenericFilterableFactor;
 import org.apache.commons.lang3.NotImplementedException;
 
 /**
@@ -14,7 +14,7 @@ import org.apache.commons.lang3.NotImplementedException;
  *
  * @author david
  */
-public interface SeparatelySpecified<F extends SeparatelySpecified<F>> extends GenericFilterableFactor<F> {
+public interface SeparatelySpecified<F extends SeparatelySpecified<F>> extends FilterableFactor<F> {
 
 	/**
 	 * The domain of the separated part. This is usually the conditioning of the Factor.

@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.bp.junction;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.Arrays;
  * Project: CreMA
  * Date:    14.02.2018 10:25
  */
-public class Separator<F extends Factor<F>> {
+public class Separator<F extends OperableFactor<F>> {
 
 	private int[] variables;
 

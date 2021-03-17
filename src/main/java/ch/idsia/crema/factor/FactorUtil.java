@@ -30,7 +30,7 @@ public class FactorUtil {
 	 * @param over
 	 * @return
 	 */
-	public static <F extends Factor<F>> F normalize(F f, int... over) {
+	public static <F extends OperableFactor<F>> F normalize(F f, int... over) {
 		F div = f;
 		for (int v : ArraysUtil.removeAllFromSortedArray(f.getDomain().getVariables(), over)) {
 			div = div.marginalize(v);
@@ -41,7 +41,7 @@ public class FactorUtil {
 	/**
 	 * Combine a factor with a collection of other factors
 	 */
-	public static <F extends Factor<F>> F combine(F first, Collection<F> others) {
+	public static <F extends OperableFactor<F>> F combine(F first, Collection<F> others) {
 		for (F other : others) {
 			first = first.combine(other);
 		}
@@ -51,7 +51,7 @@ public class FactorUtil {
 	/**
 	 * Combine a collection of factors
 	 */
-	public static <F extends Factor<F>> F combine(Collection<F> factors) {
+	public static <F extends OperableFactor<F>> F combine(Collection<F> factors) {
 		Iterator<F> iterator = factors.iterator();
 		F first = iterator.next();
 		while (iterator.hasNext()) {
@@ -64,7 +64,7 @@ public class FactorUtil {
 	 * Combine a factor with an array of other factors
 	 */
 	@SafeVarargs
-	public static <F extends Factor<F>> F combine(F first, F... others) {
+	public static <F extends OperableFactor<F>> F combine(F first, F... others) {
 		for (F other : others) {
 			first = first.combine(other);
 		}
@@ -80,7 +80,7 @@ public class FactorUtil {
 	 * @return
 	 */
 	@SafeVarargs
-	public static <F extends Factor<F>> F combine(F... factors) {
+	public static <F extends OperableFactor<F>> F combine(F... factors) {
 		F first = factors[0];
 		for (int i = 1; i < factors.length; ++i) {
 			first = first.combine(factors[i]);
@@ -130,7 +130,7 @@ public class FactorUtil {
 	 * return the marginal of a factors. Not this is a marginalization of all
 	 * but the "over" variables
 	 */
-	public static <F extends Factor<F>> F marginal(F factor, int... over) {
+	public static <F extends OperableFactor<F>> F marginal(F factor, int... over) {
 		for (int var : ArraysUtil.removeAllFromSortedArray(factor.getDomain().getVariables(), over)) {
 			factor = factor.marginalize(var);
 		}
@@ -140,7 +140,7 @@ public class FactorUtil {
 	/**
 	 * marginalize multiple variables out of a factor
 	 */
-	public static <F extends Factor<F>> F marginalize(F factor, int... vars) {
+	public static <F extends OperableFactor<F>> F marginalize(F factor, int... vars) {
 		for (int var : vars) {
 			factor = factor.marginalize(var);
 		}
@@ -184,7 +184,7 @@ public class FactorUtil {
 	 * @param indicator
 	 * @return
 	 */
-	public static <F extends Factor<F>> F filter(F factor, F indicator) {
+	public static <F extends OperableFactor<F>> F filter(F factor, F indicator) {
 		return factor.combine(indicator).marginalize(indicator.getDomain().getVariables()[0]);
 	}
 

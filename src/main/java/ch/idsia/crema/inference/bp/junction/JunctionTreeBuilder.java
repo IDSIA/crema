@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.bp.junction;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Algorithm;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.join.JoinTree;
@@ -12,7 +12,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
  * Project: crema
  * Date:    13.11.2020 15:19
  */
-public class JunctionTreeBuilder<F extends Factor<F>> implements Algorithm<JoinTree, JunctionTree<F>> {
+public class JunctionTreeBuilder<F extends OperableFactor<F>> implements Algorithm<JoinTree, JunctionTree<F>> {
 
 	private JoinTree model;
 	private JunctionTree<F> output;
