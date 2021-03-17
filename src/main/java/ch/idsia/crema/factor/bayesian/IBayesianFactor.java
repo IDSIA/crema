@@ -2,6 +2,7 @@ package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
+import gnu.trove.map.TIntIntMap;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -18,4 +19,12 @@ public interface IBayesianFactor extends OperableFactor<IBayesianFactor>, Separa
 	double[] getData();
 
 	IBayesianFactor addition(IBayesianFactor factor);
+
+	double logProb(TIntIntMap[] data, int leftVar);
+
+	double getValue(int... states);
+
+	double getValueAt(int index);
+
+	void replaceInLine(double value, double replacement);
 }

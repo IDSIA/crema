@@ -149,6 +149,7 @@ public class BayesianFactor implements IBayesianFactor {
 		}
 	}
 
+	@Override
 	public double getValue(int... states) {
 		return getValueAt(domain.getOffset(states));
 	}
@@ -157,6 +158,7 @@ public class BayesianFactor implements IBayesianFactor {
 		data[index] = log ? FastMath.log(d) : d;
 	}
 
+	@Override
 	public double getValueAt(int index) {
 		double value = data[index];
 		return log ? FastMath.exp(value) : value;
@@ -731,6 +733,7 @@ public class BayesianFactor implements IBayesianFactor {
 		return f;
 	}
 
+	@Override
 	public void replaceInLine(double value, double replacement) {
 		for (int i = 0; i < getData().length; i++)
 			if (getData()[i] == value)
@@ -868,6 +871,7 @@ public class BayesianFactor implements IBayesianFactor {
 		return factors;
 	}
 
+	@Override
 	public double logProb(TIntIntMap[] data, int leftVar) {
 		double logprob = 0;
 
