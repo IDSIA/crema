@@ -63,7 +63,7 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 		this.model = model;
 
 		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
-		pipeline.setInput(model.getNetwork());
+		pipeline.setInput(model);
 		junctionTree = pipeline.exec();
 
 		// when we assign a potential to a clique, we put this clique at the end of the list
