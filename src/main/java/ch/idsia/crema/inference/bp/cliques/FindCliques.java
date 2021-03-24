@@ -8,6 +8,7 @@ import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 import org.jgrapht.graph.DefaultEdge;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -56,31 +57,33 @@ public class FindCliques implements Algorithm<TriangulatedGraph, CliqueSet> {
 		if (sequence == null) throw new IllegalArgumentException("No elimination sequence available.");
 		if (model == null) throw new IllegalArgumentException("No model is available");
 
-		TriangulatedGraph copy = new TriangulatedGraph();
+		final TriangulatedGraph copy = new TriangulatedGraph();
 		GraphUtil.copy(model, copy);
 
 		cliques = new CliqueSet();
 
 		// follow the elimination sequence
 		for (int v : sequence) {
-			TIntSet c = new TIntHashSet();
+			final TIntSet c = new TIntHashSet();
 			c.add(v);
 
 			// creates a clique composed by the current node and all the nodes in the neighbourhood
 			for (DefaultEdge edge : copy.edgesOf(v)) {
-				Integer source = copy.getEdgeSource(edge);
-				Integer target = copy.getEdgeTarget(edge);
-
-				Integer node = v == target ? source : target;
-				c.add(node);
+				c.add(copy.getEdgeSource(edge));
+				c.add(copy.getEdgeTarget(edge));
 			}
 
 			copy.removeVertex(v);
 
 			// build the new clique and check if we already have a clique that contains this one
-			Clique clique = new Clique(ArraysUtil.sort(c.toArray()));
+			Clique clique = new Clique(v, ArraysUtil.sort(c.toArray()));
 
-			if (!checkIfContains(cliques, clique)) {
+			final Optional<Clique> container = checkIfContains(cliques, clique);
+			if (container.isPresent()) {
+				// merge with existing clique
+				container.get().getV().addAll(clique.getV());
+			} else {
+				// new clique
 				cliques.add(clique);
 			}
 		}
@@ -93,13 +96,13 @@ public class FindCliques implements Algorithm<TriangulatedGraph, CliqueSet> {
 	 * @param clique  clique to check
 	 * @return true if a clique in the set contains the given clique, otherwise false
 	 */
-	private boolean checkIfContains(Set<Clique> cliques, Clique clique) {
+	private Optional<Clique> checkIfContains(Set<Clique> cliques, Clique clique) {
 		for (Clique c : cliques) {
 			if (c.contains(clique))
-				return true;
+				return Optional.of(c);
 		}
 
-		return false;
+		return Optional.empty();
 	}
 
 }

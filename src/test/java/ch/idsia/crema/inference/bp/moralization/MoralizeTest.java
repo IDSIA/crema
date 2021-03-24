@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.bp.moralization;
 
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
@@ -35,8 +36,8 @@ public class MoralizeTest {
 		bn.addParent(A6, A3);
 
 		// moralize
-		Moralize m = new Moralize();
-		m.setInput(bn.getNetwork());
+		Moralize<BayesianFactor> m = new Moralize<>();
+		m.setInput(bn);
 
 		// obtaining a domain graph G for BN (moral graph)
 		SimpleGraph<Integer, DefaultEdge> moralGraph = m.exec();
@@ -74,8 +75,8 @@ public class MoralizeTest {
 		bn.addParent(A8, A7);
 
 		// moralize
-		Moralize m = new Moralize();
-		m.setInput(bn.getNetwork());
+		Moralize<BayesianFactor> m = new Moralize<>();
+		m.setInput(bn);
 
 		// obtaining a domain graph G for BN (moral graph)
 		SimpleGraph<Integer, DefaultEdge> moralGraph = m.exec();
