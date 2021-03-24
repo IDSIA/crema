@@ -17,7 +17,7 @@ import java.util.Arrays;
  * Project: crema
  * Date:    16.11.2020 18:22
  */
-public class GraphToJunctionTreePipe<F extends Factor<F>> extends Pipe<DAGModel<F>, JunctionTree<F>> {
+public class GraphToJunctionTreePipe<F extends Factor<F>> extends Pipe<DAGModel<F>, JunctionTree> {
 
 	public GraphToJunctionTreePipe() {
 		this.stages = Arrays.asList(
@@ -30,7 +30,7 @@ public class GraphToJunctionTreePipe<F extends Factor<F>> extends Pipe<DAGModel<
 				// Find maximal spanning tree
 				new JoinTreeBuilderKruskal(),
 				// JunctionTree
-				new JunctionTreeBuilder<F>()
+				new JunctionTreeBuilder()
 		);
 	}
 }
