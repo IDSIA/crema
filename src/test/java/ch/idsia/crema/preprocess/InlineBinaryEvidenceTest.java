@@ -28,7 +28,6 @@ public class InlineBinaryEvidenceTest {
 
 			BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
 			bin.setSize(2);
-			bin.setLog(false);
 			MixedModel mixedModel = bin.execute(model, evidence);
 			int ev = bin.getEvidenceNode();
 
@@ -63,7 +62,6 @@ public class InlineBinaryEvidenceTest {
 
 		BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
 		bin.setSize(2);
-		bin.setLog(false);
 		MixedModel mixedModel = bin.execute(model, evidence);
 		int ev = bin.getEvidenceNode();
 
@@ -95,7 +93,6 @@ public class InlineBinaryEvidenceTest {
 
 		BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
 		bin.setSize(2);
-		bin.setLog(false);
 		MixedModel mixedModel = bin.execute(model, evidence);
 		int ev = bin.getEvidenceNode();
 
@@ -127,7 +124,6 @@ public class InlineBinaryEvidenceTest {
 
 		BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
 		bin.setSize(2);
-		bin.setLog(false);
 		MixedModel mixedModel = bin.execute(model, evidence);
 		int ev = bin.getEvidenceNode();
 

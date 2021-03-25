@@ -153,7 +153,6 @@ public class MarginalTest {
 		evidence.put(n0, 0);
 
 		BinarizeEvidence<GenericFactor> bin = new BinarizeEvidence<>();
-		bin.setLog(false);
 		bin.setSize(2);
 		final MixedModel mixedModel = bin.execute(model, evidence);
 		int ev = bin.getEvidenceNode();

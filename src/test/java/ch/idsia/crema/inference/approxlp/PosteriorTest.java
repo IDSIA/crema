@@ -44,7 +44,7 @@ public class PosteriorTest {
 		model.setFactor(X0, fx0);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		GraphicalModel<GenericFactor> bmodel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
 
@@ -97,7 +97,7 @@ public class PosteriorTest {
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
 
@@ -132,7 +132,7 @@ public class PosteriorTest {
 		model.setFactor(X0, fx0);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
 
@@ -172,7 +172,7 @@ public class PosteriorTest {
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
 
@@ -218,7 +218,7 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		MixedModel mixedModel = be.execute(model, evidence);
 		int ev = be.getEvidenceNode();
 
@@ -270,7 +270,7 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		model = be.execute(model, evidence);
 		int ev = be.getEvidenceNode();
 
@@ -354,7 +354,7 @@ public class PosteriorTest {
 		TIntIntMap evidence = new TIntIntHashMap();
 		evidence.put(n0, 0);
 
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		MixedModel mixedModel = be.execute(model, evidence);
 		int ev = be.getEvidenceNode();
 
@@ -456,7 +456,7 @@ public class PosteriorTest {
 		RemoveBarren<GenericFactor> barren = new RemoveBarren<>();
 		final GraphicalModel<GenericFactor> modelBarren = barren.execute(model, evidence, n3);
 
-		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2, false);
+		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		model = be.execute(modelBarren, evidence);
 		int ev = be.getEvidenceNode();
 
