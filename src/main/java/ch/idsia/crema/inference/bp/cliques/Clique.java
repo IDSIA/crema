@@ -1,6 +1,8 @@
 package ch.idsia.crema.inference.bp.cliques;
 
 import ch.idsia.crema.utility.ArraysUtil;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 
 import java.util.Arrays;
 
@@ -11,7 +13,14 @@ import java.util.Arrays;
  */
 public class Clique {
 
+	/**
+	 * Variables covered by the {@link Clique}.
+	 */
 	private int[] variables;
+	/**
+	 * Variable that created the {@link Clique}. This should be the potential assigned to this clique.
+	 */
+	private final TIntList v = new TIntArrayList();
 
 	protected Clique() {
 
@@ -26,8 +35,28 @@ public class Clique {
 		this.variables = variables;
 	}
 
+	/**
+	 * Creates a new Clique from a sorted array of variables and the array that created the clique.
+	 *
+	 * @param v         this is the variable that was removed from the {@link FindCliques} algorithm to create
+	 *                  this {@link Clique}.
+	 * @param variables must be sorted
+	 */
+	public Clique(int v, int[] variables) {
+		this.variables = variables;
+		this.v.add(v);
+	}
+
 	public int[] getVariables() {
 		return variables;
+	}
+
+	public TIntList getV() {
+		return v;
+	}
+
+	public int[] getVArray() {
+		return v.toArray();
 	}
 
 	/**

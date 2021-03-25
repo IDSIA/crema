@@ -7,6 +7,6 @@ package ch.idsia.crema.inference.bp.junction;
  */
 public class JunctionTreeBuilderTest {
 
-	// TODO: verify that separators are correctly available
+	// TODO
 
 }

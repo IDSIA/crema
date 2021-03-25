@@ -1,6 +1,8 @@
 package ch.idsia.crema.inference.bp.triangulation;
 
 import ch.idsia.crema.utility.GraphUtil;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.SimpleGraph;
@@ -42,12 +44,13 @@ public class MinDegreeOrdering extends Triangulate {
 		GraphUtil.copy(network, copy);
 
 		triangulated = new TriangulatedGraph();
-		List<Integer> eliminationSequence = new ArrayList<>();
+		final TIntList eliminationSequence = new TIntArrayList();
+		hasPerfectEliminationSequence = true;
 
 		// loop until we remove all the nodes from the graph
 		while (!copy.vertexSet().isEmpty()) {
 			// compute nodes cardinality
-			Map<Integer, Integer> cardinality = new HashMap<>();
+			final Map<Integer, Integer> cardinality = new HashMap<>();
 			copy.vertexSet().forEach(v -> cardinality.put(v, copy.edgesOf(v).size()));
 
 			// sort by cardinality (ascending order)
@@ -56,12 +59,12 @@ public class MinDegreeOrdering extends Triangulate {
 					.map(Map.Entry::getKey)
 					.collect(Collectors.toList());
 
-			Integer v = sortedByCardinality.get(0);
-			Integer c = cardinality.get(v);
+			final Integer v = sortedByCardinality.get(0);
+			final Integer c = cardinality.get(v);
 
 			// build neighbourhood
-			Set<DefaultEdge> edges = copy.edgesOf(v);
-			Set<Integer> neighbour = new HashSet<>();
+			final Set<DefaultEdge> edges = copy.edgesOf(v);
+			final Set<Integer> neighbour = new HashSet<>();
 
 			for (DefaultEdge edge : edges) {
 				Integer source = copy.getEdgeSource(edge);
@@ -93,7 +96,7 @@ public class MinDegreeOrdering extends Triangulate {
 			updateModels(copy, triangulated, v, edges);
 		}
 
-		triangulated.setEliminationSequence(eliminationSequence.stream().mapToInt(x -> x).toArray());
+		triangulated.setEliminationSequence(eliminationSequence.toArray());
 
 		return triangulated;
 	}
@@ -105,7 +108,7 @@ public class MinDegreeOrdering extends Triangulate {
 	 * @param edges set of edges to add to the out graph
 	 */
 	private void updateModels(SimpleGraph<Integer, DefaultEdge> in, TriangulatedGraph out, Integer v, Set<DefaultEdge> edges) {
-		Set<DefaultEdge> toRemove = new HashSet<>();
+		final Set<DefaultEdge> toRemove = new HashSet<>();
 
 		for (DefaultEdge edge : edges) {
 			// add all edges to triangulated node (should be only 1!)
