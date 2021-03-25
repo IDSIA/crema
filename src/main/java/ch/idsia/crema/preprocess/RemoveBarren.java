@@ -110,6 +110,11 @@ public class RemoveBarren<F extends GenericFactor> implements PreprocessorQuery<
 			}
 
 			@Override
+			public void opening(int node, int from) {
+
+			}
+
+			@Override
 			public void closing(int node, int from) {
 				if (!todelete.contains(node)) visited.add(node);
 			}
