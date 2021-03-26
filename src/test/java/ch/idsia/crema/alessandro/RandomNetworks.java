@@ -7,11 +7,13 @@ import ch.idsia.crema.factor.convert.VertexToInterval;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
-import ch.idsia.crema.inference.approxlp.Inference;
+import ch.idsia.crema.inference.approxlp.ApproxLP1;
 import ch.idsia.crema.inference.sepolyve.MaxMemoryException;
 import ch.idsia.crema.inference.sepolyve.MaxTimeException;
+import ch.idsia.crema.inference.sepolyve.NodeInfo;
 import ch.idsia.crema.inference.sepolyve.SePolyVE;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.io.bif.XMLBIFParser;
 import ch.idsia.crema.model.io.dot.DotSerialize;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
@@ -26,6 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
@@ -57,24 +60,22 @@ public class RandomNetworks {
 					}
 				}
 			}
-		} catch (IOException ex) {
+		} catch (IOException ignored) {
+
 		}
 	}
 
 	private static String intervalToString(IntervalFactor interval) {
-		StringBuilder b = new StringBuilder();
-		b.append(Arrays.stream(interval.getLower()).mapToObj(Double::toString)
-				.collect(Collectors.joining(INNER_SEP)));
-		b.append(FIELD_SEP);
-		b.append(Arrays.stream(interval.getUpper()).mapToObj(Double::toString)
-				.collect(Collectors.joining(INNER_SEP)));
-		return b.toString();
-
+		return Arrays.stream(interval.getLower())
+				.mapToObj(Double::toString)
+				.collect(Collectors.joining(INNER_SEP)) +
+				FIELD_SEP +
+				Arrays.stream(interval.getUpper()).mapToObj(Double::toString)
+						.collect(Collectors.joining(INNER_SEP));
 	}
 
-	//
-	private static final long processSePolyVE(String modelname, DAGModel<VertexFactor> vmodel2, int query,
-	                                          TIntIntMap evidence, Writer ve_output, Writer summary_output, Writer stats_output) throws IOException {
+	private static long processSePolyVE(String modelname, DAGModel<VertexFactor> vmodel2, int query,
+	                                    TIntIntMap evidence, Writer ve_output, Writer summary_output, Writer stats_output) throws IOException {
 		SePolyVE ve = new SePolyVE();
 		ve.init(new HashMap<String, Long>() {
 			{
@@ -87,7 +88,7 @@ public class RandomNetworks {
 		String error = "";
 		VertexFactor marg = null;
 		try {
-			marg = ve.run(vmodel2, query, evidence);
+			marg = ve.query(vmodel2, evidence, query);
 			marg = marg.normalize();
 		} catch (MaxTimeException mte) {
 			error = "-1";
@@ -100,10 +101,10 @@ public class RandomNetworks {
 		}
 		long duration = System.currentTimeMillis() - start_time;
 
-		StringBuffer preamb = new StringBuffer();
+		StringBuilder preamb = new StringBuilder();
 		preamb.append(modelname);
 		preamb.append(FIELD_SEP);
-		preamb.append("" + query);
+		preamb.append(query);
 		preamb.append(FIELD_SEP);
 
 		String evidence_string = evidenceToString(evidence);
@@ -130,10 +131,10 @@ public class RandomNetworks {
 			}
 		} else {
 			ve_output.append(preamb.toString());
-			ve_output.append("ERROR " + error);
+			ve_output.append("ERROR ").append(error);
 			ve_output.append("\n");
 
-			summary_output.append("Error " + error);
+			summary_output.append("Error ").append(error);
 			summary_output.append("\n");
 		}
 		ve_output.flush();
@@ -145,10 +146,9 @@ public class RandomNetworks {
 		if (evidence != null) {
 			int[] keys = evidence.keys();
 			Arrays.sort(keys);
-			return Arrays.stream(keys).mapToObj(x -> new String(x + "=" + evidence.get(x))).collect(Collectors.joining(INNER_SEP));
-		} else {
-			return "";
+			return Arrays.stream(keys).mapToObj(x -> x + "=" + evidence.get(x)).collect(Collectors.joining(INNER_SEP));
 		}
+		return "";
 	}
 
 	/**
@@ -162,35 +162,35 @@ public class RandomNetworks {
 	 */
 	private static void printStats(SePolyVE sepolyve, String preamble, double duration, Writer output) throws IOException {
 		output.append(preamble);
-		output.append("" + duration);
+		output.append(String.valueOf(duration));
 		output.append(FIELD_SEP);
 
-		String vin = sepolyve.getNodeStats().stream().sorted((x, y) -> x.getNode() - y.getNode()).map(x -> new String(x.getNode() + "=" + x.getVerticesIn())).collect(Collectors.joining(INNER_SEP));
+		String vin = sepolyve.getNodeStats().stream().sorted(Comparator.comparingInt(NodeInfo::getNode)).map(x -> x.getNode() + "=" + x.getVerticesIn()).collect(Collectors.joining(INNER_SEP));
 		output.append(vin);
 		output.append(FIELD_SEP);
 
-		String vout = sepolyve.getNodeStats().stream().sorted((x, y) -> x.getNode() - y.getNode()).map(x -> new String(x.getNode() + "=" + x.getVerticesOut())).collect(Collectors.joining(INNER_SEP));
+		String vout = sepolyve.getNodeStats().stream().sorted(Comparator.comparingInt(NodeInfo::getNode)).map(x -> x.getNode() + "=" + x.getVerticesOut()).collect(Collectors.joining(INNER_SEP));
 		output.append(vout);
 		output.append(FIELD_SEP);
 
-		String times = sepolyve.getNodeStats().stream().sorted((x, y) -> x.getNode() - y.getNode()).map(x -> new String(x.getNode() + "=" + x.getTime())).collect(Collectors.joining(INNER_SEP));
+		String times = sepolyve.getNodeStats().stream().sorted(Comparator.comparingInt(NodeInfo::getNode)).map(x -> x.getNode() + "=" + x.getTime()).collect(Collectors.joining(INNER_SEP));
 		output.append(times);
 		output.append(FIELD_SEP);
 
-		String order = sepolyve.getOrder().stream().map(x -> x.toString()).collect(Collectors.joining(INNER_SEP));
+		String order = sepolyve.getOrder().stream().map(Object::toString).collect(Collectors.joining(INNER_SEP));
 		output.append(order);
 		output.append("\n");
 		output.flush();
 	}
 
-	private static final void processApproxLP(String modelname, DAGModel<VertexFactor> vmodel2, int query, TIntIntMap evidence, long duration, FileWriter summary_output) throws IOException {
+	private static void processApproxLP(String modelname, DAGModel<VertexFactor> vmodel2, int query, TIntIntMap evidence, long duration, FileWriter summary_output) throws IOException {
 		String error = "";
 		double state_time = duration / (vmodel2.getSize(query) * 2.0 * 1000.0 /* in seconds */);
 
-		DAGModel<GenericFactor> imodel = vmodel2.convert(new VertexToInterval()).convert((x, v) -> (GenericFactor) x);
+		DAGModel<GenericFactor> imodel = vmodel2.convert(new VertexToInterval()).convert((x, v) -> x);
 
-		Inference approxlp = new Inference();
-		approxlp.initialize(new HashMap<String, Object>() {
+		ApproxLP1<GenericFactor> approxlp = new ApproxLP1<>();
+		approxlp.initialize(new HashMap<>() {
 			{
 				put(ISearch.MAX_TIME, state_time);
 			}
@@ -200,10 +200,12 @@ public class RandomNetworks {
 
 		try {
 			if (evidence != null) {
-				BinarizeEvidence bin = new BinarizeEvidence();
+				BinarizeEvidence<GenericFactor> bin = new BinarizeEvidence<>();
+				bin.setSize(2);
 
-				imodel = bin.execute(imodel, evidence, 2, false);
-				interval = approxlp.query(imodel, query, bin.getLeafDummy());
+				GraphicalModel<GenericFactor> gmodel = bin.execute(imodel, evidence);
+				approxlp.setEvidenceNode(bin.getEvidenceNode());
+				interval = approxlp.query(gmodel, query);
 			} else {
 				interval = approxlp.query(imodel, query);
 			}
@@ -215,7 +217,7 @@ public class RandomNetworks {
 		// write
 		summary_output.append(modelname);
 		summary_output.append(FIELD_SEP);
-		summary_output.append("" + query);
+		summary_output.append(String.valueOf(query));
 		summary_output.append(FIELD_SEP);
 
 		String evidence_string = evidenceToString(evidence);
@@ -226,30 +228,27 @@ public class RandomNetworks {
 		summary_output.append(FIELD_SEP);
 		if (interval != null) {
 			summary_output.append(intervalToString(interval));
-			summary_output.append("\n");
 
 		} else {
 			summary_output.append(error);
-			summary_output.append("\n");
 		}
+		summary_output.append("\n");
 		summary_output.flush();
 	}
 
-
-	public static final void processLeaf(String modelname, DAGModel<VertexFactor> vmodel, int query,
-	                                     FileWriter ve_output, FileWriter summary_output, FileWriter stats_output) throws IOException {
+	public static void processLeaf(String modelname, DAGModel<VertexFactor> vmodel, int query,
+	                               FileWriter ve_output, FileWriter summary_output, FileWriter stats_output) throws IOException {
 		System.out.println("K_VE(" + query + ")");
 		// remove disconnected stuff
-		DAGModel<VertexFactor> vmodel2 = new RemoveBarren().execute(vmodel, query);
+		final RemoveBarren<VertexFactor> removeBarren = new RemoveBarren<>();
+		DAGModel<VertexFactor> vmodel2 = (DAGModel<VertexFactor>) removeBarren.execute(vmodel, new TIntIntHashMap() , query);
 
 		// run polyve
 		long duration = processSePolyVE(modelname, vmodel2, query, null, ve_output, summary_output, stats_output);
 
-		///////////////////////////////////////
-		////////// APPROXLP
+		///////////////////////////////////////////////// APPROXLP
 		System.out.println("K_LP(" + query + ")");
 		processApproxLP(modelname, vmodel2, query, null, duration, summary_output);
-
 	}
 
 	private static void processRoot(String modelname, DAGModel<VertexFactor> vmodel, int query,
@@ -261,8 +260,8 @@ public class RandomNetworks {
 			}
 		}
 
-		RemoveBarren rb = new RemoveBarren();
-		DAGModel<VertexFactor> vmodel2 = rb.execute(vmodel, query, evidence);
+		RemoveBarren<VertexFactor> rb = new RemoveBarren<>();
+		DAGModel<VertexFactor> vmodel2 = (DAGModel<VertexFactor>) rb.execute(vmodel, evidence, query);
 		rb.filter(evidence); // remove barren from evidence (not really needed)
 		System.out.println("K_VE_R(" + query + ")");
 
@@ -270,9 +269,7 @@ public class RandomNetworks {
 
 		System.out.println("K_LP_R(" + query + ")");
 		processApproxLP(modelname, vmodel2, query, evidence, duration, summary_output);
-
 	}
-
 
 	public static VertexFactor converti(BayesianFactor bf, int variable) {
 		CNGenerator generator = new CNGenerator();
@@ -291,14 +288,15 @@ public class RandomNetworks {
 		return new VertexFactor(left, conditioning, data);
 	}
 
+	/*
+	 * TODO: see below for other todos
+	 * TODO: measure SePolyVE Execution time (with max time set)
+	 * TODO: run ApproxLP with max time = SePolyVE_time / (nstates * 2)
+	 * TODO: eventualmente run ApproxLP con un min time giusto per ottenere qualcosa quando seployve era super veloce
+	 * TODO ev salvare in CSV i vertici dei credal set usati nella benchamrk
+	 */
 
 	/**
-	 * TODO: see below for other todos TODO: measure SePolyVE Execution time
-	 * (with max time set) TODO: run ApproxLP with max time = SePolyVE_time /
-	 * (nstates * 2) TODO: eventualmente run ApproxLP con un min time giusto per
-	 * ottenere qualcosa quando seployve era super veloce
-	 * <p>
-	 * TODO ev salvare in CSV i vertici dei credal set usati nella benchamrk
 	 * tipo: node name;conditioning index;vertex data(values separated by
 	 * different char)?
 	 * <p>
@@ -332,7 +330,9 @@ public class RandomNetworks {
 			DAGModel<VertexFactor> vmodel = model.convert(RandomNetworks::converti);
 			serialize(vmodel, path + prefix + sample + "-model.csv");
 
-			vmodel = (DAGModel<VertexFactor>) new LimitVertices().apply(vmodel, 10);
+			final LimitVertices limitVertices = new LimitVertices();
+			limitVertices.setMax(10);
+			vmodel = (DAGModel<VertexFactor>) limitVertices.execute(vmodel);
 			System.out.println(new DotSerialize().run(vmodel));
 
 

@@ -1,7 +1,7 @@
 package ch.idsia.crema.learning;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.JoinInference;
+import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -16,13 +16,13 @@ public class FrequentistEM extends DiscreteEM {
 
 	private double regularization = 0.00001;
 
-	public FrequentistEM(GraphicalModel<BayesianFactor> model, JoinInference<BayesianFactor, BayesianFactor> inferenceEngine) {
+	public FrequentistEM(GraphicalModel<BayesianFactor> model, InferenceJoined<GraphicalModel<BayesianFactor>, BayesianFactor> inferenceEngine) {
 		this.inferenceEngine = inferenceEngine;
 		this.priorModel = model;
 	}
 
 	public FrequentistEM(GraphicalModel<BayesianFactor> model, int[] elimSeq) {
-		this.inferenceEngine = getDefaultInference(model, elimSeq);
+		this.inferenceEngine = getDefaultInference(elimSeq);
 		this.priorModel = model;
 	}
 
@@ -30,14 +30,14 @@ public class FrequentistEM extends DiscreteEM {
 		this(model, (new MinFillOrdering()).apply(model));
 	}
 
-	protected void stepPrivate(Collection<TIntIntMap> stepArgs) throws InterruptedException {
+	protected void stepPrivate(Collection<TIntIntMap> stepArgs) {
 		// E-stage
 		TIntObjectMap<BayesianFactor> counts = expectation(stepArgs.toArray(TIntIntMap[]::new));
 		// M-stage
 		maximization(counts);
 	}
 
-	protected TIntObjectMap<BayesianFactor> expectation(TIntIntMap[] observations) throws InterruptedException {
+	protected TIntObjectMap<BayesianFactor> expectation(TIntIntMap[] observations) {
 
 		TIntObjectMap<BayesianFactor> counts = new TIntObjectHashMap<>();
 		for (int variable : posteriorModel.getVariables()) {
@@ -52,7 +52,7 @@ public class FrequentistEM extends DiscreteEM {
 
 				if (hidden.length > 0) {
 					// Case with missing data
-					BayesianFactor phidden_obs = inferenceEngine.apply(posteriorModel, hidden, observation);
+					BayesianFactor phidden_obs = inferenceEngine.query(posteriorModel, observation, hidden);
 					if (obsVars.length > 0)
 						phidden_obs = phidden_obs.combine(
 								BayesianFactor.getJoinDeterministic(posteriorModel.getDomain(obsVars), observation)

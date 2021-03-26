@@ -1,7 +1,8 @@
 package ch.idsia.crema.learning;
 
 import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.inference.JoinInference;
+import ch.idsia.crema.inference.Inference;
+import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import gnu.trove.map.TIntIntMap;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public abstract class ExpectationMaximization<F extends Factor<F>> {
 
-	protected JoinInference<F, F> inferenceEngine;
+	protected InferenceJoined<GraphicalModel<F>, F> inferenceEngine;
 
 	protected GraphicalModel<F> priorModel;
 
@@ -73,7 +74,7 @@ public abstract class ExpectationMaximization<F extends Factor<F>> {
 			trainableVars = posteriorModel.getVariables();
 
 		if (recordIntermediate) {
-			intermediateModels = new ArrayList<GraphicalModel<F>>();
+			intermediateModels = new ArrayList<>();
 			addIntermediateModels(priorModel);
 		}
 	}
@@ -140,11 +141,11 @@ public abstract class ExpectationMaximization<F extends Factor<F>> {
 		return klthreshold;
 	}
 
-	public JoinInference<F, F> getInferenceEngine() {
+	public Inference<GraphicalModel<F>, F> getInferenceEngine() {
 		return inferenceEngine;
 	}
 
-	public ExpectationMaximization<F> setInferenceEngine(JoinInference<F, F> inferenceEngine) {
+	public ExpectationMaximization<F> setInferenceEngine(InferenceJoined<GraphicalModel<F>, F> inferenceEngine) {
 		this.inferenceEngine = inferenceEngine;
 		return this;
 	}

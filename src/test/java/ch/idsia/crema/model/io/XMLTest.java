@@ -1,12 +1,15 @@
 package ch.idsia.crema.model.io;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class XMLTest {
+
+	@Disabled // TODO: fix this test
 	@Test
 	public void test() {
-/*	todo: fix this test
 
+/*
 JAXBContext context = JAXBContext.newInstance(VertexSet.class);
 		Marshaller marshall = context.createMarshaller();
 marshall.setProperty(Marshaller.JAXB_ENCODING, "application/json");

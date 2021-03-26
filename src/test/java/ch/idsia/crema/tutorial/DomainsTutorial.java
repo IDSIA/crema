@@ -4,10 +4,10 @@ import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.DomainBuilder;
 import ch.idsia.crema.core.SimpleDomain;
 import ch.idsia.crema.core.Strides;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DomainsTutorial {
 
@@ -55,5 +55,18 @@ public class DomainsTutorial {
 		// [strides-remove]
 
 		assertNotSame(smaller, domain);
+	}
+
+
+	@Test
+	public void testConsistency() {
+		// [strides-consistency-test]
+		Strides domain1 = Strides.as(1, 3).and(4, 2).and(6, 3);
+		Strides domain2 = Strides.as(2, 2).and(4, 2).and(5, 2);
+
+		if (!domain1.isConsistentWith(domain2)) {
+			// ... address the issue
+		}
+		// [strides-consistency-test]
 	}
 }

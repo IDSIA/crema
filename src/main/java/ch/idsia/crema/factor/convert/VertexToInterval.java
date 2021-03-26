@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor.convert;
 
-import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 

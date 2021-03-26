@@ -5,10 +5,10 @@ import ch.idsia.crema.factor.convert.VertexToInterval;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
-import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SePolyVETest {
 
@@ -118,22 +118,26 @@ public class SePolyVETest {
 
 		model.setFactor(sixth, f6);
 
+		final TIntIntHashMap evidence = new TIntIntHashMap();
+		evidence.put(fourth, 1);
+
 		SePolyVE polu = new SePolyVE(0.0001);
-		VertexFactor vd = polu.run(model, sixth, new TIntIntHashMap() {{
-			put(fourth, 1);
-		}});
+
+		VertexFactor vd = polu.query(model, evidence, sixth);
 
 		System.out.println(vd.getDomain());
 		System.out.println(vd.getVertices().length);
 
+		Assertions.assertEquals(11, vd.getVertices().length);
+
 		VertexToInterval converter = new VertexToInterval();
 		DAGModel<IntervalFactor> model2 = model.convert(converter);
 
-		new RemoveBarren().executeInline(model2, new int[]{sixth}, new TIntIntHashMap() {{
-			put(fourth, 1);
-		}});
-		BinarizeEvidence bin = new BinarizeEvidence();
+		final RemoveBarren<IntervalFactor> rb = new RemoveBarren<>();
 
+		rb.executeInPlace(model2, evidence, sixth);
+
+		// TODO: and then?
 	}
 
 }

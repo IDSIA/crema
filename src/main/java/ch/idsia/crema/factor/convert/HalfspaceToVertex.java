@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor.convert;
 
-import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.set.HCredalSet;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
@@ -84,8 +84,8 @@ public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, Ver
 			}
 			if (!origin)
 				vertices.add(row);
-			else
-				System.out.println("Removed 000");
+//			else
+//				System.out.println("Removed 000");
 		}
 
 		return vertices.toArray(new double[0][]);

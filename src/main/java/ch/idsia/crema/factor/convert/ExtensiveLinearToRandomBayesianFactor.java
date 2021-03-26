@@ -1,10 +1,11 @@
 package ch.idsia.crema.factor.convert;
 
-import ch.idsia.crema.core.Converter;
+import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.commons.Simplex;
+import ch.idsia.crema.utility.RandomUtil;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 import java.util.Random;
@@ -12,7 +13,7 @@ import java.util.Random;
 // FIXME rename
 @SuppressWarnings("rawtypes")
 public class ExtensiveLinearToRandomBayesianFactor implements Converter<ExtensiveLinearFactor, BayesianFactor> {
-	private final Random random = new Random();
+	private final Random random = RandomUtil.getRandom();
 
 	public BayesianFactor apply(ExtensiveLinearFactor s) {
 		return apply(s, -1);

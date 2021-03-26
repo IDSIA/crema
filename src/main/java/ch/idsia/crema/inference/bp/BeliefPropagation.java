@@ -1,60 +1,169 @@
 package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.junction.JunctionTree;
-import ch.idsia.crema.inference.bp.junction.Separator;
 import ch.idsia.crema.model.graphical.DAGModel;
-import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.stream.IntStream;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static ch.idsia.crema.utility.ArraysUtil.difference;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    14.02.2018 10:03
  */
-public class BeliefPropagation<F extends Factor<F>> {
+public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
 
-	private final DAGModel<F> model;
+	protected DAGModel<F> model;
+	protected DirectedAcyclicGraph<Clique, DefaultEdge> collectingTree;
+	protected DirectedAcyclicGraph<Clique, DefaultEdge> distributingTree;
 
-	private JunctionTree<F> junctionTree;
+	protected LinkedList<Clique> collectingOrder;
+	protected LinkedList<Clique> distributionOrder;
 
-	private boolean fullyPropagated = false;
+	protected Clique root;
 
-	private TIntIntMap evidence = new TIntIntHashMap();
+	protected TIntIntMap evidence;
 
-	public BeliefPropagation(DAGModel<F> model) {
-		this.model = model;
-		init();
+	protected final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
+	protected final Map<Pair<Clique, Clique>, F> messages = new HashMap<>();
+	protected final Map<Pair<Clique, Clique>, int[]> separators = new HashMap<>();
+
+	protected Boolean preprocess = true;
+	protected Boolean fullyPropagated = false;
+
+	public BeliefPropagation() {
+	}
+
+	public BeliefPropagation(Boolean preprocess) {
+		setPreprocess(preprocess);
+	}
+
+	public void setPreprocess(Boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
+	public Boolean isFullyPropagated() {
+		return fullyPropagated;
 	}
 
 	/**
-	 * Builds the {@link JunctionTree} required for the algorithm.
+	 * If {@link #preprocess} is true, then pre-process the model with {@link CutObserved} and {@link RemoveBarren}.
+	 *
+	 * @param original the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the pre-processed model
 	 */
-	public void init() {
+	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {
+		DAGModel<F> model = original;
+		if (preprocess) {
+			model = original.copy();
+			final CutObserved<F> co = new CutObserved<>();
+			final RemoveBarren<F> rb = new RemoveBarren<>();
+
+			co.executeInPlace(model, evidence);
+			rb.executeInPlace(model, evidence, query);
+		}
+
+		return model;
+	}
+
+	/**
+	 * Uses the {@link GraphToJunctionTreePipe} to build a {@link JunctionTree} that will be then used to build the
+	 * {@link #collectingTree} and {@link #distributingTree}. The trees are stored inside this model until the next time
+	 * this method is invoked.
+	 *
+	 * @param model the model to use for inference
+	 * @param query the variable that will be queried
+	 */
+	protected void initModel(DAGModel<F> model, int query) {
+		this.fullyPropagated = false;
+		this.model = model;
+
 		GraphToJunctionTreePipe<F> pipeline = new GraphToJunctionTreePipe<>();
-		pipeline.setInput(model.getNetwork());
-		junctionTree = pipeline.exec();
-		fullyPropagated = false;
+		pipeline.setInput(model);
+		JunctionTree junctionTree = pipeline.exec();
+
+		potentialsPerClique.clear();
+		messages.clear();
+
+		junctionTree.vertexSet().forEach(clique -> potentialsPerClique.put(clique, new HashSet<>()));
+
+		junctionTree.vertexSet().forEach(clique -> {
+			for (int v : clique.getVArray()) {
+				final F f = model.getFactor(v);
+				potentialsPerClique.get(clique).add(f);
+			}
+		});
+
+		collectingTree = new DirectedAcyclicGraph<>(DefaultEdge.class);
+		distributingTree = new DirectedAcyclicGraph<>(DefaultEdge.class);
+
+		collectingOrder = new LinkedList<>();
+		distributionOrder = new LinkedList<>();
+
+		junctionTree.vertexSet().forEach(clique -> {
+			collectingTree.addVertex(clique);
+			distributingTree.addVertex(clique);
+		});
+
+		final Set<Clique> visited = new HashSet<>();
+		root = getRoot(junctionTree, query);
+
+		Set<Clique> nodes = new HashSet<>();
+		nodes.add(root);
+
+		// add the edges to the two directed trees
+		do {
+			Set<Clique> slack = new HashSet<>();
+			for (Clique clique : nodes) {
+				visited.add(clique);
+				// TODO: maybe using a single order then reverse?
+				collectingOrder.addFirst(clique);
+				distributionOrder.addLast(clique);
+				for (DefaultEdge edge : junctionTree.edgesOf(clique)) {
+					final Clique source = junctionTree.getEdgeSource(edge);
+					final Clique target = junctionTree.getEdgeTarget(edge);
+					if (!visited.contains(source)) {
+						collectingTree.addEdge(source, clique);
+						distributingTree.addEdge(clique, source);
+						slack.add(source);
+					}
+					if (!visited.contains(target)) {
+						collectingTree.addEdge(target, clique);
+						distributingTree.addEdge(clique, target);
+						slack.add(target);
+					}
+					separators.put(
+							new ImmutablePair<>(source, target),
+							difference(source.getVariables(), target.getVariables())
+					);
+					separators.put(
+							new ImmutablePair<>(target, source),
+							difference(target.getVariables(), source.getVariables())
+					);
+				}
+			}
+
+			nodes = slack;
+		} while (!nodes.isEmpty());
 	}
 
-	public void setEvidence(TIntIntMap evidence) {
-		this.evidence = evidence;
-		fullyPropagated = false;
-	}
-
-	public void clearEvidence() {
-		evidence = new TIntIntHashMap();
-		fullyPropagated = false;
-	}
-
-	private Clique getRoot(int variable) {
+	protected Clique getRoot(JunctionTree junctionTree, int variable) {
 		return junctionTree.vertexSet()
 				.stream()
 				.filter(c -> c.contains(variable))
@@ -63,163 +172,204 @@ public class BeliefPropagation<F extends Factor<F>> {
 	}
 
 	/**
-	 * @param variable variable to query
-	 * @return the marginal probability of the given query
+	 * Pre-process the model with {@link CutObserved} and {@link RemoveBarren}, then performs the
+	 * {@link #collectingEvidence(int)} step.
+	 *
+	 * @param model the model to use for inference
+	 * @param query the variable that will be queried
+	 * @return the marginal probability of the query variable
 	 */
-	public F query(int variable) {
-		F f;
-
-		if (!fullyPropagated) {
-			distributingEvidence(variable);
-			f = collectingEvidence(variable);
-		} else {
-			f = phi(getRoot(variable));
-		}
-
-		// marginalize out what is not needed
-		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
-
-		return f.marginalize(ints).normalize();
+	@Override
+	public F query(DAGModel<F> model, int query) {
+		return query(model, new TIntIntHashMap(), query);
 	}
 
 	/**
-	 * Performs a full update of the network, considering the given variable as root and query node.
+	 * Pre-process the model with {@link CutObserved} and {@link RemoveBarren}, then performs the
+	 * {@link #collectingEvidence(int)} step.
 	 *
-	 * @return the marginalized probability of the query node.
+	 * @param original the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the marginal probability of the query variable
 	 */
-	public F fullPropagation() {
-		checks();
+	@Override
+	public F query(DAGModel<F> original, TIntIntMap evidence, int query) {
+		model = preprocess(original, evidence, query);
 
-		Integer variable = model.getNetwork().vertexSet().iterator().next();
+		this.evidence = evidence;
+		initModel(model, query);
 
-		F f = collectingEvidence(variable);
-		distributingEvidence(variable);
+		return collectingEvidence(query);
+	}
+
+	/**
+	 * Pre-process the model with {@link CutObserved} and {@link RemoveBarren}, then performs the
+	 * {@link #collectingEvidence(int)} and {@link #distributingEvidence()} steps.
+	 * <p>
+	 * Use the {@link #queryFullPropagated(int)} method for query multiple variables over the same evidence and model.
+	 *
+	 * @param model    the model to use for inference
+	 * @param query    the variable that will be queried
+	 * @return the marginal probability of the query variable
+	 */
+	public F fullPropagation(DAGModel<F> model, int query) {
+		return fullPropagation(model, new TIntIntHashMap(), query);
+	}
+
+	/**
+	 * Performs the {@link #collectingEvidence(int)} and {@link #distributingEvidence()} steps. No pre-processing is
+	 * applied.
+	 * <p>
+	 * Use the {@link #queryFullPropagated(int)} method for query multiple variables over the same evidence and model.
+	 *
+	 * @param model    the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the marginal probability of the query variable
+	 */
+	public F fullPropagation(DAGModel<F> model, TIntIntMap evidence, int query) {
+		setPreprocess(false);
+		F f = query(model, evidence, query);
+		distributingEvidence();
+		fullyPropagated = true;
 
 		return f;
 	}
 
 	/**
-	 * Executes teh collection step of the Belief Propagation algorithm.
+	 * Before use this method, it is mandatory to user the {@link #fullPropagation(DAGModel, TIntIntMap, int)} method.
 	 *
-	 * @param variable the variable to consider the root node
-	 * @return the new root variable of the network
+	 * @param query the variable to query
+	 * @return the marginal probability of the query variable
+	 */
+	public F queryFullPropagated(int query) {
+		if (!fullyPropagated)
+			throw new IllegalStateException("The stored model is not fully propagated.");
+
+		final Clique i = collectingTree.vertexSet()
+				.stream()
+				.filter(c -> c.contains(query))
+				.min(Comparator.comparingInt(c -> c.getVariables().length))
+				.orElseThrow(() -> new IllegalArgumentException("Variable " + query + " not found in model"));
+
+		final List<Clique> parents = parents(collectingTree, i);
+		final List<Clique> children = children(collectingTree, i);
+
+		final Optional<F> Ms = Stream.concat(parents.stream(), children.stream())
+				.map(j -> new ImmutablePair<>(j, i))
+				.map(messages::get)
+				.reduce(F::combine);
+
+		F f = phi(i);
+		if (Ms.isPresent())
+			f = f.combine(Ms.get());
+
+		int[] ints = difference(f.getDomain().getVariables(), new int[]{query});
+		return f.marginalize(ints).normalize();
+	}
+
+	/**
+	 * @param i the {@link Clique} to search the parents for
+	 * @return all the parents of the given {@link Clique} in the {@link #collectingTree}
+	 */
+	protected List<Clique> parents(DirectedAcyclicGraph<Clique, DefaultEdge> tree, Clique i) {
+		return tree.incomingEdgesOf(i)
+				.stream()
+				.map(tree::getEdgeSource)
+				.collect(Collectors.toList());
+	}
+
+	/**
+	 * @param i the {@link Clique} to search the children for
+	 * @return all the children of the given {@link Clique} in the {@link #collectingTree}
+	 */
+	protected List<Clique> children(DirectedAcyclicGraph<Clique, DefaultEdge> tree, Clique i) {
+		return tree.outgoingEdgesOf(i)
+				.stream()
+				.map(tree::getEdgeTarget)
+				.collect(Collectors.toList());
+	}
+
+	/**
+	 * @param tree the tree to use
+	 * @param i    the {@link Clique} source of the message
+	 * @return the combination of the potentials of {@link Clique} i with all the incoming messages (if there are any)
+	 */
+	protected F message(DirectedAcyclicGraph<Clique, DefaultEdge> tree, Clique i) {
+		final Optional<F> psis = parents(tree, i)
+				.stream()
+				.map(j -> {
+					final ImmutablePair<Clique, Clique> key = new ImmutablePair<>(j, i);
+					final F M = messages.get(key);
+					final int[] S = separators.get(key);
+					return M.marginalize(S).normalize();
+				})
+				.reduce(F::combine);
+
+		F phis = phi(i);
+
+		if (psis.isPresent())
+			phis = phis.combine(psis.get());
+
+		return phis.normalize();
+	}
+
+	/**
+	 * @param i {@link Clique} to collect messages to
+	 * @return the combination of the potentials of {@link Clique} i with all the incoming messages (if there are any)
+	 */
+	protected F collect(Clique i) {
+		return message(collectingTree, i);
+	}
+
+	/**
+	 * @param i {@link Clique} to distribute messages from
+	 * @return the combination of the potentials of {@link Clique} i with all the incoming messages (if there are any)
+	 */
+	protected F distribute(Clique i) {
+		return message(distributingTree, i);
+	}
+
+	/**
+	 * Executes the collecting step of the Belief Propagation algorithm.
+	 *
+	 * @param variable the variable to query as root of the tree
+	 * @return the precise {@link Factor} associated with the variable
 	 */
 	public F collectingEvidence(int variable) {
-		checks();
+		// populate messages
+		for (Clique i : collectingOrder) {
+			// root computation is done outside of this loop
+			if (i.equals(root))
+				continue;
 
-		Clique root = getRoot(variable);
+			// in collectingTree, children is always 1 (except for root)
+			final Clique j = children(collectingTree, i).get(0);
+			final F Mij = collect(i);
+			final Pair<Clique, Clique> key = new ImmutablePair<>(i, j);
+			messages.put(key, Mij);
+		}
 
-		// collect messages
-		Stream<F> psis = junctionTree.edgesOf(root).stream()
-				.map(edge -> {
-					Clique source = junctionTree.getEdgeSource(edge);
-					Clique target = junctionTree.getEdgeTarget(edge);
-
-					Clique i = root == source ? target : source;
-
-					return collect(/* from */ i, /* to */root);
-				});
-
-		Stream<F> phis = Stream.of(phi(root));
-
-		// combine by potential
-		F f = Stream.concat(phis, psis)
-				.reduce(F::combine)
-				.orElseThrow(() -> new IllegalStateException("No factor after combination with messages"));
-
-		// marginalize out what is not needed
-		int[] ints = IntStream.of(f.getDomain().getVariables()).filter(x -> x != variable).toArray();
-
+		// root computation and variable query
+		final F f = collect(root);
+		int[] ints = difference(f.getDomain().getVariables(), new int[]{variable});
 		return f.marginalize(ints).normalize();
 	}
 
 	/**
 	 * Executes the distribution step of the Belief Propagation algorithm.
-	 *
-	 * @param variable the variable to consider the root node
 	 */
-	public void distributingEvidence(int variable) {
-		checks();
+	public void distributingEvidence() {
+		for (Clique i : distributionOrder) {
+			final F Mi = distribute(i);
 
-		Clique root = getRoot(variable);
-		F phi = phi(root);
-
-		junctionTree.outgoingEdgesOf(root).forEach(edge -> {
-			Clique source = junctionTree.getEdgeSource(edge);
-			Clique target = junctionTree.getEdgeTarget(edge);
-
-			Clique i = root == source ? target : source;
-
-			Separator<F> S = junctionTree.getEdge(i, root);
-			F Mij = project(phi, S);
-
-			// distribute the message M(root,j) to node j
-			distribute(root, i, Mij);
-		});
-
-		fullyPropagated = true;
-	}
-
-	private void checks() {
-		if (model == null) throw new IllegalStateException("No network available");
-		if (junctionTree == null) throw new IllegalStateException("No JunctionTree available");
-	}
-
-	/**
-	 * @param j from this node
-	 * @param k to this node
-	 * @return the message Mjk
-	 */
-	private F collect(Clique j, Clique k) {
-		// collect phi(j)
-		F phi = phi(j);
-
-		for (Separator<F> edge : junctionTree.edgesOf(j)) {
-			Clique source = junctionTree.getEdgeSource(edge);
-			Clique target = junctionTree.getEdgeTarget(edge);
-
-			// if we have inbound edges for this node j, we compute the message
-			Clique i = j == source ? target : source;
-
-			// ignore messages inbound from k
-			if (i.equals(k)) continue;
-
-			F Mij = collect(i, j);
-
-			phi.combine(Mij);
-		}
-
-		// compute the message by projecting phi over the separator(i, j)
-		Separator<F> S = junctionTree.getEdge(j, k);
-		F Mjk = project(phi, S);
-		S.setMessage(j, Mjk);
-
-		return Mjk;
-	}
-
-	/**
-	 * @param k   from this node
-	 * @param i   to this node
-	 * @param Mki the message Mki
-	 */
-	private void distribute(Clique k, Clique i, F Mki) {
-		junctionTree.getEdge(k, i).setMessage(k, Mki);
-
-		F phi = phi(i).combine(Mki);
-
-		// if we have nodes that need the message from this node i
-		for (Separator<F> edge : junctionTree.edgesOf(i)) {
-			Clique source = junctionTree.getEdgeSource(edge);
-			Clique target = junctionTree.getEdgeTarget(edge);
-
-			Clique j = i == source ? target : source;
-
-			// ignore message outgoing to k
-			if (j.equals(k)) continue;
-
-			F Mij = project(phi, junctionTree.getEdge(i, j));
-
-			distribute(i, j, Mij);
+			for (Clique j : children(distributingTree, i)) {
+				final Pair<Clique, Clique> key = new ImmutablePair<>(i, j);
+				final int[] S = separators.get(key);
+				final F Mij = Mi.marginalize(S);
+				messages.put(key, Mij);
+			}
 		}
 	}
 
@@ -230,26 +380,11 @@ public class BeliefPropagation<F extends Factor<F>> {
 	 * @return a {@link F} which is a combination of all the factors and the evidences included in the Clique
 	 */
 	private F phi(Clique clique) {
-		F factor = IntStream.of(clique.getVariables())
-				.mapToObj(model::getFactor)
+		return potentialsPerClique.get(clique).stream()
+				.map(f -> f.filter(evidence))
 				.reduce(F::combine)
-				.orElseThrow(() -> new IllegalStateException("Empty F after combination"));
-
-		return factor.filter(evidence);
+				.orElseThrow(() -> new IllegalStateException("Empty F after combination"))
+				.normalize();
 	}
 
-	/**
-	 * Project the variables of the given {@link Separator} on the given potential.
-	 *
-	 * @param phi input potential
-	 * @param S   separator to consider
-	 * @return a marginalized and normalized {@link F}
-	 */
-	private F project(F phi, Separator<F> S) {
-		int[] ints = Arrays.stream(phi.getDomain().getVariables())
-				.filter(x -> ArraysUtil.contains(x, S.getVariables()))
-				.toArray();
-
-		return phi.marginalize(ints).normalize();
-	}
 }

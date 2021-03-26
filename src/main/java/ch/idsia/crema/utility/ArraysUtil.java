@@ -414,6 +414,16 @@ public class ArraysUtil {
 	}
 
 	/**
+	 * @param arr1 first array
+	 * @param arr2 second array
+	 * @return an array which is the union of the two arrays without the common elements
+	 */
+	public static int[] outersection(int[] arr1, int[] arr2) {
+		final int[] intersection = intersection(arr1, arr2);
+		return unionSet(difference(arr1, intersection), difference(arr2, intersection));
+	}
+
+	/**
 	 * Find the sorted intersection of two non-sorted integer arrays.
 	 *
 	 * @param arr1 the first array
@@ -751,8 +761,8 @@ public class ArraysUtil {
 
 		data = ArraysUtil.round(data, 3);
 		BigDecimal sum = BigDecimal.valueOf(0.0);
-		for (int i = 0; i < data.length; i++) {
-			sum = sum.add(BigDecimal.valueOf(data[i]));
+		for (double datum : data) {
+			sum = sum.add(BigDecimal.valueOf(datum));
 		}
 		for (int i = data.length - 1; i >= 0; i--) {
 			if (data[i] != 0) {
@@ -771,17 +781,17 @@ public class ArraysUtil {
 	 * @return
 	 */
 	public static String toLatex(double[][] matrix) {
-		String str = "";
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[i].length; j++) {
-				str += matrix[i][j];
-				if (j == matrix[i].length - 1)
-					str += " \\\\\n";
+		StringBuilder str = new StringBuilder();
+		for (double[] doubles : matrix) {
+			for (int j = 0; j < doubles.length; j++) {
+				str.append(doubles[j]);
+				if (j == doubles.length - 1)
+					str.append(" \\\\\n");
 				else
-					str += " &";
+					str.append(" &");
 			}
 		}
-		return str;
+		return str.toString();
 	}
 
 	/**
@@ -792,7 +802,7 @@ public class ArraysUtil {
 	 * @return
 	 */
 	public static double[] latexToDoubleVector(String latexcode) {
-		return Stream.of(latexcode.split("&")).mapToDouble(s -> Double.valueOf(s)).toArray();
+		return Stream.of(latexcode.split("&")).mapToDouble(Double::valueOf).toArray();
 	}
 
 	/**
@@ -803,7 +813,7 @@ public class ArraysUtil {
 	 * @return
 	 */
 	public static double[][] latexToDoubleArray(String latexcode) {
-		return Stream.of(latexcode.split("\\\\")).map(s -> latexToDoubleVector(s)).toArray(double[][]::new);
+		return Stream.of(latexcode.split("\\\\")).map(ArraysUtil::latexToDoubleVector).toArray(double[][]::new);
 	}
 
 	/**

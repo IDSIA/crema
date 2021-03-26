@@ -7,7 +7,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 /**
  * Common interface of inference algorithm. Any model preprocessing requirements of the final
- * inference algorithm must be performed byt the doQuery method.
+ * inference algorithm must be performed byt the query method.
  *
  * @param <M> The model
  * @param <F> The actual Factor type
@@ -15,11 +15,25 @@ import gnu.trove.map.hash.TIntIntHashMap;
  */
 public interface Inference<M extends GraphicalModel<?>, F extends GenericFactor> {
 
-	F query(int target, TIntIntMap evidence) throws InterruptedException;
+	/**
+	 * Perform an inference.
+	 *
+	 * @param model    the model to use for inference
+	 * @param evidence the observed variable as a map of variable-states
+	 * @param query    the variable that will be queried
+	 * @return the result of the inference
+	 */
+	F query(M model, TIntIntMap evidence, int query);
 
-	default F query(int target) throws InterruptedException {
-		return query(target, new TIntIntHashMap());
+	/**
+	 * Perform an inference.
+	 *
+	 * @param model the model to use for inference
+	 * @param query the variable that will be queried
+	 * @return the result of the inference
+	 */
+	default F query(M model, int query) {
+		return query(model, new TIntIntHashMap(), query);
 	}
 
-	M getInferenceModel(int target, TIntIntMap evidence);
 }

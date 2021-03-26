@@ -1,5 +1,6 @@
 package ch.idsia.crema.preprocess;
 
+import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
 import ch.idsia.crema.search.impl.DepthFirst;
@@ -8,64 +9,44 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
 
-public class RemoveBarren {
+public class RemoveBarren<F extends GenericFactor> implements PreprocessorQuery<F, GraphicalModel<F>>, TransformerQuery<F, GraphicalModel<F>> {
 
 	private int[] deleted;
 
-	public RemoveBarren() {
-
-	}
-
-	@SuppressWarnings("rawtypes")
-	public <M extends GraphicalModel> M execute(M model, int query, int... evidence) {
-		return execute(model, new int[]{query}, evidence);
-	}
-
-	@SuppressWarnings("rawtypes")
-	public <M extends GraphicalModel> M execute(M model, int query, TIntIntMap evidence) {
-		return execute(model, new int[]{query}, evidence.keys());
-	}
-
-	@SuppressWarnings("rawtypes")
-	public <M extends GraphicalModel> M execute(M model, int[] query, TIntIntMap evidence) {
-		return execute(model, query, evidence.keys());
-	}
-
-	@SuppressWarnings("rawtypes")
-	public <M extends GraphicalModel> M execute(M model, int[] query, int... evidence) {
-		@SuppressWarnings("unchecked")
-		M copy = (M) model.copy();
-		executeInline(copy, query, evidence);
-		return copy;
+	/**
+	 * @return Returns a copy of the array with the deleted variables.
+	 */
+	public int[] getDeleted() {
+		return deleted;
 	}
 
 	/**
 	 * Remove barren variable from the specified model.
 	 *
-	 * @param model
-	 * @param query
-	 * @param evidence
+	 * @param model    the model to be processed
+	 * @param query    the variable that will be queried
+	 * @param evidence the observed variable as a map of variable-states
 	 */
-	public void executeInline(GraphicalModel<?> model, int query, TIntIntMap evidence) {
-		executeInline(model, new int[]{query}, evidence.keys());
-	}
-
-	public void executeInline(GraphicalModel<?> model, int[] query, TIntIntMap evidence) {
-		executeInline(model, query, evidence.keys());
-	}
-
-	public void executeInline(GraphicalModel<?> model, int[] query, int... evidence) {
-		TIntSet retain = cutIndependent(model, query, evidence);
-		TIntArrayList todelete = new TIntArrayList();
+	@Override
+	public void executeInPlace(GraphicalModel<F> model, TIntIntMap evidence, int... query) {
+		TIntSet retain = cutIndependent(model, query, evidence.keys());
+		TIntArrayList toDelete = new TIntArrayList();
 
 		for (int var : model.getVariables()) {
 			if (retain.contains(var)) continue;
-			todelete.add(var);
+			toDelete.add(var);
 			model.removeVariable(var);
 		}
 
-		deleted = todelete.toArray();
+		deleted = toDelete.toArray();
 		// deleted is already sorted (as model.getVariables is sorted)
+	}
+
+	@Override
+	public GraphicalModel<F> execute(GraphicalModel<F> model, TIntIntMap evidence, int... query) {
+		final GraphicalModel<F> copy = model.copy();
+		executeInPlace(copy, evidence, query);
+		return copy;
 	}
 
 	/**
@@ -85,14 +66,14 @@ public class RemoveBarren {
 	}
 
 	/**
-	 * Get all the valid nodes
+	 * Get all the valid nodes.
 	 *
-	 * @param model
-	 * @param query
+	 * @param model    the model to be processed
+	 * @param query    the variable that will be queried
 	 * @param evidence may be null
-	 * @return
+	 * @return a {@link TIntSet} of visited variables
 	 */
-	private TIntSet cutIndependent(final GraphicalModel<?> model, int[] query, int[] evidence) {
+	private TIntSet cutIndependent(final GraphicalModel<F> model, int[] query, int[] evidence) {
 		final TIntSet locked = new TIntHashSet();
 		final TIntSet visited = new TIntHashSet();
 
@@ -129,6 +110,11 @@ public class RemoveBarren {
 			}
 
 			@Override
+			public void opening(int node, int from) {
+
+			}
+
+			@Override
 			public void closing(int node, int from) {
 				if (!todelete.contains(node)) visited.add(node);
 			}
@@ -146,14 +132,5 @@ public class RemoveBarren {
 
 		// find query disconnected stuff
 		return visited;
-	}
-
-	/**
-	 * Returns a copy of the deleted nodes array.
-	 *
-	 * @return
-	 */
-	public int[] getDeleted() {
-		return deleted;
 	}
 }

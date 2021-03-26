@@ -7,8 +7,6 @@ import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import ch.idsia.crema.preprocess.DupModel;
-import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.search.ObjectiveFunction;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
@@ -74,9 +72,9 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	}
 
 	protected BayesianFactor calcMarginal(Solution sol, int[] query) {
-		GraphicalModel<? extends GenericFactor> model = this.model.copy();
-		RemoveBarren barren = new RemoveBarren();
-		barren.execute(model, query);
+//		GraphicalModel<? extends GenericFactor> model = this.model.copy();
+//		RemoveBarren<? extends GenericFactor> barren = new RemoveBarren<>();
+//		barren.execute(model, query);
 
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(sequence);
 		ve.setFactors(sol.getData().valueCollection());
@@ -85,9 +83,9 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	}
 
 	protected BayesianFactor calcPosterior(Solution sol, int[] query, TIntIntMap ev) {
-		GraphicalModel<? extends GenericFactor> model = new DupModel().execute(this.model);
-		RemoveBarren barren = new RemoveBarren();
-		barren.execute(model, query, ev);
+//		GraphicalModel<? extends GenericFactor> model = this.model.copy();
+//		RemoveBarren<? extends GenericFactor> barren = new RemoveBarren<>();
+//		barren.execute(model, query, ev);
 
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(sequence);
 		ve.setFactors(sol.getData().valueCollection());

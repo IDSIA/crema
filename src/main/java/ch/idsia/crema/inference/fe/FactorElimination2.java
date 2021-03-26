@@ -1,15 +1,17 @@
 package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import static ch.idsia.crema.inference.fe.FactorEliminationUtils.project;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: CreMA
  * Date:    06.02.2018 15:29
  */
-// TODO: we have three types of FactorElimination... keep just one
+// TODO: this class works with EliminationTrees, we can create a better support for this kind of objects (tree interface
+//  based on graph) or remove this class in favor of FactorElimination and FactorEliminationModel
+@Deprecated
 public class FactorElimination2 {
 
 	private EliminationTree T;
@@ -49,27 +51,6 @@ public class FactorElimination2 {
 
 		BayesianFactor phiR = T.getNode(root).phi();
 		return project(phiR, query);
-	}
-
-	/**
-	 * Given a {@link BayesianFactor} Fr, marginalize all the variables of this factor that are not equals to the
-	 * query variable Q.
-	 *
-	 * @param phi the target factor
-	 * @param Q   the query variable
-	 * @return a factor over the query variable
-	 */
-	private BayesianFactor project(BayesianFactor phi, int... Q) {
-
-		TIntSet variables = new TIntHashSet(phi.getDomain().getVariables());
-		for (int q : Q) {
-			variables.remove(q);
-		}
-
-		for (int v : variables.toArray())
-			phi = phi.marginalize(v);
-
-		return phi;
 	}
 
 }

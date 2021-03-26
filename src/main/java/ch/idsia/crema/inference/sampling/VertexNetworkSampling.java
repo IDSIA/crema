@@ -15,6 +15,8 @@ import java.util.stream.IntStream;
  * </p>
  */
 // TODO: this should be made factor type independent
+// TODO: this should not be in the inference package
+// TODO: this class need a test...
 public class VertexNetworkSampling {
 
 	/**

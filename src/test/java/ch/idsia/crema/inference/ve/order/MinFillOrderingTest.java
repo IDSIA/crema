@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.ve.order;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.dot.DotSerialize;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -20,7 +20,7 @@ public class MinFillOrderingTest {
 		model.addVariable(2);
 		model.addVariable(2);
 		model.addVariable(2);
-		
+
 		model.addParent(2, 0); // A3 <-- A1
 		model.addParent(2, 1); // A3 <-- A2
 		model.addParent(3, 1);
@@ -30,11 +30,11 @@ public class MinFillOrderingTest {
 		model.addParent(7, 5);
 		model.addParent(7, 6);
 
-		
+
 		MinFillOrdering ordering = new MinFillOrdering();
 		int[] order = ordering.apply(model);
 		System.out.println(Arrays.toString(order));
-		DotSerialize ds = new  DotSerialize();
+		DotSerialize ds = new DotSerialize();
 		ds.run(model);
 	}
 
@@ -54,7 +54,7 @@ public class MinFillOrderingTest {
 		model.addParent(4, 1);
 		model.addParent(4, 2);
 		model.addParent(5, 2);
-		
+
 		MinFillOrdering ordering = new MinFillOrdering();
 		ordering.apply(model);
 	}

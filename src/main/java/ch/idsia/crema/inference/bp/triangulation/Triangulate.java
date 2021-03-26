@@ -16,6 +16,8 @@ public abstract class Triangulate implements Algorithm<SimpleGraph<Integer, Defa
 	protected SimpleGraph<Integer, DefaultEdge> network;
 	protected TriangulatedGraph triangulated;
 
+	protected Boolean hasPerfectEliminationSequence = true;
+
 	/**
 	 * @param model the moralized graph to apply triangulation
 	 */
@@ -40,6 +42,10 @@ public abstract class Triangulate implements Algorithm<SimpleGraph<Integer, Defa
 	 */
 	public TriangulatedGraph getTriangulated() {
 		return triangulated;
+	}
+
+	public Boolean getHasPerfectEliminationSequence() {
+		return hasPerfectEliminationSequence;
 	}
 
 	public abstract TriangulatedGraph exec();

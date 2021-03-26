@@ -1,7 +1,7 @@
 package ch.idsia.crema.factor.convert;
 
-import ch.idsia.crema.core.Converter;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.credal.linear.ExtensiveHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
 import ch.idsia.crema.utility.IndexIterator;
@@ -76,4 +76,6 @@ public class SeparateLinearToExtensiveHalfspaceFactor implements Converter<Separ
 	public Class<SeparateLinearFactor> getSourceClass() {
 		return SeparateLinearFactor.class;
 	}
+
+	
 }

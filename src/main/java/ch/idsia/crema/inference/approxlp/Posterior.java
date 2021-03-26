@@ -32,7 +32,7 @@ public class Posterior extends Manager {
 	protected LinearFractionalSolver createSolver(int free) {
 		FractionalSolver simplex = new FractionalSolver();
 		GenericFactor f = model.getFactor(free);
-		ExtensiveLinearFactor<?> factor = null;
+		ExtensiveLinearFactor<?> factor;
 		if (f instanceof SeparateLinearFactor) {
 			factor = sep2ext.apply((SeparateLinearFactor<?>) f);
 		} else if (f instanceof ExtensiveLinearFactor) {
@@ -62,7 +62,7 @@ public class Posterior extends Manager {
 
 		double[] numerator;
 		double[] denominator;
-		BayesianFactor tmp = null;
+		BayesianFactor tmp;
 		// note that observed nodes have their outbound links cut before being
 		// binarized.
 
@@ -163,7 +163,7 @@ public class Posterior extends Manager {
 		try {
 			solver.solve(numerator, 0.0, denominator, 0.0);
 		} catch (NoFeasibleSolutionException ex) {
-			System.out.println(free + " " + (Arrays.stream(tmp.getData()).sum() == 1.0) + " " + Arrays.toString(tmp.getData()));
+			System.err.println("NoFeasibleSolution: " + free + " " + (Arrays.stream(tmp.getData()).sum() == 1.0) + " " + Arrays.toString(tmp.getData()));
 			throw ex;
 		}
 		BayesianFactor solution = from.getData().get(free);
@@ -171,7 +171,7 @@ public class Posterior extends Manager {
 		solution.setData(solver.getVertex());
 
 		//replaces 0.0 values in solution
-		solution.replaceInLine(0.0, Inference.EPS);
+		solution.replaceInLine(0.0, ApproxLP1.EPS);
 
 		doing.setValues(solution);
 		doing.setScore(solver.getValue());

@@ -2,13 +2,14 @@ package ch.idsia.crema.model.utility;
 
 import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Doubles;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class ArraysUtilityTest {
 
@@ -27,9 +28,9 @@ public class ArraysUtilityTest {
 		double[] source = new double[]{0, 2, 1};
 		double[] other = new double[]{0, 4, 2};
 
-		assertArrayEquals(new double[]{0, 2, 1, 0, 4, 2}, ArraysUtil.append(source, other), 0);
-		assertArrayEquals(source, ArraysUtil.append(source), 0);
-		assertArrayEquals(other, ArraysUtil.append(new double[]{}, other), 0);
+		assertArrayEquals(new double[]{0, 2, 1, 0, 4, 2}, ArraysUtil.append(source, other), 1e-9);
+		assertArrayEquals(source, ArraysUtil.append(source), 1e-9);
+		assertArrayEquals(other, ArraysUtil.append(new double[]{}, other), 1e-9);
 	}
 
 	@Test
@@ -37,13 +38,13 @@ public class ArraysUtilityTest {
 		double[] source = new double[]{0, 2, 1};
 
 		// remove bounds
-		assertArrayEquals(new double[]{2, 1}, ArraysUtil.remove(source, 0), 0);
-		assertArrayEquals(new double[]{0, 1}, ArraysUtil.remove(source, 1), 0);
-		assertArrayEquals(new double[]{0, 2}, ArraysUtil.remove(source, 2), 0);
+		assertArrayEquals(new double[]{2, 1}, ArraysUtil.remove(source, 0), 1e-9);
+		assertArrayEquals(new double[]{0, 1}, ArraysUtil.remove(source, 1), 1e-9);
+		assertArrayEquals(new double[]{0, 2}, ArraysUtil.remove(source, 2), 1e-9);
 
 		// remove only item
 		source = new double[]{1};
-		assertArrayEquals(new double[]{}, ArraysUtil.remove(source, 0), 0);
+		assertArrayEquals(new double[]{}, ArraysUtil.remove(source, 0), 1e-9);
 	}
 
 	@Test
@@ -93,7 +94,7 @@ public class ArraysUtilityTest {
 		newValues[1][1] = 4;
 
 		// so changing the new matrix will affect the old one too.
-		assertEquals(values[1][1], newValues[1][1], 0);
+		assertEquals(values[1][1], newValues[1][1], 1e-9);
 
 		// but main array did change
 		assertNotSame(values, newValues);
@@ -267,9 +268,9 @@ public class ArraysUtilityTest {
 		double sumB = Arrays.stream(b).sum();
 		double sumC = Arrays.stream(c).sum();
 
-		assertEquals(target, sumA, 0.0);
-		assertEquals(target, sumB, 0.0);
-		assertNotEquals(target, sumC, 0.0);
+		assertEquals(target, sumA, 1e-9);
+		assertEquals(target, sumB, 1e-9);
+		assertNotEquals(target, sumC);
 	}
 
 
@@ -395,7 +396,7 @@ public class ArraysUtilityTest {
 		double[] expected_ = ArraysUtil.latexToDoubleVector(expected);
 		double[] actual = ArraysUtil.unique(arr_);
 
-		assertArrayEquals(expected_, actual, 0);
+		assertArrayEquals(expected_, actual, 1e-9);
 
 	}
 
@@ -409,7 +410,7 @@ public class ArraysUtilityTest {
 		double[] expected_ = ArraysUtil.latexToDoubleVector(expected);
 		double[] actual = ArraysUtil.round(arr_, num_decimals);
 
-		assertArrayEquals(expected_, actual, 0);
+		assertArrayEquals(expected_, actual, 1e-9);
 
 	}
 

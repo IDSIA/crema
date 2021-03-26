@@ -16,15 +16,15 @@ public class IO {
 
 	public static final String[] UAIextensions = {".uai", ".uai.do", "uai.evid"};
 
-	public static Object readUAI(String filename) throws IOException {
+	public static <T> T readUAI(String filename) throws IOException {
 		return UAIParser.read(filename);
 	}
 
-	public static void writeUAI(Object target, String filename) throws IOException {
+	public static <T> void writeUAI(T target, String filename) throws IOException {
 		UAIWriter.write(target, filename);
 	}
 
-	public static Object read(String filename) throws IOException {
+	public static <T> T read(String filename) throws IOException {
 		if (Stream.of(UAIextensions).anyMatch(filename::endsWith)) {
 			return readUAI(filename);
 		} else {
@@ -32,7 +32,7 @@ public class IO {
 		}
 	}
 
-	public static void write(Object target, String filename) throws IOException {
+	public static <T> void write(T target, String filename) throws IOException {
 
 		if (Stream.of(UAIextensions).anyMatch(filename::endsWith)) {
 			writeUAI(target, filename);

@@ -6,15 +6,15 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
-import ch.idsia.crema.factor.symbolic.serialize.NLSerializer;
+import ch.idsia.crema.factor.symbolic.serialize.MOD;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.math3.util.MathArrays;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class VariableEliminationTest {
 
@@ -48,7 +48,6 @@ public class VariableEliminationTest {
 
 			BayesianFactor fa = ve.run(0);
 			assertArrayEquals(new double[]{0.4678, 0.5322}, fa.getData(), 0.0000000000001);
-
 		}
 	}
 
@@ -103,7 +102,7 @@ public class VariableEliminationTest {
 		ve.setFactors(Collections.singletonList(f));
 
 		BayesianFactor fa = ve.run(3);
-		assertArrayEquals(new double[]{0.3, 0.7}, fa.getData(), 0);
+		assertArrayEquals(new double[]{0.3, 0.7}, fa.getData(), 1e-9);
 	}
 
 	/**
@@ -185,7 +184,7 @@ public class VariableEliminationTest {
 		ve.setEvidence(new TIntIntHashMap(new int[]{1}, new int[]{1}));
 
 		SymbolicFactor f = ve.run(1);
-		NLSerializer serial = new NLSerializer();
-		System.out.println(serial.serialize(f));
+		MOD serial = new MOD();
+		System.out.println(serial.serialize(f, 1, true));
 	}
 }

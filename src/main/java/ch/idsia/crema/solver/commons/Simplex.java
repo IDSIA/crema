@@ -52,7 +52,11 @@ public class Simplex implements LinearSolver {
 	
 	@Override
 	public void solve(double[] objective, double constant) {
-		solution = solver.optimize(constraints, new NonNegativeConstraint(true), new LinearObjectiveFunction(objective, constant), goal, PivotSelectionRule.BLAND );
+		solution = solver.optimize(constraints, 
+			new NonNegativeConstraint(true), 
+			new LinearObjectiveFunction(objective, constant), 
+			goal, 
+			PivotSelectionRule.BLAND);
 	}
 
 	@Override

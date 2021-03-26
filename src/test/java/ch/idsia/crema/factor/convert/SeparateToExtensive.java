@@ -4,10 +4,12 @@ import ch.idsia.crema.core.DomainBuilder;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SeparateToExtensive {
 	@Test
@@ -34,7 +36,7 @@ public class SeparateToExtensive {
 		SeparateVertexToExtensiveVertex converter = new SeparateVertexToExtensiveVertex();
 		ExtensiveVertexFactor evf = converter.apply(vf);
 
-		Assert.assertEquals(72, evf.getInternalVertices().size());
+		assertEquals(72, evf.getInternalVertices().size());
 
 		BayesianFactor bf = evf.getBayesianVertex(0);
 		double sum = 0;
@@ -43,9 +45,9 @@ public class SeparateToExtensive {
 		}
 
 		System.out.println(Arrays.toString(bf.getData()));
-		Assert.assertEquals(1, sum, 0.000001);
+		assertEquals(1, sum, 0.000001);
 
-		Assert.assertArrayEquals(new double[]{0.7, 0.1, 0.1, 0.1,
+		assertArrayEquals(new double[]{0.7, 0.1, 0.1, 0.1,
 				0.1, 0.1, 0.7, 0.1,
 				0.1, 0.3, 0.2, 0.4,
 				0.3, 0.3, 0.2, 0.2}, bf.getData(), 0.000001);

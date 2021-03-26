@@ -1,6 +1,8 @@
 package ch.idsia.crema.inference.bp.cliques;
 
 import ch.idsia.crema.utility.ArraysUtil;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 
 import java.util.Arrays;
 
@@ -11,7 +13,14 @@ import java.util.Arrays;
  */
 public class Clique {
 
+	/**
+	 * Variables covered by the {@link Clique}.
+	 */
 	private int[] variables;
+	/**
+	 * Variable that created the {@link Clique}. This should be the potential assigned to this clique.
+	 */
+	private final TIntList v = new TIntArrayList();
 
 	protected Clique() {
 
@@ -26,8 +35,28 @@ public class Clique {
 		this.variables = variables;
 	}
 
+	/**
+	 * Creates a new Clique from a sorted array of variables and the array that created the clique.
+	 *
+	 * @param v         this is the variable that was removed from the {@link FindCliques} algorithm to create
+	 *                  this {@link Clique}.
+	 * @param variables must be sorted
+	 */
+	public Clique(int v, int[] variables) {
+		this.variables = variables;
+		this.v.add(v);
+	}
+
 	public int[] getVariables() {
 		return variables;
+	}
+
+	public TIntList getV() {
+		return v;
+	}
+
+	public int[] getVArray() {
+		return v.toArray();
 	}
 
 	/**
@@ -53,11 +82,25 @@ public class Clique {
 	 * Checks if this {@link Clique} contains, between its variables, the given variable.
 	 *
 	 * @param variable variable to search for
-	 * @return true if the variable is found, false otherwise
+	 * @return true if the variable is found, otherwise false
 	 */
 	public boolean contains(int variable) {
 		int i = Arrays.binarySearch(variables, variable);
 		return i >= 0;
+	}
+
+	/**
+	 * Checks if this {@link Clique} contains all the given variables.
+	 *
+	 * @param variables variables to check for
+	 * @return true if all the variables are found, otherwise false
+	 */
+	public boolean containsAll(int[] variables) {
+		for (int v : variables) {
+			if (!contains(v))
+				return false;
+		}
+		return true;
 	}
 
 	/**
