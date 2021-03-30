@@ -8,8 +8,7 @@ import ch.idsia.crema.inference.bp.junction.JunctionTree;
 import ch.idsia.crema.inference.bp.junction.JunctionTreeBuilder;
 import ch.idsia.crema.inference.bp.moralization.Moralize;
 import ch.idsia.crema.inference.bp.triangulation.MinDegreeOrdering;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DirectedAcyclicGraph;
+import ch.idsia.crema.model.graphical.DAGModel;
 
 import java.util.Arrays;
 
@@ -18,7 +17,7 @@ import java.util.Arrays;
  * Project: crema
  * Date:    16.11.2020 18:22
  */
-public class GraphToJunctionTreePipe<F extends OperableFactor<F>> extends Pipe<DirectedAcyclicGraph<Integer, DefaultEdge>, JunctionTree<F>> {
+public class GraphToJunctionTreePipe<F extends OperableFactor<F>> extends Pipe<DAGModel<F>, JunctionTree> {
 
 	public GraphToJunctionTreePipe() {
 		this.stages = Arrays.asList(
@@ -31,7 +30,7 @@ public class GraphToJunctionTreePipe<F extends OperableFactor<F>> extends Pipe<D
 				// Find maximal spanning tree
 				new JoinTreeBuilderKruskal(),
 				// JunctionTree
-				new JunctionTreeBuilder<F>()
+				new JunctionTreeBuilder()
 		);
 	}
 }

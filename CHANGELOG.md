@@ -9,6 +9,7 @@
 - Fixed #56, #62
 - Minor change to `BayesianNetworkSampling` class
 - Updated `Sampling`algorithms ( #67 )
+- Merged #70 #71
 
 0.1.6
 ===========

@@ -1,8 +1,7 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.inference.InferenceJoined;
-import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import gnu.trove.map.TIntDoubleMap;
 import gnu.trove.map.TIntIntMap;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
  * Project: CreMA
  * Date:    05.02.2018 13:33
  */
-public class LikelihoodWeightingSampling extends StochasticSampling implements InferenceJoined<BayesianNetwork, BayesianFactor> {
+public class LikelihoodWeightingSampling extends StochasticSampling {
 
 	public LikelihoodWeightingSampling() {
 	}
@@ -41,8 +40,8 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements I
 	 * Algorithm 46 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 */
 	@Override
-	public Collection<BayesianFactor> run(BayesianNetwork original, TIntIntMap evidence, int... query) {
-		final BayesianNetwork model = preprocess(original, evidence, query);
+	public Collection<BayesianFactor> run(DAGModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
+		final DAGModel<BayesianFactor> model = preprocess(original, evidence, query);
 
 		if (!preprocess) {
 			// this is mandatory
@@ -100,18 +99,18 @@ public class LikelihoodWeightingSampling extends StochasticSampling implements I
 	}
 
 	/**
-	 * @deprecated use method {@link #query(BayesianNetwork, TIntIntMap, int)}
+	 * @deprecated use method {@link #query(DAGModel, TIntIntMap, int)}
 	 */
 	@Deprecated
-	public Collection<BayesianFactor> apply(BayesianNetwork model, int[] query) {
+	public Collection<BayesianFactor> apply(DAGModel<BayesianFactor> model, int[] query) {
 		return run(model, new TIntIntHashMap(), query);
 	}
 
 	/**
-	 * @deprecated use method {@link #query(BayesianNetwork, TIntIntMap, int[])}
+	 * @deprecated use method {@link #query(DAGModel, TIntIntMap, int[])}
 	 */
 	@Deprecated
-	public Collection<BayesianFactor> apply(BayesianNetwork model, int[] query, TIntIntMap observations) {
+	public Collection<BayesianFactor> apply(DAGModel<BayesianFactor> model, int[] query, TIntIntMap observations) {
 		return run(model, observations, query);
 	}
 

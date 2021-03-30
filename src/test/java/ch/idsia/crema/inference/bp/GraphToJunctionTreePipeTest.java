@@ -2,8 +2,7 @@ package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.BayesianNetworkContainer;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DirectedAcyclicGraph;
+import ch.idsia.crema.model.graphical.DAGModel;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +18,7 @@ public class GraphToJunctionTreePipeTest {
 	public void testPipelineToDot() {
 		// given: a Bayesian Network BN
 		BayesianNetworkContainer bns = BayesianNetworkContainer.aSimpleBayesianNetwork();
-		DirectedAcyclicGraph<Integer, DefaultEdge> bn = bns.network.getNetwork();
+		DAGModel<BayesianFactor> bn = bns.network;
 
 		GraphToJunctionTreePipe<BayesianFactor> pipe = new GraphToJunctionTreePipe<>();
 		pipe.setInput(bn);

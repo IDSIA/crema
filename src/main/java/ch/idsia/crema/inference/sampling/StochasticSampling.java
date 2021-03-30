@@ -2,7 +2,7 @@ package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.InferenceJoined;
-import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.RandomUtil;
@@ -18,9 +18,9 @@ import java.util.Collection;
  * Project: CreMA
  * Date:    02.02.2018 09:17
  */
-public abstract class StochasticSampling implements InferenceJoined<BayesianNetwork, BayesianFactor> {
+public abstract class StochasticSampling implements InferenceJoined<DAGModel<BayesianFactor>, BayesianFactor> {
 
-	protected BayesianNetwork model;
+	protected DAGModel<BayesianFactor> model;
 
 	protected TIntIntMap evidence;
 
@@ -58,10 +58,10 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 		this.iterations = iterations;
 	}
 
-	protected BayesianNetwork preprocess(BayesianNetwork original, TIntIntMap evidence, int... query) {
-		BayesianNetwork model = original;
+	protected DAGModel<BayesianFactor> preprocess(DAGModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
+		DAGModel<BayesianFactor> model = original;
 		if (preprocess) {
-			model = new BayesianNetwork(original.copy());
+			model = original.copy();
 			final CutObserved<BayesianFactor> co = new CutObserved<>();
 			final RemoveBarren<BayesianFactor> rb = new RemoveBarren<>();
 
@@ -84,8 +84,8 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 	 * @deprecated
 	 */
 	@Deprecated
-	public void setModel(BayesianNetwork model) {
-		this.model = (BayesianNetwork) model.copy();
+	public void setModel(DAGModel<BayesianFactor> model) {
+		this.model = model.copy();
 	}
 
 	/**
@@ -93,7 +93,7 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 	 *
 	 * @return a map with the computed sampled states over all the variables.
 	 */
-	protected TIntIntMap simulateBN(BayesianNetwork model, TIntIntMap evidence) {
+	protected TIntIntMap simulateBN(DAGModel<BayesianFactor> model, TIntIntMap evidence) {
 		final TIntIntMap map = new TIntIntHashMap();
 		TIntSet nodes = new TIntHashSet();
 
@@ -158,7 +158,7 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 		return map;
 	}
 
-	protected abstract Collection<BayesianFactor> run(BayesianNetwork model, TIntIntMap evidence, int... query);
+	protected abstract Collection<BayesianFactor> run(DAGModel<BayesianFactor> model, TIntIntMap evidence, int... query);
 
 	/**
 	 * Sample the distribution of a {@link BayesianFactor} with not parent nodes.
@@ -197,12 +197,12 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, int query) {
+	public BayesianFactor query(DAGModel<BayesianFactor> model, int query) {
 		return query(model, new TIntIntHashMap(), new int[]{query});
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int... query) {
+	public BayesianFactor query(DAGModel<BayesianFactor> model, TIntIntMap evidence, int... query) {
 		return run(model, evidence, query).stream()
 				.reduce(BayesianFactor::combine)
 				.orElseThrow(() -> new IllegalStateException("Could not produce a joint probability"))
@@ -210,12 +210,12 @@ public abstract class StochasticSampling implements InferenceJoined<BayesianNetw
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, int... queries) {
+	public BayesianFactor query(DAGModel<BayesianFactor> model, int... queries) {
 		return query(model, new TIntIntHashMap(), queries);
 	}
 
 	@Override
-	public BayesianFactor query(BayesianNetwork model, TIntIntMap evidence, int query) {
+	public BayesianFactor query(DAGModel<BayesianFactor> model, TIntIntMap evidence, int query) {
 		return query(model, evidence, new int[]{query});
 	}
 

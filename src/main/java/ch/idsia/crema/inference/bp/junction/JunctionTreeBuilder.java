@@ -1,10 +1,8 @@
 package ch.idsia.crema.inference.bp.junction;
 
-import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Algorithm;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.join.JoinTree;
-import ch.idsia.crema.utility.ArraysUtil;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 /**
@@ -12,10 +10,10 @@ import org.jgrapht.graph.DefaultWeightedEdge;
  * Project: crema
  * Date:    13.11.2020 15:19
  */
-public class JunctionTreeBuilder<F extends OperableFactor<F>> implements Algorithm<JoinTree, JunctionTree<F>> {
+public class JunctionTreeBuilder implements Algorithm<JoinTree, JunctionTree> {
 
 	private JoinTree model;
-	private JunctionTree<F> output;
+	private JunctionTree output;
 
 	@Override
 	public void setInput(JoinTree model) {
@@ -23,27 +21,22 @@ public class JunctionTreeBuilder<F extends OperableFactor<F>> implements Algorit
 	}
 
 	@Override
-	public JunctionTree<F> getOutput() {
+	public JunctionTree getOutput() {
 		return output;
 	}
 
 	@Override
-	public JunctionTree<F> exec() {
+	public JunctionTree exec() {
 		if (model == null) throw new IllegalArgumentException("No model available");
 
-		output = new JunctionTree<>();
+		output = new JunctionTree();
 		model.vertexSet().forEach(output::addVertex);
 
 		for (DefaultWeightedEdge edge : model.edgeSet()) {
 			Clique source = model.getEdgeSource(edge);
 			Clique target = model.getEdgeTarget(edge);
 
-			int[] variables = ArraysUtil.intersectionSorted(source.getVariables(), target.getVariables());
-
-			Separator<F> S = new Separator<>(source, target);
-			S.setVariables(variables);
-
-			output.addEdge(source, target, S);
+			output.addEdge(source, target);
 		}
 
 		return output;

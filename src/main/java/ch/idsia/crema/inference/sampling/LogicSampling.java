@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -43,8 +43,8 @@ public class LogicSampling extends StochasticSampling {
 	 * @return the distribution of probability on the query
 	 */
 	@Override
-	public Collection<BayesianFactor> run(BayesianNetwork original, TIntIntMap evidence, int... query) {
-		final BayesianNetwork model = preprocess(original, evidence, query);
+	public Collection<BayesianFactor> run(DAGModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
+		final DAGModel<BayesianFactor> model = preprocess(original, evidence, query);
 		final TIntObjectMap<double[]> Px = new TIntObjectHashMap<>();
 
 		for (int variable : model.getVariables()) {
@@ -67,10 +67,10 @@ public class LogicSampling extends StochasticSampling {
 	}
 
 	/**
-	 * @deprecated use method {@link #query(BayesianNetwork, int[])}
+	 * @deprecated use method {@link #query(DAGModel, int[])}
 	 */
 	@Deprecated
-	public Collection<BayesianFactor> apply(BayesianNetwork model, int[] query) {
+	public Collection<BayesianFactor> apply(DAGModel<BayesianFactor> model, int[] query) {
 		return run(model, new TIntIntHashMap(), query);
 	}
 

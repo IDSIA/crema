@@ -202,7 +202,6 @@ public class RandomNetworks {
 			if (evidence != null) {
 				BinarizeEvidence<GenericFactor> bin = new BinarizeEvidence<>();
 				bin.setSize(2);
-				bin.setLog(false);
 
 				GraphicalModel<GenericFactor> gmodel = bin.execute(imodel, evidence);
 				approxlp.setEvidenceNode(bin.getEvidenceNode());

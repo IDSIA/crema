@@ -66,7 +66,6 @@ public class CredalApproxLP implements Inference<GraphicalModel<SeparateHalfspac
 		if (filteredEvidence.size() > 0) {
 			final BinarizeEvidence<SeparateHalfspaceFactor> be = new BinarizeEvidence<>();
 			be.setSize(filteredEvidence.size());
-			be.setLog(false);
 			MixedModel mixedModel = be.execute(model, filteredEvidence);
 			final int evbin = be.getEvidenceNode();
 
