@@ -15,11 +15,21 @@ import java.util.Map;
 public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
 	private Map<String, Object> init = null;
+	private boolean preprocess = true;
 
 	public ApproxLP2() {
 	}
 
+	public ApproxLP2(boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
 	public ApproxLP2(Map<String, ?> params) {
+		initialize(params);
+	}
+
+	public ApproxLP2(Map<String, ?> params, boolean preprocess) {
+		this.preprocess = preprocess;
 		initialize(params);
 	}
 
@@ -31,6 +41,10 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 			this.init = new HashMap<>();
 		else
 			this.init = new HashMap<>(params);
+	}
+
+	public void setPreprocess(boolean preprocess) {
+		this.preprocess = preprocess;
 	}
 
 	/**
@@ -58,8 +72,11 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 	 */
 	@Override
 	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
-		RemoveBarren<F> remove = new RemoveBarren<>();
-		GraphicalModel<F> model = remove.execute(originalModel, evidence, query);
+		GraphicalModel<F> model = originalModel;
+		if (preprocess) {
+			RemoveBarren<F> remove = new RemoveBarren<>();
+			model = remove.execute(originalModel, evidence, query);
+		}
 
 		int states = model.getSize(query);
 
