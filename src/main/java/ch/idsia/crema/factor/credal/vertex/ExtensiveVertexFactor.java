@@ -2,8 +2,10 @@ package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.OperableFactor;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.vertex.*;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +26,6 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 		this.log = log;
 		this.data = new ArrayList<>();
 		this.domain = strides;
-
 	}
 
 	protected ExtensiveVertexFactor(Strides strides, ArrayList<double[]> data, boolean log) {
@@ -63,7 +64,7 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 	}
 
 	public BayesianFactor getBayesianVertex(int vertex) {
-		return new BayesianFactor(domain, data.get(vertex), log);
+		return new BayesianDefaultFactor(domain, data.get(vertex), log);
 	}
 
 	@Override
@@ -250,10 +251,9 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 		return result;
 	}
 
-	/// TODO: XXX
 	@Override
 	public ExtensiveVertexFactor divide(ExtensiveVertexFactor factor) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO
+		throw new NotImplementedException();
 	}
 }

@@ -1,5 +1,6 @@
 package ch.idsia.crema.factor.credal.vertex.algebra;
 
+import ch.idsia.crema.factor.credal.vertex.VertexDefaultFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.utility.hull.LPConvexHull;
 
@@ -29,18 +30,19 @@ public class DefaultSeparateConvexAlgebra extends DefaultSeparateAlgebra {
 	}
 
 	public VertexFactor convex(VertexFactor factor) {
-		double[][][] data = new double[factor.getInternalData().length][][];
+		double[][][] data = new double[factor.size()][][];
 		for (int ix = 0; ix < data.length; ++ix) {
-			data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], true);
+			data[ix] = LPConvexHull.compute(factor.getVerticesAt(ix), true); // TODO: data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], true);
+
 		}
-		return new VertexFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
+		return new VertexDefaultFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
 	}
 
 	public VertexFactor fullConvex(VertexFactor factor) {
-		double[][][] data = new double[factor.getInternalData().length][][];
+		double[][][] data = new double[factor.size()][][];
 		for (int ix = 0; ix < data.length; ++ix) {
-			data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], false);
+			data[ix] = LPConvexHull.compute(factor.getVerticesAt(ix), false); // TODO: data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], false);
 		}
-		return new VertexFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
+		return new VertexDefaultFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
 	}
 }

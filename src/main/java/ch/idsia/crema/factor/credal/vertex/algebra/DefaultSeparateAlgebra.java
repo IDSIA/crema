@@ -1,5 +1,6 @@
 package ch.idsia.crema.factor.credal.vertex.algebra;
 
+import ch.idsia.crema.factor.credal.vertex.VertexDefaultFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 import ch.idsia.crema.model.math.Operation;
 
@@ -20,7 +21,7 @@ public class DefaultSeparateAlgebra implements Operation<VertexFactor> {
 		double[][][] data = new double[factor.getSeparatingDomain().getCombinations()][][];
 
 		for (int cindex = 0; cindex < data.length; ++cindex) {
-			double[][] source_vertices = factor.getInternalData()[cindex];
+			double[][] source_vertices = factor.getVerticesAt(cindex); // TODO: double[][] source_vertices = factor.getInternalData()[cindex];
 			double[][] target_vertices = data[cindex] = new double[source_vertices.length][];
 
 			for (int vindex = 0; vindex < source_vertices.length; ++vindex) {
@@ -37,7 +38,8 @@ public class DefaultSeparateAlgebra implements Operation<VertexFactor> {
 			}
 
 		}
-		return new VertexFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
+
+		return new VertexDefaultFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
 	}
 
 	/**
