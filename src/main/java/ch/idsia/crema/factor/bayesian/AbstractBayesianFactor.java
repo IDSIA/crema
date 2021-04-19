@@ -30,39 +30,39 @@ import java.util.stream.Stream;
  *
  * @author david
  */
-public class BayesianFactor implements IBayesianFactor {
+public class AbstractBayesianFactor implements IBayesianFactor {
 
 	private Strides domain;
 	private double[] data;
 	private final boolean log;
 
-	public BayesianFactor(Domain domain, boolean log) {
+	public AbstractBayesianFactor(Domain domain, boolean log) {
 		this.domain = Strides.fromDomain(domain);
 		this.log = log;
 		data = new double[this.domain.getCombinations()];
 	}
 
-	public BayesianFactor(int[] domain, int[] sizes, boolean log) {
+	public AbstractBayesianFactor(int[] domain, int[] sizes, boolean log) {
 		this.domain = new Strides(domain, sizes);
 		this.log = log;
 		data = new double[this.domain.getCombinations()];
 	}
 
-	public BayesianFactor(Strides stride, double[] data, boolean log) {
+	public AbstractBayesianFactor(Strides stride, double[] data, boolean log) {
 		this.domain = stride;
 		this.data = data;
 		this.log = log;
 	}
 
-	public BayesianFactor(Domain domain) {
+	public AbstractBayesianFactor(Domain domain) {
 		this(domain, false);
 	}
 
-	public BayesianFactor(int[] domain, int[] sizes) {
+	public AbstractBayesianFactor(int[] domain, int[] sizes) {
 		this(domain, sizes, false);
 	}
 
-	public BayesianFactor(Strides stride, double[] data) {
+	public AbstractBayesianFactor(Strides stride, double[] data) {
 		this(stride, data, false);
 	}
 
