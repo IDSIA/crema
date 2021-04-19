@@ -9,12 +9,12 @@ import ch.idsia.crema.factor.credal.SeparatelySpecified;
  * Project: crema
  * Date:    17.03.2021 13:19
  */
-public interface IVertexFactor extends SeparatelySpecified<IVertexFactor>, OperableFactor<IVertexFactor> {
+public interface VertexFactor extends SeparatelySpecified<VertexFactor>, OperableFactor<VertexFactor> {
 
 	@Override
-	IVertexFactor copy();
+	VertexFactor copy();
 
-	IVertexFactor reseparate(Strides target);
+	VertexFactor reseparate(Strides target);
 
 	double[][][] getData();
 

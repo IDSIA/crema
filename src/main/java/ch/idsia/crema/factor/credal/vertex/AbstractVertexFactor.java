@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * @author david
  */
 // TODO: Data is currently not logged!
-public class AbstractVertexFactor implements IVertexFactor {
+public class AbstractVertexFactor implements VertexFactor {
     private final static boolean log = false;
 
     private final Strides separatedDomain;
@@ -366,7 +366,7 @@ public class AbstractVertexFactor implements IVertexFactor {
     }
 
     @Override
-    public VertexFactor combine(IVertexFactor other) {
+    public VertexFactor combine(VertexFactor other) {
 
         //System.out.println("combine "+toStringSimple()+" with "+other.toStringSimple());
 
@@ -379,8 +379,8 @@ public class AbstractVertexFactor implements IVertexFactor {
         Strides runion = getSeparatingDomain().union(other.getSeparatingDomain());
         Strides right = runion.remove(left);
 
-        IVertexFactor reshaped1 = this.reseparate(right);
-        IVertexFactor reshaped2 = other.reseparate(right);
+        VertexFactor reshaped1 = this.reseparate(right);
+        VertexFactor reshaped2 = other.reseparate(right);
 
         double[][][] target_data = new double[right.getCombinations()][][];
 
@@ -470,7 +470,7 @@ public class AbstractVertexFactor implements IVertexFactor {
     }
 
     @Override
-    public VertexFactor divide(IVertexFactor other) {
+    public VertexFactor divide(VertexFactor other) {
         // TODO
         return null;
     }
