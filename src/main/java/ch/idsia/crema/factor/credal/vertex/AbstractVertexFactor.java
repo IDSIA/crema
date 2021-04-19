@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * @author david
  */
 // TODO: Data is currently not logged!
-public class VertexFactor implements IVertexFactor {
+public class AbstractVertexFactor implements IVertexFactor {
     private final static boolean log = false;
 
     private final Strides separatedDomain;
@@ -41,19 +41,19 @@ public class VertexFactor implements IVertexFactor {
 
     public static boolean CONVEX_HULL_MARG = false;
 
-    public VertexFactor(Strides left, Strides right) {
+    public AbstractVertexFactor(Strides left, Strides right) {
         this.separatedDomain = right;
         this.vertexDomain = left;
         data = new double[right.getCombinations()][][];
     }
 
-    public VertexFactor(Strides left, Strides right, double[][][] data) {
+    public AbstractVertexFactor(Strides left, Strides right, double[][][] data) {
         this.separatedDomain = right;
         this.vertexDomain = left;
         this.data = data;
     }
 
-    public VertexFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
+    public AbstractVertexFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
         this.separatedDomain = Strides.empty();
         this.vertexDomain = left;
         data = new double[1][][];
@@ -109,7 +109,7 @@ public class VertexFactor implements IVertexFactor {
         }
     }
 
-    public VertexFactor(SeparateHalfspaceFactor constrainsFactor) {
+    public AbstractVertexFactor(SeparateHalfspaceFactor constrainsFactor) {
         this.separatedDomain = constrainsFactor.getSeparatingDomain();
         this.vertexDomain = constrainsFactor.getDataDomain();
         data = new double[1][][];
