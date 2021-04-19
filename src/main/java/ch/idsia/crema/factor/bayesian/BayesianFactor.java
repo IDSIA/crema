@@ -1,5 +1,6 @@
 package ch.idsia.crema.factor.bayesian;
 
+import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 import gnu.trove.map.TIntIntMap;
@@ -14,17 +15,43 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 	@Override
 	BayesianFactor copy();
 
-	void sortDomain();
+	@Override
+	BayesianFactor filter(int variable, int state);
 
-	double[] getData();
+	@Override
+	BayesianFactor combine(BayesianFactor other);
 
-	BayesianFactor addition(BayesianFactor factor);
+	@Override
+	BayesianFactor marginalize(int variable);
 
-	double logProb(TIntIntMap[] data, int leftVar);
+	@Override
+	BayesianFactor divide(BayesianFactor factor);
+
+	@Override
+	Strides getSeparatingDomain();
+
+	@Override
+	Strides getDomain();
+
+	@Override
+	Strides getDataDomain();
 
 	double getValue(int... states);
 
 	double getValueAt(int index);
 
-	void replaceInLine(double value, double replacement);
+	BayesianFactor replace(double value, double replacement);
+
+	BayesianFactor replaceNaN(double replacement);
+
+	// TODO: these methods below need more consideration on what to do with them and where to put them
+
+	void sortDomain();
+
+	BayesianFactor addition(BayesianFactor factor);
+
+	double logProb(TIntIntMap[] data, int leftVar);
+
+	void replaceInplace(double value, double replacement);
+
 }
