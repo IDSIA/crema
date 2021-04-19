@@ -7,10 +7,10 @@ import java.util.Arrays;
  * Project: crema
  * Date:    17.03.2021 13:20
  */
-public interface IIntervalFactor extends SeparateLinearFactor<IIntervalFactor> {
+public interface IntervalFactor extends SeparateLinearFactor<IntervalFactor> {
 
 	@Override
-	IIntervalFactor copy();
+	IntervalFactor copy();
 
 	double[] getUpper(int... states);
 
@@ -24,7 +24,7 @@ public interface IIntervalFactor extends SeparateLinearFactor<IIntervalFactor> {
 
 	double[][] getDataLower();
 
-	IIntervalFactor merge(IIntervalFactor factor);
+	IntervalFactor merge(IntervalFactor factor);
 
 	/**
 	 * Merges the bounds with other interval factors
@@ -32,19 +32,19 @@ public interface IIntervalFactor extends SeparateLinearFactor<IIntervalFactor> {
 	 * @param factors
 	 * @return
 	 */
-	default IIntervalFactor merge(IIntervalFactor... factors) {
+	default IntervalFactor merge(IntervalFactor... factors) {
 		if (factors.length == 1)
 			return merge(factors[0]);
 
-		IIntervalFactor out = this;
+		IntervalFactor out = this;
 
-		for (IIntervalFactor f : factors)
+		for (IntervalFactor f : factors)
 			out = out.merge(f);
 
 		return out;
 	}
 
-	static IIntervalFactor mergeBounds(IIntervalFactor... factors) {
+	static IntervalFactor mergeBounds(IntervalFactor... factors) {
 		return factors[0].merge(Arrays.copyOfRange(factors, 1, factors.length));
 	}
 }
