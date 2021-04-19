@@ -1,7 +1,5 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.core.ObservationBuilder;
-import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.model.math.Operable;
 import ch.idsia.crema.utility.ArraysUtil;
 
@@ -101,9 +99,12 @@ public interface OperableFactor<F extends OperableFactor<F>> extends FilterableF
 	 * @param assignments assignments of each combination of the parent
 	 * @return
 	 */
+	/*
+	TODO: move somewhere else
 	static OperableFactor deterministic(Strides left, Strides right, int... assignments) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+	 */
 
 	/**
 	 * Static method that builds a deterministic factor (values can only be ones or zeros)
@@ -113,12 +114,11 @@ public interface OperableFactor<F extends OperableFactor<F>> extends FilterableF
 	 * @param assignment int - single value to assign
 	 * @return
 	 */
+	/*
+	TODO: move somewhere else
 	static OperableFactor deterministic(Strides left, int assignment) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
-
-	default ObservationBuilder sample() {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
+	*/
 
 }

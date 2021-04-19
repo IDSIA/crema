@@ -8,7 +8,6 @@ import gnu.trove.map.TIntIntMap;
  * Project: crema
  * Date:    17.03.2021 09:49
  */
-// TODO: this can be an interface like Operable<F>?
 public interface FilterableFactor<F extends FilterableFactor<F>> extends GenericFactor {
 
 	/**
