@@ -11,6 +11,7 @@ import java.util.function.Function;
  * Project: crema
  * Date:    16.04.2021 18:43
  */
+// TODO: this class can be moved between AbstractBayesianFactor and BayesianDefaultFactor (f is an accessor to data)
 public class BayesianFunctionFactor extends AbstractBayesianFactor {
 
 	protected Function<Integer, Double> f;

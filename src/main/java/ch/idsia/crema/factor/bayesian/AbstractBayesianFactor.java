@@ -70,7 +70,7 @@ public abstract class AbstractBayesianFactor implements BayesianFactor {
 			BayesianFactorBuilder<F> builder,
 			ToDoubleBiFunction<BayesianFactor, Integer> getThis,
 			ToDoubleBiFunction<BayesianFactor, Integer> getOther,
-			BiFunction<Double, Double, Double> f
+			ToDoubleBiFunction<Double, Double> f
 	) {
 		// domains should be sorted
 		this.sortDomain();
@@ -105,7 +105,7 @@ public abstract class AbstractBayesianFactor implements BayesianFactor {
 		double[] result = new double[target.getCombinations()];
 
 		for (int i = 0; i < result.length; ++i) {
-			result[i] = f.apply(getThis.applyAsDouble(this, (int) (idx & 0xFFFFFFFF)), getOther.applyAsDouble(factor, (int) (idx >>> 32L)));
+			result[i] = f.applyAsDouble(getThis.applyAsDouble(this, (int) (idx & 0xFFFFFFFF)), getOther.applyAsDouble(factor, (int) (idx >>> 32L)));
 
 			for (int l = 0; l < length; ++l) {
 				if (assign[l] == limits[l]) {

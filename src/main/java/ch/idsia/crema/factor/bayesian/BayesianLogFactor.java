@@ -19,6 +19,11 @@ import java.util.function.ToDoubleBiFunction;
 public class BayesianLogFactor extends BayesianDefaultFactor {
 
 	protected final ToDoubleBiFunction<BayesianFactor, Integer> direct = (f, i) -> ((BayesianLogFactor) f).data[i];
+	protected final ToDoubleBiFunction<Double, Double> addInLogSpace = (x, y) -> {
+		if (x > y)
+			return x + FastMath.log1p(FastMath.exp(y - x));
+		return y + FastMath.log1p(FastMath.exp(x - y));
+	};
 
 	public BayesianLogFactor(Domain domain, double[] data) {
 		super(domain, data);
@@ -96,12 +101,15 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		if (factor instanceof BayesianLogFactor)
 			return combine(factor, BayesianLogFactor::new, direct, direct, Double::sum);
 
-		return combine(factor, BayesianLogFactor::new, BayesianFactor::getValueAt, BayesianFactor::getValueAt, Double::sum);
+		return combine(factor, BayesianLogFactor::new, direct, BayesianFactor::getValueAt, Double::sum);
 	}
 
 	@Override
 	public BayesianLogFactor addition(BayesianFactor factor) {
-		return combine(factor);
+		if (factor instanceof BayesianLogFactor)
+			return combine(factor, BayesianLogFactor::new, direct, direct, addInLogSpace);
+
+		return combine(factor, BayesianLogFactor::new, direct, BayesianFactor::getValueAt, addInLogSpace);
 	}
 
 	@Override
@@ -109,7 +117,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		if (factor instanceof BayesianLogFactor)
 			return divide(factor, BayesianLogFactor::new, direct, direct, (a, b) -> a - b);
 
-		return divide(factor, BayesianLogFactor::new, BayesianFactor::getValueAt, BayesianFactor::getValueAt, (a, b) -> a - b);
+		return divide(factor, BayesianLogFactor::new, direct, BayesianFactor::getValueAt, (a, b) -> a - b);
 	}
 
 	@Override
