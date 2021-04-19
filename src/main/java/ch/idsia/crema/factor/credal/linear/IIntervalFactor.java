@@ -1,6 +1,4 @@
-package ch.idsia.crema.factor.credal.vertex;
-
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
+package ch.idsia.crema.factor.credal.linear;
 
 import java.util.Arrays;
 
