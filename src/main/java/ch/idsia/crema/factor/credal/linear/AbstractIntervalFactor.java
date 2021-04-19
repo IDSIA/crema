@@ -2,7 +2,6 @@ package ch.idsia.crema.factor.credal.linear;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.vertex.IIntervalFactor;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Doubles;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class IntervalFactor implements IIntervalFactor {
+public abstract class AbstractIntervalFactor implements IIntervalFactor {
 
 	protected Strides dataDomain;
 
@@ -25,7 +24,7 @@ public class IntervalFactor implements IIntervalFactor {
 	private final double[][] lower;
 	private final double[][] upper;
 
-	public IntervalFactor(Strides content, Strides separation) {
+	public AbstractIntervalFactor(Strides content, Strides separation) {
 		setConditioningDomain(content);
 		setDataDomain(separation);
 
@@ -35,11 +34,11 @@ public class IntervalFactor implements IIntervalFactor {
 		// init all to 0-1
 		for (int i = 0; i < groupDomain.getCombinations(); ++i) {
 			Arrays.fill(this.upper[i], 1.0);
-			//Arrays.fill(this.lower[i], 0.0); // default is 0 anyway
+			//Arrays.fill(this.lower[i], 0.0); //  is 0 anyway
 		}
 	}
 
-	public IntervalFactor(Strides content, Strides separation, double[][] lower, double[][] upper) {
+	public AbstractIntervalFactor(Strides content, Strides separation, double[][] lower, double[][] upper) {
 		setConditioningDomain(content);
 		setDataDomain(separation);
 
@@ -135,11 +134,11 @@ public class IntervalFactor implements IIntervalFactor {
 		this.upper[offset] = value;
 	}
 
-	protected double defaultUpperBound() {
+	protected double upperBound() {
 		return 1.0;
 	}
 
-	protected double defaultLowerBound() {
+	protected double lowerBound() {
 		return 0.0;
 	}
 
