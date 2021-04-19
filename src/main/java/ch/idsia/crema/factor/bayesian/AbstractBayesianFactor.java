@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  *
  * @author david
  */
-public class AbstractBayesianFactor implements IBayesianFactor {
+public class AbstractBayesianFactor implements BayesianFactor {
 
 	private Strides domain;
 	private double[] data;
@@ -380,7 +380,7 @@ public class AbstractBayesianFactor implements IBayesianFactor {
 	 * @return
 	 */
 	@Override
-	public BayesianFactor combine(IBayesianFactor factor) {
+	public BayesianFactor combine(BayesianFactor factor) {
 		// domains should be sorted
 		this.sortDomain();
 		factor = factor.copy();
@@ -455,7 +455,7 @@ public class AbstractBayesianFactor implements IBayesianFactor {
 	 * @return
 	 */
 	@Override
-	public BayesianFactor addition(IBayesianFactor factor) {
+	public BayesianFactor addition(BayesianFactor factor) {
 		// domains should be sorted
 		this.sortDomain();
 		factor = factor.copy();
@@ -519,7 +519,7 @@ public class AbstractBayesianFactor implements IBayesianFactor {
 	 * @return
 	 */
 	@Override
-	public BayesianFactor divide(IBayesianFactor factor) {
+	public BayesianFactor divide(BayesianFactor factor) {
 		final int length = domain.getSize();
 
 		final int[] limits = new int[length];

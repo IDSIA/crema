@@ -9,16 +9,16 @@ import gnu.trove.map.TIntIntMap;
  * Project: crema
  * Date:    17.03.2021 13:18
  */
-public interface IBayesianFactor extends OperableFactor<IBayesianFactor>, SeparatelySpecified<IBayesianFactor> {
+public interface BayesianFactor extends OperableFactor<BayesianFactor>, SeparatelySpecified<BayesianFactor> {
 
 	@Override
-	IBayesianFactor copy();
+	BayesianFactor copy();
 
 	void sortDomain();
 
 	double[] getData();
 
-	IBayesianFactor addition(IBayesianFactor factor);
+	BayesianFactor addition(BayesianFactor factor);
 
 	double logProb(TIntIntMap[] data, int leftVar);
 
