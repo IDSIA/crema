@@ -2,6 +2,11 @@ package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
 import com.google.common.primitives.Ints;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -9,6 +14,10 @@ import com.google.common.primitives.Ints;
  * Date:    16.04.2021 21:46
  */
 public class VertexDeterministicFactor extends VertexDefaultFactor {
+
+	public VertexDeterministicFactor(Strides separatedDomain, Strides vertexDomain, List<double[]> vertices, TIntList combinations) {
+		super(separatedDomain, vertexDomain, vertices, combinations);
+	}
 
 	/**
 	 * Static method that builds a deterministic factor (values can only be ones or zeros).
@@ -27,14 +36,17 @@ public class VertexDeterministicFactor extends VertexDefaultFactor {
 		if (Ints.min(assignments) < 0 || Ints.max(assignments) >= left.getCombinations())
 			throw new IllegalArgumentException("ERROR: assignments of deterministic function should be in the inteval [0," + left.getCombinations() + ")");
 
-		VertexDeterministicFactor f = new VertexDeterministicFactor(left, right);
+		TIntList combinations = new TIntArrayList();
+		List<double[]> vertices = new ArrayList<>();
 
 		for (int i = 0; i < right.getCombinations(); i++) {
-			double[] values = new double[left.getCombinations()];
-			values[assignments[i]] = 1.0;
-			f.addVertex(values, i);
+			double[] vertex = new double[left.getCombinations()];
+			vertex[assignments[i]] = 1.0;
+			vertices.add(vertex);
+			combinations.add(i);
 		}
-		return f;
+
+		return new VertexDeterministicFactor(left, right, vertices, combinations);
 	}
 
 	/**
@@ -46,7 +58,7 @@ public class VertexDeterministicFactor extends VertexDefaultFactor {
 	 * @return
 	 */
 	public static VertexFactor deterministic(Strides left, int assignment) {
-		return VertexFactor.deterministic(left, Strides.empty(), assignment);
+		return deterministic(left, Strides.empty(), assignment);
 	}
 
 	/**
@@ -58,6 +70,6 @@ public class VertexDeterministicFactor extends VertexDefaultFactor {
 	 * @return
 	 */
 	public VertexFactor getDeterministic(int var, int assignment) {
-		return VertexFactor.deterministic(getDomain().intersection(var), assignment);
+		return deterministic(getDomain().intersection(var), assignment);
 	}
 }

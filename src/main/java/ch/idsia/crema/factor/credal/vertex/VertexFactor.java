@@ -49,7 +49,7 @@ public interface VertexFactor extends OperableFactor<VertexFactor>, SeparatelySp
 
 	double[][] getVerticesAt(int i);
 
-	VertexFactor convexHull(boolean simplex);
+	VertexFactor convexHull();
 
 	VertexFactor merge(VertexFactor factor);
 

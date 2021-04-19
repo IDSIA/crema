@@ -42,7 +42,7 @@ public class VertexFactorUtilities {
 
 		// generate independently for each parent
 		for (int i = 0; i < data.length; i++)
-			data[i] = VertexFactorUtilities.random(leftDomain, k, num_decimals, zero_allowed).getData()[0];
+			data[i] = random(leftDomain, k, num_decimals, zero_allowed).getVerticesAt(0);
 
 		// build final factor
 		return new VertexDefaultFactor(leftDomain, rightDomain, data);
@@ -58,7 +58,6 @@ public class VertexFactorUtilities {
 	 * @return
 	 */
 	public static VertexFactor random(Strides leftDomain, int k, int num_decimals, boolean zero_allowed) {
-
 		if (leftDomain.getVariables().length > 1)
 			throw new IllegalArgumentException("leftDomain must have only one variable.");
 
@@ -88,7 +87,7 @@ public class VertexFactorUtilities {
 			// merge all the PMFs
 			out = VertexFactorUtilities
 					.mergeVertices(PMFs.toArray(VertexFactor[]::new))
-					.convexHull(true);
+					.convexHull();
 
 		} while (out.getVerticesAt(0).length < k);
 

@@ -150,20 +150,6 @@ public class VertexDefaultFactor extends AbstractVertexFactor {
 		return data[offset];
 	}
 
-	// TODO: VertexFactor should be immutable? If yes, then return a new factor
-	public void removeVertex(int index, int... groupStates) {
-		int offset = separatedDomain.getOffset(groupStates);
-		double[][] gdata = data[offset];
-
-		int len = gdata.length;
-		double[][] newdata = new double[len - 1][];
-
-		System.arraycopy(gdata, 0, newdata, 0, index);
-		System.arraycopy(gdata, index + 1, newdata, index, len - index + 1);
-
-		data[offset] = newdata;
-	}
-
 	@Override
 	public VertexDefaultFactor filter(int variable, int state) {
 		return filter(variable, state, VertexDefaultFactor::new);
@@ -218,7 +204,6 @@ public class VertexDefaultFactor extends AbstractVertexFactor {
 		return build.toString();
 	}
 
-
 	public Iterator<double[][]> getVertexSetIterator() {
 		return Arrays.asList(data).iterator();
 	}
@@ -229,21 +214,21 @@ public class VertexDefaultFactor extends AbstractVertexFactor {
 	}
 
 	@Override
-	public void applyConvexHull(boolean simplex) {
+	protected void applyConvexHull() {
 		for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
 			data[i] = LPConvexHull.compute(data[i], true);
 		}
 	}
 
 	@Override
-	public VertexDefaultFactor convexHull(boolean simplex) {
+	public VertexDefaultFactor convexHull() {
 		VertexDefaultFactor f = this.copy();
-		f.applyConvexHull(simplex);
+		f.applyConvexHull();
 		return f;
 	}
 
 	@Override
-	public VertexFactor merge(VertexFactor f) {
+	public VertexDefaultFactor merge(VertexFactor f) {
 		double[][][] vertices = new double[f.getSeparatingDomain().getCombinations()][][];
 		for (int i = 0; i < f.getSeparatingDomain().getCombinations(); i++) {
 			double[][] v1 = this.getVerticesAt(i);

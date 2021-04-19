@@ -96,9 +96,7 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 
 			return builder.get(newleft, separatedDomain, newdata);
 		} else {
-			Strides newdomain = separatedDomain.removeAt(var_offset); // new
-			// Strides(separatedDomain,
-			// var_offset);
+			Strides newdomain = separatedDomain.removeAt(var_offset); // new Strides(separatedDomain, var_offset);
 			IndexIterator iter = separatedDomain.getFiteredIndexIterator(variable, state);
 
 			// should be replaceable with
@@ -151,7 +149,7 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 		F f = builder.get(left, getSeparatingDomain(), target_data);
 
 		if (CONVEX_HULL_MARG)
-			f.applyConvexHull(true);
+			f.applyConvexHull();
 
 		return f;
 	}
@@ -288,15 +286,17 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 		return build.toString();
 	}
 
+	protected abstract void applyConvexHull();
+
 	@Override
-	public VertexFactor divide(VertexFactor other) {
+	public AbstractVertexFactor divide(VertexFactor other) {
 		// TODO
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public VertexFactor marginalize(int variable) {
-		return this.marginalize(new int[]{variable});
+	public AbstractVertexFactor marginalize(int variable) {
+		return (AbstractVertexFactor) marginalize(new int[]{variable});
 	}
 
 	protected <F extends AbstractVertexFactor> F normalize(VertexFactorBuilder<F> builder, int... given) {
@@ -346,7 +346,5 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 		Strides newDomain = getDataDomain().concat(getSeparatingDomain());
 		return new BayesianDefaultFactor(newDomain, data);
 	}
-
-	public abstract void applyConvexHull(boolean simplex);
 
 }

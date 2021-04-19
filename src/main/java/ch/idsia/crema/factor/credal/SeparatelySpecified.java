@@ -3,7 +3,6 @@ package ch.idsia.crema.factor.credal;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.factor.GenericFactor;
-import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * A separately specified Factor has a for each possible
@@ -32,14 +31,5 @@ public interface SeparatelySpecified<F extends SeparatelySpecified<F>> extends F
 	 * @return
 	 */
 	Strides getDataDomain();
-
-	/**
-	 * Sorts the parents following the global variable order
-	 *
-	 * @return
-	 */
-	default F sortParents() {
-		throw new NotImplementedException("sortParents not implemented");
-	}
 
 }
