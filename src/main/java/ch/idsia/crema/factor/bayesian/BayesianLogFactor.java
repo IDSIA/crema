@@ -2,8 +2,8 @@ package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.model.vertex.Filter;
-import ch.idsia.crema.model.vertex.LogMarginal;
+import ch.idsia.crema.factor.operations.vertex.Filter;
+import ch.idsia.crema.factor.operations.vertex.LogMarginal;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.util.FastMath;
@@ -43,12 +43,15 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	}
 
 	@Override
-	public void setData(double[] data) {
+	protected void setData(double[] data) {
 		for (int index = 0; index < data.length; ++index) {
 			setValueAt(data[index], index);
 		}
 	}
 
+	/**
+	 * @return an array in normal space, log is removed
+	 */
 	public double[] getData() {
 		double[] data = new double[this.data.length];
 		for (int index = 0; index < data.length; ++index) {

@@ -3,9 +3,9 @@ package ch.idsia.crema.factor.bayesian;
 import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.model.vertex.Collector;
-import ch.idsia.crema.model.vertex.Filter;
-import ch.idsia.crema.model.vertex.Marginal;
+import ch.idsia.crema.factor.operations.vertex.Collector;
+import ch.idsia.crema.factor.operations.vertex.Filter;
+import ch.idsia.crema.factor.operations.vertex.Marginal;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
@@ -57,9 +57,10 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return new BayesianDefaultFactor(domain, data);
 	}
 
-	/**
+		/**
 	 * Set the CPT's data specifying a custom ordering used in the data
 	 */
+	@Deprecated
 	public void setData(final int[] domain, double[] data) {
 		int[] sequence = ArraysUtil.order(domain);
 
@@ -91,7 +92,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		setData(target);
 	}
 
-	public void setData(double[] data) {
+	protected void setData(double[] data) {
 		this.data = data;
 	}
 
@@ -106,6 +107,13 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	@Override
 	public double getValueAt(int index) {
 		return data[index];
+	}
+
+	/**
+	 * @return a <u>copy</u> of the internal data array
+	 */
+	public double[] getData() {
+		return ArrayUtils.clone(data);
 	}
 
 	public class Helper extends Number {

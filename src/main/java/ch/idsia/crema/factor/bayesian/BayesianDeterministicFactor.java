@@ -2,8 +2,8 @@ package ch.idsia.crema.factor.bayesian;
 
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.model.vertex.Filter;
-import ch.idsia.crema.model.vertex.LogMarginal;
+import ch.idsia.crema.factor.operations.vertex.Filter;
+import ch.idsia.crema.factor.operations.vertex.LogMarginal;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
