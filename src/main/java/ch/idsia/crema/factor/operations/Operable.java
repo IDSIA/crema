@@ -1,4 +1,4 @@
-package ch.idsia.crema.model.math;
+package ch.idsia.crema.factor.operations;
 
 import ch.idsia.crema.factor.GenericFactor;
 
