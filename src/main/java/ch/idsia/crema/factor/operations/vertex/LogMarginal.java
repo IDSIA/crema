@@ -1,4 +1,4 @@
-package ch.idsia.crema.model.vertex;
+package ch.idsia.crema.factor.operations.vertex;
 
 import org.apache.commons.math3.util.FastMath;
 

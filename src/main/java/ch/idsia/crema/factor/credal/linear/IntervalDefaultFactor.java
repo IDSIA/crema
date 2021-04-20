@@ -58,7 +58,7 @@ public class IntervalDefaultFactor extends IntervalAbstractFactor {
 	}
 
 	@Override
-	public IntervalFactor filter(int variable, int state) {
+	public IntervalDefaultFactor filter(int variable, int state) {
 		int var_offset = groupDomain.indexOf(variable);
 		int var_stride = groupDomain.getStrideAt(var_offset);
 

@@ -2,7 +2,7 @@ package ch.idsia.crema.factor.credal.vertex.algebra;
 
 import ch.idsia.crema.factor.credal.vertex.VertexDefaultFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.model.math.Operation;
+import ch.idsia.crema.factor.operations.Operation;
 
 import java.util.Arrays;
 

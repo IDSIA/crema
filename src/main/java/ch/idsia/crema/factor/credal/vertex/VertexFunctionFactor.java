@@ -72,6 +72,12 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 	}
 
 	@Override
+	public double[][][] getData() {
+		// TODO
+		throw new NotImplementedException();
+	}
+
+	@Override
 	public VertexFactor convexHull() {
 		// TODO
 		throw new NotImplementedException();
@@ -82,4 +88,5 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 		// TODO
 		throw new NotImplementedException();
 	}
+
 }

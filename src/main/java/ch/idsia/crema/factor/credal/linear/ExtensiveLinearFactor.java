@@ -18,4 +18,5 @@ public interface ExtensiveLinearFactor<F extends ExtensiveLinearFactor<F>> exten
 	 * @return a set of constraints used in the linear problem
 	 */
 	LinearConstraintSet getLinearProblem();
+
 }

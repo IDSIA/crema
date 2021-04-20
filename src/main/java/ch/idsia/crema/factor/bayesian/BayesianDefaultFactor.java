@@ -43,6 +43,11 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		setData(data);
 	}
 
+	public BayesianDefaultFactor(Strides stride, int[] dataDomain, double[] data) {
+		super(stride);
+		setData(dataDomain, data);
+	}
+
 	public BayesianDefaultFactor(int[] domain, int[] sizes, double[] data) {
 		super(new Strides(domain, sizes));
 		setData(data);
@@ -57,11 +62,10 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return new BayesianDefaultFactor(domain, data);
 	}
 
-		/**
+	/**
 	 * Set the CPT's data specifying a custom ordering used in the data
 	 */
-	@Deprecated
-	public void setData(final int[] domain, double[] data) {
+	protected void setData(final int[] domain, double[] data) {
 		int[] sequence = ArraysUtil.order(domain);
 
 		// this are strides for the iterator so we do not need them one item longer
@@ -112,6 +116,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	/**
 	 * @return a <u>copy</u> of the internal data array
 	 */
+	@Override
 	public double[] getData() {
 		return ArrayUtils.clone(data);
 	}
@@ -373,6 +378,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return this.marginalize(this.getDomain().getVariables()[0]).getValue() == 1;
 	}
 
+	@Override
 	public BayesianDefaultFactor reorderDomain(Strides newStrides) {
 		if (!(getDomain().isConsistentWith(newStrides) && getDomain().getSize() == newStrides.getSize())) {
 			throw new IllegalArgumentException("ERROR: wrong input Strides");
@@ -386,13 +392,14 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return new BayesianDefaultFactor(newStrides, ArraysUtil.swapVectorStrides(this.data, this.getDomain().getSizes(), varMap));
 	}
 
+	@Override
 	public BayesianDefaultFactor reorderDomain(int... vars) {
 		int[] all_vars = Ints.concat(vars,
 				IntStream.of(getDomain().getVariables())
 						.filter(v -> !ArrayUtils.contains(vars, v)).toArray()
 		);
 
-		return this.reorderDomain(
+		return reorderDomain(
 				new Strides(
 						all_vars,
 						IntStream.of(all_vars).map(v -> this.getDomain().getCardinality(v)).toArray()));

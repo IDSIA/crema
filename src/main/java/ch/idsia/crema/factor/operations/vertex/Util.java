@@ -4,14 +4,14 @@ import org.apache.commons.math3.util.FastMath;
 
 public class Util {
 
-	public final double logsum(double one, double second) {
+	public final double logSum(double first, double second) {
 		final double min, max;
-		if (one < second) {
-			min = one;
+		if (first < second) {
+			min = first;
 			max = second;
 		} else {
 			min = second;
-			max = one;
+			max = first;
 		}
 
 		return max + FastMath.log(FastMath.exp(min - max) + 1);

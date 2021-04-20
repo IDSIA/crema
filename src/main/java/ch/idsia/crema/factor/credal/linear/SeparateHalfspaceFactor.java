@@ -1,7 +1,6 @@
 package ch.idsia.crema.factor.credal.linear;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Ints;
@@ -9,7 +8,6 @@ import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 /**
  * A separately specified Credal factor that has a list of linear constrains for each
@@ -340,7 +338,6 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 * @param assignment int - single value to assign
 	 * @return
 	 */
-	@Override
 	public SeparateHalfspaceFactor getDeterministic(int var, int assignment) {
 		return SeparateHalfspaceFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
@@ -388,31 +385,6 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 	/**
-	 * Replaces the IDs of the variables in the domain
-	 *
-	 * @param new_vars
-	 * @return
-	 */
-	@Override
-	public SeparateHalfspaceFactor renameDomain(int... new_vars) {
-		int[] leftIdx = IntStream.range(0, this.getDataDomain().getVariables().length).toArray();
-		int[] rightIdx = IntStream.range(this.getDataDomain().getVariables().length, new_vars.length).toArray();
-		int[] sizes = Ints.concat(getDataDomain().getSizes(), getSeparatingDomain().getSizes());
-
-		Strides leftStrides = new Strides(
-				ArraysUtil.slice(new_vars, leftIdx),
-				ArraysUtil.slice(sizes, leftIdx)
-		);
-
-		Strides rightStrides = new Strides(
-				ArraysUtil.slice(new_vars, rightIdx),
-				ArraysUtil.slice(sizes, rightIdx)
-		);
-
-		return new SeparateHalfspaceFactor(leftStrides, rightStrides, this.getData());
-	}
-
-	/**
 	 * Retruns all the constraints
 	 *
 	 * @param data
@@ -426,7 +398,6 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 *
 	 * @return
 	 */
-	@Override
 	public SeparateHalfspaceFactor sortParents() {
 		Strides oldLeft = getSeparatingDomain();
 		Strides newLeft = oldLeft.sort();

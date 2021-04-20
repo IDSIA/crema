@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.ve;
 
 import ch.idsia.crema.factor.OperableFactor;
-import ch.idsia.crema.model.math.FactorOperation;
+import ch.idsia.crema.factor.operations.FactorOperation;
 
 /**
  * A specialization of the {@link VariableElimination} algorithm for factors that implement

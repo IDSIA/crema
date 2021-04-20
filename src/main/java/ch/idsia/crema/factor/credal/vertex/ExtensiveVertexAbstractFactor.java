@@ -89,10 +89,10 @@ public abstract class ExtensiveVertexAbstractFactor implements ExtensiveVertexFa
 	*/
 
 	protected <T extends ExtensiveVertexAbstractFactor> T combine(
-			ExtensiveVertexAbstractFactor factor,
+			ExtensiveVertexFactor factor,
 			ExtensiveVertexFactorBuilder<T> builder
 	) {
-		final Strides target = domain.union(factor.domain);
+		final Strides target = domain.union(factor.getDomain());
 		final int length = target.getSize();
 
 		final int[] limits = new int[length];
@@ -106,10 +106,10 @@ public abstract class ExtensiveVertexAbstractFactor implements ExtensiveVertexFa
 			}
 		}
 
-		for (int vindex = 0; vindex < factor.domain.getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), factor.domain.getVariables()[vindex]);
+		for (int vindex = 0; vindex < factor.getDomain().getSize(); ++vindex) {
+			int offset = Arrays.binarySearch(target.getVariables(), factor.getDomain().getVariables()[vindex]);
 			if (offset >= 0) {
-				stride[offset] += ((long) factor.domain.getStrides()[vindex] << 32L);
+				stride[offset] += ((long) factor.getDomain().getStrides()[vindex] << 32L);
 			}
 		}
 
@@ -176,7 +176,7 @@ public abstract class ExtensiveVertexAbstractFactor implements ExtensiveVertexFa
 	}
 
 	@Override
-	public ExtensiveVertexAbstractFactor divide(ExtensiveVertexAbstractFactor factor) {
+	public ExtensiveVertexAbstractFactor divide(ExtensiveVertexFactor factor) {
 		// TODO
 		throw new NotImplementedException();
 	}

@@ -29,6 +29,10 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		super(domain, data);
 	}
 
+	public BayesianLogFactor(Strides stride, int[] dataDomain, double[] data) {
+		super(stride, dataDomain, data);
+	}
+
 	public BayesianLogFactor(int[] domain, int[] sizes, double[] data) {
 		super(domain, sizes, data);
 	}
@@ -52,12 +56,9 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	/**
 	 * @return an array in normal space, log is removed
 	 */
+	@Override
 	public double[] getData() {
-		double[] data = new double[this.data.length];
-		for (int index = 0; index < data.length; ++index) {
-			data[index] = FastMath.exp(this.data[index]);
-		}
-		return data;
+		return ArraysUtil.exp(this.data.clone());
 	}
 
 	@Override

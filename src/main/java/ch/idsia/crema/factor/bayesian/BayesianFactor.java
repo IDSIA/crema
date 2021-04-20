@@ -13,6 +13,25 @@ import gnu.trove.map.TIntIntMap;
 public interface BayesianFactor extends OperableFactor<BayesianFactor>, SeparatelySpecified<BayesianFactor> {
 
 	@Override
+	Strides getDomain();
+
+	@Override
+	Strides getDataDomain();
+
+	@Override
+	Strides getSeparatingDomain();
+
+	double getValue(int... states);
+
+	double getValueAt(int index);
+
+	double[] getData();
+
+	BayesianFactor reorderDomain(Strides newStrides);
+
+	BayesianFactor reorderDomain(int...vars);
+
+	@Override
 	BayesianFactor copy();
 
 	@Override
@@ -27,24 +46,10 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 	@Override
 	BayesianFactor divide(BayesianFactor factor);
 
-	@Override
-	Strides getSeparatingDomain();
-
-	@Override
-	Strides getDomain();
-
-	@Override
-	Strides getDataDomain();
-
-	double getValue(int... states);
-
-	double getValueAt(int index);
-
+	// TODO: these methods below need more consideration on what to do with them and where to put them
 	BayesianFactor replace(double value, double replacement);
 
 	BayesianFactor replaceNaN(double replacement);
-
-	// TODO: these methods below need more consideration on what to do with them and where to put them
 
 	void sortDomain();
 

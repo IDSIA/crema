@@ -65,7 +65,7 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 	 * @param <F>      returned type
 	 * @return a factor, combination of this factor with the given other factor
 	 */
-	protected <F extends BayesianDefaultFactor> F combine(
+	protected <F extends BayesianAbstractFactor> F combine(
 			BayesianFactor factor,
 			BayesianFactorBuilder<F> builder,
 			ToDoubleBiFunction<BayesianFactor, Integer> getThis,
@@ -135,7 +135,7 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 	 * @param <F>      returned type
 	 * @return a factor, combination of this factor with the given other factor
 	 */
-	protected <F extends BayesianDefaultFactor> F divide(
+	protected <F extends BayesianAbstractFactor> F divide(
 			BayesianFactor factor,
 			BayesianFactorBuilder<F> builder,
 			ToDoubleBiFunction<BayesianFactor, Integer> getThis,

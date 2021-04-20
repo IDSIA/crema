@@ -33,7 +33,7 @@ public class ExtensiveVertexDefaultFactor extends ExtensiveVertexAbstractFactor 
 	}
 
 	@Override
-	public ExtensiveVertexAbstractFactor copy() {
+	public ExtensiveVertexDefaultFactor copy() {
 		ArrayList<double[]> new_data = new ArrayList<>(data.size());
 		for (double[] vertex : data) {
 			new_data.add(vertex.clone());
@@ -70,18 +70,18 @@ public class ExtensiveVertexDefaultFactor extends ExtensiveVertexAbstractFactor 
 	}
 
 	@Override
-	public ExtensiveVertexAbstractFactor combine(ExtensiveVertexAbstractFactor other) {
+	public ExtensiveVertexDefaultFactor combine(ExtensiveVertexFactor other) {
 		return combine(other, ExtensiveVertexDefaultFactor::new);
 	}
 
 	@Override
-	public ExtensiveVertexAbstractFactor marginalize(int variable) {
+	public ExtensiveVertexDefaultFactor marginalize(int variable) {
 		int offset = domain.indexOf(variable);
 		return collect(offset, new Marginal(domain.getSizeAt(offset), domain.getStrideAt(offset)), ExtensiveVertexDefaultFactor::new);
 	}
 
 	@Override
-	public ExtensiveVertexAbstractFactor filter(int variable, int state) {
+	public ExtensiveVertexDefaultFactor filter(int variable, int state) {
 		int offset = domain.indexOf(variable);
 		return collect(offset, new Filter(domain.getStrideAt(offset), state), ExtensiveVertexDefaultFactor::new);
 	}

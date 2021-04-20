@@ -184,6 +184,51 @@ public class ArraysUtil {
 	}
 
 	/**
+	 * Convert an array in log-space using  {@link FastMath#log(double)}.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] log(double[] data) {
+		double[] logged = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			logged[i] = FastMath.log(data[i]);
+		}
+		return logged;
+	}
+	
+	/**
+	 * Convert an array in log-space using  {@link FastMath#log1p(double)}.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] log1p(double[] data) {
+		double[] logged = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			logged[i] = FastMath.log1p(data[i]);
+		}
+		return logged;
+	}
+		
+	
+	/**
+	 * Convert an array from log-space to normal space using {@link FastMath#exp(double)}.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] exp(double[] data) {
+		double[] normal = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			normal[i] = FastMath.exp(data[i]);
+		}
+		return normal;
+	}
+	
+	
+
+	/**
 	 * Compare two float arrays for almost equality. To be equal, each pair of items
 	 * of the arrays can differ at most by eps.
 	 *

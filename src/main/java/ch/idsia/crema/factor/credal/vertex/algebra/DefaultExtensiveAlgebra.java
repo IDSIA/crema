@@ -2,8 +2,8 @@ package ch.idsia.crema.factor.credal.vertex.algebra;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
-import ch.idsia.crema.model.math.Operation;
-import ch.idsia.crema.model.vertex.*;
+import ch.idsia.crema.factor.operations.Operation;
+import ch.idsia.crema.factor.operations.vertex.*;
 
 import java.util.Arrays;
 

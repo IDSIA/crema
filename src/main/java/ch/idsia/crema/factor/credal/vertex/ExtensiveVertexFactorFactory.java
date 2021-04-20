@@ -2,6 +2,7 @@ package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
 import ch.idsia.crema.utility.ArraysUtil;
 
@@ -30,9 +31,13 @@ public class ExtensiveVertexFactorFactory {
 		return new ExtensiveVertexFactorFactory();
 	}
 
-	public ExtensiveVertexFactorFactory log() {
-		log = true;
+	public ExtensiveVertexFactorFactory log(boolean isLog) {
+		log = isLog;
 		return this;
+	}
+
+	public ExtensiveVertexFactorFactory log() {
+		return log(true);
 	}
 
 	public ExtensiveVertexFactorFactory domain(Strides domain) {
@@ -47,6 +52,14 @@ public class ExtensiveVertexFactorFactory {
 
 	public ExtensiveVertexFactorFactory addVertices(List<double[]> vertices) {
 		this.vertices.addAll(vertices);
+		return this;
+	}
+
+	public ExtensiveVertexFactorFactory addBayesVertex(BayesianFactor factor) {
+		if (factor instanceof BayesianLogFactor)
+			addLogVertex((BayesianLogFactor) factor);
+		else
+			addBayesVertex((BayesianDefaultFactor) factor);
 		return this;
 	}
 

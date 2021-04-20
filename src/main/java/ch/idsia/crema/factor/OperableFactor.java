@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.model.math.Operable;
+import ch.idsia.crema.factor.operations.Operable;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.Collection;
@@ -89,36 +89,5 @@ public interface OperableFactor<F extends OperableFactor<F>> extends FilterableF
 		}
 		return divide(div);
 	}
-
-	/**
-	 * Static method that builds a deterministic factor (values can only be ones or zeros).
-	 * Thus, children variables are determined by the values of the parents
-	 *
-	 * @param left        Strides - children variables.
-	 * @param right       Strides - parent variables
-	 * @param assignments assignments of each combination of the parent
-	 * @return
-	 */
-	/*
-	TODO: move somewhere else
-	static OperableFactor deterministic(Strides left, Strides right, int... assignments) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-	 */
-
-	/**
-	 * Static method that builds a deterministic factor (values can only be ones or zeros)
-	 * without parent variables.
-	 *
-	 * @param left       Strides - children variables.
-	 * @param assignment int - single value to assign
-	 * @return
-	 */
-	/*
-	TODO: move somewhere else
-	static OperableFactor deterministic(Strides left, int assignment) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-	*/
 
 }

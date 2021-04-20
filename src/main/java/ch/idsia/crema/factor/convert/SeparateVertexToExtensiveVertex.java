@@ -2,9 +2,13 @@ package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Converter;
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
 import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
+import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactorFactory;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SeparateVertexToExtensiveVertex implements Converter<VertexFactor, ExtensiveVertexFactor> {
 
@@ -16,8 +20,6 @@ public class SeparateVertexToExtensiveVertex implements Converter<VertexFactor, 
 		Strides domain = s.getDomain();
 		Strides conditioning_domain = s.getSeparatingDomain();
 
-		ExtensiveVertexFactor factor = new ExtensiveVertexFactor(domain, true);
-
 		int[] variable = new int[domain.getSize()];
 		int[] data_vars = s.getDataDomain().getVariables();
 		int[] cond_vars = conditioning_domain.getVariables();
@@ -26,6 +28,8 @@ public class SeparateVertexToExtensiveVertex implements Converter<VertexFactor, 
 		System.arraycopy(cond_vars, 0, variable, data_vars.length, cond_vars.length);
 
 		for (double[][] d : data) vertices *= d.length;
+
+		List<BayesianLogFactor> factors = new ArrayList<>();
 
 		for (int vertex = 0; vertex < vertices; ++vertex) {
 			int reminder = vertex;
@@ -39,11 +43,15 @@ public class SeparateVertexToExtensiveVertex implements Converter<VertexFactor, 
 				System.arraycopy(set[idx], 0, vdata, conditioning * len, len);
 			}
 
-			BayesianFactor vertex_factor = new BayesianFactor(domain, true);
-			vertex_factor.setData(variable, vdata);
-			factor.addVertex(vertex_factor);
+			BayesianLogFactor vertex_factor = new BayesianLogFactor(domain, variable, vdata);
+			factors.add(vertex_factor);
 		}
-		return factor;
+
+		return ExtensiveVertexFactorFactory.factory()
+				.log()
+				.domain(domain)
+				.addLogVertices(factors)
+				.build();
 	}
 
 	@Override

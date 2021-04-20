@@ -12,7 +12,7 @@ import java.util.List;
  * Project: crema
  * Date:    20.04.2021 10:36
  */
-public interface ExtensiveVertexFactor extends OperableFactor<ExtensiveVertexAbstractFactor> {
+public interface ExtensiveVertexFactor extends OperableFactor<ExtensiveVertexFactor> {
 
 	@Override
 	GenericFactor copy();
@@ -32,15 +32,15 @@ public interface ExtensiveVertexFactor extends OperableFactor<ExtensiveVertexAbs
 	int size();
 
 	@Override
-	ExtensiveVertexAbstractFactor filter(int variable, int state);
+	ExtensiveVertexFactor filter(int variable, int state);
 
 	@Override
-	ExtensiveVertexAbstractFactor combine(ExtensiveVertexAbstractFactor other);
+	ExtensiveVertexFactor combine(ExtensiveVertexFactor other);
 
 	@Override
-	ExtensiveVertexAbstractFactor marginalize(int variable);
+	ExtensiveVertexFactor marginalize(int variable);
 
 	@Override
-	ExtensiveVertexAbstractFactor divide(ExtensiveVertexAbstractFactor factor);
+	ExtensiveVertexFactor divide(ExtensiveVertexFactor factor);
 
 }

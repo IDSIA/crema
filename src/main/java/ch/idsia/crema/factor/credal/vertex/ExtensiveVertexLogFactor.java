@@ -42,8 +42,8 @@ public class ExtensiveVertexLogFactor extends ExtensiveVertexDefaultFactor {
 	}
 
 	@Override
-	public ExtensiveVertexAbstractFactor combine(ExtensiveVertexAbstractFactor other) {
-		return combine(other, ExtensiveVertexDefaultFactor::new);
+	public ExtensiveVertexLogFactor combine(ExtensiveVertexFactor other) {
+		return combine(other, ExtensiveVertexLogFactor::new);
 	}
 
 	@Override

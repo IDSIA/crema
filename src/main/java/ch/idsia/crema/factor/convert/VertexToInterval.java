@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.factor.Converter;
+import ch.idsia.crema.factor.credal.linear.IntervalDefaultFactor;
 import ch.idsia.crema.factor.credal.linear.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.VertexFactor;
 
@@ -39,7 +40,7 @@ public class VertexToInterval implements Converter<VertexFactor, IntervalFactor>
 				}
 			}
 		}
-		return new IntervalFactor(s.getDataDomain(), s.getSeparatingDomain(), lowers, uppers);
+		return new IntervalDefaultFactor(s.getDataDomain(), s.getSeparatingDomain(), lowers, uppers);
 	}
 
 	@Override

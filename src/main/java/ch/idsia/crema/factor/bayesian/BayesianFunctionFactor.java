@@ -32,6 +32,24 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 	}
 
 	@Override
+	public double[] getData() {
+		// TODO
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public BayesianFactor reorderDomain(Strides newStrides) {
+		// TODO
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public BayesianFactor reorderDomain(int... vars) {
+		// TODO
+		throw new NotImplementedException();
+	}
+
+	@Override
 	public BayesianFactor replace(double value, double replacement) {
 		// TODO
 		throw new NotImplementedException();

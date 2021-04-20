@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.model.math.Operation;
+import ch.idsia.crema.factor.operations.Operation;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.Collection;

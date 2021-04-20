@@ -151,6 +151,11 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 	}
 
 	@Override
+	public double[][][] getData() {
+		return ArraysUtil.deepClone(data);
+	}
+
+	@Override
 	public VertexDefaultFactor filter(int variable, int state) {
 		return filter(variable, state, VertexDefaultFactor::new);
 	}
