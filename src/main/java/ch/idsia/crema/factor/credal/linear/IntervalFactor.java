@@ -1,5 +1,8 @@
 package ch.idsia.crema.factor.credal.linear;
 
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
+
 import java.util.Arrays;
 
 /**
@@ -12,6 +15,18 @@ public interface IntervalFactor extends SeparateLinearFactor<IntervalFactor> {
 	@Override
 	IntervalFactor copy();
 
+	@Override
+	Strides getDomain();
+
+	@Override
+	Strides getDataDomain();
+
+	@Override
+	Strides getSeparatingDomain();
+
+	@Override
+	IntervalFactor filter(int variable, int state);
+
 	double[] getUpper(int... states);
 
 	double[] getLower(int... states);
@@ -20,11 +35,11 @@ public interface IntervalFactor extends SeparateLinearFactor<IntervalFactor> {
 
 	double[] getLowerAt(int group_offset);
 
-	double[][] getDataUpper();
-
-	double[][] getDataLower();
-
 	IntervalFactor merge(IntervalFactor factor);
+
+	boolean updateReachability();
+
+	boolean isInside(BayesianFactor f);
 
 	/**
 	 * Merges the bounds with other interval factors
@@ -47,4 +62,5 @@ public interface IntervalFactor extends SeparateLinearFactor<IntervalFactor> {
 	static IntervalFactor mergeBounds(IntervalFactor... factors) {
 		return factors[0].merge(Arrays.copyOfRange(factors, 1, factors.length));
 	}
+
 }
