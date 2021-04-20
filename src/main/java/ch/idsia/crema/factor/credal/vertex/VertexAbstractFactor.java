@@ -19,13 +19,13 @@ import java.util.stream.IntStream;
  * @author david
  */
 // TODO: Data is currently not logged!
-public abstract class AbstractVertexFactor implements VertexFactor {
+public abstract class VertexAbstractFactor implements VertexFactor {
 	protected final Strides separatedDomain;
 	protected final Strides vertexDomain;
 
 	public static boolean CONVEX_HULL_MARG = false;
 
-	public AbstractVertexFactor(Strides separatedDomain, Strides vertexDomain) {
+	public VertexAbstractFactor(Strides separatedDomain, Strides vertexDomain) {
 		this.separatedDomain = vertexDomain;
 		this.vertexDomain = separatedDomain;
 	}
@@ -68,7 +68,7 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 		return new SeparateIndexIterator(data, group);
 	}
 
-	protected <F extends AbstractVertexFactor> F filter(int variable, int state, VertexFactorBuilder<F> builder) {
+	protected <F extends VertexAbstractFactor> F filter(int variable, int state, VertexFactorBuilder<F> builder) {
 		int var_offset = separatedDomain.indexOf(variable);
 		if (var_offset < 0) {
 			double[][][] newdata = new double[separatedDomain.getCombinations()][][];
@@ -121,7 +121,7 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 	 * @param vars
 	 * @return
 	 */
-	protected <F extends AbstractVertexFactor> F marginalize(VertexFactorBuilder<F> builder, int... vars) {
+	protected <F extends VertexAbstractFactor> F marginalize(VertexFactorBuilder<F> builder, int... vars) {
 		// only vars of the domain
 		Strides sum_strides = getDataDomain().intersection(vars);
 		Strides left = getDataDomain().remove(vars);
@@ -159,7 +159,7 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected <F extends AbstractVertexFactor> F reseparate(Strides target, VertexFactorBuilder<F> builder) {
+	protected <F extends VertexAbstractFactor> F reseparate(Strides target, VertexFactorBuilder<F> builder) {
 		// requested current separation!
 		if (Arrays.equals(target.getVariables(), separatedDomain.getVariables())) return (F) this;
 
@@ -219,7 +219,7 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 		return builder.get(Dl, T, dest_data);
 	}
 
-	protected <F extends AbstractVertexFactor> F combine(VertexFactor other, VertexFactorBuilder<F> builder, ToDoubleBiFunction<Double, Double> multiply) {
+	protected <F extends VertexAbstractFactor> F combine(VertexFactor other, VertexFactorBuilder<F> builder, ToDoubleBiFunction<Double, Double> multiply) {
 		if (!this.getDomain().isConsistentWith(other.getDomain())) {
 			throw new IllegalArgumentException("Factors domains are not consistent: " + this + ", " + other);
 		}
@@ -289,17 +289,17 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 	protected abstract void applyConvexHull();
 
 	@Override
-	public AbstractVertexFactor divide(VertexFactor other) {
+	public VertexAbstractFactor divide(VertexFactor other) {
 		// TODO
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public AbstractVertexFactor marginalize(int variable) {
-		return (AbstractVertexFactor) marginalize(new int[]{variable});
+	public VertexAbstractFactor marginalize(int variable) {
+		return (VertexAbstractFactor) marginalize(new int[]{variable});
 	}
 
-	protected <F extends AbstractVertexFactor> F normalize(VertexFactorBuilder<F> builder, int... given) {
+	protected <F extends VertexAbstractFactor> F normalize(VertexFactorBuilder<F> builder, int... given) {
 		double[][][] newdata = new double[size()][][];
 		for (int i = 0; i < size(); ++i) {
 			newdata[i] = getVerticesAt(i).clone(); // TODO: newdata[i] = data[i].clone()
@@ -311,7 +311,7 @@ public abstract class AbstractVertexFactor implements VertexFactor {
 		return builder.get(vertexDomain, separatedDomain, newdata);
 	}
 
-	public <F extends AbstractVertexFactor> F getSingleVertexFactor(VertexFactorBuilder<F> builder, int... idx) {
+	public <F extends VertexAbstractFactor> F getSingleVertexFactor(VertexFactorBuilder<F> builder, int... idx) {
 		int[] idx_arr;
 
 		if (idx.length == 1) {

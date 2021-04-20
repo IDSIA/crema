@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
  * Project: crema
  * Date:    16.04.2021 21:45
  */
-public class VertexDefaultFactor extends AbstractVertexFactor {
+public class VertexDefaultFactor extends VertexAbstractFactor {
 
 	protected final double[][][] data;
 

@@ -15,11 +15,11 @@ import java.util.function.ToDoubleBiFunction;
  * Project: crema
  * Date:    16.04.2021 18:43
  */
-public abstract class AbstractBayesianFactor implements BayesianFactor {
+public abstract class BayesianAbstractFactor implements BayesianFactor {
 
 	protected Strides domain;
 
-	public AbstractBayesianFactor(Domain domain) {
+	public BayesianAbstractFactor(Domain domain) {
 		this.domain = Strides.fromDomain(domain);
 	}
 
@@ -192,9 +192,9 @@ public abstract class AbstractBayesianFactor implements BayesianFactor {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof AbstractBayesianFactor)) return false;
+		if (!(obj instanceof BayesianAbstractFactor)) return false;
 
-		AbstractBayesianFactor other = (AbstractBayesianFactor) obj;
+		BayesianAbstractFactor other = (BayesianAbstractFactor) obj;
 		return !Arrays.equals(domain.getVariables(), other.getDomain().getVariables());
 	}
 

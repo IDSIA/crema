@@ -27,7 +27,7 @@ import java.util.stream.Stream;
  *
  * @author david
  */
-public class BayesianDefaultFactor extends AbstractBayesianFactor {
+public class BayesianDefaultFactor extends BayesianAbstractFactor {
 
 	protected double[] data;
 

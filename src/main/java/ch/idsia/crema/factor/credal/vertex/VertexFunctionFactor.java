@@ -10,7 +10,7 @@ import java.util.function.Function;
  * Project: crema
  * Date:    16.04.2021 21:49
  */
-public class VertexFunctionFactor extends AbstractVertexFactor {
+public class VertexFunctionFactor extends VertexAbstractFactor {
 
 	private final Function<Integer, double[][]> f;
 
