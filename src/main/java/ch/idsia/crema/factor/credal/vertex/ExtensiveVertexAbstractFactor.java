@@ -10,25 +10,25 @@ import org.apache.commons.lang3.NotImplementedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFactor> {
+public class ExtensiveVertexAbstractFactor implements OperableFactor<ExtensiveVertexAbstractFactor> {
 
 	protected ArrayList<double[]> data;
 	protected Strides domain;
 	protected final boolean log;
 
-	public ExtensiveVertexFactor(Strides strides, boolean log, int capacity) {
+	public ExtensiveVertexAbstractFactor(Strides strides, boolean log, int capacity) {
 		this.log = log;
 		this.data = new ArrayList<>(capacity);
 		this.domain = strides;
 	}
 
-	public ExtensiveVertexFactor(Strides strides, boolean log) {
+	public ExtensiveVertexAbstractFactor(Strides strides, boolean log) {
 		this.log = log;
 		this.data = new ArrayList<>();
 		this.domain = strides;
 	}
 
-	protected ExtensiveVertexFactor(Strides strides, ArrayList<double[]> data, boolean log) {
+	protected ExtensiveVertexAbstractFactor(Strides strides, ArrayList<double[]> data, boolean log) {
 		this.data = data;
 		this.domain = strides;
 		this.log = log;
@@ -49,22 +49,23 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 
 	public void addVertex(BayesianFactor data) {
 		if (this.log == data.isLog()) {
-			this.data.add(data.getInteralData());
+			this.data.add(data.getData());
 		} else if (this.log) {
 			// i'm not allowed to touch the internal array of the BayesianFactor
-			double[] data_vertex = data.getInteralData();
+			double[] data_vertex = data.getData();
 			double[] vertex = new double[data_vertex.length];
 			for (int i = 0; i < vertex.length; ++i) {
 				vertex[i] = Math.log(data_vertex[i]);
 			}
 			this.data.add(vertex);
 		} else {
-			this.data.add(data.getInteralData());
+			this.data.add(data.getData());
 		}
 	}
 
 	public BayesianFactor getBayesianVertex(int vertex) {
-		return new BayesianDefaultFactor(domain, data.get(vertex), log);
+		// TODO: log version
+		return new BayesianDefaultFactor(domain, data.get(vertex));
 	}
 
 	@Override
@@ -81,15 +82,15 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 	}
 
 	@Override
-	public ExtensiveVertexFactor copy() {
+	public ExtensiveVertexAbstractFactor copy() {
 		ArrayList<double[]> new_data = new ArrayList<>(data.size());
 		for (double[] vertex : data) {
 			new_data.add(vertex.clone());
 		}
-		return new ExtensiveVertexFactor(domain, new_data, log);
+		return new ExtensiveVertexAbstractFactor(domain, new_data, log);
 	}
 
-	public ExtensiveVertexFactor combine2(ExtensiveVertexFactor factor) {
+	public ExtensiveVertexAbstractFactor combine2(ExtensiveVertexAbstractFactor factor) {
 		final Strides target = domain.union(factor.domain);
 		final int length = target.getSize();
 
@@ -148,13 +149,13 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 			}
 		}
 
-		ExtensiveVertexFactor target_factor = new ExtensiveVertexFactor(target, log);
+		ExtensiveVertexAbstractFactor target_factor = new ExtensiveVertexAbstractFactor(target, log);
 		target_factor.data.addAll(Arrays.asList(result));
 		return target_factor;
 	}
 
 	@Override
-	public ExtensiveVertexFactor combine(ExtensiveVertexFactor factor) {
+	public ExtensiveVertexAbstractFactor combine(ExtensiveVertexAbstractFactor factor) {
 		final Strides target = domain.union(factor.domain);
 		final int length = target.getSize();
 
@@ -185,7 +186,7 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 		final int our_tables = data.size();
 		final int his_tables = factor.data.size();
 
-		ExtensiveVertexFactor target_factor = new ExtensiveVertexFactor(target, log);
+		ExtensiveVertexAbstractFactor target_factor = new ExtensiveVertexAbstractFactor(target, log);
 		target_factor.data.ensureCapacity(our_tables * his_tables);
 		final int table_size = target.getCombinations();
 
@@ -206,13 +207,13 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 	}
 
 	@Override
-	public ExtensiveVertexFactor filter(int variable, int state) {
+	public ExtensiveVertexAbstractFactor filter(int variable, int state) {
 		int offset = domain.indexOf(variable);
 		return collect(offset, new Filter(domain.getStrideAt(offset), state));
 	}
 
 	@Override
-	public ExtensiveVertexFactor marginalize(int variable) {
+	public ExtensiveVertexAbstractFactor marginalize(int variable) {
 		int offset = domain.indexOf(variable);
 		if (log)
 			return collect(offset, new LogMarginal(domain.getSizeAt(offset), domain.getStrideAt(offset)));
@@ -220,7 +221,7 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 			return collect(offset, new Marginal(domain.getSizeAt(offset), domain.getStrideAt(offset)));
 	}
 
-	private ExtensiveVertexFactor collect(final int offset, final Collector collector) {
+	private ExtensiveVertexAbstractFactor collect(final int offset, final Collector collector) {
 
 		final int stride = domain.getStrideAt(offset);
 		final int size = domain.getSizeAt(offset);
@@ -228,7 +229,7 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 
 		Strides target_domain = domain.removeAt(offset); //new Strides(domain, offset);
 
-		ExtensiveVertexFactor result = new ExtensiveVertexFactor(target_domain, isLog());
+		ExtensiveVertexAbstractFactor result = new ExtensiveVertexAbstractFactor(target_domain, isLog());
 		for (double[] vertex : this.data) {
 			int source = 0;
 			int next = stride;
@@ -252,7 +253,7 @@ public class ExtensiveVertexFactor implements OperableFactor<ExtensiveVertexFact
 	}
 
 	@Override
-	public ExtensiveVertexFactor divide(ExtensiveVertexFactor factor) {
+	public ExtensiveVertexAbstractFactor divide(ExtensiveVertexAbstractFactor factor) {
 		// TODO
 		throw new NotImplementedException();
 	}
