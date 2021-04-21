@@ -1,19 +1,18 @@
-package ch.idsia.crema.factor.credal.vertex.algebra;
+package ch.idsia.crema.factor.algebra;
 
-import ch.idsia.crema.factor.credal.vertex.VertexDefaultFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.factor.operations.Operation;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 
 import java.util.Arrays;
 
-public class DefaultSeparateAlgebra implements Operation<VertexFactor> {
+public class SeparateDefaultAlgebra implements Operation<VertexFactor> {
 
 	private double tollerance = 1e-7;
 
-	public DefaultSeparateAlgebra() {
+	public SeparateDefaultAlgebra() {
 	}
 
-	public DefaultSeparateAlgebra(double tollerance) {
+	public SeparateDefaultAlgebra(double tollerance) {
 		this.tollerance = tollerance;
 	}
 

@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.operations.vertex;
+package ch.idsia.crema.factor.algebra.collectors;
 
 public final class Filter implements Collector {
 

@@ -1,8 +1,13 @@
-package ch.idsia.crema.factor.operations;
+package ch.idsia.crema.factor.algebra;
 
 import ch.idsia.crema.factor.OperableFactor;
 
-public class FactorOperation<F extends OperableFactor<F>> implements Operation<F> {
+/**
+ * This class just delegates the operations to the factor implementation.
+ *
+ * @param <F>
+ */
+public class FactorAlgebra<F extends OperableFactor<F>> implements Operation<F> {
 
 	@Override
 	public F combine(F f1, F f2) {

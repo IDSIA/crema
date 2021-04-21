@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.operations.vertex;
+package ch.idsia.crema.factor.algebra.vertex;
 
 import gnu.trove.strategy.HashingStrategy;
 
@@ -41,4 +41,5 @@ public class VertexHashStrategy implements HashingStrategy<double[]> {
 
 		return true;
 	}
+
 }

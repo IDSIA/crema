@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.operations.vertex;
+package ch.idsia.crema.factor.algebra.vertex;
 
 /**
  * @author david
@@ -19,11 +19,4 @@ public interface VertexOperation {
 
 	double[] marginalize(double[] data, int size, int stride);
 
-	double[] convert(double[] data);
-
-	double[] revert(double[] data);
-
-	double convert(double val);
-
-	double revert(double val);
 }

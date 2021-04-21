@@ -1,14 +1,14 @@
-package ch.idsia.crema.factor.operations;
+package ch.idsia.crema.factor.algebra;
 
-import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.OperableFactor;
 
 /**
- * A class managing operation on objects.
+ * A class managing operation on factors.
  *
  * @param <F>
  * @author david
  */
-public interface Operation<F extends GenericFactor> {
+public interface Operation<F extends OperableFactor<F>> {
 
 	/**
 	 * Combine two or more factors. The actual operation and the access to the information

@@ -1,6 +1,5 @@
-package ch.idsia.crema.factor.operations.vertex;
+package ch.idsia.crema.factor.algebra.vertex;
 
-import ch.idsia.crema.utility.ArraysUtil;
 import org.apache.commons.math3.util.FastMath;
 
 public class LogVertexOperation implements VertexOperation {
@@ -56,26 +55,6 @@ public class LogVertexOperation implements VertexOperation {
 		}
 
 		return result;
-	}
-
-	@Override
-	public double[] convert(double[] data) {
-		return ArraysUtil.log(data);
-	}
-
-	@Override
-	public double[] revert(double[] data) {
-		return ArraysUtil.exp(data);
-	}
-
-	@Override
-	public double convert(double val) {
-		return FastMath.log(val);
-	}
-
-	@Override
-	public double revert(double val) {
-		return FastMath.exp(val);
 	}
 
 }

@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.operations.vertex;
+package ch.idsia.crema.factor.algebra.vertex;
 
 import org.apache.commons.math3.util.FastMath;
 
@@ -57,23 +57,4 @@ public class SimpleVertexOperation implements VertexOperation {
 		return result;
 	}
 
-	@Override
-	public double convert(double val) {
-		return val;
-	}
-
-	@Override
-	public double[] convert(double[] data) {
-		return data;
-	}
-
-	@Override
-	public double revert(double val) {
-		return val;
-	}
-
-	@Override
-	public double[] revert(double[] data) {
-		return data;
-	}
 }

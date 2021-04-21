@@ -1,19 +1,45 @@
-package ch.idsia.crema.factor.credal.vertex.algebra;
+package ch.idsia.crema.factor.algebra;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
-import ch.idsia.crema.factor.operations.Operation;
-import ch.idsia.crema.factor.operations.vertex.*;
+import ch.idsia.crema.factor.algebra.collectors.Collector;
+import ch.idsia.crema.factor.algebra.collectors.Filter;
+import ch.idsia.crema.factor.algebra.collectors.LogMarginal;
+import ch.idsia.crema.factor.algebra.collectors.Marginal;
+import ch.idsia.crema.factor.algebra.vertex.LogVertexOperation;
+import ch.idsia.crema.factor.algebra.vertex.SimpleVertexOperation;
+import ch.idsia.crema.factor.algebra.vertex.VertexOperation;
+import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexFactor;
+import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexLogFactor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-
+// TODO: rename to InlineConvexHullAlgebra?
 public abstract class OnlineConvexHullAlgebra implements Operation<ExtensiveVertexFactor> {
 
-	protected abstract boolean canAddVector(ExtensiveVertexFactor factor, double[] vector);
+	// TODO: the only implementation is a trivial hash-based check. Implement it?
+	protected abstract boolean canAddVector(List<double[]> vertex, double[] vector);
 
 	@Override
 	public ExtensiveVertexFactor combine(ExtensiveVertexFactor one, ExtensiveVertexFactor two) {
+		final boolean oneIsLog = one.isLog();
+		final boolean twoIsLog = two.isLog();
+
+		VertexOperation ops;
+
+		if (!oneIsLog && !twoIsLog) {
+			ops = new SimpleVertexOperation();
+		} else {
+			ops = new LogVertexOperation();
+
+			if (!oneIsLog)
+				one = new ExtensiveVertexLogFactor((ExtensiveVertexDefaultFactor) one);
+			if (!twoIsLog)
+				two = new ExtensiveVertexLogFactor((ExtensiveVertexDefaultFactor) two);
+		}
+
 		final Strides target = one.getDomain().union(two.getDomain());
 		final int length = target.getSize();
 
@@ -44,10 +70,9 @@ public abstract class OnlineConvexHullAlgebra implements Operation<ExtensiveVert
 		final int our_tables = one.getInternalVertices().size();
 		final int his_tables = two.getInternalVertices().size();
 
-		ExtensiveVertexFactor target_factor = new ExtensiveVertexFactor(target, one.isLog(), our_tables * his_tables);
-		final int table_size = target.getCombinations();
+		List<double[]> vertices = new ArrayList<>();
 
-		VertexOperation ops = target_factor.isLog() ? new LogVertexOperation() : new SimpleVertexOperation();
+		final int table_size = target.getCombinations();
 
 		for (int our_table = 0; our_table < our_tables; ++our_table) {
 			for (int his_table = 0; his_table < his_tables; ++his_table) {
@@ -56,13 +81,16 @@ public abstract class OnlineConvexHullAlgebra implements Operation<ExtensiveVert
 
 				final double[] result = ops.combine(our_data, his_data, table_size, stride, reset, limits);
 
-				if (canAddVector(target_factor, result)) {
-					target_factor.addInternalVertex(result);
+				if (canAddVector(vertices, result)) {
+					vertices.add(result);
 				}
 			}
 		}
 
-		return target_factor;
+		if (oneIsLog && twoIsLog)
+			return new ExtensiveVertexLogFactor(target, vertices);
+		else
+			return new ExtensiveVertexDefaultFactor(target, vertices);
 	}
 
 	@Override
@@ -82,7 +110,7 @@ public abstract class OnlineConvexHullAlgebra implements Operation<ExtensiveVert
 			return collect(factor, offset, new Marginal(domain.getSizeAt(offset), domain.getStrideAt(offset)));
 	}
 
-	private ExtensiveVertexFactor collect(final ExtensiveVertexFactor factor, final int offset, final Collector collector) {
+	protected ExtensiveVertexFactor collect(final ExtensiveVertexFactor factor, final int offset, final Collector collector) {
 		final Strides domain = factor.getDomain();
 		final int stride = domain.getStrideAt(offset);
 		final int size = domain.getSizeAt(offset);
@@ -90,7 +118,8 @@ public abstract class OnlineConvexHullAlgebra implements Operation<ExtensiveVert
 		final int reset = size * stride;
 
 		final Strides target_domain = domain.removeAt(offset);
-		final ExtensiveVertexFactor result = new ExtensiveVertexFactor(target_domain, factor.isLog());
+
+		List<double[]> vertices = new ArrayList<>();
 
 		// marginalize all the vertices of the source factor
 		for (double[] vertex : factor.getInternalVertices()) {
@@ -109,16 +138,20 @@ public abstract class OnlineConvexHullAlgebra implements Operation<ExtensiveVert
 			}
 
 			// ask if the vertex should be added
-			if (canAddVector(result, newData)) {
-				result.addInternalVertex(newData);
+			if (canAddVector(vertices, newData)) {
+				vertices.add(newData);
 			}
 		}
 
-		return result;
+		if (factor.isLog())
+			return new ExtensiveVertexLogFactor(target_domain, vertices);
+		else
+			return new ExtensiveVertexDefaultFactor(target_domain, vertices);
 	}
 
 	@Override
 	public ExtensiveVertexFactor divide(ExtensiveVertexFactor one, ExtensiveVertexFactor other) {
+		// TODO
 		throw new UnsupportedOperationException();
 	}
 }

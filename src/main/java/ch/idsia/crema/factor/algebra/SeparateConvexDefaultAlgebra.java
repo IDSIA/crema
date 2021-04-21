@@ -1,19 +1,19 @@
-package ch.idsia.crema.factor.credal.vertex.algebra;
+package ch.idsia.crema.factor.algebra;
 
-import ch.idsia.crema.factor.credal.vertex.VertexDefaultFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.utility.hull.LPConvexHull;
 
-public class DefaultSeparateConvexAlgebra extends DefaultSeparateAlgebra {
+public class SeparateConvexDefaultAlgebra extends SeparateDefaultAlgebra {
 
 	private boolean round = false;
 	private boolean chull = true;
-	private double precision = 0;
+	private double precision = 0.0;
 
-	public DefaultSeparateConvexAlgebra() {
+	public SeparateConvexDefaultAlgebra() {
 	}
 
-	public DefaultSeparateConvexAlgebra(boolean round, double precision, boolean chull) {
+	public SeparateConvexDefaultAlgebra(boolean round, double precision, boolean chull) {
 		this.round = round;
 		this.chull = chull;
 		this.precision = precision;
@@ -33,8 +33,8 @@ public class DefaultSeparateConvexAlgebra extends DefaultSeparateAlgebra {
 		double[][][] data = new double[factor.size()][][];
 		for (int ix = 0; ix < data.length; ++ix) {
 			data[ix] = LPConvexHull.compute(factor.getVerticesAt(ix), true); // TODO: data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], true);
-
 		}
+
 		return new VertexDefaultFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
 	}
 
@@ -43,6 +43,7 @@ public class DefaultSeparateConvexAlgebra extends DefaultSeparateAlgebra {
 		for (int ix = 0; ix < data.length; ++ix) {
 			data[ix] = LPConvexHull.compute(factor.getVerticesAt(ix), false); // TODO: data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], false);
 		}
+
 		return new VertexDefaultFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
 	}
 }
