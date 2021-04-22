@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.core.Domain;
+import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.LogSpace;
 import ch.idsia.crema.factor.algebra.OperationUtils;
@@ -9,10 +10,12 @@ import ch.idsia.crema.factor.algebra.bayesian.LogBayesianMarginal;
 import ch.idsia.crema.factor.algebra.bayesian.SimpleBayesianFilter;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import ch.idsia.crema.utility.RandomUtil;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
+import java.util.stream.DoubleStream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -280,5 +283,15 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		}
 
 		return new BayesianLogFactor(domain, data);
+	}
+
+	@Override
+	public ObservationBuilder sample() {
+		double[] probs = ArraysUtil.exp(this.data);
+		if (this.getDomain().getVariables().length > 1) {
+			double sum = DoubleStream.of(probs).sum();
+			probs = DoubleStream.of(probs).map(p -> p / sum).toArray();
+		}
+		return getDomain().observationOf(RandomUtil.sampleCategorical(probs));
 	}
 }

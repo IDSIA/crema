@@ -116,7 +116,7 @@ public class ArraysUtil {
 	 * @return int[] the sorted array
 	 */
 	public static int[] sort(int[] base) {
-		int[] copy = base.clone();
+		int[] copy = ArrayUtils.clone(base);
 		Arrays.sort(copy);
 		return copy;
 	}
@@ -170,7 +170,7 @@ public class ArraysUtil {
 	public static double[][] deepClone(double[][] data) {
 		double[][] result = new double[data.length][];
 		for (int i = 0; i < data.length; ++i) {
-			result[i] = data[i].clone();
+			result[i] = ArrayUtils.clone(data[i]);
 		}
 		return result;
 	}
@@ -184,7 +184,7 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Convert an array in log-space using  {@link FastMath#log(double)}.
+	 * Convert an array in log-space using {@link FastMath#log(double)}. Creates a new array.
 	 *
 	 * @param data input data
 	 * @return the input data in log-space.
@@ -198,7 +198,7 @@ public class ArraysUtil {
 	}
 	
 	/**
-	 * Convert an array in log-space using  {@link FastMath#log1p(double)}.
+	 * Convert an array in log-space using  {@link FastMath#log1p(double)}. Creates a new array.
 	 *
 	 * @param data input data
 	 * @return the input data in log-space.
@@ -210,10 +210,9 @@ public class ArraysUtil {
 		}
 		return logged;
 	}
-		
 	
 	/**
-	 * Convert an array from log-space to normal space using {@link FastMath#exp(double)}.
+	 * Convert an array from log-space to normal space using {@link FastMath#exp(double)}. Creates a new array.
 	 *
 	 * @param data input data
 	 * @return the input data in log-space.
@@ -740,7 +739,7 @@ public class ArraysUtil {
 	 * @return
 	 */
 	public static double[][] enumerate(double[] vect, int start) {
-		return IntStream.range(0 + start, vect.length + start).mapToObj(i -> new double[]{i, vect[i - start]})
+		return IntStream.range(start, vect.length + start).mapToObj(i -> new double[]{i, vect[i - start]})
 				.toArray(double[][]::new);
 	}
 
@@ -782,7 +781,7 @@ public class ArraysUtil {
 	 * @param num_decimals
 	 * @return
 	 */
-	public static double[] round(double arr[], int num_decimals) {
+	public static double[] round(double[] arr, int num_decimals) {
 
 		double[] data = Arrays.copyOf(arr, arr.length);
 
@@ -1079,7 +1078,7 @@ public class ArraysUtil {
 	 * @return
 	 */
 	public static int[] reverse(int[] is) {
-		int[] rev = is.clone();
+		int[] rev = ArrayUtils.clone(is);
 		ArrayUtils.reverse(rev);
 		return rev;
 	}

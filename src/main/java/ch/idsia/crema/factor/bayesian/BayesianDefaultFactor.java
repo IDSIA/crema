@@ -408,13 +408,14 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return ArraysUtil.almostEquals(data, other.data, 0.00000001);
 	}
 
-	public double KLDivergence(BayesianDefaultFactor approx) {
+	@Override
+	public double KLDivergence(BayesianFactor approx) {
 		IndexIterator it = approx.getDomain().getReorderedIterator(getDomain().getVariables());
 		double kl = 0;
 		for (int i = 0; i < data.length; i++) {
 			int j = it.next();
-			double p = data[i];
-			double q = approx.data[j];
+			double p = getValueAt(i);
+			double q = approx.getValueAt(j);
 
 			kl += p * (Math.log(p) - Math.log(q));
 		}
@@ -557,6 +558,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	 * @return
 	 */
 	// TODO: consider to have a generic sample method
+	@Override
 	public ObservationBuilder sample() {
 		double[] probs = this.data;
 		if (this.getDomain().getVariables().length > 1) {

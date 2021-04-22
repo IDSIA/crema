@@ -3,6 +3,7 @@ package ch.idsia.crema.entropy;
 import gnu.trove.iterator.TIntIterator;
 import gnu.trove.set.TIntSet;
 import gnu.trove.set.hash.TIntHashSet;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class MaximumEntropy {
 
@@ -10,7 +11,7 @@ public class MaximumEntropy {
 
 	public double[] compute(double[] lowers, double[] uppers) {
 		int size = lowers.length;
-		double[] lower_copy = lowers.clone();
+		double[] lower_copy = ArrayUtils.clone(lowers);
 
 		TIntSet indices = new TIntHashSet();
 		for (int i = 0; i < size; ++i) indices.add(i);

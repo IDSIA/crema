@@ -22,7 +22,7 @@ public class GraphToJunctionTreePipe<F extends OperableFactor<F>> extends Pipe<D
 	public GraphToJunctionTreePipe() {
 		this.stages = Arrays.asList(
 				// moralization step
-				new Moralize(),
+				new Moralize<>(),
 				// triangulation step
 				new MinDegreeOrdering(),
 				// find cliques

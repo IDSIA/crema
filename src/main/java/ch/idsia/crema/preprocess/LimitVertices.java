@@ -1,7 +1,8 @@
 package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
@@ -99,6 +100,6 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 			if (hull.length == max) break;
 		}
 
-		return new VertexFactor(factor.getDomain(), Strides.EMPTY, new double[][][]{hull});
+		return new VertexDefaultFactor(factor.getDomain(), Strides.EMPTY, new double[][][]{hull});
 	}
 }

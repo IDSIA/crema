@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.ve;
 
 import ch.idsia.crema.factor.OperableFactor;
-import ch.idsia.crema.factor.operations.FactorOperation;
+import ch.idsia.crema.factor.algebra.FactorAlgebra;
 
 /**
  * A specialization of the {@link VariableElimination} algorithm for factors that implement
@@ -14,7 +14,7 @@ import ch.idsia.crema.factor.operations.FactorOperation;
 public class FactorVariableElimination<F extends OperableFactor<F>> extends VariableElimination<F> {
 
 	public FactorVariableElimination(int[] seq) {
-		super(new FactorOperation<>(), seq);
+		super(new FactorAlgebra<>(), seq);
 	}
 
 }

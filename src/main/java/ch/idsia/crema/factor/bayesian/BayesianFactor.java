@@ -1,5 +1,6 @@
 package ch.idsia.crema.factor.bayesian;
 
+import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
@@ -51,6 +52,10 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 	BayesianFactor divide(BayesianFactor factor);
 
 	// TODO: these methods below need more consideration on what to do with them and where to put them
+	ObservationBuilder sample();
+
+	double KLDivergence(BayesianFactor approx);
+
 	BayesianFactor replace(double value, double replacement);
 
 	BayesianFactor replaceNaN(double replacement);

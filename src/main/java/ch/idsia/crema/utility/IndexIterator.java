@@ -3,6 +3,7 @@ package ch.idsia.crema.utility;
 import ch.idsia.crema.core.Strides;
 import gnu.trove.iterator.TIntIterator;
 import gnu.trove.list.array.TIntArrayList;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class IndexIterator implements TIntIterator {
 
@@ -24,7 +25,7 @@ public class IndexIterator implements TIntIterator {
 	 * @return
 	 */
 	public IndexIterator offset(int o) {
-		return new IndexIterator(strides, sizes, reset, moving_positions.clone(), o, steps);
+		return new IndexIterator(strides, sizes, reset, ArrayUtils.clone(moving_positions), o, steps);
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class IndexIterator implements TIntIterator {
 	@Override
 	public IndexIterator clone() {
 		// only the moving_positions array needs to be cloned! (the steps and the current_index are passed by value)
-		return new IndexIterator(this.strides, this.sizes, this.reset, this.moving_positions.clone(), this.current_index, this.steps);
+		return new IndexIterator(this.strides, this.sizes, this.reset, ArrayUtils.clone(this.moving_positions), this.current_index, this.steps);
 	}
 
 	@Override

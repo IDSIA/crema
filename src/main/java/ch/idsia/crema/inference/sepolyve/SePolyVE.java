@@ -1,7 +1,7 @@
 package ch.idsia.crema.inference.sepolyve;
 
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
+import ch.idsia.crema.factor.algebra.SeparateDefaultAlgebra;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.precondition.NetworkReduction;
@@ -31,7 +31,7 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 	public static final String MAX_MEM_BYTE = "maxMem";
 	public static final String MAX_TIME_MS = "maxTimeMillis"; // double in seconds
 
-	private DefaultSeparateAlgebra algebra = null;
+	private SeparateDefaultAlgebra algebra = null;
 	private SePolyController collector;
 
 	private long maxTime = Long.MAX_VALUE;
@@ -43,7 +43,7 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 	 * @param tolerance the specified tolerance value
 	 */
 	public SePolyVE(double tolerance) {
-		algebra = new DefaultSeparateAlgebra(tolerance);
+		algebra = new SeparateDefaultAlgebra(tolerance);
 	}
 
 	/**

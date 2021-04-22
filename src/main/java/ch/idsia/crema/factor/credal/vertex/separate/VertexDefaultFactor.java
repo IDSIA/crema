@@ -146,9 +146,10 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 		}
 	}
 
+	@Override
 	public double[][] getVertices(int... states) {
 		int offset = separatedDomain.getOffset(states);
-		return data[offset];
+		return ArraysUtil.deepClone(data[offset]); // TODO: check if pollute memory or too slow
 	}
 
 	@Override

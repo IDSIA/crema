@@ -2,6 +2,7 @@ package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.OperableFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 
 /**
@@ -47,6 +48,8 @@ public interface VertexFactor extends OperableFactor<VertexFactor>, SeparatelySp
 
 	VertexFactor reseparate(Strides target);
 
+	double[][] getVertices(int ...states);
+
 	double[][] getVerticesAt(int i);
 
 	double[][][] getData();
@@ -66,4 +69,5 @@ public interface VertexFactor extends OperableFactor<VertexFactor>, SeparatelySp
 		return out;
 	}
 
+	BayesianFactor sample();
 }

@@ -1,5 +1,8 @@
 package ch.idsia.crema.learning;
 
+import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
+import ch.idsia.crema.factor.bayesian.BayesianDeterministicFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
@@ -39,9 +42,13 @@ public class FrequentistEM extends DiscreteEM {
 
 	protected TIntObjectMap<BayesianFactor> expectation(TIntIntMap[] observations) {
 
-		TIntObjectMap<BayesianFactor> counts = new TIntObjectHashMap<>();
+		TIntObjectMap<BayesianFactor> factors = new TIntObjectHashMap<>();
+		TIntObjectMap<double[]> counts = new TIntObjectHashMap<>();
+		TIntObjectMap<Strides> domains = new TIntObjectHashMap<>();
 		for (int variable : posteriorModel.getVariables()) {
-			counts.put(variable, new BayesianFactor(posteriorModel.getFactor(variable).getDomain(), false));
+			final Strides domain = posteriorModel.getFactor(variable).getDomain();
+			domains.put(variable, domain);
+			counts.put(variable, new double[domain.getCombinations()]);
 		}
 
 		for (TIntIntMap observation : observations) {
@@ -55,26 +62,34 @@ public class FrequentistEM extends DiscreteEM {
 					BayesianFactor phidden_obs = inferenceEngine.query(posteriorModel, observation, hidden);
 					if (obsVars.length > 0)
 						phidden_obs = phidden_obs.combine(
-								BayesianFactor.getJoinDeterministic(posteriorModel.getDomain(obsVars), observation)
+								BayesianDeterministicFactor.getJoinDeterministic(posteriorModel.getDomain(obsVars), observation)
 						);
 
-					counts.put(var, counts.get(var).addition(phidden_obs));
+					double[] data = counts.get(var);
+					for (int i = 0; i < data.length; i++) {
+						data[i] = data[i] + phidden_obs.getValueAt(i);
+					}
 
 //					TODO: what to do if NaN?
 //					if (Double.isNaN(counts.get(var).getData()[0]))
 //						System.out.println();
 
 				} else {
-					//fully-observable case
-					for (int index : counts.get(var).getDomain().getCompatibleIndexes(observation)) {
-						double x = counts.get(var).getValueAt(index) + 1;
-						counts.get(var).setValueAt(x, index);
+					// fully-observable case
+					for (int index : domains.get(var).getCompatibleIndexes(observation)) {
+						final double[] data = counts.get(var);
+						data[index] = data[index] + 1;
 					}
 				}
 			}
 		}
 
-		return counts;
+		// build output factors
+		for (int v : domains.keys()) {
+			factors.put(v, new BayesianDefaultFactor(domains.get(v), counts.get(v)));
+		}
+
+		return factors;
 	}
 
 	private void maximization(TIntObjectMap<BayesianFactor> counts) {
@@ -84,13 +99,13 @@ public class FrequentistEM extends DiscreteEM {
 			BayesianFactor countVar = counts.get(var);
 
 			if (regularization > 0.0) {
-				BayesianFactor reg = posteriorModel.getFactor(var).scalarMultiply(regularization);
+				BayesianFactor reg = posteriorModel.getFactor(var).scale(regularization);
 				countVar = countVar.addition(reg);
 			}
 
 			BayesianFactor f = countVar.divide(countVar.marginalize(var));
 
-			if (f.KLdivergence(posteriorModel.getFactor(var)) > klthreshold) {
+			if (f.KLDivergence(posteriorModel.getFactor(var)) > klthreshold) {
 				posteriorModel.setFactor(var, f);
 				updated = true;
 			}

@@ -209,8 +209,8 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	 * <p>
 	 * Use the {@link #queryFullPropagated(int)} method for query multiple variables over the same evidence and model.
 	 *
-	 * @param model    the model to use for inference
-	 * @param query    the variable that will be queried
+	 * @param model the model to use for inference
+	 * @param query the variable that will be queried
 	 * @return the marginal probability of the query variable
 	 */
 	public F fullPropagation(DAGModel<F> model, int query) {
@@ -335,7 +335,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	 * Executes the collecting step of the Belief Propagation algorithm.
 	 *
 	 * @param variable the variable to query as root of the tree
-	 * @return the precise {@link Factor} associated with the variable
+	 * @return the precise {@link ch.idsia.crema.factor.GenericFactor} associated with the variable
 	 */
 	public F collectingEvidence(int variable) {
 		// populate messages

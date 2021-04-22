@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.sampling;
 
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import gnu.trove.map.TIntIntMap;
@@ -62,7 +63,7 @@ public class LogicSampling extends StochasticSampling {
 		}
 
 		return Arrays.stream(query)
-				.mapToObj(q -> new BayesianFactor(model.getDomain(q), Px.get(q)))
+				.mapToObj(q -> new BayesianDefaultFactor(model.getDomain(q), Px.get(q)))
 				.collect(Collectors.toList());
 	}
 

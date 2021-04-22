@@ -1,9 +1,9 @@
 package ch.idsia.crema.inference.ve;
 
 import ch.idsia.crema.factor.FactorUtil;
-import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.OperableFactor;
+import ch.idsia.crema.factor.algebra.Operation;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.operations.Operation;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.order.OrderingStrategy;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class VariableElimination<F extends GenericFactor> implements InferenceJoined<GraphicalModel<F>, F> {
+public class VariableElimination<F extends OperableFactor<F>> implements InferenceJoined<GraphicalModel<F>, F> {
 
 	private int[] sequence;
 

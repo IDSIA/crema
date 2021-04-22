@@ -1,7 +1,9 @@
 package ch.idsia.crema.preprocess.creators;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
 import ch.idsia.crema.model.graphical.MixedModel;
 
 import java.util.Arrays;
@@ -76,7 +78,11 @@ public class CreateFactorBayesian implements CreateFactor {
 		data[conf + offset] = 1;
 
 		// create the factor
-		BayesianFactor factor = new BayesianFactor(domain, data, log);
+		BayesianFactor factor;
+		if (log)
+			factor = new BayesianLogFactor(domain, data);
+		else
+			factor = new BayesianDefaultFactor(domain, data);
 		model.setFactor(id, factor);
 
 		return id;

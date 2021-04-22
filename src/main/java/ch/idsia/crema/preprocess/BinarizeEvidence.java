@@ -94,7 +94,7 @@ public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvide
 		MixedModel model = new MixedModel((DAGModel<GenericFactor>) original.copy());
 		int[] keys = evidence.keys();
 
-		// TODO: XXX do we need to sort the keys????
+		// TODO: do we need to sort the keys????
 
 		int new_var = -1;
 

@@ -1,7 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.factor.OperableFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.TypesIO;

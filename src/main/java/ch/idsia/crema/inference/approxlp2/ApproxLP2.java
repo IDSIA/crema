@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.approxlp2;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalDefaultFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
@@ -48,7 +49,6 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 	 * node evidence. Factors must be of type ExtensiveLinearFactors,
 	 * BayesianFactor or SeparateLinearFactor
 	 * <p>
-	 * XXX must support multiple evidence here and in the variable elimination
 	 *
 	 * @param originalModel the data model
 	 * @param evidence      the variable that is to be considered the summarization of the
@@ -56,6 +56,7 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 	 * @param query         the variable whose intervals we are interested in
 	 * @return the result of the inference
 	 */
+	// TODO must support multiple evidence here and in the variable elimination
 	@Override
 	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
 		RemoveBarren<F> remove = new RemoveBarren<>();
@@ -84,7 +85,7 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 
 		}
 
-		IntervalFactor result = new IntervalFactor(
+		IntervalFactor result = new IntervalDefaultFactor(
 				model.getDomain(query), model.getDomain(), new double[][]{lowers}, new double[][]{uppers}
 		);
 		result.updateReachability();

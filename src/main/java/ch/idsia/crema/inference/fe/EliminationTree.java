@@ -2,6 +2,7 @@ package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.core.DomainBuilder;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.list.TIntList;
@@ -282,7 +283,7 @@ public class EliminationTree {
 			double[] data = new double[size]; // initialized to 0
 			data[evidence.get(i)] = 1.;
 
-			BayesianFactor e = new BayesianFactor(DomainBuilder.var(i).size(size).strides(), data);
+			BayesianFactor e = new BayesianDefaultFactor(DomainBuilder.var(i).size(size).strides(), data);
 
 			factor = factor.combine(e);
 		}

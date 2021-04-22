@@ -1,9 +1,11 @@
 package ch.idsia.crema.inference.sepolyve;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.algebra.SeparateDefaultAlgebra;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -20,7 +22,7 @@ public class SePolyController extends SearchOperation {
 	private final TIntObjectMap<List<VertexFactor>> queue;
 	private final TIntIntMap evidence;
 	private final GraphicalModel<VertexFactor> model;
-	private DefaultSeparateAlgebra algebra = null;
+	private SeparateDefaultAlgebra algebra = null;
 	private final ArrayList<NodeInfo> nodeStats;
 	private final ArrayList<Integer> order;
 
@@ -32,13 +34,13 @@ public class SePolyController extends SearchOperation {
 	 * As we are running in online mode, we do not use the other operations of the
 	 * algebra!
 	 *
-	 * @param model the model used for inference
+	 * @param model    the model used for inference
 	 * @param evidence the observed variable as a map of variable-states
 	 * @param rounding
 	 * @param maxTime
 	 * @param maxMem
 	 */
-	public SePolyController(GraphicalModel<VertexFactor> model, TIntIntMap evidence, DefaultSeparateAlgebra rounding, long maxTime, long maxMem) {
+	public SePolyController(GraphicalModel<VertexFactor> model, TIntIntMap evidence, SeparateDefaultAlgebra rounding, long maxTime, long maxMem) {
 		this(model, evidence);
 		this.algebra = rounding;
 		this.maxSize = maxMem;
@@ -80,7 +82,7 @@ public class SePolyController extends SearchOperation {
 
 		// estimate memory usage
 		long size = 1;
-		for (double[][] vals : vf.getInternalData()) {
+		for (double[][] vals : vf.getData()) {
 			size *= vals.length;
 		}
 		size *= vf.getSeparatingDomain().getCombinations() * vf.getDataDomain().getCombinations() * 8L /* bytes per double */;
@@ -90,8 +92,7 @@ public class SePolyController extends SearchOperation {
 			throw new MaxMemoryException(node, size);
 		}
 
-
-		// XXX this will explode if we have many parents
+		// TODO this will explode if we have many parents
 		// we should iterate over the vertices
 		vf = vf.reseparate(Strides.empty());
 
@@ -103,16 +104,16 @@ public class SePolyController extends SearchOperation {
 
 		ArrayList<Collection<double[]>> vertices = new ArrayList<>();
 		vertices.add(Arrays.asList(vf.getVertices()));
-		BayesianFactor first = new BayesianFactor(vf.getDomain(), false);
+
+		Strides domain = vf.getDomain();
+		Strides first = domain;
 
 		List<VertexFactor> factors = queue.get(node);
-		List<BayesianFactor> bayesianFactors = new ArrayList<>(factors.size());
-		Strides domain = vf.getDomain();
+		List<Strides> factorDomains = new ArrayList<>(factors.size());
 
 		for (VertexFactor factor : factors) { // get the unified domain
 			// will set the data later
-			BayesianFactor bfactor = new BayesianFactor(factor.getDomain(), false);
-			bayesianFactors.add(bfactor);
+			factorDomains.add(factor.getDomain());
 
 			domain = domain.union(factor.getDomain());
 
@@ -157,10 +158,10 @@ public class SePolyController extends SearchOperation {
 		while (iterator.hasNext()) {
 			Collection<double[]> config = iterator.next();
 			Iterator<double[]> data = config.iterator();
-			first.setData(data.next());
-			BayesianFactor current = first;
-			for (BayesianFactor other : bayesianFactors) {
-				other.setData(data.next());
+
+			BayesianFactor current = new BayesianDefaultFactor(first, data.next());
+			for (Strides otherDomain : factorDomains) {
+				BayesianFactor other = new BayesianDefaultFactor(otherDomain, data.next());
 				current = current.combine(other);
 			}
 
@@ -190,7 +191,7 @@ public class SePolyController extends SearchOperation {
 		// with a single factor in the domain and we will be allowed to
 		// convexify as well
 
-		vf = new VertexFactor(domain, Strides.empty(), new double[][][]{chull});
+		vf = new VertexDefaultFactor(domain, Strides.empty(), new double[][][]{chull});
 
 		// push the factor in from's queue
 		queue.get(from).add(vf);

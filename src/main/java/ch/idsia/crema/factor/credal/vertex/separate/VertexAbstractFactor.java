@@ -335,6 +335,7 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 		return builder.get(getDataDomain(), getSeparatingDomain(), data);
 	}
 
+	@Override
 	public BayesianFactor sample() {
 		int left_comb = getSeparatingDomain().getCombinations();
 
