@@ -45,26 +45,66 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		}
 	};
 
+	/**
+	 * This assumes that the data are ordered by the given domain and <u>not</u> in log-space.
+	 *
+	 * @param domain data domain
+	 * @param data   ordered by the given domain
+	 */
 	public BayesianLogFactor(Domain domain, double[] data) {
-		super(domain, data);
+		super(domain, ArraysUtil.log(data));
 	}
 
-	public BayesianLogFactor(Strides stride, int[] dataDomain, double[] data) {
-		super(stride, dataDomain, data);
-	}
-
-	public BayesianLogFactor(int[] domain, int[] sizes, double[] data) {
-		super(domain, sizes, data);
-	}
-
+	/**
+	 * This assumes that the data are ordered by the given stride and <u>not</u> in log-space.
+	 *
+	 * @param stride data domain
+	 * @param data   ordered by the given stride
+	 */
 	public BayesianLogFactor(Strides stride, double[] data) {
-		super(stride, data);
+		super(stride, ArraysUtil.log(data));
 	}
 
+	/**
+	 * This assumes that the data are ordered with the same order of the variables in the given domain and <u>not</u> in log-space.
+	 *
+	 * @param domain variables that compose the domain
+	 * @param sizes  size of each variable
+	 * @param data   ordered by the given domain
+	 */
+	public BayesianLogFactor(int[] domain, int[] sizes, double[] data) {
+		super(domain, sizes, ArraysUtil.log(data));
+	}
+
+	/**
+	 * This assumes that the data are ordered with the same order of the variables in the given dataDomain and <u>not</u> in log-space.
+	 *
+	 * @param stride     stride of this factor
+	 * @param dataDomain order of the variables in the data
+	 * @param data       ordered by the given dataDomain
+	 */
+	public BayesianLogFactor(Strides stride, int[] dataDomain, double[] data) {
+		super(stride, dataDomain, ArraysUtil.log(data));
+	}
+
+	/**
+	 * This creates a new factor with the same domain and the data of the given factor. Data are copied using the
+	 * {@link ArraysUtil#log(double[])} method, they will be in log-space, and they will follow the same domain of the
+	 * given factor.
+	 *
+	 * @param factor factor to construct this new factor from
+	 */
 	public BayesianLogFactor(BayesianDefaultFactor factor) {
 		super(factor.domain, ArraysUtil.log(factor.data));
 	}
 
+	/**
+	 * This creates a new factor with the same domain and the data of the given factor. Data are recovered using the
+	 * {@link #getLogValueAt(int)} method, they will not be in log-space, and they will follow the same domain of the
+	 * given factor.
+	 *
+	 * @param factor factor to construct this new factor from
+	 */
 	public BayesianLogFactor(BayesianFactor factor) {
 		super(factor.getDomain(), new double[factor.getDomain().getCombinations()]);
 

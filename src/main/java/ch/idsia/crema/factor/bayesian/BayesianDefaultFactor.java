@@ -102,7 +102,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	 * {@link #getValueAt(int)} method, they will not be in log-space, and they will follow the same domain of the given
 	 * factor.
 	 *
-	 * @param factor factor to construct the new factor from from
+	 * @param factor factor to construct the new factor from
 	 */
 	public BayesianDefaultFactor(BayesianFactor factor) {
 		super(factor.getDomain());

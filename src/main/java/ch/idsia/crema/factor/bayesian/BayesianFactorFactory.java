@@ -11,8 +11,6 @@ import ch.idsia.crema.core.Strides;
 public class BayesianFactorFactory {
 	private double[] data = null;
 
-	private boolean log = false;
-
 	private Strides domain = Strides.empty();
 
 	private BayesianFactorFactory() {
@@ -22,19 +20,14 @@ public class BayesianFactorFactory {
 		return new BayesianFactorFactory();
 	}
 
-	public BayesianFactorFactory log() {
-		log = true;
-		return this;
-	}
-
 	public BayesianFactorFactory domain(Domain domain) {
 		this.domain = Strides.fromDomain(domain);
-		return this;
+		return data();
 	}
 
 	public BayesianFactorFactory domain(int[] domain, int[] sizes) {
 		this.domain = new Strides(domain, sizes);
-		return this;
+		return data();
 	}
 
 	public BayesianFactorFactory data() {
@@ -51,12 +44,22 @@ public class BayesianFactorFactory {
 		return this;
 	}
 
-	public BayesianFactor build() {
-		if (log) {
-			return new BayesianLogFactor(domain, data);
-		} else {
-			return new BayesianDefaultFactor(domain, data);
-		}
+	public BayesianFactorFactory value(double value, int... states) {
+		data[domain.getOffset(states)] = value;
+		return this;
+	}
+
+	public BayesianFactorFactory valueAt(double d, int index) {
+		data[index] = d;
+		return this;
+	}
+
+	public BayesianLogFactor log() {
+		return new BayesianLogFactor(domain, data);
+	}
+
+	public BayesianDefaultFactor get() {
+		return new BayesianDefaultFactor(domain, data);
 	}
 
 }
