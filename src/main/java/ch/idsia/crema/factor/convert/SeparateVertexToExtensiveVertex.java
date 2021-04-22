@@ -3,9 +3,9 @@ package ch.idsia.crema.factor.convert;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
-import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
-import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactorFactory;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexFactor;
+import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexFactorFactory;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 
 import java.util.ArrayList;
 import java.util.List;

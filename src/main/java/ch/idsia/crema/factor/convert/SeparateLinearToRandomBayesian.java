@@ -5,7 +5,7 @@ import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.SolverFactory;
 import ch.idsia.crema.utility.ArraysUtil;

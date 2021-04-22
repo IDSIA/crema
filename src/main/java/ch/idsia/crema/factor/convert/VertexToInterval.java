@@ -1,9 +1,10 @@
 package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.factor.Converter;
-import ch.idsia.crema.factor.credal.linear.IntervalDefaultFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalDefaultFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
 
@@ -30,8 +31,8 @@ public class VertexToInterval implements Converter<VertexFactor, IntervalFactor>
 
 		for (int i = 0; i < separate_size; ++i) {
 			double[][] vertices = s.getVerticesAt(i);
-			double[] lower = lowers[i] = lower_template.clone();
-			double[] upper = uppers[i] = upper_template.clone();
+			double[] lower = lowers[i] = ArrayUtils.clone(lower_template);
+			double[] upper = uppers[i] = ArrayUtils.clone(upper_template);
 
 			for (double[] vertex : vertices) {
 				for (int coord = 0; coord < dimensions; ++coord) {

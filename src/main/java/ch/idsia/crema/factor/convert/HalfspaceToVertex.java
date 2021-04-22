@@ -1,10 +1,10 @@
 package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.factor.Converter;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.set.HCredalSet;
-import ch.idsia.crema.factor.credal.vertex.VertexDefaultFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.javasoft.polco.adapter.Options;
 import ch.javasoft.polco.adapter.PolcoAdapter;
 import ch.javasoft.xml.config.XmlConfigException;

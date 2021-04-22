@@ -2,7 +2,7 @@ package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 
 public class BayesianToInterval implements Converter<BayesianFactor, IntervalFactor> {
 	public static final BayesianToInterval INSTANCE = new BayesianToInterval();
