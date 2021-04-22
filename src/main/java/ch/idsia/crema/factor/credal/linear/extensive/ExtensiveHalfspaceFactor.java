@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.credal.linear;
+package ch.idsia.crema.factor.credal.linear.extensive;
 
 import ch.idsia.crema.core.Strides;
 import org.apache.commons.math3.optim.PointValuePair;

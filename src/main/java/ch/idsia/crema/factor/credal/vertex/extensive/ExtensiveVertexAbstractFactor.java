@@ -1,8 +1,8 @@
-package ch.idsia.crema.factor.credal.vertex;
+package ch.idsia.crema.factor.credal.vertex.extensive;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.operations.vertex.Collector;
-import ch.idsia.crema.factor.operations.vertex.LogVertexOperation;
+import ch.idsia.crema.factor.algebra.collectors.Collector;
+import ch.idsia.crema.factor.algebra.vertex.VertexOperation;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
@@ -13,10 +13,16 @@ public abstract class ExtensiveVertexAbstractFactor implements ExtensiveVertexFa
 
 	protected Strides domain;
 
-	public ExtensiveVertexAbstractFactor(Strides domain) {
+	/**
+	 * @param domain the domain of this new factor
+	 */
+	ExtensiveVertexAbstractFactor(Strides domain) {
 		this.domain = domain;
 	}
 
+	/**
+	 * @return the domain associated with this factor
+	 */
 	@Override
 	public Strides getDomain() {
 		return domain;
@@ -88,21 +94,29 @@ public abstract class ExtensiveVertexAbstractFactor implements ExtensiveVertexFa
 	}
 	*/
 
+	/**
+	 * @param factor  factor to combine with
+	 * @param builder output factor constructor
+	 * @param ops     {@link VertexOperation} to use
+	 * @param <T>     returned type
+	 * @return a new factor, combination of this with the given one
+	 */
 	protected <T extends ExtensiveVertexAbstractFactor> T combine(
 			ExtensiveVertexFactor factor,
-			ExtensiveVertexFactorBuilder<T> builder
+			ExtensiveVertexFactorBuilder<T> builder,
+			VertexOperation ops
 	) {
-		final Strides target = domain.union(factor.getDomain());
+		final Strides target = this.getDomain().union(factor.getDomain());
 		final int length = target.getSize();
 
 		final int[] limits = new int[length];
 		final long[] stride = new long[length];
 		final long[] reset = new long[length];
 
-		for (int vindex = 0; vindex < domain.getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), domain.getVariables()[vindex]);
+		for (int vindex = 0; vindex < this.getDomain().getSize(); ++vindex) {
+			int offset = Arrays.binarySearch(target.getVariables(), this.getDomain().getVariables()[vindex]);
 			if (offset >= 0) {
-				stride[offset] = domain.getStrides()[vindex];
+				stride[offset] = this.getDomain().getStrides()[vindex];
 			}
 		}
 
@@ -124,34 +138,39 @@ public abstract class ExtensiveVertexAbstractFactor implements ExtensiveVertexFa
 		final int table_size = target.getCombinations();
 
 		List<double[]> vertices = new ArrayList<>();
-		LogVertexOperation ops = new LogVertexOperation();
+
 		for (int our_table = 0; our_table < our_tables; ++our_table) {
 			for (int his_table = 0; his_table < his_tables; ++his_table) {
-
-				final double[] result = new double[table_size];
 				final double[] our_data = getInternalVertices().get(our_table);
 				final double[] his_data = factor.getInternalVertices().get(his_table);
 
+				final double[] result = ops.combine(our_data, his_data, table_size, stride, reset, limits);
 				vertices.add(result);
-				ops.combine(our_data, his_data, table_size, stride, reset, limits);
 			}
 		}
 
 		return builder.get(target, vertices);
 	}
 
+	/**
+	 * @param offset    offset to collect
+	 * @param collector {@link Collector} operation to use
+	 * @param builder   output factor constructor
+	 * @param <T>       returned type
+	 * @return a new factor, result of the collection operation used
+	 */
 	protected <T extends ExtensiveVertexAbstractFactor> T collect(
 			final int offset,
 			final Collector collector,
 			ExtensiveVertexFactorBuilder<T> builder
 	) {
-		final int stride = domain.getStrideAt(offset);
-		final int size = domain.getSizeAt(offset);
+		final int stride = getDomain().getStrideAt(offset);
+		final int size = getDomain().getSizeAt(offset);
 		final int reset = size * stride;
 
-		final Strides target_domain = domain.removeAt(offset); //new Strides(domain, offset);
+		final Strides target_domain = getDomain().removeAt(offset); // new Strides(domain, offset);
 
-		final List<double[]> result = new ArrayList<>();
+		final List<double[]> vertices = new ArrayList<>();
 
 		for (double[] vertex : getInternalVertices()) {
 			int source = 0;
@@ -169,10 +188,10 @@ public abstract class ExtensiveVertexAbstractFactor implements ExtensiveVertexFa
 				newData[target] = collector.collect(vertex, source);
 			}
 
-			result.add(newData);
+			vertices.add(newData);
 		}
 
-		return builder.get(target_domain, result);
+		return builder.get(target_domain, vertices);
 	}
 
 	@Override

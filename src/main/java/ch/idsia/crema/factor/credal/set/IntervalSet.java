@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.credal.set;
 
 import ch.idsia.crema.core.Strides;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class IntervalSet extends AbstractSet {
 	private double[] lowers;
@@ -83,8 +84,8 @@ public class IntervalSet extends AbstractSet {
 	@Override
 	public IntervalSet copy() {
 		IntervalSet set = new IntervalSet(getDomain());
-		if (lowers != null) set.lowers = lowers.clone();
-		if (uppers != null) set.uppers = uppers.clone();
+		if (lowers != null) set.lowers = ArrayUtils.clone(lowers);
+		if (uppers != null) set.uppers = ArrayUtils.clone(uppers);
 		return set;
 	}
 

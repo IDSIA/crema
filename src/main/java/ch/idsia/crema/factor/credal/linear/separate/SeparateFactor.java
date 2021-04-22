@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.credal.linear;
+package ch.idsia.crema.factor.credal.linear.separate;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;

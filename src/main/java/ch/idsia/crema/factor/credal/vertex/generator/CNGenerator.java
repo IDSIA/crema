@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.credal.vertex.generator;
 
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.RandomUtil;
 import ch.javasoft.polco.adapter.Options;
 import ch.javasoft.polco.adapter.PolcoAdapter;
 import ch.javasoft.xml.config.XmlConfigException;
@@ -9,14 +10,15 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.logging.Level;
 
+// TODO: this class should NOT be in a factor package
 public class CNGenerator {
-	static Random random = new Random(0);
+	static Random random = RandomUtil.getRandom();
 
 	public static double[] randomMassFunction(int dimension) {
 		double[] p = new double[dimension];
 		double sum = 0.0;
 		for (int j = 0; j < dimension; j++) {
-			p[j] = random.nextDouble();//Math.random();
+			p[j] = random.nextDouble();
 			sum += p[j];
 		}
 		for (int j = 0; j < dimension; j++) {

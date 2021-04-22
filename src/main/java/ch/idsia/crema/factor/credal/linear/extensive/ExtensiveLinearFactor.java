@@ -1,5 +1,6 @@
-package ch.idsia.crema.factor.credal.linear;
+package ch.idsia.crema.factor.credal.linear.extensive;
 
+import ch.idsia.crema.factor.credal.linear.LinearFactor;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
 /**

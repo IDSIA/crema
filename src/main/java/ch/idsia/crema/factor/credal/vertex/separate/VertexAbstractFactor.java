@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.credal.vertex;
+package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
@@ -7,6 +7,7 @@ import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import ch.idsia.crema.utility.SeparateIndexIterator;
 import com.google.common.primitives.Doubles;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Arrays;
@@ -302,7 +303,7 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 	protected <F extends VertexAbstractFactor> F normalize(VertexFactorBuilder<F> builder, int... given) {
 		double[][][] newdata = new double[size()][][];
 		for (int i = 0; i < size(); ++i) {
-			newdata[i] = getVerticesAt(i).clone(); // TODO: newdata[i] = data[i].clone()
+			newdata[i] = ArrayUtils.clone(getVerticesAt(i)); // TODO: newdata[i] = data[i].clone()
 			for (int v = 0; v < newdata[i].length; ++v) {
 				double sum = Arrays.stream(getVerticesAt(i)[v]).sum(); // TODO: double sum = Arrays.stream(data[i][v]).sum();
 				newdata[i][v] = Arrays.stream(getVerticesAt(i)[v]).map(x -> x / sum).toArray(); // TODO: newdata[i][v] = Arrays.stream(data[i][v]).map(x -> x / sum).toArray();

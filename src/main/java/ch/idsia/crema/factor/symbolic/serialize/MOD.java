@@ -1,37 +1,20 @@
 package ch.idsia.crema.factor.symbolic.serialize;
 
-import java.lang.annotation.Target;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.stream.IntStream;
-
-import javax.management.relation.Relation;
-
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.LinearConstraintSet;
-import org.apache.commons.math3.optim.linear.Relationship;
-
-import ch.idsia.crema.core.Instantiation;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.factor.credal.linear.LinearFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.factor.symbolic.CombinedFactor;
-import ch.idsia.crema.factor.symbolic.DividedFactor;
-import ch.idsia.crema.factor.symbolic.FilteredFactor;
-import ch.idsia.crema.factor.symbolic.MarginalizedFactor;
-import ch.idsia.crema.factor.symbolic.PriorFactor;
-import ch.idsia.crema.factor.symbolic.SymbolicFactor;
-import ch.idsia.crema.model.Model;
+import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.symbolic.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.Relationship;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 public class MOD implements SolverSerializer {
 

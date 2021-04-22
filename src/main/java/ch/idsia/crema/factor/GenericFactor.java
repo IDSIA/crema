@@ -19,4 +19,8 @@ public interface GenericFactor {
 	 */
 	Strides getDomain();
 
+	default boolean isLog() {
+		return this.getClass().isAnnotationPresent(LogSpace.class);
+	}
+
 }

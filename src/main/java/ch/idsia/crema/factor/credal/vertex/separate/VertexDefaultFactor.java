@@ -1,13 +1,14 @@
-package ch.idsia.crema.factor.credal.vertex;
+package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.hull.LPConvexHull;
 import com.google.common.primitives.Doubles;
 import gnu.trove.list.TIntList;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
 
@@ -81,7 +82,7 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 			ones[i] = 0.;
 
 		for (int i = 0; i < vertexDomain.getCombinations(); i++) {
-			double[] c = zeros.clone();
+			double[] c = ArrayUtils.clone(zeros);
 			c[i] = 1.;
 			k_const.addConstraint(c, Relationship.GEQ, 0);
 		}
@@ -131,7 +132,7 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 		return data.length;
 	}
 
-	private void addVertex(double[] vertex, int... groupStates) {
+	protected void addVertex(double[] vertex, int... groupStates) {
 		int offset = separatedDomain.getOffset(groupStates);
 		double[][] gdata = data[offset];
 

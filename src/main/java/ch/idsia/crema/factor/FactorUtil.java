@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.factor.operations.Operation;
+import ch.idsia.crema.factor.algebra.Operation;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.Collection;
@@ -13,12 +13,13 @@ import java.util.Iterator;
  * @author david
  */
 public class FactorUtil {
+
 	/**
-	 * @param f factor to normalize
+	 * @param f    factor to normalize
 	 * @param over set of variables to keep
 	 * @return a normalized {@link GenericFactor} over a set of its variable (may be empty)
 	 */
-	public static <F extends GenericFactor> F normalize(Operation<F> op, F f, int... over) {
+	public static <F extends OperableFactor<F>> F normalize(Operation<F> op, F f, int... over) {
 		F div = marginal(op, f, over);
 		return op.divide(f, div);
 	}
@@ -91,7 +92,7 @@ public class FactorUtil {
 	/**
 	 * Combine a collection of factors using a custom operator
 	 */
-	public static <F extends GenericFactor> F combine(Operation<F> op, Collection<F> factors) {
+	public static <F extends OperableFactor<F>> F combine(Operation<F> op, Collection<F> factors) {
 		Iterator<F> iterator = factors.iterator();
 		F first = iterator.next();
 		while (iterator.hasNext()) {
@@ -105,7 +106,7 @@ public class FactorUtil {
 	 * Combine a factor with an array of factors using an operation set.
 	 */
 	@SafeVarargs
-	public static <F extends GenericFactor> F combine(Operation<F> op, F first, F... others) {
+	public static <F extends OperableFactor<F>> F combine(Operation<F> op, F first, F... others) {
 		for (F other : others) {
 			first = op.combine(first, other);
 		}
@@ -118,7 +119,7 @@ public class FactorUtil {
 	 * @throws IndexOutOfBoundsException if factors is empty
 	 */
 	@SafeVarargs
-	public static <F extends GenericFactor> F combine(Operation<F> op, F... factors) {
+	public static <F extends OperableFactor<F>> F combine(Operation<F> op, F... factors) {
 		F first = factors[0];
 		for (int i = 1; i < factors.length; ++i) {
 			first = op.combine(first, factors[i]);
@@ -152,7 +153,7 @@ public class FactorUtil {
 	 * return the marginal of a factors. Note this is a marginalization of all
 	 * but the "over" variables
 	 */
-	public static <F extends GenericFactor> F marginal(Operation<F> op, F factor, int... over) {
+	public static <F extends OperableFactor<F>> F marginal(Operation<F> op, F factor, int... over) {
 		for (int var : ArraysUtil.removeAllFromSortedArray(factor.getDomain().getVariables(), over)) {
 			factor = op.marginalize(factor, var);
 		}
@@ -162,7 +163,7 @@ public class FactorUtil {
 	/**
 	 * marginalize multiple variables out of a factor
 	 */
-	public static <F extends GenericFactor> F marginalize(Operation<F> op, F factor, int... vars) {
+	public static <F extends OperableFactor<F>> F marginalize(Operation<F> op, F factor, int... vars) {
 		for (int var : vars) {
 			factor = op.marginalize(factor, var);
 		}

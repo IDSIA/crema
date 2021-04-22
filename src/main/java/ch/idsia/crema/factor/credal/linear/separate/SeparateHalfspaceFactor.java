@@ -1,9 +1,10 @@
-package ch.idsia.crema.factor.credal.linear;
+package ch.idsia.crema.factor.credal.linear.separate;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Ints;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 
@@ -107,7 +108,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		if (nonnegative) {
 			double[] zeros = new double[left_combinations];
 			for (int i = 0; i < left_combinations; i++) {
-				double[] c = zeros.clone();
+				double[] c = ArrayUtils.clone(zeros);
 				c[i] = 1.;
 				C.add(new LinearConstraint(c, Relationship.GEQ, 0));
 			}

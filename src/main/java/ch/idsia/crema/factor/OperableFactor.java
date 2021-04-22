@@ -1,12 +1,11 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.factor.operations.Operable;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.Collection;
 
 @SuppressWarnings("unchecked")
-public interface OperableFactor<F extends OperableFactor<F>> extends FilterableFactor<F>, Operable<F> {
+public interface OperableFactor<F extends OperableFactor<F>> extends FilterableFactor<F> {
 
 	/**
 	 * Combine this factor with the provided one and return the
@@ -15,7 +14,6 @@ public interface OperableFactor<F extends OperableFactor<F>> extends FilterableF
 	 * @param other other factor to combine with this one
 	 * @return a new factor combination of this with the given one
 	 */
-	@Override
 	F combine(F other);
 
 	/**
@@ -53,7 +51,6 @@ public interface OperableFactor<F extends OperableFactor<F>> extends FilterableF
 	 * @param variable variable to be marginalize out from this factor
 	 * @return a new factor without the given variable
 	 */
-	@Override
 	F marginalize(int variable);
 
 	/**
@@ -79,8 +76,12 @@ public interface OperableFactor<F extends OperableFactor<F>> extends FilterableF
 	 */
 	F divide(F factor);
 
+
 	/**
 	 * Factor normalization.
+	 *
+	 * @param given variables to not consider in the normalization
+	 * @return a new factor where the probabilities are normalized and they sum up to 1.0
 	 */
 	default F normalize(int... given) {
 		F div = (F) this;
@@ -89,5 +90,22 @@ public interface OperableFactor<F extends OperableFactor<F>> extends FilterableF
 		}
 		return divide(div);
 	}
+
+	/**
+	 * <p>
+	 * Filter the factor by selecting only the values where the specified
+	 * variable is in the specified state.
+	 * </p>
+	 *
+	 * <p>
+	 * Should return this if the variable is not part of the domain of the factor.
+	 * </p>
+	 *
+	 * @param variable variable to filter
+	 * @param state    state of the variable to filter
+	 * @return a new factor where the given variable in the given state has been filtered out
+	 */
+	@Override
+	F filter(int variable, int state);
 
 }

@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.credal.vertex;
+package ch.idsia.crema.factor.credal.vertex.extensive;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;

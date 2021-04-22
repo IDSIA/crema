@@ -1,7 +1,8 @@
-package ch.idsia.crema.factor.credal.linear;
+package ch.idsia.crema.factor.credal.linear.separate;
 
 
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
+import ch.idsia.crema.factor.credal.linear.LinearFactor;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 
 public interface SeparateLinearFactor<F extends SeparateLinearFactor<F>> extends SeparatelySpecified<F>, LinearFactor {

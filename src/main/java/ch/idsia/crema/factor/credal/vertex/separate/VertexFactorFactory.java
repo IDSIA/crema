@@ -1,7 +1,7 @@
-package ch.idsia.crema.factor.credal.vertex;
+package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import gnu.trove.list.TIntList;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;

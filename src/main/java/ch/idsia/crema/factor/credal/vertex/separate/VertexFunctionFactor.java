@@ -1,4 +1,4 @@
-package ch.idsia.crema.factor.credal.vertex;
+package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
 import org.apache.commons.lang3.NotImplementedException;
