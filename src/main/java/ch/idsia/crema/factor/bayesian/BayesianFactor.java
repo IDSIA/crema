@@ -21,15 +21,19 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 	@Override
 	Strides getSeparatingDomain();
 
+	/**
+	 * @param states specified in the order of the factor's domain
+	 * @return the value associated to the given states
+	 */
 	double getValue(int... states);
 
 	double getValueAt(int index);
 
+	double getLogValue(int... states);
+
+	double getLogValueAt(int index);
+
 	double[] getData();
-
-	BayesianFactor reorderDomain(Strides newStrides);
-
-	BayesianFactor reorderDomain(int...vars);
 
 	@Override
 	BayesianFactor copy();
@@ -51,12 +55,16 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 
 	BayesianFactor replaceNaN(double replacement);
 
+	BayesianFactor scale(double k);
+
+	BayesianFactor reorderDomain(Strides newStrides);
+
+	BayesianFactor reorderDomain(int... vars);
+
 	void sortDomain();
 
 	BayesianFactor addition(BayesianFactor factor);
 
 	double logProb(TIntIntMap[] data, int leftVar);
-
-	void replaceInplace(double value, double replacement);
 
 }

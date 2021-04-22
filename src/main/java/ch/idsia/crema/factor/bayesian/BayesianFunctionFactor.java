@@ -3,6 +3,7 @@ package ch.idsia.crema.factor.bayesian;
 import ch.idsia.crema.core.Strides;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.math3.util.FastMath;
 
 import java.util.function.Function;
 
@@ -29,6 +30,11 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 	@Override
 	public double getValueAt(int index) {
 		return f.apply(index);
+	}
+
+	@Override
+	public double getLogValueAt(int index) {
+		return FastMath.log(f.apply(index));
 	}
 
 	@Override
@@ -62,13 +68,18 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 	}
 
 	@Override
+	public BayesianFactor scale(double k) {
+		return null;
+	}
+
+	@Override
 	public void sortDomain() {
 		// TODO
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public BayesianFactor addition(BayesianFactor factor) {
+	public BayesianFunctionFactor addition(BayesianFactor factor) {
 		// TODO
 		throw new NotImplementedException();
 	}
@@ -80,13 +91,7 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 	}
 
 	@Override
-	public void replaceInplace(double value, double replacement) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFactor filter(int variable, int state) {
+	public BayesianFunctionFactor filter(int variable, int state) {
 		// TODO
 		throw new NotImplementedException();
 	}
@@ -98,13 +103,13 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 	}
 
 	@Override
-	public BayesianFactor marginalize(int variable) {
+	public BayesianFunctionFactor marginalize(int variable) {
 		// TODO
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public BayesianFactor divide(BayesianFactor factor) {
+	public BayesianFunctionFactor divide(BayesianFactor factor) {
 		// TODO
 		throw new NotImplementedException();
 	}

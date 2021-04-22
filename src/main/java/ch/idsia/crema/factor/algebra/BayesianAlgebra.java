@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 public class BayesianAlgebra implements Operation<BayesianFactor> {
 
-	protected BayesianFactor collect(final BayesianFactor factor, final int offset, final Collector collector) {
+	protected BayesianFactor collect(BayesianFactor factor, int offset, Collector collector) {
 		final Strides domain = factor.getDomain();
 
 		final int[] new_variables = new int[domain.getSize() - 1];
@@ -81,16 +81,16 @@ public class BayesianAlgebra implements Operation<BayesianFactor> {
 		final boolean oneIsLog = one.isLog();
 		final boolean twoIsLog = two.isLog();
 
-		final BayesianOperation ops;
+		final BayesianOperation<BayesianFactor> ops;
 
 		if (!oneIsLog && !twoIsLog) {
-			ops = new SimpleBayesianOperation();
+			ops = new SimpleBayesianOperation<>();
 		} else {
-			ops = new LogBayesianOperation();
+			ops = new LogBayesianOperation<>();
 
 			if (!oneIsLog)
 				one = new BayesianLogFactor((BayesianDefaultFactor) one);
-			if (!two.isLog())
+			if (!twoIsLog)
 				two = new BayesianLogFactor((BayesianDefaultFactor) two);
 		}
 
@@ -197,12 +197,12 @@ public class BayesianAlgebra implements Operation<BayesianFactor> {
 		final boolean oneIsLog = one.isLog();
 		final boolean twoIsLog = two.isLog();
 
-		final BayesianOperation ops;
+		final BayesianOperation<BayesianFactor> ops;
 
 		if (!oneIsLog && !twoIsLog) {
-			ops = new SimpleBayesianOperation();
+			ops = new SimpleBayesianOperation<>();
 		} else {
-			ops = new LogBayesianOperation();
+			ops = new LogBayesianOperation<>();
 
 			if (!oneIsLog)
 				one = new BayesianLogFactor((BayesianDefaultFactor) one);

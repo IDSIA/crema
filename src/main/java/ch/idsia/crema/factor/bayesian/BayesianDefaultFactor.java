@@ -3,9 +3,9 @@ package ch.idsia.crema.factor.bayesian;
 import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.operations.vertex.Collector;
-import ch.idsia.crema.factor.operations.vertex.Filter;
-import ch.idsia.crema.factor.operations.vertex.Marginal;
+import ch.idsia.crema.factor.algebra.bayesian.BayesianOperation;
+import ch.idsia.crema.factor.algebra.bayesian.SimpleBayesianFilter;
+import ch.idsia.crema.factor.algebra.bayesian.SimpleBayesianMarginal;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
@@ -13,11 +13,11 @@ import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.ToDoubleBiFunction;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -31,35 +31,95 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 
 	protected double[] data;
 
-	protected final ToDoubleBiFunction<BayesianFactor, Integer> direct = (f, i) -> ((BayesianDefaultFactor) f).data[i];
+	/**
+	 * This is an optimized algebra that uses direct access to internal data storage.
+	 */
+	private final BayesianOperation<BayesianDefaultFactor> ops = new BayesianOperation<>() {
+		@Override
+		public double add(BayesianDefaultFactor f1, int idx1, BayesianDefaultFactor f2, int idx2) {
+			return f1.data[idx1] + f2.data[idx2];
+		}
 
+		@Override
+		public double combine(BayesianDefaultFactor f1, int idx1, BayesianDefaultFactor f2, int idx2) {
+			return f1.data[idx1] * f2.data[idx2];
+		}
+
+		@Override
+		public double divide(BayesianDefaultFactor f1, int idx1, BayesianDefaultFactor f2, int idx2) {
+			return f1.data[idx1] / f2.data[idx2];
+		}
+	};
+
+	/**
+	 * This assumes that the data are ordered by the given domain.
+	 *
+	 * @param domain data domain
+	 * @param data   ordered by the given domain
+	 */
 	public BayesianDefaultFactor(Domain domain, double[] data) {
 		super(domain);
-		setData(data);
+		this.data = data;
 	}
 
+	/**
+	 * This assumes that the data are ordered by the given stride.
+	 *
+	 * @param stride data stride
+	 * @param data   ordered by the given stride
+	 */
 	public BayesianDefaultFactor(Strides stride, double[] data) {
 		super(stride);
-		setData(data);
+		this.data = data;
 	}
 
+	/**
+	 * This assumes that the data are ordered with the same order of the variables in the given domain.
+	 *
+	 * @param domain variables that compose the domain
+	 * @param sizes  size of each variable
+	 * @param data   ordered by the given domain
+	 */
+	public BayesianDefaultFactor(int[] domain, int[] sizes, double[] data) {
+		super(new Strides(domain, sizes));
+		this.data = data;
+	}
+
+	/**
+	 * This assumes that the data are ordered with the same order of the variables in the given dataDomain parameter.
+	 *
+	 * @param stride     stride of this factor
+	 * @param dataDomain order of the variables in the data
+	 * @param data       ordered by the given dataDomain
+	 */
 	public BayesianDefaultFactor(Strides stride, int[] dataDomain, double[] data) {
 		super(stride);
 		setData(dataDomain, data);
 	}
 
-	public BayesianDefaultFactor(int[] domain, int[] sizes, double[] data) {
-		super(new Strides(domain, sizes));
-		setData(data);
+	/**
+	 * This creates a new factor with the same domain and the data of the given factor. Data are recovered using the
+	 * {@link #getValueAt(int)} method, they will not be in log-space, and they will follow the same domain of the given
+	 * factor.
+	 *
+	 * @param factor factor to construct the new factor from from
+	 */
+	public BayesianDefaultFactor(BayesianFactor factor) {
+		super(factor.getDomain());
+		data = new double[factor.getDomain().getCombinations()];
+
+		for (int i = 0; i < data.length; i++) {
+			data[i] = factor.getValueAt(i);
+		}
 	}
 
 	/**
-	 * Factors are only mutable in their data. The domain should not change in
-	 * time. We can therefore use the original domain.
+	 * @return a new {@link BayesianDefaultFactor} copy of this factor
 	 */
 	@Override
 	public BayesianDefaultFactor copy() {
-		return new BayesianDefaultFactor(domain, data);
+		// Factors are only mutable in their data. The domain should not change in time. We can therefore use the original domain.
+		return new BayesianDefaultFactor(domain, ArrayUtils.clone(data));
 	}
 
 	/**
@@ -86,31 +146,22 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		final int combinations = this.domain.getCombinations();
 		IndexIterator iterator = new IndexIterator(strides, sizes, 0, combinations);
 
-		double[] target = data.clone();
+		this.data = new double[data.length];
 
 		for (int index = 0; index < combinations; ++index) {
 			int other_index = iterator.next();
-			target[other_index] = data[index];
+			this.data[other_index] = data[index];
 		}
-
-		setData(target);
-	}
-
-	protected void setData(double[] data) {
-		this.data = data;
-	}
-
-	public void setValue(double value, int... states) {
-		setValueAt(value, domain.getOffset(states));
-	}
-
-	public void setValueAt(double value, int index) {
-		data[index] = value;
 	}
 
 	@Override
 	public double getValueAt(int index) {
 		return data[index];
+	}
+
+	@Override
+	public double getLogValueAt(int index) {
+		return FastMath.log(getValue(index));
 	}
 
 	/**
@@ -160,14 +211,15 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 			return BayesianDefaultFactor.this.getValue(states);
 		}
 
-		public void set(double v) {
-			BayesianDefaultFactor.this.setValue(v, states);
-		}
+		// TODO: factors are immutable, maybe use the ch.idsia.crema.factor.bayesian.BayesianFactorFactory?
+//		public void set(double v) {
+//			BayesianDefaultFactor.this.setValue(v, states);
+//		}
 
-		public void add(double v) {
-			double x = BayesianDefaultFactor.this.getValue(states);
-			BayesianDefaultFactor.this.setValue(x + v, states);
-		}
+//		public void add(double v) {
+//			double x = BayesianDefaultFactor.this.getValue(states);
+//			BayesianDefaultFactor.this.setValue(x + v, states);
+//		}
 	}
 
 	public Helper p(int var, int state) {
@@ -200,16 +252,18 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	}
 
 	/**
-	 * Reduce the domain by removing a variable and selecting the specified
-	 * state.
+	 * Reduce the domain by removing a variable and selecting the specified state.
 	 *
 	 * @param variable the variable to be filtered out
 	 * @param state    the state to be selected
+	 * @return a new {@link BayesianDefaultFactor}
 	 */
 	@Override
 	public BayesianDefaultFactor filter(int variable, int state) {
-		int offset = domain.indexOf(variable);
-		return collect(offset, new Filter(domain.getStrideAt(offset), state), BayesianDefaultFactor::new);
+		final int offset = domain.indexOf(variable);
+		final int stride = domain.getStrideAt(offset);
+
+		return collect(offset, BayesianDefaultFactor::new, new SimpleBayesianFilter(stride, state));
 	}
 
 	/**
@@ -225,46 +279,17 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	 * </p>
 	 *
 	 * @param variable the variable to be summed out of the CPT
-	 * @return the new CPT with the variable marginalized out.
+	 * @return a new {@link BayesianDefaultFactor} with the variable marginalized out.
 	 */
 	@Override
 	public BayesianDefaultFactor marginalize(int variable) {
 		int offset = domain.indexOf(variable);
 		if (offset == -1) return this;
-		return collect(offset, new Marginal(domain.getSizeAt(offset), domain.getStrideAt(offset)), BayesianDefaultFactor::new);
-	}
 
-	protected <F extends BayesianDefaultFactor> F collect(final int offset, final Collector collector, BayesianFactorBuilder<F> builder) {
-		final int[] new_variables = new int[domain.getSize() - 1];
-		final int[] new_sizes = new int[domain.getSize() - 1];
-
-		System.arraycopy(domain.getVariables(), 0, new_variables, 0, offset);
-		System.arraycopy(domain.getVariables(), offset + 1, new_variables, offset, new_variables.length - offset);
-
-		System.arraycopy(domain.getSizes(), 0, new_sizes, 0, offset);
-		System.arraycopy(domain.getSizes(), offset + 1, new_sizes, offset, new_variables.length - offset);
-
-		final int stride = domain.getStrideAt(offset);
 		final int size = domain.getSizeAt(offset);
-		final int reset = size * stride;
+		final int stride = domain.getStrideAt(offset);
 
-		int source = 0;
-		int next = stride;
-		int jump = stride * (size - 1);
-
-		Strides target_domain = new Strides(new_variables, new_sizes);
-		final double[] new_data = new double[target_domain.getCombinations()];
-
-		for (int target = 0; target < target_domain.getCombinations(); ++target, ++source) {
-			if (source == next) {
-				source += jump;
-				next += reset;
-			}
-
-			new_data[target] = collector.collect(data, source);
-		}
-
-		return builder.get(target_domain, new_data);
+		return collect(offset, BayesianDefaultFactor::new, new SimpleBayesianMarginal(size, stride));
 	}
 
 	/**
@@ -285,12 +310,35 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return new BayesianDefaultFactor(target, result);
 	}
 
+	/**
+	 * The specialized method that avoids the cast of the input variable.
+	 *
+	 * <p>
+	 * This implementation uses long values for strides, sizes and indices,
+	 * allowing for combined operations. Increasing the index is, for instance,
+	 * one single add instead of two. The values will contain in the Lower 32bit
+	 * this factor's values and in the upper 32 the parameter's ones. Given that
+	 * most architectures are 64 bit, this should give a tiny performance
+	 * improvement.
+	 * </p>
+	 *
+	 * <p>
+	 * If the input factor is also a {@link BayesianDefaultFactor}, a fast algebra i used. If the input is a
+	 * {@link BayesianLogFactor}, the factor will be first converted in the normal-space.
+	 * </p>
+	 *
+	 * @param factor input factor
+	 * @return a {@link BayesianDefaultFactor}, combination of the this with the other factor
+	 */
 	@Override
 	public BayesianDefaultFactor combine(BayesianFactor factor) {
-		if (factor instanceof BayesianDefaultFactor)
-			return combine(factor, BayesianDefaultFactor::new, direct, direct, (a, b) -> a * b);
+		if (factor.isLog())
+			factor = ((BayesianLogFactor) factor).exp();
 
-		return combine(factor, BayesianDefaultFactor::new, direct, BayesianFactor::getValueAt, (a, b) -> a * b);
+		if (factor instanceof BayesianDefaultFactor)
+			return combine((BayesianDefaultFactor) factor, BayesianDefaultFactor::new, ops::combine);
+
+		return (BayesianDefaultFactor) super.combine(factor);
 	}
 
 	/**
@@ -305,24 +353,43 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	 * improvement.
 	 * </p>
 	 *
-	 * @param factor
-	 * @return
+	 * <p>
+	 * If the input factor is also a {@link BayesianDefaultFactor}, a fast algebra i used. If the input is a
+	 * {@link BayesianLogFactor}, the factor will be first converted in the normal-space.
+	 * </p>
+	 *
+	 * @param factor input factor
+	 * @return a {@link BayesianDefaultFactor}, sum of the probabilities of this with the input factor
 	 */
 	@Override
 	public BayesianDefaultFactor addition(BayesianFactor factor) {
-		if (factor instanceof BayesianDefaultFactor)
-			return combine(factor, BayesianDefaultFactor::new, direct, direct, Double::sum);
+		if (factor.isLog())
+			factor = ((BayesianLogFactor) factor).exp();
 
-		return combine(factor, BayesianDefaultFactor::new, direct, BayesianFactor::getValueAt, Double::sum);
+		if (factor instanceof BayesianDefaultFactor)
+			return combine((BayesianDefaultFactor) factor, BayesianDefaultFactor::new, ops::add);
+
+		return (BayesianDefaultFactor) super.addition(factor);
 	}
 
-
+	/**
+	 * <p>
+	 * If the input factor is also a {@link BayesianDefaultFactor}, a fast algebra i used. If the input is a
+	 * {@link BayesianLogFactor}, the factor will be first converted in the normal-space.
+	 * </p>
+	 *
+	 * @param factor input factor
+	 * @return a {@link BayesianDefaultFactor}, division of this factor with the other one
+	 */
 	@Override
 	public BayesianDefaultFactor divide(BayesianFactor factor) {
-		if (factor instanceof BayesianDefaultFactor)
-			return combine(factor, BayesianDefaultFactor::new, direct, direct, (a, b) -> a / b);
+		if (factor.isLog())
+			factor = ((BayesianLogFactor) factor).exp();
 
-		return combine(factor, BayesianDefaultFactor::new, direct, BayesianFactor::getValueAt, (a, b) -> a / b);
+		if (factor instanceof BayesianDefaultFactor)
+			return combine((BayesianDefaultFactor) factor, BayesianDefaultFactor::new, ops::divide);
+
+		return (BayesianDefaultFactor) super.divide(factor);
 	}
 
 	@Override
@@ -341,7 +408,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return ArraysUtil.almostEquals(data, other.data, 0.00000001);
 	}
 
-
 	public double KLDivergence(BayesianDefaultFactor approx) {
 		IndexIterator it = approx.getDomain().getReorderedIterator(getDomain().getVariables());
 		double kl = 0;
@@ -355,6 +421,8 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return kl;
 	}
 
+	/*
+	TODO: analyse better this method and update it
 	public BayesianDefaultFactor fixPrecision(int num_decimals, int... left_vars) {
 		Strides left = getDomain().intersection(left_vars);
 		Strides right = getDomain().remove(left);
@@ -371,6 +439,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		newFactor.setData(Doubles.concat(newData));
 		return newFactor.reorderDomain(this.getDomain());
 	}
+	*/
 
 	public boolean isMarginalNormalized() {
 		if (getDomain().getVariables().length > 1)
@@ -405,6 +474,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 						IntStream.of(all_vars).map(v -> this.getDomain().getCardinality(v)).toArray()));
 	}
 
+	@Override
 	public void sortDomain() {
 		if (!ArrayUtils.isSorted(this.getDomain().getVariables())) {
 			BayesianDefaultFactor sorted = this.reorderDomain(this.getDomain().sort());
@@ -414,30 +484,42 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	}
 
 	public BayesianDefaultFactor renameDomain(int... new_vars) {
-		return new BayesianDefaultFactor(new Strides(new_vars, getDomain().getSizes()), data.clone());
-	}
-
-	@Override
-	public void replaceInplace(double value, double replacement) {
-		for (int i = 0; i < data.length; i++)
-			if (data[i] == value)
-				setValueAt(replacement, i);
+		return new BayesianDefaultFactor(new Strides(new_vars, getDomain().getSizes()), ArrayUtils.clone(data));
 	}
 
 	@Override
 	public BayesianDefaultFactor replace(double value, double replacement) {
-		BayesianDefaultFactor f = copy();
-		f.replaceInplace(value, replacement);
-		return f;
+		final double[] data = ArrayUtils.clone(this.data);
+
+		for (int i = 0; i < data.length; i++) {
+			if (data[i] == value)
+				data[i] = replacement;
+		}
+
+		return new BayesianDefaultFactor(domain, data);
 	}
 
 	@Override
 	public BayesianDefaultFactor replaceNaN(double replacement) {
-		BayesianDefaultFactor f = copy();
-		for (int i = 0; i < f.data.length; i++)
-			if (Double.isNaN(f.data[i]))
-				setValueAt(replacement, i);
-		return f;
+		final double[] data = ArrayUtils.clone(this.data);
+
+		for (int i = 0; i < data.length; i++) {
+			if (Double.isNaN(data[i]))
+				data[i] = replacement;
+		}
+
+		return new BayesianDefaultFactor(domain, data);
+	}
+
+	@Override
+	public BayesianDefaultFactor scale(double k) {
+		final double[] data = new double[this.data.length];
+
+		for (int i = 0; i < data.length; i++) {
+			data[i] = this.data[i] * k;
+		}
+
+		return new BayesianDefaultFactor(domain, data);
 	}
 
 	public boolean isDeterministic(int... given) {
@@ -451,6 +533,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 			f = f.marginalize(v);
 		}
 
+		// TODO: _all_ match?
 		return DoubleStream.of(f.data).allMatch(x -> x == 1.0);
 	}
 
@@ -481,38 +564,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 			probs = DoubleStream.of(probs).map(p -> p / sum).toArray();
 		}
 		return getDomain().observationOf(RandomUtil.sampleCategorical(probs));
-	}
-
-	public BayesianDefaultFactor scalarMultiply(double k) {
-		BayesianDefaultFactor f = copy();
-		for (int i = 0; i < f.data.length; i++) {
-			f.setValueAt(f.getValueAt(i) * k, i);
-		}
-		return f;
-	}
-
-	/**
-	 * Combine this factor with the provided one and return the
-	 * result as a new factor.
-	 *
-	 * @param factors
-	 * @return
-	 */
-	public static BayesianDefaultFactor combineAll(BayesianDefaultFactor... factors) {
-		if (factors.length < 1)
-			throw new IllegalArgumentException("wrong number of factors");
-		else if (factors.length == 1)
-			return factors[0].copy();
-
-		BayesianDefaultFactor out = factors[0];
-		for (int i = 1; i < factors.length; i++) {
-			out = out.combine(factors[i]);
-		}
-		return out;
-	}
-
-	public static BayesianDefaultFactor combineAll(Collection<BayesianDefaultFactor> factors) {
-		return combineAll(factors.toArray(BayesianDefaultFactor[]::new));
 	}
 
 	public BayesianDefaultFactor[] getMarginalFactors(int leftVar) {
@@ -569,6 +620,30 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		}
 
 		return logprob;
+	}
+
+	/**
+	 * Combine this factor with the provided one and return the
+	 * result as a new factor.
+	 *
+	 * @param factors
+	 * @return
+	 */
+	public static BayesianDefaultFactor combineAll(BayesianDefaultFactor... factors) {
+		if (factors.length < 1)
+			throw new IllegalArgumentException("wrong number of factors");
+		else if (factors.length == 1)
+			return factors[0].copy();
+
+		BayesianDefaultFactor out = factors[0];
+		for (int i = 1; i < factors.length; i++) {
+			out = out.combine(factors[i]);
+		}
+		return out;
+	}
+
+	public static BayesianDefaultFactor combineAll(Collection<BayesianDefaultFactor> factors) {
+		return combineAll(factors.toArray(BayesianDefaultFactor[]::new));
 	}
 
 }

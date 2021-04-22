@@ -2,27 +2,44 @@ package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.operations.vertex.Filter;
-import ch.idsia.crema.factor.operations.vertex.LogMarginal;
+import ch.idsia.crema.factor.LogSpace;
+import ch.idsia.crema.factor.algebra.OperationUtils;
+import ch.idsia.crema.factor.algebra.bayesian.BayesianOperation;
+import ch.idsia.crema.factor.algebra.bayesian.LogBayesianMarginal;
+import ch.idsia.crema.factor.algebra.bayesian.SimpleBayesianFilter;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
-import java.util.function.ToDoubleBiFunction;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: crema
  * Date:    15.04.2021 18:17
  */
+@LogSpace
 public class BayesianLogFactor extends BayesianDefaultFactor {
 
-	protected final ToDoubleBiFunction<BayesianFactor, Integer> direct = (f, i) -> ((BayesianLogFactor) f).data[i];
-	protected final ToDoubleBiFunction<Double, Double> addInLogSpace = (x, y) -> {
-		if (x > y)
-			return x + FastMath.log1p(FastMath.exp(y - x));
-		return y + FastMath.log1p(FastMath.exp(x - y));
+	/**
+	 * This is an optimized algebra that uses direct access to internal data storage.
+	 */
+	private final BayesianOperation<BayesianLogFactor> ops = new BayesianOperation<>() {
+		@Override
+		public double add(BayesianLogFactor f1, int idx1, BayesianLogFactor f2, int idx2) {
+			return OperationUtils.logSum(f1.data[idx1], f2.data[idx2]);
+		}
+
+		@Override
+		public double combine(BayesianLogFactor f1, int idx1, BayesianLogFactor f2, int idx2) {
+			return f1.data[idx1] + f2.data[idx2];
+		}
+
+		@Override
+		public double divide(BayesianLogFactor f1, int idx1, BayesianLogFactor f2, int idx2) {
+			return f1.data[idx1] - f2.data[idx2];
+		}
 	};
 
 	public BayesianLogFactor(Domain domain, double[] data) {
@@ -41,29 +58,21 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		super(stride, data);
 	}
 
-	@Override
-	public BayesianLogFactor copy() {
-		return new BayesianLogFactor(domain, data.clone());
+	public BayesianLogFactor(BayesianDefaultFactor factor) {
+		super(factor.domain, ArraysUtil.log(factor.data));
 	}
 
-	@Override
-	protected void setData(double[] data) {
-		for (int index = 0; index < data.length; ++index) {
-			setValueAt(data[index], index);
+	public BayesianLogFactor(BayesianFactor factor) {
+		super(factor.getDomain(), new double[factor.getDomain().getCombinations()]);
+
+		for (int i = 0; i < data.length; i++) {
+			data[i] = factor.getLogValueAt(i);
 		}
 	}
 
-	/**
-	 * @return an array in normal space, log is removed
-	 */
 	@Override
-	public double[] getData() {
-		return ArraysUtil.exp(this.data.clone());
-	}
-
-	@Override
-	public void setValueAt(double value, int index) {
-		data[index] = FastMath.log(value);
+	public BayesianLogFactor copy() {
+		return new BayesianLogFactor(domain, ArrayUtils.clone(data));
 	}
 
 	@Override
@@ -72,16 +81,66 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	}
 
 	@Override
-	public BayesianLogFactor filter(int variable, int state) {
-		int offset = domain.indexOf(variable);
-		return collect(offset, new Filter(domain.getStrideAt(offset), state), BayesianLogFactor::new);
+	public double getLogValueAt(int index) {
+		return data[index];
 	}
 
+	/**
+	 * @return an array in normal space, log is removed
+	 */
+	@Override
+	public double[] getData() {
+		return ArraysUtil.exp(ArrayUtils.clone(this.data));
+	}
+
+	/**
+	 * Converts this factor in a {@link BayesianDefaultFactor}, same data but not in log-space.
+	 *
+	 * @return this same factor but not in log-space
+	 */
+	public BayesianDefaultFactor exp() {
+		return new BayesianDefaultFactor(domain, ArraysUtil.exp(data));
+	}
+
+	/**
+	 * Reduce the domain by removing a variable and selecting the specified state.
+	 *
+	 * @param variable the variable to be filtered out
+	 * @param state    the state to be selected
+	 * @return a new {@link BayesianLogFactor}
+	 */
+	@Override
+	public BayesianLogFactor filter(int variable, int state) {
+		final int offset = domain.indexOf(variable);
+		final int stride = domain.getStrideAt(offset);
+
+		return collect(offset, BayesianLogFactor::new, new SimpleBayesianFilter(stride, state));
+	}
+
+	/**
+	 * <p>
+	 * Marginalize a variable out of the factor. This corresponds to sum all
+	 * parameters that differ only in the state of the marginalized variable.
+	 * </p>
+	 *
+	 * <p>
+	 * If this factor represent a Conditional Probability Table you should only
+	 * marginalize variables on the right side of the conditioning bar. If so,
+	 * there is no need for further normalization.
+	 * </p>
+	 *
+	 * @param variable the variable to be summed out of the CPT
+	 * @return a new {@link BayesianLogFactor} with the variable marginalized out.
+	 */
 	@Override
 	public BayesianLogFactor marginalize(int variable) {
 		int offset = domain.indexOf(variable);
 		if (offset == -1) return this;
-		return collect(offset, new LogMarginal(domain.getSizeAt(offset), domain.getStrideAt(offset)), BayesianLogFactor::new);
+
+		final int size = domain.getSizeAt(offset);
+		final int stride = domain.getStrideAt(offset);
+
+		return collect(offset, BayesianLogFactor::new, new LogBayesianMarginal(size, stride));
 	}
 
 	@Override
@@ -100,28 +159,64 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		return new BayesianLogFactor(target, result);
 	}
 
+	/**
+	 * <p>
+	 * If the input factor is also a {@link BayesianLogFactor}, a fast algebra i used. If the input is a
+	 * {@link BayesianDefaultFactor}, the factor will be first converted in the log-space.
+	 * </p>
+	 *
+	 * @param factor input factor
+	 * @return a {@link BayesianLogFactor}, combination of the this with the other factor
+	 */
 	@Override
 	public BayesianLogFactor combine(BayesianFactor factor) {
-		if (factor instanceof BayesianLogFactor)
-			return combine(factor, BayesianLogFactor::new, direct, direct, Double::sum);
+		if (!factor.isLog() && factor instanceof BayesianDefaultFactor)
+			factor = new BayesianLogFactor((BayesianDefaultFactor) factor);
 
-		return combine(factor, BayesianLogFactor::new, direct, BayesianFactor::getValueAt, Double::sum);
+		if (factor instanceof BayesianLogFactor)
+			return combine((BayesianLogFactor) factor, BayesianLogFactor::new, ops::combine);
+
+		return (BayesianLogFactor) super.combine(factor);
 	}
 
+	/**
+	 * <p>
+	 * If the input factor is also a {@link BayesianLogFactor}, a fast algebra i used. If the input is a
+	 * {@link BayesianDefaultFactor}, the factor will be first converted in the log-space.
+	 * </p>
+	 *
+	 * @param factor input factor
+	 * @return a {@link BayesianLogFactor}, sum of the probabilities of this with the other factor
+	 */
 	@Override
 	public BayesianLogFactor addition(BayesianFactor factor) {
-		if (factor instanceof BayesianLogFactor)
-			return combine(factor, BayesianLogFactor::new, direct, direct, addInLogSpace);
+		if (!factor.isLog() && factor instanceof BayesianDefaultFactor)
+			factor = new BayesianLogFactor((BayesianDefaultFactor) factor);
 
-		return combine(factor, BayesianLogFactor::new, direct, BayesianFactor::getValueAt, addInLogSpace);
+		if (factor instanceof BayesianLogFactor)
+			return combine((BayesianLogFactor) factor, BayesianLogFactor::new, ops::add);
+
+		return (BayesianLogFactor) super.addition(factor);
 	}
 
+	/**
+	 * <p>
+	 * If the input factor is also a {@link BayesianLogFactor}, a fast algebra i used. If the input is a
+	 * {@link BayesianDefaultFactor}, the factor will be first converted in the log-space.
+	 * </p>
+	 *
+	 * @param factor input factor
+	 * @return a {@link BayesianLogFactor}, division of the this with the other factor
+	 */
 	@Override
 	public BayesianLogFactor divide(BayesianFactor factor) {
-		if (factor instanceof BayesianLogFactor)
-			return divide(factor, BayesianLogFactor::new, direct, direct, (a, b) -> a - b);
+		if (!factor.isLog() && factor instanceof BayesianDefaultFactor)
+			factor = new BayesianLogFactor((BayesianDefaultFactor) factor);
 
-		return divide(factor, BayesianLogFactor::new, direct, BayesianFactor::getValueAt, (a, b) -> a - b);
+		if (factor instanceof BayesianLogFactor)
+			return combine((BayesianLogFactor) factor, BayesianLogFactor::new, ops::add);
+
+		return (BayesianLogFactor) super.divide(factor);
 	}
 
 	@Override
@@ -135,27 +230,55 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	}
 
 	@Override
-	public void replaceInplace(double value, double replacement) {
-		for (int i = 0; i < getData().length; i++)
-			if (getData()[i] == value)
-				setValueAt(replacement, i);
-	}
-
-	@Override
 	public BayesianLogFactor replace(double value, double replacement) {
-		BayesianLogFactor f = this.copy();
-		f.replaceInplace(value, replacement);
-		return f;
+		value = FastMath.log(value);
+		replacement = FastMath.log(replacement);
+
+		final double[] data = ArrayUtils.clone(this.data);
+
+		for (int i = 0; i < data.length; i++) {
+			if (data[i] == value)
+				data[i] = replacement;
+		}
+
+		return new BayesianLogFactor(domain, data);
 	}
 
+	/**
+	 * Replace all {@link Double#NaN} values with the given replacement value.
+	 *
+	 * @param replacement replacement value in non-log space (log is applied internally)
+	 * @return a new {@link BayesianLogFactor} without NaN.
+	 */
 	@Override
 	public BayesianLogFactor replaceNaN(double replacement) {
-		BayesianLogFactor f = this.copy();
-		for (int i = 0; i < f.getData().length; i++)
-			if (Double.isNaN(f.getData()[i]))
-				setValueAt(replacement, i);
-		return f;
+		replacement = FastMath.log(replacement);
+
+		final double[] data = ArrayUtils.clone(this.data);
+
+		for (int i = 0; i < data.length; i++) {
+			if (Double.isNaN(data[i]))
+				data[i] = replacement;
+		}
+
+		return new BayesianLogFactor(domain, data);
 	}
 
+	/**
+	 * Multiplies all value by a given constant. The data are first converted to normal-space, scaled, then converted
+	 * again in log-space.
+	 *
+	 * @param k constant multiplier
+	 * @return a new {@link BayesianLogFactor} scaled by the given constant
+	 */
+	@Override
+	public BayesianLogFactor scale(double k) {
+		final double[] data = new double[this.data.length];
 
+		for (int i = 0; i < data.length; i++) {
+			data[i] = FastMath.log(FastMath.exp(this.data[i] * k));
+		}
+
+		return new BayesianLogFactor(domain, data);
+	}
 }

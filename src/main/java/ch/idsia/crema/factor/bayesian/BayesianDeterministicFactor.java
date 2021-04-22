@@ -1,12 +1,11 @@
 package ch.idsia.crema.factor.bayesian;
 
 
+import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.operations.vertex.Filter;
-import ch.idsia.crema.factor.operations.vertex.LogMarginal;
-import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -16,13 +15,13 @@ import gnu.trove.map.TIntIntMap;
 public class BayesianDeterministicFactor extends BayesianDefaultFactor {
 
 	/**
-	 * This is used internally by the clone method.
+	 * This is used internally by the {@link #copy()} method.
 	 *
-	 * @param stride
-	 * @param data
+	 * @param domain this object domain
+	 * @param data   internal data representation
 	 */
-	private BayesianDeterministicFactor(Strides stride, double[] data) {
-		super(stride, data);
+	private BayesianDeterministicFactor(Domain domain, double[] data) {
+		super(domain, data);
 	}
 
 	/**
@@ -36,6 +35,7 @@ public class BayesianDeterministicFactor extends BayesianDefaultFactor {
 	public BayesianDeterministicFactor(Strides left, Strides right, int... assignments) {
 		super(left.concat(right), null);
 		final int combinations = right.getCombinations();
+
 		if (assignments.length != combinations)
 			throw new IllegalArgumentException("Length of assignments should be equal to the number of combinations of the parents");
 
@@ -70,52 +70,9 @@ public class BayesianDeterministicFactor extends BayesianDefaultFactor {
 
 	@Override
 	public BayesianDeterministicFactor copy() {
-		return new BayesianDeterministicFactor(domain, data.clone());
+		return new BayesianDeterministicFactor(domain, ArrayUtils.clone(data));
 	}
 
-	@Override
-	public BayesianDeterministicFactor filter(int variable, int state) {
-		int offset = domain.indexOf(variable);
-		return collect(offset, new Filter(domain.getStrideAt(offset), state), BayesianDeterministicFactor::new);
-	}
-
-	@Override
-	public BayesianDeterministicFactor marginalize(int variable) {
-		int offset = domain.indexOf(variable);
-		if (offset == -1) return this;
-		return collect(offset, new LogMarginal(domain.getSizeAt(offset), domain.getStrideAt(offset)), BayesianDeterministicFactor::new);
-	}
-
-	@Override
-	public BayesianDeterministicFactor combineIterator(BayesianDefaultFactor cpt) {
-		Strides target = domain.union(cpt.domain);
-
-		IndexIterator i1 = getDomain().getIterator(target);
-		IndexIterator i2 = cpt.getDomain().getIterator(target);
-
-		double[] result = new double[target.getCombinations()];
-
-		for (int i = 0; i < result.length; ++i) {
-			result[i] = data[i1.next()] + cpt.data[i2.next()];
-		}
-
-		return new BayesianDeterministicFactor(target, result);
-	}
-
-	@Override
-	public BayesianDeterministicFactor replace(double value, double replacement) {
-		BayesianDeterministicFactor f = this.copy();
-		f.replaceInplace(value, replacement);
-		return f;
-	}
-
-	@Override
-	public BayesianDeterministicFactor replaceNaN(double replacement) {
-		BayesianDeterministicFactor f = this.copy();
-		for (int i = 0; i < f.data.length; i++)
-			if (Double.isNaN(f.data[i]))
-				setValueAt(replacement, i);
-		return f;
-	}
+	// TODO: consider to override combine-based method to keep the BayesianDeterministicFactor object (currently, this factor has nothing special)
 
 }
