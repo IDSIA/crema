@@ -6,7 +6,7 @@ import ch.idsia.crema.factor.algebra.collectors.Filter;
 import ch.idsia.crema.factor.algebra.collectors.LogMarginal;
 import ch.idsia.crema.factor.algebra.vertex.LogVertexOperation;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.List;
@@ -52,8 +52,7 @@ public class ExtensiveVertexLogFactor extends ExtensiveVertexDefaultFactor {
 
 	@Override
 	public BayesianFactor getBayesianVertex(int vertex) {
-		// TODO: this is stupid: we take an array in log-space, exp it, then log it again! Create a constructor for BayesLogFactor with a fake "isLogged" parameter
-		return new BayesianLogFactor(getDomain(), data.get(vertex), true);
+		return BayesianFactorFactory.factory().domain(getDomain()).logData(data.get(vertex)).log();
 	}
 
 	@Override

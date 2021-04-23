@@ -1,5 +1,6 @@
 package ch.idsia.crema.factor.bayesian;
 
+import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.NotImplementedException;
@@ -114,4 +115,15 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 		throw new NotImplementedException();
 	}
 
+	@Override
+	public ObservationBuilder sample() {
+		// TODO
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public double KLDivergence(BayesianFactor approx) {
+		// TODO
+		throw new NotImplementedException();
+	}
 }

@@ -67,6 +67,12 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 	}
 
 	@Override
+	public double[][] getVertices(int... states) {
+		// TODO
+		throw new NotImplementedException();
+	}
+
+	@Override
 	public double[][] getVerticesAt(int i) {
 		return f.apply(i);
 	}
@@ -85,6 +91,12 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 
 	@Override
 	public VertexFactor merge(VertexFactor factor) {
+		// TODO
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public VertexFactor merge(VertexFactor... factors) {
 		// TODO
 		throw new NotImplementedException();
 	}

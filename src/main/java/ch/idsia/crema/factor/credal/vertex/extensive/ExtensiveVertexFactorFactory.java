@@ -20,8 +20,6 @@ public class ExtensiveVertexFactorFactory {
 	private final List<BayesianDefaultFactor> factors = new ArrayList<>();
 	private final List<BayesianLogFactor> logFactors = new ArrayList<>();
 
-	private boolean log = false;
-
 	private Strides domain = Strides.empty();
 
 	private ExtensiveVertexFactorFactory() {
@@ -29,15 +27,6 @@ public class ExtensiveVertexFactorFactory {
 
 	public static ExtensiveVertexFactorFactory factory() {
 		return new ExtensiveVertexFactorFactory();
-	}
-
-	public ExtensiveVertexFactorFactory log(boolean isLog) {
-		log = isLog;
-		return this;
-	}
-
-	public ExtensiveVertexFactorFactory log() {
-		return log(true);
 	}
 
 	public ExtensiveVertexFactorFactory domain(Strides domain) {
@@ -83,22 +72,23 @@ public class ExtensiveVertexFactorFactory {
 		return this;
 	}
 
-	public ExtensiveVertexFactor build() {
+	public ExtensiveVertexFactor log() {
 		final List<double[]> data = new ArrayList<>();
 
-		if (log) {
-			vertices.forEach(ArraysUtil::log);
-			factors.forEach(f -> ArraysUtil.log(f.getData()));
-			logFactors.forEach(f -> data.add(f.getData()));
+		vertices.forEach(ArraysUtil::log);
+		factors.forEach(f -> ArraysUtil.log(f.getData()));
+		logFactors.forEach(f -> data.add(f.getData()));
 
-			return new ExtensiveVertexLogFactor(domain, data, true);
-		} else {
-			data.addAll(vertices);
-			factors.forEach(f -> data.add(f.getData()));
-			logFactors.forEach(f -> ArraysUtil.exp(f.getData()));
+		return new ExtensiveVertexLogFactor(domain, data, true);
+	}
 
-			return new ExtensiveVertexDefaultFactor(domain, data);
-		}
+	public ExtensiveVertexFactor get() {
+		final List<double[]> data = new ArrayList<>(vertices);
+
+		factors.forEach(f -> data.add(f.getData()));
+		logFactors.forEach(f -> ArraysUtil.exp(f.getData()));
+
+		return new ExtensiveVertexDefaultFactor(domain, data);
 	}
 
 }

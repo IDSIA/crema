@@ -11,13 +11,13 @@ public class BayesianToExtensiveVertex implements Converter<BayesianFactor, Exte
 
 	@Override
 	public ExtensiveVertexFactor apply(BayesianFactor cpt, Integer var) {
-		final boolean log = cpt instanceof BayesianLogFactor;
-
-		return ExtensiveVertexFactorFactory.factory()
-				.log(log)
+		final ExtensiveVertexFactorFactory evff = ExtensiveVertexFactorFactory.factory()
 				.domain(cpt.getDomain())
-				.addBayesVertex(cpt)
-				.build();
+				.addBayesVertex(cpt);
+
+		if (cpt instanceof BayesianLogFactor)
+			return evff.log();
+		return evff.get();
 	}
 
 	@Override

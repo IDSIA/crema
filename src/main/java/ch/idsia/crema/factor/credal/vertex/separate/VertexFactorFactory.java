@@ -47,6 +47,17 @@ public class VertexFactorFactory {
 		return this;
 	}
 
+	public VertexFactorFactory domain(Strides separatedDomain) {
+		separatedDomain(separatedDomain);
+		return this;
+	}
+
+	public VertexFactorFactory domain(Strides separatedDomain, Strides vertexDomain) {
+		separatedDomain(separatedDomain);
+		vertexDomain(vertexDomain);
+		return this;
+	}
+
 	public VertexFactorFactory constraintFactor(SeparateHalfspaceFactor constrainsFactor) {
 		separatedDomain = constrainsFactor.getSeparatingDomain();
 		vertexDomain = constrainsFactor.getDataDomain();

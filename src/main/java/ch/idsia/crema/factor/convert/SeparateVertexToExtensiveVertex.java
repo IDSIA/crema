@@ -48,10 +48,9 @@ public class SeparateVertexToExtensiveVertex implements Converter<VertexFactor, 
 		}
 
 		return ExtensiveVertexFactorFactory.factory()
-				.log()
 				.domain(domain)
 				.addLogVertices(factors)
-				.build();
+				.log();
 	}
 
 	@Override

@@ -357,14 +357,6 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public DAGModel<F> observe(int var, int state) {
-		DAGModel<F> obs_model = this.copy();
-		// Fix the value of the intervened variable
-		obs_model.setFactor(var, (F) this.getFactor(var).getDeterministic(var, state));
-		return obs_model;
-	}
-
 	/**
 	 * Determines if the factor domains match with the structure of the DAG.
 	 *

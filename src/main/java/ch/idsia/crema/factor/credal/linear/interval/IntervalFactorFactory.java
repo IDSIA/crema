@@ -50,6 +50,10 @@ public class IntervalFactorFactory {
 		return this;
 	}
 
+	public IntervalFactorFactory domain(Strides content) {
+		return content(content);
+	}
+
 	public IntervalFactorFactory set(double[] lowers, double[] uppers, int... states) {
 		int offset = groupDomain.getOffset(states);
 		this.lowers.put(offset, lowers);

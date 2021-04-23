@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.io.bif;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.IOException;
@@ -163,8 +164,7 @@ public class BIFParser {
 
 		final String varName = varNames[0];
 
-		final BayesianFactor f = new BayesianFactor(result.network.getDomain(varIds));
-		result.variableFactors.put(varName, f);
+		final BayesianFactorFactory bff = BayesianFactorFactory.factory().domain(result.network.getDomain(varIds));
 
 		// create parents
 		for (int i = 1; i < varIds.length; i++) {
@@ -180,7 +180,7 @@ public class BIFParser {
 								.filter(x -> !x.isEmpty())
 								.mapToDouble(Double::parseDouble)
 								.toArray();
-						f.setData(values);
+						bff.data(values);
 						break;
 					case "property":
 						// TODO: add support for other properties
@@ -224,10 +224,11 @@ public class BIFParser {
 
 				for (int i = 0; i < vals.length; i++) {
 					ints[0] = i;
-					f.setValue(vals[i], ints);
+					bff.value(vals[i], ints);
 				}
 			}
 		}
+		result.variableFactors.put(varName, bff.get());
 	}
 
 }
