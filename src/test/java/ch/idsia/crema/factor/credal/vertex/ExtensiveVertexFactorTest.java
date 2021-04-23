@@ -55,7 +55,7 @@ public class ExtensiveVertexFactorTest {
 				.addVertex(new double[]{0.2, 0.8}, 1)
 				.addVertex(new double[]{0.3, 0.7}, 0)
 				.addVertex(new double[]{0.5, 0.5}, 1)
-				.build();
+				.get();
 
 		ExtensiveVertexDefaultAlgebra algebra12 = new ExtensiveVertexDefaultAlgebra();
 		ExtensiveVertexFactor factor3 = algebra12.combine(factor1, factor2);

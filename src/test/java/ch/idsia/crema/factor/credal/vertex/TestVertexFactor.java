@@ -25,7 +25,7 @@ public class TestVertexFactor {
 				.addVertex(new double[]{0.5, 0.2, 0.2, 0.1}, 1)
 				.addVertex(new double[]{0.1, 0.2, 0.4, 0.3}, 0)
 				.addVertex(new double[]{0.1, 0.3, 0.2, 0.2}, 0)
-				.build();
+				.get();
 
 		factorx = factorx.filter(A, 1).filter(B, 0);
 		double[][] x = factorx.getVertices(0);
@@ -48,7 +48,7 @@ public class TestVertexFactor {
 
 		VertexFactor factorx = VertexFactorFactory.factory().domain(model.getDomain(A, B, C), model.getDomain())
 				.addVertex(new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})
-				.build();
+				.get();
 		VertexFactor v1 = factorx.filter(B, 1);
 		VertexFactor v2 = factorx.filter(B, 2);
 		VertexFactor v3 = factorx.filter(C, 1);
@@ -72,9 +72,11 @@ public class TestVertexFactor {
 
 	@Test
 	public void testAdd() {
-		VertexFactor vf = VertexFactorFactory.factory().domain(Strides.as(1, 4), Strides.as(0, 3).and(5, 2))
+		final Strides right = Strides.as(0, 3).and(5, 2);
+		final Strides left = Strides.as(1, 4);
+		VertexFactor vf = VertexFactorFactory.factory().domain(left, right)
 				.addVertex(new double[]{0.1, 0.3, 0.2, 0.4}, 2, 1)
-				.build();
+				.get();
 		assertArrayEquals(new double[]{0.1, 0.3, 0.2, 0.4}, vf.getVertices(2, 1)[0], 0.000001);
 		assertNull(vf.getVertices(0, 1));
 	}
@@ -97,7 +99,7 @@ public class TestVertexFactor {
 				.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1, 0)
 				.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 0)
 				.addVertex(new double[]{0.1, 0.2, 0.2, 0.5}, 2, 0)
-				.build();
+				.get();
 
 		// P(X1|X0,X5) -> diventa estensivo rispetto a X5
 		VertexFactor v2 = vf.reseparate(Strides.as(0, 3));
@@ -142,7 +144,7 @@ public class TestVertexFactor {
 				.addVertex(new double[]{0.6, 0.4}, 1, 0)
 				.addVertex(new double[]{0.5, 0.5}, 1, 1)
 				.addVertex(new double[]{0.9, 0.1}, 1, 1)
-				.build();
+				.get();
 
 		v2 = vf1_05.reseparate(vf1_05.getSeparatingDomain());
 		int s = 0;
@@ -166,7 +168,7 @@ public class TestVertexFactor {
 				.addVertex(new double[]{0.1, 0.1, 0.7, 0.1}, 1)
 				.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 1)
 				.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1)
-				.build();
+				.get();
 
 		VertexFactor v2 = vf.marginalize(2);
 		double[][] v = v2.getVertices(0);
@@ -223,7 +225,7 @@ public class TestVertexFactor {
 				.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1, 0)
 				.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 0)
 
-				.build();
+				.get();
 
 		VertexFactor v2 = vf.filter(5, 0).filter(0, 1);
 		double[][] d = v2.getVertices();
@@ -244,7 +246,7 @@ public class TestVertexFactor {
 				.addVertex(new double[]{0.6, 0.4}, 1, 0)
 				.addVertex(new double[]{0.5, 0.5}, 1, 1)
 				.addVertex(new double[]{0.9, 0.1}, 1, 1)
-				.build();
+				.get();
 
 		VertexFactor vf5_0 = VertexFactorFactory.factory().domain(Strides.as(5, 2), Strides.as(0, 2))
 				.addVertex(new double[]{0.5, 0.5}, 0)
@@ -252,7 +254,7 @@ public class TestVertexFactor {
 
 				.addVertex(new double[]{0.2, 0.8}, 1)
 				.addVertex(new double[]{0.3, 0.7}, 1)
-				.build();
+				.get();
 
 		VertexFactor v2_1 = vf1_05.combine(vf5_0);
 
@@ -293,12 +295,12 @@ public class TestVertexFactor {
 				.addVertex(new double[]{0.6, 0.4}, 1, 0)
 				.addVertex(new double[]{0.5, 0.5}, 1, 1)
 				.addVertex(new double[]{0.9, 0.1}, 1, 1)
-				.build();
+				.get();
 
 		VertexFactor vf5 = VertexFactorFactory.factory().domain(Strides.as(5, 2), Strides.EMPTY)
 				.addVertex(new double[]{0.5, 0.5})
 				.addVertex(new double[]{0.6, 0.4})
-				.build();
+				.get();
 
 		VertexFactor v2_1 = vf1_05.combine(vf5);
 

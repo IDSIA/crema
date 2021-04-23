@@ -35,7 +35,7 @@ public class SeparateToExtensive {
 				.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1, 0)
 				.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 1, 0)
 
-				.build();
+				.get();
 
 		SeparateVertexToExtensiveVertex converter = new SeparateVertexToExtensiveVertex();
 		ExtensiveVertexFactor evf = converter.apply(vf);

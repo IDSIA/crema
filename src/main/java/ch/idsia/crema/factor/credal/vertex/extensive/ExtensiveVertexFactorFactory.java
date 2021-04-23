@@ -77,7 +77,7 @@ public class ExtensiveVertexFactorFactory {
 
 		vertices.forEach(ArraysUtil::log);
 		factors.forEach(f -> ArraysUtil.log(f.getData()));
-		logFactors.forEach(f -> data.add(f.getData()));
+		logFactors.forEach(f -> data.add(f.getLogData()));
 
 		return new ExtensiveVertexLogFactor(domain, data, true);
 	}

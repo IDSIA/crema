@@ -35,7 +35,7 @@ public class TestSimpleExtensiveFactor {
 				.addVertex(new double[]{0.3, 0.5, 0.1, 0.1})
 				.addVertex(new double[]{0.1, 0.3, 0.2, 0.2})
 				.addVertex(new double[]{0.5, 0.2, 0.2, 0.1})
-				.build();
+				.get();
 
 		factorx = factorx.filter(x1, 1).filter(x0, 0);
 
@@ -43,14 +43,14 @@ public class TestSimpleExtensiveFactor {
 		VertexFactor factor1 = VertexFactorFactory.factory().domain(domain1, Strides.EMPTY)
 				.addVertex(new double[]{0.1, 0.9})
 				.addVertex(new double[]{0.2, 0.8})
-				.build();
+				.get();
 
 		VertexFactor factor2 = VertexFactorFactory.factory().domain(model.getDomain(x1), model.getDomain(x0))
 				.addVertex(new double[]{0.1, 0.2, 0.9, 0.8})
 				.addVertex(new double[]{0.3, 0.5, 0.7, 0.5})
 				.addVertex(new double[]{0.1, 0.5, 0.9, 0.5})
 				.addVertex(new double[]{0.3, 0.2, 0.7, 0.8})
-				.build();
+				.get();
 
 		// convertiamo:
 		IntervalFactor f1h = IntervalFactorFactory.factory().domain(domain1, Strides.EMPTY)

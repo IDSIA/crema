@@ -388,7 +388,7 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 		if (!(obj instanceof BayesianAbstractFactor)) return false;
 
 		BayesianAbstractFactor other = (BayesianAbstractFactor) obj;
-		return !Arrays.equals(domain.getVariables(), other.getDomain().getVariables());
+		return Arrays.equals(domain.getVariables(), other.getDomain().getVariables());
 	}
 
 	@Override

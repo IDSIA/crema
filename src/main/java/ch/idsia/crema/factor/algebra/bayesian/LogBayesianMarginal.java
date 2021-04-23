@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.algebra.bayesian;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -24,8 +25,8 @@ public class LogBayesianMarginal implements BayesianCollector {
 	public final double collect(BayesianFactor factor, final int source) {
 		double value = 0;
 		for (int i = 0; i < size; ++i) {
-			value += factor.getLogValueAt(source + offsets[i]);
+			value += factor.getValueAt(source + offsets[i]); // TODO: try with ch.idsia.crema.factor.algebra.OperationUtils.logSum()
 		}
-		return value;
+		return FastMath.log(value);
 	}
 }

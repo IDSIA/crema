@@ -49,10 +49,9 @@ public class BayesianDeterministicFactor extends BayesianDefaultFactor {
 	}
 
 	public static BayesianDefaultFactor getJoinDeterministic(Strides left_vars, TIntIntMap obs) {
-		final int[] compatibleIndexes = left_vars.getCompatibleIndexes(obs);
-		final double[] data = new double[compatibleIndexes.length];
+		final double[] data = new double[left_vars.getCombinations()];
 
-		for (int index : compatibleIndexes)
+		for (int index : left_vars.getCompatibleIndexes(obs))
 			data[index] = 1;
 
 		return new BayesianDeterministicFactor(left_vars, data);

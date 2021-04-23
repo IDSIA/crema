@@ -45,14 +45,14 @@ public class GraphicalModelTest {
 				.addVertex(new double[]{0.2, 0.3, 0.5})
 				.addVertex(new double[]{0.2, 0.1, 0.7})
 				.addVertex(new double[]{0.3, 0.3, 0.4})
-				.build();
+				.get();
 
 		domain = model.getDomain(v3);
 		VertexFactor f3 = VertexFactorFactory.factory().domain(domain, model.getDomain())
 				.addVertex(new double[]{0.2, 0.3, 0.5})
 				.addVertex(new double[]{0.2, 0.1, 0.7})
 				.addVertex(new double[]{0.3, 0.3, 0.4})
-				.build();
+				.get();
 
 		VertexFactor f1 = VertexFactorFactory.factory().domain(model.getDomain(v1), model.getDomain(v2, v3))
 				.addVertex(new double[]{0.2, 0.3, 0.5}, 0, 0)
@@ -73,7 +73,7 @@ public class GraphicalModelTest {
 				.addVertex(new double[]{0.2, 0.1, 0.7}, 2, 1)
 				.addVertex(new double[]{0.2, 0.3, 0.5}, 2, 0)
 				.addVertex(new double[]{0.2, 0.1, 0.7}, 2, 0)
-				.build();
+				.get();
 
 		model.setFactor(v1, f1);
 		model.setFactor(v2, f2);

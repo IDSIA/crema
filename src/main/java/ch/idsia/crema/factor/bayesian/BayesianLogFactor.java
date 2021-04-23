@@ -88,6 +88,17 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	}
 
 	/**
+	 * This assumes that the data are ordered by the given domain and <u>are already</u> in log-space.
+	 *
+	 * @param stride data domain
+	 * @param data   ordered and already in log-space
+	 * @param isLog  not used
+	 */
+	BayesianLogFactor(Strides stride, double[] data, boolean isLog) {
+		super(stride, data);
+	}
+
+	/**
 	 * This creates a new factor with the same domain and the data of the given factor. Data are copied using the
 	 * {@link ArraysUtil#log(double[])} method, they will be in log-space, and they will follow the same domain of the
 	 * given factor.
@@ -115,7 +126,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 
 	@Override
 	public BayesianLogFactor copy() {
-		return new BayesianLogFactor(domain, ArrayUtils.clone(data));
+		return new BayesianLogFactor(domain, ArrayUtils.clone(data), true);
 	}
 
 	@Override
@@ -134,6 +145,10 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	@Override
 	public double[] getData() {
 		return ArraysUtil.exp(ArrayUtils.clone(this.data));
+	}
+
+	public double[] getLogData() {
+		return ArrayUtils.clone(this.data);
 	}
 
 	/**
@@ -157,7 +172,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		final int offset = domain.indexOf(variable);
 		final int stride = domain.getStrideAt(offset);
 
-		return collect(offset, BayesianLogFactor::new, new SimpleBayesianFilter(stride, state));
+		return collect(offset, (dom, data) -> new BayesianLogFactor(dom, data, true), new SimpleBayesianFilter(stride, state));
 	}
 
 	/**
@@ -183,7 +198,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 		final int size = domain.getSizeAt(offset);
 		final int stride = domain.getStrideAt(offset);
 
-		return collect(offset, BayesianLogFactor::new, new LogBayesianMarginal(size, stride));
+		return collect(offset, (dom, data) -> new BayesianLogFactor(dom, data, true), new LogBayesianMarginal(size, stride));
 	}
 
 	@Override
@@ -217,7 +232,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 			factor = new BayesianLogFactor((BayesianDefaultFactor) factor);
 
 		if (factor instanceof BayesianLogFactor)
-			return combine((BayesianLogFactor) factor, BayesianLogFactor::new, ops::combine);
+			return combine((BayesianLogFactor) factor, (dom, data) -> new BayesianLogFactor(dom, data, true), ops::combine);
 
 		return (BayesianLogFactor) super.combine(factor);
 	}
@@ -237,7 +252,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 			factor = new BayesianLogFactor((BayesianDefaultFactor) factor);
 
 		if (factor instanceof BayesianLogFactor)
-			return combine((BayesianLogFactor) factor, BayesianLogFactor::new, ops::add);
+			return combine((BayesianLogFactor) factor, (dom, data) -> new BayesianLogFactor(dom, data, true), ops::add);
 
 		return (BayesianLogFactor) super.addition(factor);
 	}
@@ -257,7 +272,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 			factor = new BayesianLogFactor((BayesianDefaultFactor) factor);
 
 		if (factor instanceof BayesianLogFactor)
-			return combine((BayesianLogFactor) factor, BayesianLogFactor::new, ops::add);
+			return combine((BayesianLogFactor) factor, (dom, data) -> new BayesianLogFactor(dom, data, true), ops::divide);
 
 		return (BayesianLogFactor) super.divide(factor);
 	}

@@ -20,16 +20,16 @@ public abstract class IntervalAbstractFactor implements IntervalFactor {
 	protected Strides dataDomain;
 	protected Strides groupDomain;
 
-	public IntervalAbstractFactor(Strides content, Strides separation) {
-		setConditioningDomain(content);
-		setDataDomain(separation);
+	public IntervalAbstractFactor(Strides dataDomain, Strides groupDomain) {
+		setGroupDomain(groupDomain);
+		setDataDomain(dataDomain);
 	}
 
 	protected void setDataDomain(Strides dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	protected void setConditioningDomain(Strides groupDomain) {
+	protected void setGroupDomain(Strides groupDomain) {
 		if (groupDomain == null) {
 			groupDomain = new Strides(new int[0], new int[0]);
 		}

@@ -3,13 +3,11 @@ package ch.idsia.crema.factor.credal.vertex.separate;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import gnu.trove.list.TIntList;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.list.array.TIntArrayList;
+import org.apache.commons.lang3.NotImplementedException;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -18,9 +16,8 @@ import java.util.Set;
  */
 public class VertexFactorFactory {
 
-	private TIntObjectMap<Set<double[]>> vertices = new TIntObjectHashMap<>();
-
-	private boolean log = false;
+	private final TIntList combinations = new TIntArrayList();
+	private final List<double[]> vertices = new ArrayList<>();
 
 	private Strides separatedDomain = Strides.empty();
 	private Strides vertexDomain = Strides.empty();
@@ -30,11 +27,6 @@ public class VertexFactorFactory {
 
 	public static VertexFactorFactory factory() {
 		return new VertexFactorFactory();
-	}
-
-	public VertexFactorFactory log() {
-		log = true;
-		return this;
 	}
 
 	public VertexFactorFactory separatedDomain(Strides domain) {
@@ -47,14 +39,13 @@ public class VertexFactorFactory {
 		return this;
 	}
 
-	public VertexFactorFactory domain(Strides separatedDomain) {
-		separatedDomain(separatedDomain);
-		return this;
+	public VertexFactorFactory domain(Strides left) {
+		return domain(left, Strides.empty());
 	}
 
-	public VertexFactorFactory domain(Strides separatedDomain, Strides vertexDomain) {
-		separatedDomain(separatedDomain);
-		vertexDomain(vertexDomain);
+	public VertexFactorFactory domain(Strides left, Strides right) {
+		separatedDomain(right);
+		vertexDomain(left);
 		return this;
 	}
 
@@ -77,39 +68,20 @@ public class VertexFactorFactory {
 	}
 
 	public VertexFactorFactory addVertex(double[] vertex, int... groupStates) {
-		int offset = separatedDomain.getOffset(groupStates);
-
-		if (!vertices.containsKey(offset))
-			vertices.put(offset, new HashSet<>());
-
-		vertices.get(offset).add(vertex);
+		final int offset = separatedDomain.getOffset(groupStates);
+		combinations.add(offset);
+		vertices.add(vertex);
 		return this;
 	}
 
-	public VertexFactor build() {
-		final int n = separatedDomain.getCombinations();
-		double[][][] data = new double[n][][];
+	public VertexFactor log() {
+		// TODO
+		throw new NotImplementedException();
+		// return new VertexLogFactor(separatedDomain, vertexDomain, data);
+	}
 
-		for (int offset : vertices.keys()) {
-			for (double[] vertex : vertices.get(offset)) {
-				double[][] gdata = data[offset];
-
-				if (gdata != null) {
-					// not first node
-					int len = gdata.length;
-					double[][] newdata = Arrays.copyOf(gdata, len + 1);
-					newdata[len] = vertex;
-					data[offset] = newdata;
-				} else {
-					// first node
-					data[offset] = new double[][]{vertex};
-				}
-			}
-		}
-
-		if (log)
-			return new VertexLogFactor(separatedDomain, vertexDomain, data);
-		return new VertexDefaultFactor(separatedDomain, vertexDomain, data);
+	public VertexFactor get() {
+		return new VertexDefaultFactor(vertexDomain, separatedDomain, vertices, combinations);
 	}
 
 }

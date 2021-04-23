@@ -14,7 +14,7 @@ public class OperationUtils {
 			max = first;
 		}
 
-		return max + FastMath.log(FastMath.exp(min - max) + 1);
+		return max + FastMath.log1p(FastMath.exp(min - max));
 	}
 
 }

@@ -14,12 +14,12 @@ import org.apache.commons.lang3.NotImplementedException;
 @LogSpace
 public class VertexLogFactor extends VertexDefaultFactor {
 
-	public VertexLogFactor(Strides separatedDomain, Strides vertexDomain, double[][][] data) {
-		super(separatedDomain, vertexDomain, data);
+	public VertexLogFactor(Strides vertexDomain, Strides separatedDomain, double[][][] data) {
+		super(vertexDomain, separatedDomain, data);
 	}
 
 	public VertexLogFactor(VertexDefaultFactor factor) {
-		super(factor.separatedDomain, factor.vertexDomain, new double[factor.data.length][][]);
+		super(factor.vertexDomain, factor.separatedDomain, new double[factor.data.length][][]);
 
 		for (int i = 0; i < factor.data.length; i++) {
 			data[i] = new double[factor.data[i].length][];

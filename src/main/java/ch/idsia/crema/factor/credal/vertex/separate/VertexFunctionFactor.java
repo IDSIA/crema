@@ -15,7 +15,7 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 	private final Function<Integer, double[][]> f;
 
 	public VertexFunctionFactor(Strides separatedDomain, Strides vertexDomain, Function<Integer, double[][]> f) {
-		super(separatedDomain, vertexDomain);
+		super(vertexDomain, separatedDomain);
 		this.f = f;
 	}
 

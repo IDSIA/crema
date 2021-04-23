@@ -26,9 +26,9 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 
 	public static boolean CONVEX_HULL_MARG = false;
 
-	public VertexAbstractFactor(Strides separatedDomain, Strides vertexDomain) {
-		this.separatedDomain = vertexDomain;
-		this.vertexDomain = separatedDomain;
+	public VertexAbstractFactor(Strides vertexDomain, Strides separatedDomain) {
+		this.separatedDomain = separatedDomain;
+		this.vertexDomain = vertexDomain;
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 
 			double[][][] newdata = new double[newdomain.getCombinations()][][];
 			for (int index = 0; index < newdata.length; ++index) {
-				newdata[index] = getVerticesAt(iter.next()); // TODO: put data[] back?
+				newdata[index] = getVerticesAt(iter.next()); // TODO: put data[iter.next()] back?
 			}
 			return builder.get(vertexDomain, newdomain, newdata);
 		}

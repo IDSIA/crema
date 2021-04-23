@@ -104,7 +104,7 @@ public class AlexsTests {
 				.addVertex(new double[]{.2, .4, .4})
 				.addVertex(new double[]{.4, .2, .4})
 				.addVertex(new double[]{.4, .4, .2})
-				.build();
+				.get();
 		fB = VertexFactorFactory.factory()
 				.domain(dB, dA)
 				.addVertex(new double[]{.4, .4, .2}, 0)
@@ -116,7 +116,7 @@ public class AlexsTests {
 				.addVertex(new double[]{.4, .4, .2}, 2)
 				.addVertex(new double[]{.4, .2, .4}, 2)
 				.addVertex(new double[]{.2, .4, .4}, 2)
-				.build();
+				.get();
 
 		int dummy = model.addVariable(2);
 		BayesianFactor fDummy = BayesianFactorFactory.factory()
@@ -200,21 +200,21 @@ public class AlexsTests {
 				.domain(dA)
 				.addVertex(new double[]{.4, .6})
 				.addVertex(new double[]{.6, .4})
-				.build();
+				.get();
 		fB = VertexFactorFactory.factory()
 				.domain(dB, dA)
 				.addVertex(new double[]{0.2, 0.8}, 0)
 				.addVertex(new double[]{0.3, 0.7}, 0)
 				.addVertex(new double[]{0.8, 0.2}, 1)
 				.addVertex(new double[]{0.9, 0.1}, 1)
-				.build();
+				.get();
 		fC = VertexFactorFactory.factory()
 				.domain(dC, dB)
 				.addVertex(new double[]{0.2, 0.8}, 0)
 				.addVertex(new double[]{0.3, 0.7}, 0)
 				.addVertex(new double[]{0.8, 0.2}, 1)
 				.addVertex(new double[]{0.9, 0.1}, 1)
-				.build();
+				.get();
 		int dummy = model.addVariable(2);
 		BayesianFactor fDummy = BayesianFactorFactory.factory()
 				.domain(model.getDomain(2, dummy))
@@ -290,14 +290,14 @@ public class AlexsTests {
 				.domain(dA)
 				.addVertex(new double[]{.4, .6})
 				.addVertex(new double[]{.6, .4})
-				.build();
+				.get();
 		fB = VertexFactorFactory.factory()
 				.domain(dB, dA)
 				.addVertex(new double[]{0.2, 0.8}, 0)
 				.addVertex(new double[]{0.3, 0.7}, 0)
 				.addVertex(new double[]{0.8, 0.2}, 1)
 				.addVertex(new double[]{0.9, 0.1}, 1)
-				.build();
+				.get();
 		int dummy = model.addVariable(2);
 		BayesianFactor fDummy = BayesianFactorFactory.factory()
 				.domain(model.getDomain(1, dummy))
@@ -389,7 +389,7 @@ public class AlexsTests {
 				}
 			}
 		}
-		f[0] = vff.build();
+		f[0] = vff.get();
 		ff[0] = IntervalFactorFactory.factory().domain(d[0])
 				.lower(lowerP)
 				.upper(upperP)
@@ -425,7 +425,7 @@ public class AlexsTests {
 				// System.out.println(Arrays.toString(lowerP));
 				// System.out.println(Arrays.toString(upperP));
 			}
-			f[i] = vff.build();
+			f[i] = vff.get();
 			ff[i] = iff.build();
 			model.setFactor(i, ff[i]);
 		}
@@ -552,7 +552,7 @@ public class AlexsTests {
 					upperP[i] = vertex[i];
 			}
 		}
-		f[0] = vff.build();
+		f[0] = vff.get();
 		ff[0] = IntervalFactorFactory.factory()
 				.domain(d[0])
 				.lower(lowerP)
@@ -601,7 +601,7 @@ public class AlexsTests {
 				//System.out.println(Arrays.toString(lowerP));
 				//System.out.println(Arrays.toString(upperP));
 			}
-			f[i] = vff.build();
+			f[i] = vff.get();
 			ff[i] = iff.build();
 			model.setFactor(i, ff[i]);
 		}
@@ -770,7 +770,7 @@ public class AlexsTests {
 		iff.lower(lowerP.clone());
 		iff.upper(upperP.clone());
 
-		f[0] = vff.build();
+		f[0] = vff.get();
 		ff[0] = iff.build();
 		model.setFactor(0, ff[0]);
 		//for (double[] vv : myVertices)
@@ -818,7 +818,7 @@ public class AlexsTests {
 				System.out.println(Arrays.toString(lowerP));
 				System.out.println(Arrays.toString(upperP));
 			}
-			f[i] = vff.build();
+			f[i] = vff.get();
 			ff[i] = iff.build();
 			model.setFactor(i, ff[i]);
 		}

@@ -40,10 +40,14 @@ public class BayesianFactorFactory {
 
 	public BayesianFactorFactory data(double[] data) {
 		final int expectedLength = domain.getCombinations();
-		if (data.length != expectedLength)
+		if (data.length > expectedLength)
 			throw new IllegalArgumentException("Invalid length of data: expected " + expectedLength + " got " + data.length);
 
-		this.data = data;
+		if (this.data == null)
+			this.data = new double[expectedLength];
+
+		// TODO: do we want to allow to assign LESS data than expected? For now yes
+		System.arraycopy(data, 0, this.data, 0, data.length);
 		return this;
 	}
 
@@ -52,7 +56,11 @@ public class BayesianFactorFactory {
 		if (data.length != expectedLength)
 			throw new IllegalArgumentException("Invalid length of data: expected " + expectedLength + " got " + data.length);
 
-		this.logData = data;
+		if (this.logData == null)
+			this.logData = new double[expectedLength];
+
+		// TODO: see data(double[])
+		System.arraycopy(data, 0, this.logData, 0, data.length);
 		return this;
 	}
 
@@ -98,9 +106,9 @@ public class BayesianFactorFactory {
 	}
 
 	public BayesianLogFactor log() {
-		if (logData == null)
-			return new BayesianLogFactor(domain, data);
-		return new BayesianLogFactor(domain, logData);
+		if (logData != null)
+			return new BayesianLogFactor(domain, logData, true);
+		return new BayesianLogFactor(domain, data);
 	}
 
 	public BayesianDefaultFactor get() {

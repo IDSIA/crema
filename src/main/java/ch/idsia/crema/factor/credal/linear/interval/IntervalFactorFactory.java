@@ -13,8 +13,8 @@ import java.util.Arrays;
  */
 public class IntervalFactorFactory {
 
-	private Strides dataDomain = Strides.empty(); // content
-	private Strides groupDomain = Strides.empty(); // separation
+	private Strides dataDomain = Strides.empty(); // content, left
+	private Strides groupDomain = Strides.empty(); // separation, right
 
 	TIntObjectMap<double[]> lowers = new TIntObjectHashMap<>();
 	TIntObjectMap<double[]> uppers = new TIntObjectHashMap<>();
@@ -45,8 +45,8 @@ public class IntervalFactorFactory {
 	}
 
 	public IntervalFactorFactory domain(Strides content, Strides separation) {
-		this.groupDomain = content;
-		this.dataDomain = separation;
+		dataDomain(content);
+		groupDomain(separation);
 		return this;
 	}
 
@@ -97,9 +97,9 @@ public class IntervalFactorFactory {
 		for (int v : lowers.keys())
 			lower[v] = lowers.get(v);
 		for (int v : uppers.keys())
-			lower[v] = uppers.get(v);
+			upper[v] = uppers.get(v);
 
-		return new IntervalDefaultFactor(groupDomain, dataDomain, lower, upper);
+		return new IntervalDefaultFactor(dataDomain, groupDomain, lower, upper);
 	}
 
 }

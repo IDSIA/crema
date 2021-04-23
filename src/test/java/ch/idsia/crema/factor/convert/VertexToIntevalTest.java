@@ -22,7 +22,7 @@ public class VertexToIntevalTest {
 				.addVertex(new double[]{0.3, 0.3, 0.4}, 1)
 
 				.addVertex(new double[]{0.2, 0.2, 0.6}, 2)
-				.build();
+				.get();
 
 		VertexToInterval converter = new VertexToInterval();
 		IntervalFactor factor = converter.apply(vf);

@@ -29,7 +29,7 @@ public class VariableEliminationTest {
 		BayesianFactor[] f = new BayesianFactor[4];
 
 		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1, 2).size(2, 2, 2))
-				.data(new double[]{0.3, 0.7})
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
 				.get();
 		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1, 3).size(2, 2))
 				.data(new double[]{0.4, 0.6, 0.5, 0.5})
@@ -38,7 +38,7 @@ public class VariableEliminationTest {
 				.data(new double[]{0.7, 0.3, 0.1, 0.9})
 				.get();
 		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2))
-				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.data(new double[]{0.3, 0.7})
 				.get();
 		// f[4] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 4).size(2, 2)).data().get();
 
@@ -65,7 +65,7 @@ public class VariableEliminationTest {
 		BayesianFactor[] f = new BayesianFactor[4];
 
 		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1, 2).size(2, 2, 2))
-				.data(new double[]{0.3, 0.7})
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
 				.get();
 		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1, 3).size(2, 2))
 				.data(new double[]{0.4, 0.6, 0.5, 0.5})
@@ -74,7 +74,7 @@ public class VariableEliminationTest {
 				.data(new double[]{0.7, 0.3, 0.1, 0.9})
 				.get();
 		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2))
-				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.data(new double[]{0.3, 0.7})
 				.get();
 
 		int[] seq = new int[]{0, 1, 2, 3};
@@ -118,7 +118,7 @@ public class VariableEliminationTest {
 		BayesianFactor[] f = new BayesianFactor[4];
 
 		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1, 2).size(2, 2, 2))
-				.data(new double[]{0.3, 0.7})
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
 				.get();
 		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1, 3).size(2, 2))
 				.data(new double[]{0.4, 0.6, 0.5, 0.5})
@@ -127,7 +127,7 @@ public class VariableEliminationTest {
 				.data(new double[]{0.7, 0.3, 0.1, 0.9})
 				.get();
 		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2))
-				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.data(new double[]{0.3, 0.7})
 				.get();
 
 		int[] seq = new int[]{0, 1, 2, 3};
@@ -151,7 +151,7 @@ public class VariableEliminationTest {
 		BayesianFactor[] f = new BayesianFactor[4];
 
 		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1, 2).size(2, 2, 2))
-				.data(new double[]{0.3, 0.7})
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
 				.get();
 		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1, 3).size(2, 2))
 				.data(new double[]{0.4, 0.6, 0.5, 0.5})
@@ -160,7 +160,7 @@ public class VariableEliminationTest {
 				.data(new double[]{0.7, 0.3, 0.1, 0.9})
 				.get();
 		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2))
-				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.data(new double[]{0.3, 0.7})
 				.get();
 		// f[4] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 3).size(2, 2)).data(new double[] { 0, 1, 1, 0 }).get();
 

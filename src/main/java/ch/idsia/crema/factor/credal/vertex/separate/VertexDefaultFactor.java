@@ -27,27 +27,23 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 
 	protected final double[][][] data;
 
-	public VertexDefaultFactor(Strides separatedDomain, Strides vertexDomain, double[][][] data) {
-		super(separatedDomain, vertexDomain);
+	public VertexDefaultFactor(Strides vertexDomain, Strides separatedDomain, double[][][] data) {
+		super(vertexDomain, separatedDomain);
 		this.data = data;
 	}
 
-	public VertexDefaultFactor(Strides separatedDomain, Strides vertexDomain, List<double[]> vertices, TIntList combinations) {
-		super(separatedDomain, vertexDomain);
-
-		final int n = vertices.size();
-		if (n != combinations.size())
-			throw new IllegalArgumentException("Different numbers of vertices and combinations: got " + n + " vertices and " + combinations.size() + " combinations");
-
+	public VertexDefaultFactor(Strides vertexDomain, Strides separatedDomain, List<double[]> vertices, TIntList combinations) {
+		super(vertexDomain, separatedDomain);
+		final int n = separatedDomain.getCombinations();
 		data = new double[n][][];
 
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < combinations.size(); i++) {
 			addVertex(vertices.get(i), combinations.get(i));
 		}
 	}
 
 	public VertexDefaultFactor(Strides vertexDomain, double[][] coefficients, double[] values, Relationship... rel) {
-		super(Strides.empty(), vertexDomain);
+		super(vertexDomain, Strides.empty());
 
 		// check the coefficient sizes
 		for (double[] c : coefficients) {
@@ -104,7 +100,7 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 	}
 
 	public VertexDefaultFactor(SeparateHalfspaceFactor constrainsFactor) {
-		super(constrainsFactor.getSeparatingDomain(), constrainsFactor.getDataDomain());
+		super(constrainsFactor.getDataDomain(), constrainsFactor.getSeparatingDomain());
 
 		data = new double[1][][];
 
@@ -148,8 +144,11 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 
 	@Override
 	public double[][] getVertices(int... states) {
-		int offset = separatedDomain.getOffset(states);
-		return ArraysUtil.deepClone(data[offset]); // TODO: check if pollute memory or too slow
+		final int offset = separatedDomain.getOffset(states);
+		final double[][] arr = data[offset];
+		if (arr == null)
+			return null;
+		return ArraysUtil.deepClone(arr); // TODO: check if pollute memory or too slow
 	}
 
 	@Override

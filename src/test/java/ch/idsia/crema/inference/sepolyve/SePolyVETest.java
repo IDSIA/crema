@@ -22,7 +22,7 @@ public class SePolyVETest {
 				.addVertex(new double[]{0.1, 0.1, 0.8})
 				.addVertex(new double[]{0.1, 0.3, 0.6})
 				.addVertex(new double[]{0.3, 0.2, 0.5})
-				.build();
+				.get();
 
 		model.setFactor(first, f1);
 
@@ -66,7 +66,7 @@ public class SePolyVETest {
 				.addVertex(new double[]{0.1, 0.5, 0.3}, 2, 2)
 				.addVertex(new double[]{0.3, 0.3, 0.4}, 2, 2)
 
-				.build();
+				.get();
 		model.setFactor(second, f2);
 
 		int fourth = model.addVariable(3);
@@ -83,7 +83,7 @@ public class SePolyVETest {
 				.addVertex(new double[]{0.3, 0.4, 0.3}, 2)
 				.addVertex(new double[]{0.5, 0.2, 0.3}, 2)
 
-				.build();
+				.get();
 		model.setFactor(fourth, f4);
 
 		int fifth = model.addVariable(3);
@@ -91,7 +91,7 @@ public class SePolyVETest {
 				.addVertex(new double[]{0.1, 0.1, 0.8})
 				.addVertex(new double[]{0.1, 0.3, 0.6})
 				.addVertex(new double[]{0.3, 0.2, 0.5})
-				.build();
+				.get();
 		model.setFactor(fifth, f5);
 
 		VertexFactor f3 = VertexFactorFactory.factory().domain(model.getDomain(third), model.getDomain(fifth))
@@ -107,7 +107,7 @@ public class SePolyVETest {
 				.addVertex(new double[]{0.2, 0.4, 0.4}, 2)
 				.addVertex(new double[]{0.6, 0.3, 0.1}, 2)
 
-				.build();
+				.get();
 		model.setFactor(third, f3);
 
 		int sixth = model.addVariable(3);
@@ -124,7 +124,7 @@ public class SePolyVETest {
 				.addVertex(new double[]{0.2, 0.4, 0.4}, 2)
 				.addVertex(new double[]{0.6, 0.3, 0.1}, 2)
 
-				.build();
+				.get();
 		model.setFactor(sixth, f6);
 
 		final TIntIntHashMap evidence = new TIntIntHashMap();

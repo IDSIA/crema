@@ -24,8 +24,8 @@ public interface LinearSolver {
 	/**
 	 * Load the constraints from the specified {@link LinearConstraintSet}.
 	 *
-	 * @param factor - the set of constraints as an {@link LinearConstraintSet}.
-	 * @param goal   - {@link GoalType} the direction of the optimization.
+	 * @param data - the set of constraints as an {@link LinearConstraintSet}.
+	 * @param goal - {@link GoalType} the direction of the optimization.
 	 */
 	void loadProblem(LinearConstraintSet data, GoalType goal);
 
