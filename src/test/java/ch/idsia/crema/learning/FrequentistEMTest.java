@@ -1,6 +1,7 @@
 package ch.idsia.crema.learning;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -30,9 +31,9 @@ public class FrequentistEMTest {
 		model.addParent(X[1], X[0]);
 		model.addParent(X[2], X[1]);
 
-		model.setFactor(X[0], new BayesianFactor(model.getDomain(X[0]), new double[]{0.5, 0.5}));
-		model.setFactor(X[1], new BayesianFactor(model.getDomain(X[1], X[0]), new double[]{2. / 3, 1. / 3, 1. / 3, 2. / 3}));
-		model.setFactor(X[2], new BayesianFactor(model.getDomain(X[2], X[1]), new double[]{2. / 3, 1. / 3, 1. / 3, 2. / 3}));
+		model.setFactor(X[0], BayesianFactorFactory.factory().domain(model.getDomain(X[0])).data(new double[]{0.5, 0.5}).get());
+		model.setFactor(X[1], BayesianFactorFactory.factory().domain(model.getDomain(X[1], X[0])).data(new double[]{2. / 3, 1. / 3, 1. / 3, 2. / 3}).get());
+		model.setFactor(X[2], BayesianFactorFactory.factory().domain(model.getDomain(X[2], X[1])).data(new double[]{2. / 3, 1. / 3, 1. / 3, 2. / 3}).get());
 
 		int[][] dataX = {
 				{0, 0, 0},

@@ -2,8 +2,9 @@ package ch.idsia.crema.jasper;
 
 import ch.idsia.crema.core.DomainBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.vertex.ExtensiveVertexFactor;
-import ch.idsia.crema.factor.credal.vertex.algebra.DefaultExtensiveAlgebra;
+import ch.idsia.crema.factor.algebra.ExtensiveVertexDefaultAlgebra;
+import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexFactor;
+import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexFactorFactory;
 import ch.idsia.crema.solver.commons.Simplex;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
@@ -12,16 +13,17 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JaspersTests {
 
-	public boolean isInternal(ArrayList<double[]> Points, int CheckNr) {
+	public boolean isInternal(List<double[]> Points, int CheckNr) {
 		//check whether point nr. CheckNr is internal
 		int NrPoints = Points.size();
 		int Dimension = Points.get(0).length;
 
 		Simplex solver = new Simplex();
-		ArrayList<LinearConstraint> constraints = new ArrayList<>();
+		List<LinearConstraint> constraints = new ArrayList<>();
 
 		double[] coef = new double[NrPoints];
 		for (int i = 0; i < NrPoints; i++) {
@@ -57,7 +59,7 @@ public class JaspersTests {
 		return answer;
 	}
 
-	public boolean[] listInternal(ArrayList<double[]> Points) {
+	public boolean[] listInternal(List<double[]> Points) {
 
 		int NrPoints = Points.size();
 
@@ -68,7 +70,7 @@ public class JaspersTests {
 		return list;
 	}
 
-	public ArrayList<double[]> naiveRemoveInternal(ArrayList<double[]> Points) {
+	public List<double[]> naiveRemoveInternal(List<double[]> Points) {
 		int NrPoints = Points.size();
 		for (int i = NrPoints - 1; i >= 0; i--) {
 			if (isInternal(Points, i)) {
@@ -83,21 +85,22 @@ public class JaspersTests {
 
 		// factor (v0 | v2)
 		Strides domain = DomainBuilder.var(0, 2).size(3, 3).strides();
-		ExtensiveVertexFactor factor = new ExtensiveVertexFactor(domain, false);
-
-		// populate with some data
-		factor.addVertex(new double[]{0.1, 0.2, 0.7, 0.3, 0.3, 0.4, 0.4, 0.5, 0.1});
-		factor.addVertex(new double[]{0.2, 0.6, 0.2, 0.4, 0.2, 0.4, 0.1, 0.1, 0.8});
-		factor.addVertex(new double[]{0.3, 0.6, 0.1, 0.6, 0.2, 0.2, 0.4, 0.1, 0.5});
+		ExtensiveVertexFactor factor = ExtensiveVertexFactorFactory.factory().domain(domain)
+				// populate with some data
+				.addVertex(new double[]{0.1, 0.2, 0.7, 0.3, 0.3, 0.4, 0.4, 0.5, 0.1})
+				.addVertex(new double[]{0.2, 0.6, 0.2, 0.4, 0.2, 0.4, 0.1, 0.1, 0.8})
+				.addVertex(new double[]{0.3, 0.6, 0.1, 0.6, 0.2, 0.2, 0.4, 0.1, 0.5})
+				.get();
 
 		Strides domain2 = DomainBuilder.var(2).size(3).strides();
-		ExtensiveVertexFactor factor2 = new ExtensiveVertexFactor(domain2, false);
-		factor2.addVertex(new double[]{0.1, 0.1, 0.8});
-		factor2.addVertex(new double[]{0.3, 0.4, 0.3});
-		factor2.addVertex(new double[]{0.5, 0.3, 0.2});
-		factor2.addVertex(new double[]{0.7, 0.2, 0.1});
+		ExtensiveVertexFactor factor2 = ExtensiveVertexFactorFactory.factory().domain(domain2)
+				.addVertex(new double[]{0.1, 0.1, 0.8})
+				.addVertex(new double[]{0.3, 0.4, 0.3})
+				.addVertex(new double[]{0.5, 0.3, 0.2})
+				.addVertex(new double[]{0.7, 0.2, 0.1})
+				.get();
 
-		DefaultExtensiveAlgebra algebra = new DefaultExtensiveAlgebra();
+		ExtensiveVertexDefaultAlgebra algebra = new ExtensiveVertexDefaultAlgebra();
 
 		ExtensiveVertexFactor f3 = algebra.combine(factor, factor2);
 
@@ -108,7 +111,7 @@ public class JaspersTests {
 		ExtensiveVertexFactor f4 = algebra.marginalize(f3, 2);
 		//assertEquals(12, f4.getInternalVertices().size());
 
-		ArrayList<double[]> Points = f4.getInternalVertices();
+		List<double[]> Points = f4.getInternalVertices();
 		int NrPoints = Points.size();
 		//int Dimension = Points.get(0).length;
 		//int CheckNr = 0;
@@ -130,7 +133,7 @@ public class JaspersTests {
 			System.out.println(java.util.Arrays.toString(point));
 		}
 
-		ArrayList<double[]> ExtremePoints = naiveRemoveInternal(Points);
+		List<double[]> ExtremePoints = naiveRemoveInternal(Points);
 		int NrExtremePoints = ExtremePoints.size();
 		System.out.println("Number of Extreme Points:");
 		System.out.println(NrExtremePoints);

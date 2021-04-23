@@ -1,8 +1,9 @@
 package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -11,15 +12,17 @@ public class VertexToIntevalTest {
 
 	@Test
 	public void convert() {
-		VertexFactor vf = new VertexFactor(Strides.var(2, 3), Strides.var(1, 3));
-		vf.addVertex(new double[]{0.2, 0.2, 0.6}, 0);
-		vf.addVertex(new double[]{0.5, 0.2, 0.3}, 0);
-		vf.addVertex(new double[]{0.3, 0.3, 0.4}, 0);
+		VertexFactor vf = VertexFactorFactory.factory()
+				.domain(Strides.var(2, 3), Strides.var(1, 3))
+				.addVertex(new double[]{0.2, 0.2, 0.6}, 0)
+				.addVertex(new double[]{0.5, 0.2, 0.3}, 0)
+				.addVertex(new double[]{0.3, 0.3, 0.4}, 0)
 
-		vf.addVertex(new double[]{0.2, 0.2, 0.6}, 1);
-		vf.addVertex(new double[]{0.3, 0.3, 0.4}, 1);
+				.addVertex(new double[]{0.2, 0.2, 0.6}, 1)
+				.addVertex(new double[]{0.3, 0.3, 0.4}, 1)
 
-		vf.addVertex(new double[]{0.2, 0.2, 0.6}, 2);
+				.addVertex(new double[]{0.2, 0.2, 0.6}, 2)
+				.build();
 
 		VertexToInterval converter = new VertexToInterval();
 		IntervalFactor factor = converter.apply(vf);

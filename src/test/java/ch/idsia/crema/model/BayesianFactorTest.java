@@ -2,6 +2,7 @@ package ch.idsia.crema.model;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -16,8 +17,9 @@ public class BayesianFactorTest {
 
 		double[] vals = new double[]{0.15, 0.05, 0.25, 0.10, 0.05, 0.05, 0.15, 0.10, 0.10};
 
-		BayesianFactor ibf = new BayesianFactor(new Strides(vars, size), true);
-		ibf.setData(vals);
+		BayesianFactor ibf = BayesianFactorFactory.factory().domain(new Strides(vars, size))
+				.data(vals)
+				.log();
 
 		assertArrayEquals(new double[]{0.45, 0.2, 0.35}, ibf.marginalize(1).getData(), 1e-7);
 		assertArrayEquals(new double[]{0.4, 0.2, 0.4}, ibf.marginalize(2).getData(), 1e-7);
@@ -34,8 +36,9 @@ public class BayesianFactorTest {
 		size = new int[]{2, 2, 2};
 		vals = new double[]{0.15, 0.05, 0.25, 0.10, 0.05, 0.05, 0.15, 0.20};
 
-		ibf = new BayesianFactor(new Strides(vars, size), true);
-		ibf.setData(vals);
+		ibf = BayesianFactorFactory.factory().domain(new Strides(vars, size))
+				.data(vals)
+				.log();
 
 		assertArrayEquals(new double[]{0.2, 0.35, 0.1, 0.35}, ibf.marginalize(1).getData(), 1e-7);
 		assertArrayEquals(new double[]{0.4, 0.15, 0.2, 0.25}, ibf.marginalize(2).getData(), 1e-7);
@@ -49,7 +52,6 @@ public class BayesianFactorTest {
 
 		assertArrayEquals(new double[]{0.3, 0.7}, ibf.marginalize(3).marginalize(1).getData(), 1e-7);
 		assertArrayEquals(new double[]{0.6, 0.4}, ibf.marginalize(3).marginalize(2).getData(), 1e-7);
-
 	}
 
 	@Test
@@ -58,15 +60,17 @@ public class BayesianFactorTest {
 		int[] size = new int[]{2, 3, 2};
 		double[] vals = new double[]{0.15, 0.85, 0.25, 0.75, 0.95, 0.05, 0.5, 0.5, 0.4, 0.6};
 
-		BayesianFactor ibf = new BayesianFactor(new Strides(vars, size), true);
-		ibf.setData(vals);
+		BayesianFactor ibf = BayesianFactorFactory.factory().domain(new Strides(vars, size))
+				.data(vals)
+				.log();
 
 		vars = new int[]{2, 3};
 		size = new int[]{3, 2};
 		vals = new double[]{0.15, 0.05, 0.25, 0.20, 0.25, 0.1};
 
-		BayesianFactor ibf2 = new BayesianFactor(new Strides(vars, size), true);
-		ibf2.setData(vals);
+		BayesianFactor ibf2 = BayesianFactorFactory.factory().domain(new Strides(vars, size))
+				.data(vals)
+				.log();
 
 		// P PA = new P(A | B, C);
 		// P PA = PA_B * PB - B;
@@ -85,22 +89,23 @@ public class BayesianFactorTest {
 		assertArrayEquals(data, r.getData(), 1e-9);
 	}
 
-
 	@Test
 	public void testCombineDivision() {
 		int[] vars = new int[]{1, 2, 3};
 		int[] size = new int[]{2, 3, 2};
 		double[] vals = new double[]{0.15, 0.85, 0.25, 0.75, 0.95, 0.05, 0.5, 0.5, 0.4, 0.6};
 
-		BayesianFactor ibf = new BayesianFactor(new Strides(vars, size), true);
-		ibf.setData(vals);
+		BayesianFactor ibf = BayesianFactorFactory.factory().domain(new Strides(vars, size))
+				.data(vals)
+				.log();
 
 		vars = new int[]{2, 3};
 		size = new int[]{3, 2};
 		vals = new double[]{0.15, 0.05, 0.25, 0.20, 0.25, 0.1};
 
-		BayesianFactor ibf2 = new BayesianFactor(new Strides(vars, size), true);
-		ibf2.setData(vals);
+		BayesianFactor ibf2 = BayesianFactorFactory.factory().domain(new Strides(vars, size))
+				.data(vals)
+				.log();
 
 		BayesianFactor r = ibf2.combine(ibf);
 

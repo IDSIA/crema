@@ -1,7 +1,9 @@
 package ch.idsia.crema.factor.credal.vertex;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import org.junit.jupiter.api.Test;
 
@@ -16,13 +18,14 @@ public class TestVertexFactor {
 		int B = model.addVariable(2);
 		int C = model.addVariable(2);
 
-		VertexFactor factorx = new VertexFactor(model.getDomain(A, B), model.getDomain(C));
+		VertexFactor factorx = VertexFactorFactory.factory().domain(model.getDomain(A, B), model.getDomain(C))
 
-		// A0B0 A1B0 A0B1 A1B1
-		factorx.addVertex(new double[]{0.3, 0.5, 0.1, 0.1}, 1);
-		factorx.addVertex(new double[]{0.5, 0.2, 0.2, 0.1}, 1);
-		factorx.addVertex(new double[]{0.1, 0.2, 0.4, 0.3}, 0);
-		factorx.addVertex(new double[]{0.1, 0.3, 0.2, 0.2}, 0);
+				// A0B0 A1B0 A0B1 A1B1
+				.addVertex(new double[]{0.3, 0.5, 0.1, 0.1}, 1)
+				.addVertex(new double[]{0.5, 0.2, 0.2, 0.1}, 1)
+				.addVertex(new double[]{0.1, 0.2, 0.4, 0.3}, 0)
+				.addVertex(new double[]{0.1, 0.3, 0.2, 0.2}, 0)
+				.build();
 
 		factorx = factorx.filter(A, 1).filter(B, 0);
 		double[][] x = factorx.getVertices(0);
@@ -43,9 +46,9 @@ public class TestVertexFactor {
 		int B = model.addVariable(3);
 		int C = model.addVariable(2);
 
-		VertexFactor factorx = new VertexFactor(model.getDomain(A, B, C), model.getDomain());
-
-		factorx.addVertex(new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
+		VertexFactor factorx = VertexFactorFactory.factory().domain(model.getDomain(A, B, C), model.getDomain())
+				.addVertex(new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})
+				.build();
 		VertexFactor v1 = factorx.filter(B, 1);
 		VertexFactor v2 = factorx.filter(B, 2);
 		VertexFactor v3 = factorx.filter(C, 1);
@@ -69,8 +72,9 @@ public class TestVertexFactor {
 
 	@Test
 	public void testAdd() {
-		VertexFactor vf = new VertexFactor(Strides.as(1, 4), Strides.as(0, 3).and(5, 2));
-		vf.addVertex(new double[]{0.1, 0.3, 0.2, 0.4}, 2, 1);
+		VertexFactor vf = VertexFactorFactory.factory().domain(Strides.as(1, 4), Strides.as(0, 3).and(5, 2))
+				.addVertex(new double[]{0.1, 0.3, 0.2, 0.4}, 2, 1)
+				.build();
 		assertArrayEquals(new double[]{0.1, 0.3, 0.2, 0.4}, vf.getVertices(2, 1)[0], 0.000001);
 		assertNull(vf.getVertices(0, 1));
 	}
@@ -78,22 +82,22 @@ public class TestVertexFactor {
 	@Test
 	public void testExpansion() {
 		// p(X1|X0,X5)
-		VertexFactor vf = new VertexFactor(Strides.as(1, 4), Strides.as(0, 3).and(5, 2));
+		VertexFactor vf = VertexFactorFactory.factory().domain(Strides.as(1, 4), Strides.as(0, 3).and(5, 2))
+				.addVertex(new double[]{0.1, 0.3, 0.2, 0.4}, 0, 1)
+				.addVertex(new double[]{0.3, 0.2, 0.1, 0.4}, 0, 1)
+				.addVertex(new double[]{0.1, 0.3, 0.4, 0.2}, 0, 1)
+				.addVertex(new double[]{0.3, 0.3, 0.2, 0.2}, 1, 1)
+				.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 1)
+				.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 2, 1)
 
-		vf.addVertex(new double[]{0.1, 0.3, 0.2, 0.4}, 0, 1);
-		vf.addVertex(new double[]{0.3, 0.2, 0.1, 0.4}, 0, 1);
-		vf.addVertex(new double[]{0.1, 0.3, 0.4, 0.2}, 0, 1);
-		vf.addVertex(new double[]{0.3, 0.3, 0.2, 0.2}, 1, 1);
-		vf.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 1);
-		vf.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 2, 1);
-
-		vf.addVertex(new double[]{0.7, 0.1, 0.1, 0.1}, 0, 0);
-		vf.addVertex(new double[]{0.2, 0.3, 0.3, 0.2}, 0, 0);
-		vf.addVertex(new double[]{0.1, 0.1, 0.7, 0.1}, 1, 0);
-		vf.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 1, 0);
-		vf.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1, 0);
-		vf.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 0);
-		vf.addVertex(new double[]{0.1, 0.2, 0.2, 0.5}, 2, 0);
+				.addVertex(new double[]{0.7, 0.1, 0.1, 0.1}, 0, 0)
+				.addVertex(new double[]{0.2, 0.3, 0.3, 0.2}, 0, 0)
+				.addVertex(new double[]{0.1, 0.1, 0.7, 0.1}, 1, 0)
+				.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 1, 0)
+				.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1, 0)
+				.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 0)
+				.addVertex(new double[]{0.1, 0.2, 0.2, 0.5}, 2, 0)
+				.build();
 
 		// P(X1|X0,X5) -> diventa estensivo rispetto a X5
 		VertexFactor v2 = vf.reseparate(Strides.as(0, 3));
@@ -130,14 +134,15 @@ public class TestVertexFactor {
 
 		// no reseparation!
 
-		VertexFactor vf1_05 = new VertexFactor(Strides.as(1, 2), Strides.as(0, 2, 5, 2));
-		vf1_05.addVertex(new double[]{0.3, 0.7}, 0, 0);
-		vf1_05.addVertex(new double[]{0.4, 0.6}, 0, 1);
-		vf1_05.addVertex(new double[]{0.7, 0.3}, 0, 1);
-		vf1_05.addVertex(new double[]{0.9, 0.1}, 1, 0);
-		vf1_05.addVertex(new double[]{0.6, 0.4}, 1, 0);
-		vf1_05.addVertex(new double[]{0.5, 0.5}, 1, 1);
-		vf1_05.addVertex(new double[]{0.9, 0.1}, 1, 1);
+		VertexFactor vf1_05 = VertexFactorFactory.factory().domain(Strides.as(1, 2), Strides.as(0, 2, 5, 2))
+				.addVertex(new double[]{0.3, 0.7}, 0, 0)
+				.addVertex(new double[]{0.4, 0.6}, 0, 1)
+				.addVertex(new double[]{0.7, 0.3}, 0, 1)
+				.addVertex(new double[]{0.9, 0.1}, 1, 0)
+				.addVertex(new double[]{0.6, 0.4}, 1, 0)
+				.addVertex(new double[]{0.5, 0.5}, 1, 1)
+				.addVertex(new double[]{0.9, 0.1}, 1, 1)
+				.build();
 
 		v2 = vf1_05.reseparate(vf1_05.getSeparatingDomain());
 		int s = 0;
@@ -155,13 +160,13 @@ public class TestVertexFactor {
 
 	@Test
 	public void testMarginalize() {
-		VertexFactor vf = new VertexFactor(Strides.as(1, 2, 2, 2), Strides.as(0, 2));
-
-		vf.addVertex(new double[]{0.6, 0.2, 0.1, 0.1}, 0);
-		vf.addVertex(new double[]{0.2, 0.3, 0.4, 0.1}, 0);
-		vf.addVertex(new double[]{0.1, 0.1, 0.7, 0.1}, 1);
-		vf.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 1);
-		vf.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1);
+		VertexFactor vf = VertexFactorFactory.factory().domain(Strides.as(1, 2, 2, 2), Strides.as(0, 2))
+				.addVertex(new double[]{0.6, 0.2, 0.1, 0.1}, 0)
+				.addVertex(new double[]{0.2, 0.3, 0.4, 0.1}, 0)
+				.addVertex(new double[]{0.1, 0.1, 0.7, 0.1}, 1)
+				.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 1)
+				.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1)
+				.build();
 
 		VertexFactor v2 = vf.marginalize(2);
 		double[][] v = v2.getVertices(0);
@@ -203,20 +208,22 @@ public class TestVertexFactor {
 
 	@Test
 	public void testFilter() {
-		VertexFactor vf = new VertexFactor(Strides.as(1, 4), Strides.as(0, 3, 5, 2));
-		vf.addVertex(new double[]{0.1, 0.3, 0.2, 0.4}, 0, 1);
-		vf.addVertex(new double[]{0.3, 0.2, 0.1, 0.4}, 0, 1);
-		vf.addVertex(new double[]{0.1, 0.3, 0.4, 0.2}, 0, 1);
-		vf.addVertex(new double[]{0.3, 0.3, 0.2, 0.2}, 1, 1);
-		vf.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 1);
-		vf.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 2, 1);
+		VertexFactor vf = VertexFactorFactory.factory().domain(Strides.as(1, 4), Strides.as(0, 3, 5, 2))
+				.addVertex(new double[]{0.1, 0.3, 0.2, 0.4}, 0, 1)
+				.addVertex(new double[]{0.3, 0.2, 0.1, 0.4}, 0, 1)
+				.addVertex(new double[]{0.1, 0.3, 0.4, 0.2}, 0, 1)
+				.addVertex(new double[]{0.3, 0.3, 0.2, 0.2}, 1, 1)
+				.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 1)
+				.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 2, 1)
 
-		vf.addVertex(new double[]{0.7, 0.1, 0.1, 0.1}, 0, 0);
-		vf.addVertex(new double[]{0.2, 0.3, 0.3, 0.2}, 0, 0);
-		vf.addVertex(new double[]{0.1, 0.1, 0.7, 0.1}, 1, 0);
-		vf.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 1, 0);
-		vf.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1, 0);
-		vf.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 0);
+				.addVertex(new double[]{0.7, 0.1, 0.1, 0.1}, 0, 0)
+				.addVertex(new double[]{0.2, 0.3, 0.3, 0.2}, 0, 0)
+				.addVertex(new double[]{0.1, 0.1, 0.7, 0.1}, 1, 0)
+				.addVertex(new double[]{0.4, 0.2, 0.2, 0.2}, 1, 0)
+				.addVertex(new double[]{0.3, 0.3, 0.3, 0.1}, 1, 0)
+				.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 0)
+
+				.build();
 
 		VertexFactor v2 = vf.filter(5, 0).filter(0, 1);
 		double[][] d = v2.getVertices();
@@ -228,55 +235,45 @@ public class TestVertexFactor {
 
 	@Test
 	public void testCombine() {
-		VertexFactor vf1_05 = new VertexFactor(Strides.as(1, 2), Strides.as(0, 2, 5, 2));
-		vf1_05.addVertex(new double[]{0.3, 0.7}, 0, 0);
-		vf1_05.addVertex(new double[]{0.4, 0.6}, 0, 1);
-		vf1_05.addVertex(new double[]{0.7, 0.3}, 0, 1);
+		VertexFactor vf1_05 = VertexFactorFactory.factory().domain(Strides.as(1, 2), Strides.as(0, 2, 5, 2))
+				.addVertex(new double[]{0.3, 0.7}, 0, 0)
+				.addVertex(new double[]{0.4, 0.6}, 0, 1)
+				.addVertex(new double[]{0.7, 0.3}, 0, 1)
 
-		vf1_05.addVertex(new double[]{0.9, 0.1}, 1, 0);
-		vf1_05.addVertex(new double[]{0.6, 0.4}, 1, 0);
-		vf1_05.addVertex(new double[]{0.5, 0.5}, 1, 1);
-		vf1_05.addVertex(new double[]{0.9, 0.1}, 1, 1);
+				.addVertex(new double[]{0.9, 0.1}, 1, 0)
+				.addVertex(new double[]{0.6, 0.4}, 1, 0)
+				.addVertex(new double[]{0.5, 0.5}, 1, 1)
+				.addVertex(new double[]{0.9, 0.1}, 1, 1)
+				.build();
 
-		VertexFactor vf5_0 = new VertexFactor(Strides.as(5, 2), Strides.as(0, 2));
-		vf5_0.addVertex(new double[]{0.5, 0.5}, 0);
-		vf5_0.addVertex(new double[]{0.6, 0.4}, 0);
+		VertexFactor vf5_0 = VertexFactorFactory.factory().domain(Strides.as(5, 2), Strides.as(0, 2))
+				.addVertex(new double[]{0.5, 0.5}, 0)
+				.addVertex(new double[]{0.6, 0.4}, 0)
 
-		vf5_0.addVertex(new double[]{0.2, 0.8}, 1);
-		vf5_0.addVertex(new double[]{0.3, 0.7}, 1);
+				.addVertex(new double[]{0.2, 0.8}, 1)
+				.addVertex(new double[]{0.3, 0.7}, 1)
+				.build();
 
 		VertexFactor v2_1 = vf1_05.combine(vf5_0);
 
 		assertEquals(4, v2_1.getVertices(0).length);
-		assertArrayEquals(new double[]{0.3 * 0.5, 0.7 * 0.5, 0.4 * 0.5, 0.6 * 0.5}, v2_1.getVertices(0)[0],
-				1e-8);
-		assertArrayEquals(new double[]{0.3 * 0.5, 0.7 * 0.5, 0.7 * 0.5, 0.3 * 0.5}, v2_1.getVertices(0)[1],
-				1e-8);
-		assertArrayEquals(new double[]{0.3 * 0.6, 0.7 * 0.6, 0.4 * 0.4, 0.6 * 0.4}, v2_1.getVertices(0)[2],
-				1e-10);
-		assertArrayEquals(new double[]{0.3 * 0.6, 0.7 * 0.6, 0.7 * 0.4, 0.3 * 0.4}, v2_1.getVertices(0)[3],
-				1e-10);
+		assertArrayEquals(new double[]{0.3 * 0.5, 0.7 * 0.5, 0.4 * 0.5, 0.6 * 0.5}, v2_1.getVertices(0)[0], 1e-8);
+		assertArrayEquals(new double[]{0.3 * 0.5, 0.7 * 0.5, 0.7 * 0.5, 0.3 * 0.5}, v2_1.getVertices(0)[1], 1e-8);
+		assertArrayEquals(new double[]{0.3 * 0.6, 0.7 * 0.6, 0.4 * 0.4, 0.6 * 0.4}, v2_1.getVertices(0)[2], 1e-10);
+		assertArrayEquals(new double[]{0.3 * 0.6, 0.7 * 0.6, 0.7 * 0.4, 0.3 * 0.4}, v2_1.getVertices(0)[3], 1e-10);
 
 		assertEquals(8, v2_1.getVertices(1).length);
 
 		// first looping on the argument's vertices
-		assertArrayEquals(new double[]{0.9 * 0.2, 0.1 * 0.2, 0.5 * 0.8, 0.5 * 0.8}, v2_1.getVertices(1)[0],
-				1e-8);
-		assertArrayEquals(new double[]{0.6 * 0.2, 0.4 * 0.2, 0.5 * 0.8, 0.5 * 0.8}, v2_1.getVertices(1)[1],
-				1e-8);
-		assertArrayEquals(new double[]{0.9 * 0.2, 0.1 * 0.2, 0.9 * 0.8, 0.1 * 0.8}, v2_1.getVertices(1)[2],
-				1e-8);
-		assertArrayEquals(new double[]{0.6 * 0.2, 0.4 * 0.2, 0.9 * 0.8, 0.1 * 0.8}, v2_1.getVertices(1)[3],
-				1e-8);
+		assertArrayEquals(new double[]{0.9 * 0.2, 0.1 * 0.2, 0.5 * 0.8, 0.5 * 0.8}, v2_1.getVertices(1)[0], 1e-8);
+		assertArrayEquals(new double[]{0.6 * 0.2, 0.4 * 0.2, 0.5 * 0.8, 0.5 * 0.8}, v2_1.getVertices(1)[1], 1e-8);
+		assertArrayEquals(new double[]{0.9 * 0.2, 0.1 * 0.2, 0.9 * 0.8, 0.1 * 0.8}, v2_1.getVertices(1)[2], 1e-8);
+		assertArrayEquals(new double[]{0.6 * 0.2, 0.4 * 0.2, 0.9 * 0.8, 0.1 * 0.8}, v2_1.getVertices(1)[3], 1e-8);
 
-		assertArrayEquals(new double[]{0.9 * 0.3, 0.1 * 0.3, 0.5 * 0.7, 0.5 * 0.7}, v2_1.getVertices(1)[4],
-				1e-8);
-		assertArrayEquals(new double[]{0.6 * 0.3, 0.4 * 0.3, 0.5 * 0.7, 0.5 * 0.7}, v2_1.getVertices(1)[5],
-				1e-8);
-		assertArrayEquals(new double[]{0.9 * 0.3, 0.1 * 0.3, 0.9 * 0.7, 0.1 * 0.7}, v2_1.getVertices(1)[6],
-				1e-8);
-		assertArrayEquals(new double[]{0.6 * 0.3, 0.4 * 0.3, 0.9 * 0.7, 0.1 * 0.7}, v2_1.getVertices(1)[7],
-				1e-8);
+		assertArrayEquals(new double[]{0.9 * 0.3, 0.1 * 0.3, 0.5 * 0.7, 0.5 * 0.7}, v2_1.getVertices(1)[4], 1e-8);
+		assertArrayEquals(new double[]{0.6 * 0.3, 0.4 * 0.3, 0.5 * 0.7, 0.5 * 0.7}, v2_1.getVertices(1)[5], 1e-8);
+		assertArrayEquals(new double[]{0.9 * 0.3, 0.1 * 0.3, 0.9 * 0.7, 0.1 * 0.7}, v2_1.getVertices(1)[6], 1e-8);
+		assertArrayEquals(new double[]{0.6 * 0.3, 0.4 * 0.3, 0.9 * 0.7, 0.1 * 0.7}, v2_1.getVertices(1)[7], 1e-8);
 
 		VertexFactor v2_2 = v2_1.marginalize(5);
 		//	v2_2.convex();
@@ -287,19 +284,21 @@ public class TestVertexFactor {
 
 	@Test
 	public void testCombine2() {
-		VertexFactor vf1_05 = new VertexFactor(Strides.var(1, 2), Strides.var(0, 2).and(5, 2));
-		vf1_05.addVertex(new double[]{0.3, 0.7}, 0, 0);
-		vf1_05.addVertex(new double[]{0.4, 0.6}, 0, 1);
-		vf1_05.addVertex(new double[]{0.7, 0.3}, 0, 1);
+		VertexFactor vf1_05 = VertexFactorFactory.factory().domain(Strides.var(1, 2), Strides.var(0, 2).and(5, 2))
+				.addVertex(new double[]{0.3, 0.7}, 0, 0)
+				.addVertex(new double[]{0.4, 0.6}, 0, 1)
+				.addVertex(new double[]{0.7, 0.3}, 0, 1)
 
-		vf1_05.addVertex(new double[]{0.9, 0.1}, 1, 0);
-		vf1_05.addVertex(new double[]{0.6, 0.4}, 1, 0);
-		vf1_05.addVertex(new double[]{0.5, 0.5}, 1, 1);
-		vf1_05.addVertex(new double[]{0.9, 0.1}, 1, 1);
+				.addVertex(new double[]{0.9, 0.1}, 1, 0)
+				.addVertex(new double[]{0.6, 0.4}, 1, 0)
+				.addVertex(new double[]{0.5, 0.5}, 1, 1)
+				.addVertex(new double[]{0.9, 0.1}, 1, 1)
+				.build();
 
-		VertexFactor vf5 = new VertexFactor(Strides.as(5, 2), Strides.EMPTY);
-		vf5.addVertex(new double[]{0.5, 0.5});
-		vf5.addVertex(new double[]{0.6, 0.4});
+		VertexFactor vf5 = VertexFactorFactory.factory().domain(Strides.as(5, 2), Strides.EMPTY)
+				.addVertex(new double[]{0.5, 0.5})
+				.addVertex(new double[]{0.6, 0.4})
+				.build();
 
 		VertexFactor v2_1 = vf1_05.combine(vf5);
 
@@ -314,28 +313,20 @@ public class TestVertexFactor {
 				1e-10);
 
 		assertEquals(8, v2_1.getVertices(1).length);
-//
-//		// first looping on the argument's vertices
-//		assertArrayEquals(new double[] { 0.9 * 0.2, 0.1 * 0.2, 0.5 * 0.8, 0.5 * 0.8 }, v2_1.getVertices(1)[0],
-//				0.00000001);
-//		assertArrayEquals(new double[] { 0.6 * 0.2, 0.4 * 0.2, 0.5 * 0.8, 0.5 * 0.8 }, v2_1.getVertices(1)[1],
-//				0.00000001);
-//		assertArrayEquals(new double[] { 0.9 * 0.2, 0.1 * 0.2, 0.9 * 0.8, 0.1 * 0.8 }, v2_1.getVertices(1)[2],
-//				0.00000001);
-//		assertArrayEquals(new double[] { 0.6 * 0.2, 0.4 * 0.2, 0.9 * 0.8, 0.1 * 0.8 }, v2_1.getVertices(1)[3],
-//				0.00000001);
-//
-//		assertArrayEquals(new double[] { 0.9 * 0.3, 0.1 * 0.3, 0.5 * 0.7, 0.5 * 0.7 }, v2_1.getVertices(1)[4],
-//				0.00000001);
-//		assertArrayEquals(new double[] { 0.6 * 0.3, 0.4 * 0.3, 0.5 * 0.7, 0.5 * 0.7 }, v2_1.getVertices(1)[5],
-//				0.00000001);
-//		assertArrayEquals(new double[] { 0.9 * 0.3, 0.1 * 0.3, 0.9 * 0.7, 0.1 * 0.7 }, v2_1.getVertices(1)[6],
-//				0.00000001);
-//		assertArrayEquals(new double[] { 0.6 * 0.3, 0.4 * 0.3, 0.9 * 0.7, 0.1 * 0.7 }, v2_1.getVertices(1)[7],
-//				0.00000001);
+
+		// first looping on the argument's vertices
+//		assertArrayEquals(new double[] { 0.9 * 0.2, 0.1 * 0.2, 0.5 * 0.8, 0.5 * 0.8 }, v2_1.getVertices(1)[0], 0.00000001);
+//		assertArrayEquals(new double[] { 0.6 * 0.2, 0.4 * 0.2, 0.5 * 0.8, 0.5 * 0.8 }, v2_1.getVertices(1)[1], 0.00000001);
+//		assertArrayEquals(new double[] { 0.9 * 0.2, 0.1 * 0.2, 0.9 * 0.8, 0.1 * 0.8 }, v2_1.getVertices(1)[2], 0.00000001);
+//		assertArrayEquals(new double[] { 0.6 * 0.2, 0.4 * 0.2, 0.9 * 0.8, 0.1 * 0.8 }, v2_1.getVertices(1)[3], 0.00000001);
+
+//		assertArrayEquals(new double[] { 0.9 * 0.3, 0.1 * 0.3, 0.5 * 0.7, 0.5 * 0.7 }, v2_1.getVertices(1)[4], 0.00000001);
+//		assertArrayEquals(new double[] { 0.6 * 0.3, 0.4 * 0.3, 0.5 * 0.7, 0.5 * 0.7 }, v2_1.getVertices(1)[5], 0.00000001);
+//		assertArrayEquals(new double[] { 0.9 * 0.3, 0.1 * 0.3, 0.9 * 0.7, 0.1 * 0.7 }, v2_1.getVertices(1)[6], 0.00000001);
+//		assertArrayEquals(new double[] { 0.6 * 0.3, 0.4 * 0.3, 0.9 * 0.7, 0.1 * 0.7 }, v2_1.getVertices(1)[7], 0.00000001);
 
 		VertexFactor v2_2 = v2_1.marginalize(5);
-		//v2_2.convex();
+		// v2_2.convex();
 		System.out.println(v2_2);
 	}
 }

@@ -1,8 +1,9 @@
 package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.linear.ExtensiveHalfspaceFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.solver.commons.Simplex;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.Relationship;
@@ -21,18 +22,20 @@ public class SeparateLinearToExtensiveHalfspace {
 	public void testFromIntervalFactor1() {
 		SeparateLinearToExtensiveHalfspaceFactor converter = new SeparateLinearToExtensiveHalfspaceFactor();
 
-		IntervalFactor a = new IntervalFactor(Strides.var(1, 2), Strides.var(0, 4));
+		IntervalFactor a = IntervalFactorFactory.factory()
+				.domain(Strides.var(1, 2), Strides.var(0, 4))
 
-		a.setLower(new double[]{.600, .375}, 0); // lP(Q=right|S=0)
-		a.setLower(new double[]{.750, .225}, 1); // lP(Q=right|S=1)
-		a.setLower(new double[]{.850, .125}, 2); // lP(Q=right|S=2)
-		a.setLower(new double[]{.950, .025}, 3); // lP(Q=right|S=3)
+				.lower(new double[]{.600, .375}, 0) // lP(Q=right|S=0)
+				.lower(new double[]{.750, .225}, 1) // lP(Q=right|S=1)
+				.lower(new double[]{.850, .125}, 2) // lP(Q=right|S=2)
+				.lower(new double[]{.950, .025}, 3) // lP(Q=right|S=3)
 
-		a.setUpper(new double[]{.625, .400}, 0); // uP(Q=right|S=0)
-		a.setUpper(new double[]{.775, .250}, 1); // uP(Q=right|S=1)
-		a.setUpper(new double[]{.875, .150}, 2); // uP(Q=right|S=2)
-		a.setUpper(new double[]{.975, .050}, 3); // uP(Q=right|S=3)
+				.upper(new double[]{.625, .400}, 0) // uP(Q=right|S=0)
+				.upper(new double[]{.775, .250}, 1) // uP(Q=right|S=1)
+				.upper(new double[]{.875, .150}, 2) // uP(Q=right|S=2)
+				.upper(new double[]{.975, .050}, 3) // uP(Q=right|S=3)
 
+				.build();
 
 		ExtensiveHalfspaceFactor factor = converter.apply(a);
 		//assertArrayEquals(new int[] {0,1}, factor.getDomain().getVariables());
@@ -51,14 +54,10 @@ public class SeparateLinearToExtensiveHalfspace {
 	public void testFromIntervalFactor2() {
 		SeparateLinearToExtensiveHalfspaceFactor converter = new SeparateLinearToExtensiveHalfspaceFactor();
 
-		final IntervalFactor fS = new IntervalFactor(Strides.var(0, 4), Strides.EMPTY);
-		fS.setLower(new double[]{
-				.1, .3, .3, .1
-		});
-		fS.setUpper(new double[]{
-				.2, .4, .4, .2
-		});
-
+		final IntervalFactor fS = IntervalFactorFactory.factory().domain(Strides.var(0, 4), Strides.EMPTY)
+				.lower(new double[]{.1, .3, .3, .1})
+				.upper(new double[]{.2, .4, .4, .2})
+				.build();
 
 		ExtensiveHalfspaceFactor factor = converter.apply(fS);
 		assertArrayEquals(new int[]{0}, factor.getDomain().getVariables());

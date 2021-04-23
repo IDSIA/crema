@@ -2,12 +2,15 @@ package ch.idsia.crema.alessandro;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.algebra.SeparateConvexDefaultAlgebra;
+import ch.idsia.crema.factor.algebra.SeparateDefaultAlgebra;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateAlgebra;
-import ch.idsia.crema.factor.credal.vertex.algebra.DefaultSeparateConvexAlgebra;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
 import ch.idsia.crema.inference.approxlp.ApproxLP1;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.search.ISearch;
@@ -78,44 +81,56 @@ public class AlexsTests {
 		Strides dA = Strides.as(varA, 3);
 		Strides dB = Strides.as(varB, 3);
 		IntervalFactor ffA, ffB;
-		ffA = new IntervalFactor(dA, Strides.EMPTY);
-		ffA.setLower(new double[]{0.2, 0.2, 0.2});
-		ffA.setUpper(new double[]{0.4, 0.4, 0.4});
-		ffB = new IntervalFactor(dB, dA);
-		ffB.setLower(new double[]{0.2, 0.2, 0.2}, 0);
-		ffB.setUpper(new double[]{0.4, 0.4, 0.4}, 0);
-		ffB.setLower(new double[]{0.2, 0.2, 0.2}, 1);
-		ffB.setUpper(new double[]{0.4, 0.4, 0.4}, 1);
-		ffB.setLower(new double[]{0.2, 0.2, 0.2}, 2);
-		ffB.setUpper(new double[]{0.4, 0.4, 0.4}, 2);
+		ffA = IntervalFactorFactory.factory()
+				.domain(dA)
+				.lower(new double[]{0.2, 0.2, 0.2})
+				.upper(new double[]{0.4, 0.4, 0.4})
+				.build();
+		ffB = IntervalFactorFactory.factory()
+				.domain(dB, dA)
+				.lower(new double[]{0.2, 0.2, 0.2}, 0)
+				.upper(new double[]{0.4, 0.4, 0.4}, 0)
+				.lower(new double[]{0.2, 0.2, 0.2}, 1)
+				.upper(new double[]{0.4, 0.4, 0.4}, 1)
+				.lower(new double[]{0.2, 0.2, 0.2}, 2)
+				.upper(new double[]{0.4, 0.4, 0.4}, 2)
+				.build();
+
 		model.setFactor(varA, ffA);
 		model.setFactor(varB, ffB);
 		VertexFactor fA, fB;
-		fA = new VertexFactor(dA, Strides.EMPTY);
-		fA.addVertex(new double[]{.2, .4, .4});
-		fA.addVertex(new double[]{.4, .2, .4});
-		fA.addVertex(new double[]{.4, .4, .2});
-		fB = new VertexFactor(dB, dA);
-		fB.addVertex(new double[]{.4, .4, .2}, 0);
-		fB.addVertex(new double[]{.4, .2, .4}, 0);
-		fB.addVertex(new double[]{.2, .4, .4}, 0);
-		fB.addVertex(new double[]{.4, .4, .2}, 1);
-		fB.addVertex(new double[]{.4, .2, .4}, 1);
-		fB.addVertex(new double[]{.2, .4, .4}, 1);
-		fB.addVertex(new double[]{.4, .4, .2}, 2);
-		fB.addVertex(new double[]{.4, .2, .4}, 2);
-		fB.addVertex(new double[]{.2, .4, .4}, 2);
+		fA = VertexFactorFactory.factory()
+				.domain(dA)
+				.addVertex(new double[]{.2, .4, .4})
+				.addVertex(new double[]{.4, .2, .4})
+				.addVertex(new double[]{.4, .4, .2})
+				.build();
+		fB = VertexFactorFactory.factory()
+				.domain(dB, dA)
+				.addVertex(new double[]{.4, .4, .2}, 0)
+				.addVertex(new double[]{.4, .2, .4}, 0)
+				.addVertex(new double[]{.2, .4, .4}, 0)
+				.addVertex(new double[]{.4, .4, .2}, 1)
+				.addVertex(new double[]{.4, .2, .4}, 1)
+				.addVertex(new double[]{.2, .4, .4}, 1)
+				.addVertex(new double[]{.4, .4, .2}, 2)
+				.addVertex(new double[]{.4, .2, .4}, 2)
+				.addVertex(new double[]{.2, .4, .4}, 2)
+				.build();
 
 		int dummy = model.addVariable(2);
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(1, dummy), false);
-		fDummy.setValue(1.0, 1, 0);
-		fDummy.setValue(1.0, 0, 1);
+		BayesianFactor fDummy = BayesianFactorFactory.factory()
+				.domain(model.getDomain(1, dummy))
+				.value(1.0, 1, 0)
+				.value(1.0, 0, 1)
+				.get();
+
 		model.setFactor(dummy, fDummy);
 
 
 		// Algebra to perform the computations
-		DefaultSeparateAlgebra alge = new DefaultSeparateAlgebra();
-		DefaultSeparateConvexAlgebra convex_alge = new DefaultSeparateConvexAlgebra();
+		SeparateDefaultAlgebra alge = new SeparateDefaultAlgebra();
+		SeparateConvexDefaultAlgebra convex_alge = new SeparateConvexDefaultAlgebra();
 		// Forward
 		//		VertexFactor tmp = alge.combine(fA, fB);
 		//		fB = alge.marginalize(tmp,0);
@@ -123,7 +138,7 @@ public class AlexsTests {
 		//		System.out.println("--- VE ---");
 		//		for (double[] vertex : vertici_conv2)
 		//			System.out.println(Arrays.toString(vertex));
-		//		//Backward
+		// Backward
 		int s = 0;
 		fB = fB.reseparate(Strides.EMPTY);
 		fB = fB.filter(varB, s);//
@@ -142,12 +157,11 @@ public class AlexsTests {
 		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
 		approx.setEvidenceNode(dummy);
 		IntervalFactor resultsALP = approx.query(model, 0);
-		//		// Results of ApproxLP
+		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));
 		//
 	}
-
 
 	public void threeNodes() {
 		DAGModel<GenericFactor> model = new DAGModel<>();
@@ -158,46 +172,61 @@ public class AlexsTests {
 		Strides dB = Strides.as(varB, 2);
 		Strides dC = Strides.as(varC, 2);
 		IntervalFactor ffA, ffB, ffC;
-		ffA = new IntervalFactor(dA, Strides.EMPTY);
-		ffA.setLower(new double[]{0.4, 0.4});
-		ffA.setUpper(new double[]{0.6, 0.6});
-		ffB = new IntervalFactor(dB, dA);
-		ffB.setLower(new double[]{0.2, 0.7}, 0);
-		ffB.setUpper(new double[]{0.3, 0.8}, 0);
-		ffB.setLower(new double[]{0.8, 0.1}, 1);
-		ffB.setUpper(new double[]{0.9, 0.2}, 1);
-		ffC = new IntervalFactor(dC, dB);
-		ffC.setLower(new double[]{0.2, 0.7}, 0);
-		ffC.setUpper(new double[]{0.3, 0.8}, 0);
-		ffC.setLower(new double[]{0.8, 0.1}, 1);
-		ffC.setUpper(new double[]{0.9, 0.2}, 1);
+		ffA = IntervalFactorFactory.factory()
+				.domain(dA)
+				.lower(new double[]{0.4, 0.4})
+				.upper(new double[]{0.6, 0.6})
+				.build();
+
+		ffB = IntervalFactorFactory.factory()
+				.domain(dB, dA)
+				.lower(new double[]{0.2, 0.7}, 0)
+				.upper(new double[]{0.3, 0.8}, 0)
+				.lower(new double[]{0.8, 0.1}, 1)
+				.upper(new double[]{0.9, 0.2}, 1)
+				.build();
+		ffC = IntervalFactorFactory.factory()
+				.domain(dC, dB)
+				.lower(new double[]{0.2, 0.7}, 0)
+				.upper(new double[]{0.3, 0.8}, 0)
+				.lower(new double[]{0.8, 0.1}, 1)
+				.upper(new double[]{0.9, 0.2}, 1)
+				.build();
 		model.setFactor(varA, ffA);
 		model.setFactor(varB, ffB);
 		model.setFactor(varC, ffC);
 		VertexFactor fA, fB, fC;
-		fA = new VertexFactor(dA, Strides.EMPTY);
-		fA.addVertex(new double[]{.4, .6});
-		fA.addVertex(new double[]{.6, .4});
-		fB = new VertexFactor(dB, dA);
-		fB.addVertex(new double[]{0.2, 0.8}, 0);
-		fB.addVertex(new double[]{0.3, 0.7}, 0);
-		fB.addVertex(new double[]{0.8, 0.2}, 1);
-		fB.addVertex(new double[]{0.9, 0.1}, 1);
-		fC = new VertexFactor(dC, dB);
-		fC.addVertex(new double[]{0.2, 0.8}, 0);
-		fC.addVertex(new double[]{0.3, 0.7}, 0);
-		fC.addVertex(new double[]{0.8, 0.2}, 1);
-		fC.addVertex(new double[]{0.9, 0.1}, 1);
+		fA = VertexFactorFactory.factory()
+				.domain(dA)
+				.addVertex(new double[]{.4, .6})
+				.addVertex(new double[]{.6, .4})
+				.build();
+		fB = VertexFactorFactory.factory()
+				.domain(dB, dA)
+				.addVertex(new double[]{0.2, 0.8}, 0)
+				.addVertex(new double[]{0.3, 0.7}, 0)
+				.addVertex(new double[]{0.8, 0.2}, 1)
+				.addVertex(new double[]{0.9, 0.1}, 1)
+				.build();
+		fC = VertexFactorFactory.factory()
+				.domain(dC, dB)
+				.addVertex(new double[]{0.2, 0.8}, 0)
+				.addVertex(new double[]{0.3, 0.7}, 0)
+				.addVertex(new double[]{0.8, 0.2}, 1)
+				.addVertex(new double[]{0.9, 0.1}, 1)
+				.build();
 		int dummy = model.addVariable(2);
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(2, dummy), false);
-		fDummy.setValue(1.0, 1, 1);
-		fDummy.setValue(1.0, 0, 0);
+		BayesianFactor fDummy = BayesianFactorFactory.factory()
+				.domain(model.getDomain(2, dummy))
+				.value(1.0, 1, 1)
+				.value(1.0, 0, 0)
+				.get();
 		model.setFactor(dummy, fDummy);
 
 
 		// Algebra to perform the computations
-		DefaultSeparateAlgebra alge = new DefaultSeparateAlgebra();
-		DefaultSeparateConvexAlgebra convex_alge = new DefaultSeparateConvexAlgebra();
+		SeparateDefaultAlgebra alge = new SeparateDefaultAlgebra();
+		SeparateConvexDefaultAlgebra convex_alge = new SeparateConvexDefaultAlgebra();
 		// Forward
 		//		VertexFactor tmp = alge.combine(fA, fB);
 		//		fB = alge.marginalize(tmp,0);
@@ -205,7 +234,7 @@ public class AlexsTests {
 		//		System.out.println("--- VE ---");
 		//		for (double[] vertex : vertici_conv2)
 		//			System.out.println(Arrays.toString(vertex));
-		//		//Backward
+		//Backward
 		int s = 1;
 		fC = fC.reseparate(Strides.EMPTY);
 		fC = fC.filter(varC, s);//
@@ -229,12 +258,11 @@ public class AlexsTests {
 		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
 		approx.setEvidenceNode(3);
 		IntervalFactor resultsALP = approx.query(model, 0);
-		//		//		// Results of ApproxLP
+		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));
 		//
 	}
-
 
 	public void twoNodes() {
 		DAGModel<GenericFactor> model = new DAGModel<>();
@@ -243,35 +271,45 @@ public class AlexsTests {
 		Strides dA = Strides.as(varA, 2);
 		Strides dB = Strides.as(varB, 2);
 		IntervalFactor ffA, ffB;
-		ffA = new IntervalFactor(dA, Strides.EMPTY);
-		ffA.setLower(new double[]{0.4, 0.4});
-		ffA.setUpper(new double[]{0.6, 0.6});
-		ffB = new IntervalFactor(dB, dA);
-		ffB.setLower(new double[]{0.2, 0.7}, 0);
-		ffB.setUpper(new double[]{0.3, 0.8}, 0);
-		ffB.setLower(new double[]{0.8, 0.1}, 1);
-		ffB.setUpper(new double[]{0.9, 0.2}, 1);
+		ffA = IntervalFactorFactory.factory()
+				.domain(dA)
+				.lower(new double[]{0.4, 0.4})
+				.upper(new double[]{0.6, 0.6})
+				.build();
+		ffB = IntervalFactorFactory.factory()
+				.domain(dB, dA)
+				.lower(new double[]{0.2, 0.7}, 0)
+				.upper(new double[]{0.3, 0.8}, 0)
+				.lower(new double[]{0.8, 0.1}, 1)
+				.upper(new double[]{0.9, 0.2}, 1)
+				.build();
 		model.setFactor(varA, ffA);
 		model.setFactor(varB, ffB);
 		VertexFactor fA, fB;
-		fA = new VertexFactor(dA, Strides.EMPTY);
-		fA.addVertex(new double[]{.4, .6});
-		fA.addVertex(new double[]{.6, .4});
-		fB = new VertexFactor(dB, dA);
-		fB.addVertex(new double[]{0.2, 0.8}, 0);
-		fB.addVertex(new double[]{0.3, 0.7}, 0);
-		fB.addVertex(new double[]{0.8, 0.2}, 1);
-		fB.addVertex(new double[]{0.9, 0.1}, 1);
+		fA = VertexFactorFactory.factory()
+				.domain(dA)
+				.addVertex(new double[]{.4, .6})
+				.addVertex(new double[]{.6, .4})
+				.build();
+		fB = VertexFactorFactory.factory()
+				.domain(dB, dA)
+				.addVertex(new double[]{0.2, 0.8}, 0)
+				.addVertex(new double[]{0.3, 0.7}, 0)
+				.addVertex(new double[]{0.8, 0.2}, 1)
+				.addVertex(new double[]{0.9, 0.1}, 1)
+				.build();
 		int dummy = model.addVariable(2);
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(1, dummy), false);
-		fDummy.setValue(1.0, 1, 0);
-		fDummy.setValue(1.0, 0, 1);
+		BayesianFactor fDummy = BayesianFactorFactory.factory()
+				.domain(model.getDomain(1, dummy))
+				.value(1.0, 1, 0)
+				.value(1.0, 0, 1)
+				.get();
 		model.setFactor(dummy, fDummy);
 
 
 		// Algebra to perform the computations
-		DefaultSeparateAlgebra alge = new DefaultSeparateAlgebra();
-		DefaultSeparateConvexAlgebra convex_alge = new DefaultSeparateConvexAlgebra();
+		SeparateDefaultAlgebra alge = new SeparateDefaultAlgebra();
+		SeparateConvexDefaultAlgebra convex_alge = new SeparateConvexDefaultAlgebra();
 		// Forward
 		//		VertexFactor tmp = alge.combine(fA, fB);
 		//		fB = alge.marginalize(tmp,0);
@@ -279,7 +317,7 @@ public class AlexsTests {
 		//		System.out.println("--- VE ---");
 		//		for (double[] vertex : vertici_conv2)
 		//			System.out.println(Arrays.toString(vertex));
-		//		//Backward
+		//Backward
 		int s = 0;
 		fB = fB.reseparate(Strides.EMPTY);
 		fB = fB.filter(varB, s);//
@@ -298,12 +336,11 @@ public class AlexsTests {
 		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
 		approx.setEvidenceNode(2);
 		IntervalFactor resultsALP = approx.query(model, 0);
-		//		// Results of ApproxLP
+		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));
 		//
 	}
-
 
 	public void firstTest() {
 		int nVars = 200; // # of variables
@@ -331,25 +368,32 @@ public class AlexsTests {
 
 		// Local factors (V-rep)
 		VertexFactor[] f = new VertexFactor[nVars];
-		IntervalFactor[] ff = new IntervalFactor[nVars]; // Array of factors
+		IntervalFactor[] ff =  new IntervalFactor[nVars]; // Array of factors
+
+		VertexFactorFactory vff;
+		IntervalFactorFactory iff;
 
 		// FIRST LOCAL MODEL
-		f[0] = new VertexFactor(d[0], Strides.EMPTY);
-		ff[0] = new IntervalFactor(d[0], Strides.EMPTY);
+		vff = VertexFactorFactory.factory().domain(d[0]);
 		myVertices = a.linvac(nDim, imprecision);
 		Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
 		Arrays.fill(upperP, Double.NEGATIVE_INFINITY);
 		for (double[] vertex : myVertices) {
-			f[0].addVertex(vertex);
+			vff.addVertex(vertex);
 			for (int i = 0; i < nDim; i++) {
-				if (vertex[i] < lowerP[i])
+				if (vertex[i] < lowerP[i]) {
 					lowerP[i] = vertex[i];
-				if (vertex[i] > upperP[i])
+				}
+				if (vertex[i] > upperP[i]) {
 					upperP[i] = vertex[i];
+				}
 			}
 		}
-		ff[0].setLower(lowerP);
-		ff[0].setUpper(upperP);
+		f[0] = vff.build();
+		ff[0] = IntervalFactorFactory.factory().domain(d[0])
+				.lower(lowerP)
+				.upper(upperP)
+				.build();
 		model.setFactor(0, ff[0]);
 		// for(double[] vv: myVertices)
 		// System.out.println(Arrays.toString(vv));
@@ -358,14 +402,14 @@ public class AlexsTests {
 
 		// OTHER LOCAL MODELS
 		for (int i = 1; i < nVars; i++) {
-			f[i] = new VertexFactor(d[i], d[i - 1]);
-			ff[i] = new IntervalFactor(d[i], d[i - 1]);
+			vff = VertexFactorFactory.factory().domain(d[i], d[i - 1]);
+			iff = IntervalFactorFactory.factory().domain(d[i], d[i - 1]);
 			for (int j = 0; j < nDim; j++) { // Loop over the parents
 				Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
 				Arrays.fill(upperP, Double.NEGATIVE_INFINITY);
 				myVertices = a.linvac(nDim, imprecision);
 				for (double[] vertex : myVertices) {
-					f[i].addVertex(vertex, j);
+					vff.addVertex(vertex, j);
 					for (int l = 0; l < nDim; l++) {
 						if (vertex[l] < lowerP[l])
 							lowerP[l] = vertex[l];
@@ -373,14 +417,16 @@ public class AlexsTests {
 							upperP[l] = vertex[l];
 					}
 				}
-				ff[i].setLower(lowerP, j);
-				ff[i].setUpper(upperP, j);
+				iff.lower(lowerP, j);
+				iff.upper(upperP, j);
 				// System.out.println("------"+j+"-----");
 				// for(double[] vv: myVertices)
 				// System.out.println(Arrays.toString(vv));
 				// System.out.println(Arrays.toString(lowerP));
 				// System.out.println(Arrays.toString(upperP));
 			}
+			f[i] = vff.build();
+			ff[i] = iff.build();
 			model.setFactor(i, ff[i]);
 		}
 
@@ -392,8 +438,8 @@ public class AlexsTests {
 		startTime = System.nanoTime(); // Elapsed time
 
 		// Algebra to perform the computations
-		DefaultSeparateAlgebra alge = new DefaultSeparateAlgebra();
-		DefaultSeparateConvexAlgebra convex_alge = new DefaultSeparateConvexAlgebra();
+		SeparateDefaultAlgebra alge = new SeparateDefaultAlgebra();
+		SeparateConvexDefaultAlgebra convex_alge = new SeparateConvexDefaultAlgebra();
 
 		// Frame to evaluate convex hull
 		//frame.getContentPane().add(canvas);
@@ -459,7 +505,6 @@ public class AlexsTests {
 
 	}
 
-
 	public void chainBack() {
 
 		int s = 0; // observed state
@@ -476,8 +521,8 @@ public class AlexsTests {
 		long startTime = System.nanoTime(); // Elapsed time
 
 		CNGenerator a = new CNGenerator(); // Credal set generator
-		//
-		//		// Model initialization
+
+		// Model initialization
 		DAGModel<GenericFactor> model = new DAGModel<>();
 		Strides[] d = new Strides[nVars]; // Array of domains
 		//
@@ -486,18 +531,20 @@ public class AlexsTests {
 			d[i] = Strides.as(var, nDim);
 		} // Domains
 
-		//		// Local factors (V-rep)
+		// Local factors (V-rep)
 		VertexFactor[] f = new VertexFactor[nVars];
-		IntervalFactor[] ff = new IntervalFactor[nVars]; // Array of factors
-		//
-		//		// FIRST LOCAL MODEL
-		f[0] = new VertexFactor(d[0], Strides.EMPTY);
-		ff[0] = new IntervalFactor(d[0], Strides.EMPTY);
+		IntervalFactor[] ff =  new IntervalFactor[nVars]; // Array of factors
+
+		VertexFactorFactory vff;
+		IntervalFactorFactory iff;
+
+		// FIRST LOCAL MODEL
+		vff = VertexFactorFactory.factory().domain(d[0]);
 		myVertices = a.linvac(nDim, imprecision);
 		Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
 		Arrays.fill(upperP, Double.NEGATIVE_INFINITY);
 		for (double[] vertex : myVertices) {
-			f[0].addVertex(vertex);
+			vff.addVertex(vertex);
 			for (int i = 0; i < nDim; i++) {
 				if (vertex[i] < lowerP[i])
 					lowerP[i] = vertex[i];
@@ -505,8 +552,12 @@ public class AlexsTests {
 					upperP[i] = vertex[i];
 			}
 		}
-		ff[0].setLower(lowerP);
-		ff[0].setUpper(upperP);
+		f[0] = vff.build();
+		ff[0] = IntervalFactorFactory.factory()
+				.domain(d[0])
+				.lower(lowerP)
+				.upper(upperP)
+				.build();
 		model.setFactor(0, ff[0]);
 		// for(double[] vv: myVertices)
 		// System.out.println(Arrays.toString(vv));
@@ -525,19 +576,16 @@ public class AlexsTests {
 		System.out.println(Arrays.toString(lowerP.clone()));
 		System.out.println(Arrays.toString(upperP.clone()));
 
-		//	
-		//	
-		//		
-		//		// OTHER LOCAL MODELS
+		// OTHER LOCAL MODELS
 		for (int i = 1; i < nVars; i++) {
-			f[i] = new VertexFactor(d[i], d[i - 1]);
-			ff[i] = new IntervalFactor(d[i], d[i - 1]);
+			vff = VertexFactorFactory.factory().domain(d[i], d[i - 1]);
+			iff = IntervalFactorFactory.factory().domain(d[i], d[i - 1]);
 			for (int j = 0; j < nDim; j++) { // Loop over the parents
 				Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
 				Arrays.fill(upperP, Double.NEGATIVE_INFINITY);
 				myVertices = a.linvac(nDim, imprecision);
 				for (double[] vertex : myVertices) {
-					f[i].addVertex(vertex, j);
+					vff.addVertex(vertex, j);
 					for (int l = 0; l < nDim; l++) {
 						if (vertex[l] < lowerP[l])
 							lowerP[l] = vertex[l];
@@ -545,97 +593,95 @@ public class AlexsTests {
 							upperP[l] = vertex[l];
 					}
 				}
-				ff[i].setLower(lowerP.clone(), j);
-				ff[i].setUpper(upperP.clone(), j);
+				iff.lower(lowerP.clone(), j);
+				iff.upper(upperP.clone(), j);
 				//System.out.println("------"+j+"-----");
 				//for(double[] vv: myVertices)
 				//	System.out.println(Arrays.toString(vv));
 				//System.out.println(Arrays.toString(lowerP));
 				//System.out.println(Arrays.toString(upperP));
 			}
+			f[i] = vff.build();
+			ff[i] = iff.build();
 			model.setFactor(i, ff[i]);
 		}
-		//
-		int dummy = model.addVariable(2);
-		//
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(nVars - 1, dummy), false);
-		//fDummy.setValue(1.0,0,1);
-		//fDummy.setValue(1.0,1,0);
-		//fDummy.setValue(1.0,2,0);
 
-		fDummy.setValue(1.0, 0 /* nVars -1 = 0 */,
-				s == 0 ? 1 : 0 /* dummy = true */); // set
-		//													// p(dummy=true|nvars-1=0)
-		//													// note however that dummy
-		//													// is bigger than nvars-1 so
-		//													// it will appear after
-		fDummy.setValue(1.0, 1 /* nVars -1 = 1 */,
-				s == 1 ? 1 : 0 /* dummy = false */);
-		fDummy.setValue(1.0, 2 /* nVars -1 = 2 */,
-				s == 2 ? 1 : 0 /* dummy = false */);
-		//
+		int dummy = model.addVariable(2);
+
+		BayesianFactor fDummy = BayesianFactorFactory.factory()
+				.domain(model.getDomain(nVars - 1, dummy))
+				//.value(1.0,0,1);
+				//.value(1.0,1,0);
+				//.value(1.0,2,0);
+
+				.value(1.0, 0 /* nVars -1 = 0 */,
+						s == 0 ? 1 : 0 /* dummy = true */)
+				// p(dummy=true|nvars-1=0)
+				// note however that dummy is bigger than nvars-1 so it will appear after
+				.value(1.0, 1 /* nVars -1 = 1 */,
+						s == 1 ? 1 : 0 /* dummy = false */)
+				.value(1.0, 2 /* nVars -1 = 2 */,
+						s == 2 ? 1 : 0 /* dummy = false */)
+				.get();
 		model.setFactor(dummy, fDummy);
-		//
-		//		// Elapsed time
+
+		// Elapsed time
 		long difference = System.nanoTime() - startTime;
 		System.out.println("Random chain created in " + String.format("%d min, %d sec",
 				TimeUnit.NANOSECONDS.toHours(difference), TimeUnit.NANOSECONDS.toSeconds(difference)
 						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
 		startTime = System.nanoTime(); // Elapsed time
 
-		//		// Algebra to perform the computations
-		DefaultSeparateAlgebra alge = new DefaultSeparateAlgebra();
-		DefaultSeparateConvexAlgebra convex_alge = new DefaultSeparateConvexAlgebra();
-		//
-		//		// Frame to evaluate convex hull
+		// Algebra to perform the computations
+		SeparateDefaultAlgebra alge = new SeparateDefaultAlgebra();
+		SeparateConvexDefaultAlgebra convex_alge = new SeparateConvexDefaultAlgebra();
+
+		// Frame to evaluate convex hull
 		// frame.getContentPane().add(canvas);
-		//		// frame.setVisible(true);
-		//
-		//		// Set observation of the last variable in its
+		// frame.setVisible(true);
+
+		// Set observation of the last variable in its
 		f[nVars - 1] = f[nVars - 1].reseparate(Strides.EMPTY);
 		f[nVars - 1] = f[nVars - 1].filter(nVars - 1, s);//
-		//
-		//		// Bottom-up Elimination (VE)
+
+		// Bottom-up Elimination (VE)
 		for (int i = nVars - 1; i > 0; i--) {
 			System.out.println("-------------------");
 			System.out.println("Processing variable " + i);
 			System.out.println("Combining ...");
-			//
+
 			vertici2 = f[i].getVertices();
 			VertexFactor bottom = convex_alge.fullConvex(f[i]);
 			vertici_conv2 = bottom.getVertices();
 			System.out.println("V before" + vertici2.length + "after" + vertici_conv2.length);
-			//
+
 			VertexFactor parent = f[i - 1].reseparate(Strides.EMPTY);
-			//VertexFactor parent = f[i-1];			
+			// VertexFactor parent = f[i-1];
 			VertexFactor tmp = alge.combine(bottom, parent);
 			System.out.println("Marginalizing ...");
-			//
+
 			//tmp = convex_alge.fullConvex(tmp);
-			//			
-			//			
+
 			if (i - 1 == 0) {
 				// processing query
 				tmp = convex_alge.fullConvex(tmp);
 				f[0] = tmp.normalize();
 			} else
 				f[i - 1] = alge.marginalize(tmp, i - 1);
-			//vertici2 = f[i-1].getVertices();
+			// vertici2 = f[i-1].getVertices();
 			//// Rounding to prevent numerical issues with the convex hull
 			//for (double[] vertex : vertici2) {
-			//	vertex[0] = Math.round(vertex[0] * tol) / tol;
-			//	vertex[1] = Math.round(vertex[1] * tol) / tol;
-			//	vertex[2] = 1.0 - vertex[0] - vertex[1];
+			// vertex[0] = Math.round(vertex[0] * tol) / tol;
+			// vertex[1] = Math.round(vertex[1] * tol) / tol;
+			// vertex[2] = 1.0 - vertex[0] - vertex[1];
 			//}
-
-
 		}
 
-		//		// Rounding to prevent numerical issues with the convex hull
+		// Rounding to prevent numerical issues with the convex hull
 		// System.out.println("Hulling ...");
 		// f[i] = convex_alge.convex(f[i]);
 		vertici_conv2 = f[0].getVertices();
-		//		//
+
 		Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
 		Arrays.fill(upperP, Double.NEGATIVE_INFINITY);
 		for (double[] vertex : vertici_conv2) {
@@ -646,38 +692,36 @@ public class AlexsTests {
 					upperP[l] = vertex[l];
 			}
 		}
-		//		// if (i == nVars - 1) {
+		// if (i == nVars - 1) {
 		//		vertici = vertici2;
 		//		vertici_conv = vertici_conv2;
 		//		frame.invalidate();
-		//		// Results of VE
+
+		// Results of VE
 		System.out.println("--- VE (Back) ---");
 		System.out.println(Arrays.toString(lowerP));
 		System.out.println(Arrays.toString(upperP));
-		//
-		//		// }
-		//
-		//		// Inference with ApproxLP
+		// }
+
+		// Inference with ApproxLP
 		System.out.println("--- ApproxLP (Back) ---");
-		//
+
 		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
 		HashMap<String, Object> init = new HashMap<>();
 		init.put(ISearch.MAX_TIME, "10000");
 		approx.initialize(init);
 		approx.setEvidenceNode(dummy);
 		IntervalFactor resultsALP = approx.query(model, 0);
-		//
-		//		// Results of ApproxLP
+
+		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));
-		//
+
 		difference = System.nanoTime() - startTime;
 		System.out.println("Elasped time " + String.format("%d min, %d sec", TimeUnit.NANOSECONDS.toHours(difference),
 				TimeUnit.NANOSECONDS.toSeconds(difference)
 						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
-
 	}
-
 
 	public void chainBackTest() {
 
@@ -700,17 +744,22 @@ public class AlexsTests {
 			int var = model.addVariable(nDim); // Variables
 			d[i] = Strides.as(var, nDim);
 		} // Domains
+
 		// Local factors (V-rep)
 		VertexFactor[] f = new VertexFactor[nVars];
 		IntervalFactor[] ff = new IntervalFactor[nVars]; // Array of factors
+
+		VertexFactorFactory vff;
+		IntervalFactorFactory iff;
+
 		// FIRST LOCAL MODEL
-		f[0] = new VertexFactor(d[0], Strides.EMPTY);
-		ff[0] = new IntervalFactor(d[0], Strides.EMPTY);
+		vff = VertexFactorFactory.factory().domain(d[0]);
+		iff = IntervalFactorFactory.factory().domain(d[0]);
 		myVertices = myVarA.linvac(nDim, imprecision);
 		Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
 		Arrays.fill(upperP, Double.NEGATIVE_INFINITY);
 		for (double[] vertex : myVertices) {
-			f[0].addVertex(vertex);
+			vff.addVertex(vertex);
 			for (int i = 0; i < nDim; i++) {
 				if (vertex[i] < lowerP[i])
 					lowerP[i] = vertex[i];
@@ -718,8 +767,11 @@ public class AlexsTests {
 					upperP[i] = vertex[i];
 			}
 		}
-		ff[0].setLower(lowerP.clone());
-		ff[0].setUpper(upperP.clone());
+		iff.lower(lowerP.clone());
+		iff.upper(upperP.clone());
+
+		f[0] = vff.build();
+		ff[0] = iff.build();
 		model.setFactor(0, ff[0]);
 		//for (double[] vv : myVertices)
 		//System.out.println(Arrays.toString(vv));
@@ -737,19 +789,20 @@ public class AlexsTests {
 		}
 		System.out.println(Arrays.toString(lowerP));
 		System.out.println(Arrays.toString(upperP));
-		// OTHER LOCAL MODELS
 
+		// OTHER LOCAL MODELS
 		for (int i = 1; i < nVars; i++) {
 			myVertices = myVarA.linvac(nDim, imprecision);
-			f[i] = new VertexFactor(d[i], d[i - 1]);
-			ff[i] = new IntervalFactor(d[i], d[i - 1]);
+
+			vff = VertexFactorFactory.factory().domain(d[i], d[i - 1]);
+			iff = IntervalFactorFactory.factory().domain(d[i], d[i - 1]);
 			for (int j = 0; j < nDim; j++) { // Loop over the parents
 				Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
 				Arrays.fill(upperP, Double.NEGATIVE_INFINITY);
-				//myVertices = a.linvac(nDim, imprecision);
-				//myVertices = a.Jasper(nDim, .01);		
+				// myVertices = a.linvac(nDim, imprecision);
+				// myVertices = a.Jasper(nDim, .01);
 				for (double[] vertex : myVertices) {
-					f[i].addVertex(vertex, j);
+					vff.addVertex(vertex, j);
 					for (int l = 0; l < nDim; l++) {
 						if (vertex[l] < lowerP[l])
 							lowerP[l] = vertex[l];
@@ -757,28 +810,29 @@ public class AlexsTests {
 							upperP[l] = vertex[l];
 					}
 				}
-				ff[i].setLower(lowerP.clone(), j);
-				ff[i].setUpper(upperP.clone(), j);
+				iff.lower(lowerP.clone(), j);
+				iff.upper(upperP.clone(), j);
 				System.out.println("------" + j + "-----");
 				for (double[] vv : myVertices)
 					System.out.println(Arrays.toString(vv));
 				System.out.println(Arrays.toString(lowerP));
 				System.out.println(Arrays.toString(upperP));
 			}
+			f[i] = vff.build();
+			ff[i] = iff.build();
 			model.setFactor(i, ff[i]);
 		}
 		int dummy = model.addVariable(2);
-		BayesianFactor fDummy = new BayesianFactor(model.getDomain(nVars - 1, dummy), false);
-		fDummy.setValue(1.0, 0 /* nVars -1 = 0 */,
-				s == 0 ? 1 : 0 /* dummy = true */); // set
-		//													// p(dummy=true|nvars-1=0)
-		//													// note however that dummy
-		//													// is bigger than nvars-1 so
-		//													// it will appear after
-		fDummy.setValue(1.0, 1 /* nVars -1 = 1 */,
-				s == 1 ? 1 : 0 /* dummy = false */);
-		fDummy.setValue(1.0, 2 /* nVars -1 = 2 */,
-				s == 2 ? 1 : 0 /* dummy = false */);
+		BayesianFactor fDummy = BayesianFactorFactory.factory().domain(model.getDomain(nVars - 1, dummy))
+				.value(1.0, 0 /* nVars -1 = 0 */,
+						s == 0 ? 1 : 0 /* dummy = true */)
+				// p(dummy=true|nvars-1=0)
+				// note however that dummy is bigger than nvars-1 so it will appear after
+				.value(1.0, 1 /* nVars -1 = 1 */,
+						s == 1 ? 1 : 0 /* dummy = false */)
+				.value(1.0, 2 /* nVars -1 = 2 */,
+						s == 2 ? 1 : 0 /* dummy = false */)
+				.get();
 		model.setFactor(dummy, fDummy);
 		// Elapsed time
 		long difference = System.nanoTime() - startTime;
@@ -787,16 +841,16 @@ public class AlexsTests {
 						- TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(difference))));
 		startTime = System.nanoTime(); // Elapsed time
 		// Algebra to perform the computations
-		DefaultSeparateAlgebra alge = new DefaultSeparateAlgebra();
-		DefaultSeparateConvexAlgebra convex_alge = new DefaultSeparateConvexAlgebra();
+		SeparateDefaultAlgebra alge = new SeparateDefaultAlgebra();
+		SeparateConvexDefaultAlgebra convex_alge = new SeparateConvexDefaultAlgebra();
 		// Frame to evaluate convex hull
-		//frame.getContentPane().add(canvas);
-		//frame.setVisible(true);
+		// frame.getContentPane().add(canvas);
+		// frame.setVisible(true);
 		// Set observation of the last variable in its
 		f[nVars - 1] = f[nVars - 1].reseparate(Strides.EMPTY);
-		f[nVars - 1] = f[nVars - 1].filter(nVars - 1, s);//
+		f[nVars - 1] = f[nVars - 1].filter(nVars - 1, s);
 		// Bottom-up Elimination (VE)
-		//try {
+		// try {
 		//      FileWriter writer = new FileWriter("MyFile.txt", true);
 		//    writer.write("CIAO");
 		for (int i = nVars - 1; i > 0; i--) {
@@ -811,7 +865,6 @@ public class AlexsTests {
 
 			}
 			//writer.close();//}
-
 
 			System.out.print(vertici2.length);
 			//f[i] = convex_alge.round(f[i], tol);
@@ -834,7 +887,6 @@ public class AlexsTests {
 		//   e.printStackTrace();
 		//}
 
-
 		// Rounding to prevent numerical issues with the convex hull
 		vertici_conv2 = f[0].getVertices();
 		Arrays.fill(lowerP, Double.POSITIVE_INFINITY);
@@ -851,14 +903,14 @@ public class AlexsTests {
 		//		vertici = vertici2;
 		//		vertici_conv = vertici_conv2;
 		//frame.invalidate();
-		//		// Results of VE
+		// Results of VE
 		System.out.println("--- VE (Back) ---");
 		System.out.println(Arrays.toString(lowerP));
 		System.out.println(Arrays.toString(upperP));
 		// }
 		// Inference with ApproxLP
 		System.out.println("--- ApproxLP (Back) ---");
-		//
+
 		ApproxLP1<GenericFactor> approx = new ApproxLP1<>();
 		HashMap<String, Object> init = new HashMap<>();
 		init.put(ISearch.MAX_TIME, "10000");
@@ -868,7 +920,7 @@ public class AlexsTests {
 		// Results of ApproxLP
 		System.out.println(Arrays.toString(resultsALP.getLower()));
 		System.out.println(Arrays.toString(resultsALP.getUpper()));
-		//
+
 		difference = System.nanoTime() - startTime;
 		System.out.println("Elapsed time " + String.format("%d min, %d sec", TimeUnit.NANOSECONDS.toHours(difference),
 				TimeUnit.NANOSECONDS.toSeconds(difference)

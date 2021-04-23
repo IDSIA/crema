@@ -1,7 +1,7 @@
 package ch.idsia.crema.model.io;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.io.bif.XMLBIFParser;

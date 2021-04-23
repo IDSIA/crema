@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.bp;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.inference.BayesianNetworkContainer;
@@ -48,12 +49,12 @@ public class BeliefPropagationTest {
 
 		BayesianFactor[] factors = new BayesianFactor[model.getVariables().length];
 
-		factors[A0] = new BayesianFactor(model.getDomain(A0), new double[]{.7, .3});
-		factors[A1] = new BayesianFactor(model.getDomain(A0, A1), new double[]{.4, .3, .6, .7});
-		factors[A2] = new BayesianFactor(model.getDomain(A0, A2), new double[]{.5, .8, .5, .2});
-		factors[A3] = new BayesianFactor(model.getDomain(A1, A3), new double[]{.6, .1, .4, .9});
-		factors[A4] = new BayesianFactor(model.getDomain(A1, A2, A4), new double[]{.1, .8, .4, .7, .9, .2, .6, .3});
-		factors[A5] = new BayesianFactor(model.getDomain(A2, A5), new double[]{.4, .5, .6, .5});
+		factors[A0] = BayesianFactorFactory.factory().domain(model.getDomain(A0)).data(new double[]{.7, .3}).get();
+		factors[A1] = BayesianFactorFactory.factory().domain(model.getDomain(A0, A1)).data(new double[]{.4, .3, .6, .7}).get();
+		factors[A2] = BayesianFactorFactory.factory().domain(model.getDomain(A0, A2)).data(new double[]{.5, .8, .5, .2}).get();
+		factors[A3] = BayesianFactorFactory.factory().domain(model.getDomain(A1, A3)).data(new double[]{.6, .1, .4, .9}).get();
+		factors[A4] = BayesianFactorFactory.factory().domain(model.getDomain(A1, A2, A4)).data(new double[]{.1, .8, .4, .7, .9, .2, .6, .3}).get();
+		factors[A5] = BayesianFactorFactory.factory().domain(model.getDomain(A2, A5)).data(new double[]{.4, .5, .6, .5}).get();
 
 		model.setFactors(factors);
 
@@ -78,9 +79,9 @@ public class BeliefPropagationTest {
 
 		BayesianFactor[] factors = new BayesianFactor[model.getVariables().length];
 
-		factors[A] = new BayesianFactor(model.getDomain(A), new double[]{.4, .6});
-		factors[B] = new BayesianFactor(model.getDomain(A, B), new double[]{.3, .9, .7, .1});
-		factors[C] = new BayesianFactor(model.getDomain(A, C), new double[]{.2, .7, .8, .3});
+		factors[A] = BayesianFactorFactory.factory().domain(model.getDomain(A)).data(new double[]{.4, .6}).get();
+		factors[B] = BayesianFactorFactory.factory().domain(model.getDomain(A, B)).data(new double[]{.3, .9, .7, .1}).get();
+		factors[C] = BayesianFactorFactory.factory().domain(model.getDomain(A, C)).data(new double[]{.2, .7, .8, .3}).get();
 
 		model.setFactors(factors);
 
@@ -130,9 +131,9 @@ public class BeliefPropagationTest {
 		m.addParent(A, C);
 		m.addParent(B, C);
 
-		BayesianFactor fAC = new BayesianFactor(m.getDomain(A));
-		BayesianFactor fBC = new BayesianFactor(m.getDomain(B));
-		BayesianFactor fC = new BayesianFactor(m.getDomain(C));
+		BayesianFactor fAC = BayesianFactorFactory.factory().domain(m.getDomain(A)).get();
+		BayesianFactor fBC = BayesianFactorFactory.factory().domain(m.getDomain(B)).get();
+		BayesianFactor fC = BayesianFactorFactory.factory().domain(m.getDomain(C)).get();
 
 		PriorFactor pAC = new PriorFactor(fAC);
 		PriorFactor pBC = new PriorFactor(fBC);
@@ -160,9 +161,9 @@ public class BeliefPropagationTest {
 		bn.addParent(C, A);
 
 		final BayesianFactor[] factors = new BayesianFactor[bn.getVariables().length];
-		factors[A] = new BayesianFactor(bn.getDomain(A), new double[]{.5, .5});
-		factors[B] = new BayesianFactor(bn.getDomain(A, B), new double[]{.8, .2, .2, .8});
-		factors[C] = new BayesianFactor(bn.getDomain(A, C), new double[]{.4, .6, .6, .4});
+		factors[A] = BayesianFactorFactory.factory().domain(bn.getDomain(A)).data(new double[]{.5, .5}).get();
+		factors[B] = BayesianFactorFactory.factory().domain(bn.getDomain(A, B)).data(new double[]{.8, .2, .2, .8}).get();
+		factors[C] = BayesianFactorFactory.factory().domain(bn.getDomain(A, C)).data(new double[]{.4, .6, .6, .4}).get();
 
 		bn.setFactors(factors);
 
@@ -239,10 +240,10 @@ public class BeliefPropagationTest {
 		bn.addParent(D, C);
 
 		final BayesianFactor[] factors = new BayesianFactor[bn.getVariables().length];
-		factors[A] = new BayesianFactor(bn.getDomain(A), new double[]{.2, .8});
-		factors[B] = new BayesianFactor(bn.getDomain(A, B), new double[]{.2, .6, .8, .4});
-		factors[C] = new BayesianFactor(bn.getDomain(B, C), new double[]{.3, .2, .7, .8});
-		factors[D] = new BayesianFactor(bn.getDomain(C, D), new double[]{.9, .6, .1, .4});
+		factors[A] = BayesianFactorFactory.factory().domain(bn.getDomain(A)).data(new double[]{.2, .8}).get();
+		factors[B] = BayesianFactorFactory.factory().domain(bn.getDomain(A, B)).data(new double[]{.2, .6, .8, .4}).get();
+		factors[C] = BayesianFactorFactory.factory().domain(bn.getDomain(B, C)).data(new double[]{.3, .2, .7, .8}).get();
+		factors[D] = BayesianFactorFactory.factory().domain(bn.getDomain(C, D)).data(new double[]{.9, .6, .1, .4}).get();
 
 		bn.setFactors(factors);
 
