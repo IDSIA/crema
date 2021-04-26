@@ -23,7 +23,7 @@ public class InlineBinaryEvidenceTest {
 			IntervalFactor f0 = IntervalFactorFactory.factory()
 					.domain(model.getDomain(n0), model.getDomain())
 					.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
-					.build();
+					.get();
 			model.setFactor(n0, f0);
 
 			TIntIntMap evidence = new TIntIntHashMap();
@@ -59,7 +59,7 @@ public class InlineBinaryEvidenceTest {
 			IntervalFactor f0 = IntervalFactorFactory.factory()
 					.domain(model.getDomain(n), model.getDomain())
 					.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
-					.build();
+					.get();
 			model.setFactor(n, f0);
 
 			evidence.put(n, 0);
@@ -92,7 +92,7 @@ public class InlineBinaryEvidenceTest {
 			IntervalFactor f0 = IntervalFactorFactory.factory()
 					.domain(model.getDomain(n), model.getDomain())
 					.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
-					.build();
+					.get();
 			model.setFactor(n, f0);
 
 			evidence.put(n, 1);
@@ -125,7 +125,7 @@ public class InlineBinaryEvidenceTest {
 			IntervalFactor f0 = IntervalFactorFactory.factory()
 					.domain(model.getDomain(n), model.getDomain())
 					.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
-					.build();
+					.get();
 			model.setFactor(n, f0);
 
 			evidence.put(n, 0);

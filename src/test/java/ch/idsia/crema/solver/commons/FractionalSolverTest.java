@@ -31,7 +31,7 @@ public class FractionalSolverTest {
 				.domain(model.getDomain(n0), model.getDomain(n1))
 				.set(new double[]{0.1, 0.3, 0.5}, new double[]{0.3, 0.8, 0.6}, 0)
 				.set(new double[]{0.1, 0.5, 0.1}, new double[]{0.3, 0.8, 0.7}, 1)
-				.build();
+				.get();
 
 		double[] num = {0.052, 0.12, 0.0, 0.0, 0.0, 0.0};
 		double[] denom = {0.052, 0.12, 0.126, 0.28, 0.024, 0.0545};

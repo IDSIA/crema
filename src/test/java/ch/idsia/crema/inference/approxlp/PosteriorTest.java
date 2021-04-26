@@ -34,13 +34,13 @@ public class PosteriorTest {
 
 				.lower(new double[]{0.6, 0.0}, 1)
 				.upper(new double[]{1.0, 0.4}, 1)
-				.build();
+				.get();
 		model.setFactor(E, fe);
 
 		IntervalFactor fx0 = IntervalFactorFactory.factory().domain(model.getDomain(X0), model.getDomain())
 				.bounds(0.1, 0.2, 0)
 				.bounds(0.8, 0.9, 1)
-				.build();
+				.get();
 
 		// alternative bounds set
 		//.lower(new double[] { .1, .8 });
@@ -94,7 +94,7 @@ public class PosteriorTest {
 
 				.bounds(0.4, 0.8, 0, 2)
 				.bounds(0.2, 0.6, 1, 2)
-				.build();
+				.get();
 
 		model.setFactor(X0, fx0);
 
@@ -136,7 +136,7 @@ public class PosteriorTest {
 				.bounds(0.1, 0.2, 0)
 				.bounds(0.2, 0.5, 1)
 				.bounds(0.5, 0.7, 2)
-				.build();
+				.get();
 
 		model.setFactor(X0, fx0);
 
@@ -180,7 +180,7 @@ public class PosteriorTest {
 				.bounds(.4, .8, 1, 0)
 				.bounds(.4, .7, 0, 1)
 				.bounds(.3, .6, 1, 1)
-				.build();
+				.get();
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
@@ -269,7 +269,7 @@ public class PosteriorTest {
 		IntervalFactor f3 = IntervalFactorFactory.factory().domain(model.getDomain(n3), model.getDomain())
 				.bounds(.3, .4, 0)
 				.bounds(.6, .7, 1)
-				.build();
+				.get();
 		model.setFactor(n3, f3);
 
 		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(n1), model.getDomain(n3))
@@ -279,7 +279,7 @@ public class PosteriorTest {
 				.bounds(.3, .7, 0, 1)
 				.bounds(.3, .5, 1, 1)
 				.bounds(.2, .4, 2, 1)
-				.build();
+				.get();
 		model.setFactor(n1, f1);
 
 		BayesianFactor f2 = BayesianFactorFactory.factory().domain(model.getDomain(n2, n3))
@@ -351,14 +351,14 @@ public class PosteriorTest {
 				.bounds(.6, .9, 1, 1)
 				.bounds(.2, .5, 0, 2)
 				.bounds(.5, .8, 1, 2)
-				.build();
+				.get();
 		model.setFactor(n3, f3);
 
 		IntervalFactor f4 = IntervalFactorFactory.factory().domain(model.getDomain(n4), model.getDomain())
 				.bounds(.1, .6, 0)
 				.bounds(.3, .7, 1)
 				.bounds(.1, .4, 2)
-				.build();
+				.get();
 		model.setFactor(n4, f4);
 
 		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(n1), model.getDomain(n3))
@@ -368,7 +368,7 @@ public class PosteriorTest {
 				.bounds(.3, .7, 0, 1)
 				.bounds(.3, .5, 1, 1)
 				.bounds(.2, .4, 2, 1)
-				.build();
+				.get();
 		model.setFactor(n1, f1);
 
 		BayesianFactor f2 = BayesianFactorFactory.factory().domain(model.getDomain(n2, n3))
@@ -442,7 +442,7 @@ public class PosteriorTest {
 				.bounds(.2, .5, 0, 2)
 				.bounds(.3, .8, 1, 2)
 				.bounds(.3, .8, 2, 2)
-				.build();
+				.get();
 		model.setFactor(n5, fy);
 
 		BayesianFactor f0 = BayesianFactorFactory.factory().domain(model.getDomain(n0, n1, n2))
@@ -457,14 +457,14 @@ public class PosteriorTest {
 				.bounds(.6, .9, 1, 1)
 				.bounds(.2, .5, 0, 2)
 				.bounds(.5, .8, 1, 2)
-				.build();
+				.get();
 		model.setFactor(n3, f3);
 
 		IntervalFactor f4 = IntervalFactorFactory.factory().domain(model.getDomain(n4), model.getDomain())
 				.bounds(.1, .6, 0)
 				.bounds(.3, .7, 1)
 				.bounds(.1, .4, 2)
-				.build();
+				.get();
 		model.setFactor(n4, f4);
 
 		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(n1), model.getDomain(n3))
@@ -474,7 +474,7 @@ public class PosteriorTest {
 				.bounds(.3, .7, 0, 1)
 				.bounds(.3, .5, 1, 1)
 				.bounds(.2, .4, 2, 1)
-				.build();
+				.get();
 		model.setFactor(n1, f1);
 
 		BayesianFactor f2 = BayesianFactorFactory.factory().domain(model.getDomain(n2, n3))

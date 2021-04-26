@@ -56,14 +56,14 @@ public class TestSimpleExtensiveFactor {
 		IntervalFactor f1h = IntervalFactorFactory.factory().domain(domain1, Strides.EMPTY)
 				.lower(new double[]{0.1, 0.2})
 				.upper(new double[]{0.8, 0.9})
-				.build();
+				.get();
 
 		IntervalFactor f2h = IntervalFactorFactory.factory().domain(model.getDomain(x1), model.getDomain(x0))
 				.lower(new double[]{0.1, 0.2}, 0)
 				.upper(new double[]{0.8, 0.9}, 0)
 				.lower(new double[]{0.4, 0.3}, 1)
 				.upper(new double[]{0.7, 0.6}, 1)
-				.build();
+				.get();
 
 		model.setFactor(x0, f1h);
 		model.setFactor(x1, f2h);

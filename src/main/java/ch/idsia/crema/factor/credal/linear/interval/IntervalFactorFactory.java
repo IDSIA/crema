@@ -87,7 +87,7 @@ public class IntervalFactorFactory {
 		return this;
 	}
 
-	public IntervalFactor build() {
+	public IntervalFactor get() {
 		double[][] lower = new double[groupDomain.getCombinations()][dataDomain.getCombinations()];
 		double[][] upper = new double[groupDomain.getCombinations()][dataDomain.getCombinations()];
 

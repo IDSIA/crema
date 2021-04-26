@@ -35,7 +35,7 @@ public class SeparateLinearToExtensiveHalfspace {
 				.upper(new double[]{.875, .150}, 2) // uP(Q=right|S=2)
 				.upper(new double[]{.975, .050}, 3) // uP(Q=right|S=3)
 
-				.build();
+				.get();
 
 		ExtensiveHalfspaceFactor factor = converter.apply(a);
 		//assertArrayEquals(new int[] {0,1}, factor.getDomain().getVariables());
@@ -57,7 +57,7 @@ public class SeparateLinearToExtensiveHalfspace {
 		final IntervalFactor fS = IntervalFactorFactory.factory().domain(Strides.var(0, 4), Strides.EMPTY)
 				.lower(new double[]{.1, .3, .3, .1})
 				.upper(new double[]{.2, .4, .4, .2})
-				.build();
+				.get();
 
 		ExtensiveHalfspaceFactor factor = converter.apply(fS);
 		assertArrayEquals(new int[]{0}, factor.getDomain().getVariables());

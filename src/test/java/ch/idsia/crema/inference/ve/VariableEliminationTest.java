@@ -180,9 +180,9 @@ public class VariableEliminationTest {
 
 	@Test
 	public void testWorkingAsIntended() {
-		IntervalFactor pa = IntervalFactorFactory.factory().domain(new Strides(new int[]{2}, new int[]{4}), new Strides(new int[]{}, new int[]{})).build();
-		IntervalFactor pba = IntervalFactorFactory.factory().domain(new Strides(new int[]{1}, new int[]{3}), new Strides(new int[]{2}, new int[]{4})).build();
-		IntervalFactor pcba = IntervalFactorFactory.factory().domain(new Strides(new int[]{3}, new int[]{3}), new Strides(new int[]{1, 2}, new int[]{3, 4})).build();
+		IntervalFactor pa = IntervalFactorFactory.factory().domain(new Strides(new int[]{2}, new int[]{4}), new Strides(new int[]{}, new int[]{})).get();
+		IntervalFactor pba = IntervalFactorFactory.factory().domain(new Strides(new int[]{1}, new int[]{3}), new Strides(new int[]{2}, new int[]{4})).get();
+		IntervalFactor pcba = IntervalFactorFactory.factory().domain(new Strides(new int[]{3}, new int[]{3}), new Strides(new int[]{1, 2}, new int[]{3, 4})).get();
 
 		SymbolicFactor fa = new PriorFactor(pa);
 		SymbolicFactor fb = new PriorFactor(pba);

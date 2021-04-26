@@ -24,11 +24,11 @@ public class MarginalTest {
 				.set(new double[]{0.1, 0.3, 0.5}, new double[]{0.3, 0.8, 0.6}, 0)
 				.set(new double[]{0.1, 0.5, 0.1}, new double[]{0.3, 0.8, 0.7}, 1)
 				.set(new double[]{0.2, 0.3, 0.5}, new double[]{0.2, 0.7, 0.9}, 2)
-				.build();
+				.get();
 
 		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(1), model.getDomain())
 				.set(new double[]{0.1, 0.3, 0.1}, new double[]{0.6, 0.8, 0.4})
-				.build();
+				.get();
 
 		model.setFactor(0, f0);
 		model.setFactor(1, f1);
@@ -58,15 +58,15 @@ public class MarginalTest {
 				.set(new double[]{0.1, 0.5, 0.1}, new double[]{0.3, 0.8, 0.7}, 0, 1)
 				.set(new double[]{0.0, 0.4, 0.2}, new double[]{0.2, 0.7, 0.9}, 1, 0)
 				.set(new double[]{0.4, 0.2, 0.1}, new double[]{0.8, 0.5, 0.7}, 1, 1)
-				.build();
+				.get();
 
 		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(1), model.getDomain())
 				.set(new double[]{0.1, 0.3}, new double[]{0.7, 0.9})
-				.build();
+				.get();
 
 		IntervalFactor f2 = IntervalFactorFactory.factory().domain(model.getDomain(2), model.getDomain())
 				.set(new double[]{0.5, 0.2}, new double[]{0.8, 0.5})
-				.build();
+				.get();
 
 		model.setFactor(0, f0);
 		model.setFactor(1, f1);
@@ -95,12 +95,12 @@ public class MarginalTest {
 				.set(new double[]{0.1, 0.5, 0.1}, new double[]{0.3, 0.8, 0.7}, 0, 1)
 				.set(new double[]{0.0, 0.4, 0.2}, new double[]{0.2, 0.7, 0.9}, 1, 0)
 				.set(new double[]{0.4, 0.2, 0.1}, new double[]{0.8, 0.5, 0.7}, 1, 1)
-				.build();
+				.get();
 		model.setFactor(n0, f0);
 
 		IntervalFactor f3 = IntervalFactorFactory.factory().domain(model.getDomain(n3), model.getDomain())
 				.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
-				.build();
+				.get();
 
 		model.setFactor(n3, f3);
 
@@ -108,14 +108,14 @@ public class MarginalTest {
 				.set(new double[]{0.6, 0.3}, new double[]{0.7, 0.4}, 0)
 				.set(new double[]{0.1, 0.5}, new double[]{0.5, 0.9}, 1)
 				.set(new double[]{0.1, 0.8}, new double[]{0.2, 0.9}, 2)
-				.build();
+				.get();
 		model.setFactor(n1, f1);
 
 		IntervalFactor f2 = IntervalFactorFactory.factory().domain(model.getDomain(n2), model.getDomain(n3))
 				.set(new double[]{0.1, 0.8}, new double[]{0.2, 0.9}, 0)
 				.set(new double[]{0.5, 0.4}, new double[]{0.6, 0.5}, 1)
 				.set(new double[]{0.3, 0.4}, new double[]{0.6, 0.7}, 2)
-				.build();
+				.get();
 		model.setFactor(n2, f2);
 
 		ApproxLP2<GenericFactor> inference = new ApproxLP2<>();
@@ -139,12 +139,12 @@ public class MarginalTest {
 		IntervalFactor f0 = IntervalFactorFactory.factory().domain(model.getDomain(n0), model.getDomain(n1))
 				.set(new double[]{0.7, zero}, new double[]{one, 0.3}, 0)
 				.set(new double[]{zero, 0.7}, new double[]{0.3, one}, 1)
-				.build();
+				.get();
 		model.setFactor(n0, f0);
 
 		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(n1), model.getDomain())
 				.set(new double[]{0.9, zero}, new double[]{one, 0.1})
-				.build();
+				.get();
 		model.setFactor(n1, f1);
 
 		TIntIntMap evidence = new TIntIntHashMap();

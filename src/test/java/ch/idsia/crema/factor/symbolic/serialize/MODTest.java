@@ -16,7 +16,7 @@ public class MODTest {
 		IntervalFactor iFactor = IntervalFactorFactory.factory().domain(domain, Strides.EMPTY)
 				.lower(new double[]{0.4, 0.1})
 				.upper(new double[]{0.9, 0.6})
-				.build();
+				.get();
 
 		SymbolicFactor A = new PriorFactor(iFactor);
 
@@ -25,7 +25,7 @@ public class MODTest {
 				.upper(new double[]{0.8, 0.6, 0.5}, 0)
 				.lower(new double[]{0.1, 0.2, 0.6}, 1)
 				.upper(new double[]{0.3, 0.5, 0.8}, 1)
-				.build();
+				.get();
 
 		SymbolicFactor B_A = new PriorFactor(iFactor);
 
