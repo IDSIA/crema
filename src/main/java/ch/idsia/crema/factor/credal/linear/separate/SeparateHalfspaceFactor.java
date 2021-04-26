@@ -3,6 +3,7 @@ package ch.idsia.crema.factor.credal.linear.separate;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import ch.idsia.crema.utility.RandomUtil;
 import com.google.common.primitives.Ints;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.optim.PointValuePair;
@@ -158,7 +159,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 	public double[] getRandomVertex(int... states) {
-		Random random = new Random();
+		Random random = RandomUtil.getRandom();
 		int offset = groupDomain.getOffset(states);
 		SimplexSolver solver = new SimplexSolver();
 

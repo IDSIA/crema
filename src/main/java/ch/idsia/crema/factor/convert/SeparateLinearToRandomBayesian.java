@@ -2,9 +2,8 @@ package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Converter;
-import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.SolverFactory;
@@ -37,10 +36,6 @@ public class SeparateLinearToRandomBayesian implements Converter<SeparateLinearF
 		random = RandomUtil.getRandom();
 	}
 
-	public SeparateLinearToRandomBayesian(int seed) {
-		random = new Random(seed);
-	}
-
 	public boolean isLog() {
 		return log;
 	}
@@ -58,7 +53,6 @@ public class SeparateLinearToRandomBayesian implements Converter<SeparateLinearF
 		LinearSolver solver = SolverFactory.getInstance();
 
 		int[] new_vars = ArraysUtil.append(s.getDataDomain().getVariables(), s.getSeparatingDomain().getVariables());
-		int[] new_sizes = ArraysUtil.append(s.getDataDomain().getSizes(), s.getSeparatingDomain().getSizes());
 		Strides target = s.getDomain();
 
 		double[] result = new double[target.getCombinations()];
@@ -77,9 +71,9 @@ public class SeparateLinearToRandomBayesian implements Converter<SeparateLinearF
 
 		// set data by giving the domain
 		if (log) {
-			return new BayesianLogFactor(new_vars, new_sizes, result);
+			return BayesianFactorFactory.factory().domain(target).data(new_vars, result).log();
 		} else {
-			return new BayesianDefaultFactor(new_vars, new_sizes, result);
+			return BayesianFactorFactory.factory().domain(target).data(new_vars, result).get();
 		}
 	}
 

@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.credal.linear.extensive;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.utility.RandomUtil;
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.*;
 
@@ -50,7 +51,7 @@ public class ExtensiveHalfspaceFactor implements ExtensiveLinearFactor<Extensive
 	}
 
 	public double[] getRandomVertex() {
-		Random random = new Random();
+		Random random = RandomUtil.getRandom();
 		SimplexSolver solver = new SimplexSolver();
 
 		double[] coeffs = new double[domain.getCombinations()];

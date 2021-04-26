@@ -7,13 +7,23 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.graphical.MixedModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MarginalTest {
+
+	double zero = 0.0000000001;
+	double one = 1 - zero;
+
+	@BeforeAll
+	static void beforeAll() {
+		RandomUtil.setRandomSeed(0);
+	}
 
 	@Test
 	public void test2NodeQuery() {
@@ -138,9 +148,6 @@ public class MarginalTest {
 			throw e;
 		}
 	}
-
-	double zero = 0.0000000001;
-	double one = 1 - zero;
 
 	@Test
 	public void testSimplePosteriorQuery() {

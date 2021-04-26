@@ -1,5 +1,7 @@
 package ch.idsia.crema;
 
+import ch.idsia.crema.utility.RandomUtil;
+
 import java.util.Random;
 
 public final class CredoArrays {
@@ -12,7 +14,7 @@ public final class CredoArrays {
 	 * @param array
 	 */
 	public void fisherYatesShuffle(double[] array) {
-		Random random = new Random();
+		Random random = RandomUtil.getRandom();
 		
 		for (int i = array.length - 1; i > 0; --i) {
 			int j = random.nextInt(i + 1);

@@ -3,6 +3,7 @@ package ch.idsia.crema.inference;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TDoubleArrayList;
@@ -151,8 +152,8 @@ public class BayesianNetworkContainer {
 	 * @param p    parents for each node
 	 * @return a BN
 	 */
-	public static BayesianNetworkContainer random(long seed, int n, int p) {
-		Random random = new Random(seed);
+	public static BayesianNetworkContainer random(int n, int p) {
+		Random random = RandomUtil.getRandom();
 
 		BayesianNetwork model = new BayesianNetwork();
 		BayesianFactor[] f = new BayesianFactor[n];

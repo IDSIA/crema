@@ -383,9 +383,9 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 			int[] d2 = ArraysUtil.sort(ArrayUtils.add(this.getParents(v), v));
 
 			if (!Arrays.equals(d1, d2)) {
-				System.out.println("Error in " + v + ":");
-				System.out.println("factor domain: " + Arrays.toString(d1));
-				System.out.println("factor in net:  " + Arrays.toString(d2));
+				System.err.println("Error in " + v + ":");
+				System.err.println("factor domain: " + Arrays.toString(d1));
+				System.err.println("factor in net:  " + Arrays.toString(d2));
 				correct = false;
 
 			}
