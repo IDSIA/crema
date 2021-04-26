@@ -1,7 +1,10 @@
+package examples.docs;
+
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactorFactory;
 import ch.idsia.crema.inference.approxlp.CredalApproxLP;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -19,29 +22,31 @@ int X1 = cnet.addVariable(3);
 cnet.addParent(X0,X1);
 
 // add credal set K(B)
-SeparateHalfspaceFactor fb = new SeparateHalfspaceFactor(cnet.getDomain(X1), Strides.empty());
-fb.addConstraint(new double[]{1,0,0}, Relationship.GEQ, 0.2);
-fb.addConstraint(new double[]{1,0,0}, Relationship.LEQ, 0.3);
-fb.addConstraint(new double[]{0,1,0}, Relationship.GEQ, 0.4);
-fb.addConstraint(new double[]{0,1,0}, Relationship.LEQ, 0.5);
-fb.addConstraint(new double[]{0,0,1}, Relationship.GEQ, 0.2);
-fb.addConstraint(new double[]{0,0,1}, Relationship.LEQ, 0.3);
+SeparateHalfspaceFactor fb = SeparateHalfspaceFactorFactory.factory().domain(cnet.getDomain(X1), Strides.empty())
+		.constraint(new double[]{1,0,0}, Relationship.GEQ, 0.2)
+		.constraint(new double[]{1,0,0}, Relationship.LEQ, 0.3)
+		.constraint(new double[]{0,1,0}, Relationship.GEQ, 0.4)
+		.constraint(new double[]{0,1,0}, Relationship.LEQ, 0.5)
+		.constraint(new double[]{0,0,1}, Relationship.GEQ, 0.2)
+		.constraint(new double[]{0,0,1}, Relationship.LEQ, 0.3)
+		.get();
 cnet.setFactor(X1,fb);
 
 // add credal set K(A|B)
-SeparateHalfspaceFactor fa = new SeparateHalfspaceFactor(cnet.getDomain(X0), cnet.getDomain(X1));
-fa.addConstraint(new double[]{1,0}, Relationship.GEQ, 0.5, 0);
-fa.addConstraint(new double[]{1,0}, Relationship.LEQ, 0.6, 0);
-fa.addConstraint(new double[]{0,1}, Relationship.GEQ, 0.4, 0);
-fa.addConstraint(new double[]{0,1}, Relationship.LEQ, 0.5, 0);
-fa.addConstraint(new double[]{1,0}, Relationship.GEQ, 0.3, 1);
-fa.addConstraint(new double[]{1,0}, Relationship.LEQ, 0.4, 1);
-fa.addConstraint(new double[]{0,1}, Relationship.GEQ, 0.6, 1);
-fa.addConstraint(new double[]{0,1}, Relationship.LEQ, 0.7, 1);
-fa.addConstraint(new double[]{1,0}, Relationship.GEQ, 0.1, 2);
-fa.addConstraint(new double[]{1,0}, Relationship.LEQ, 0.2, 2);
-fa.addConstraint(new double[]{0,1}, Relationship.GEQ, 0.8, 2);
-fa.addConstraint(new double[]{0,1}, Relationship.LEQ, 0.9, 2);
+SeparateHalfspaceFactor fa = SeparateHalfspaceFactorFactory.factory().domain(cnet.getDomain(X0), cnet.getDomain(X1))
+		.constraint(new double[]{1,0}, Relationship.GEQ, 0.5, 0)
+		.constraint(new double[]{1,0}, Relationship.LEQ, 0.6, 0)
+		.constraint(new double[]{0,1}, Relationship.GEQ, 0.4, 0)
+		.constraint(new double[]{0,1}, Relationship.LEQ, 0.5, 0)
+		.constraint(new double[]{1,0}, Relationship.GEQ, 0.3, 1)
+		.constraint(new double[]{1,0}, Relationship.LEQ, 0.4, 1)
+		.constraint(new double[]{0,1}, Relationship.GEQ, 0.6, 1)
+		.constraint(new double[]{0,1}, Relationship.LEQ, 0.7, 1)
+		.constraint(new double[]{1,0}, Relationship.GEQ, 0.1, 2)
+		.constraint(new double[]{1,0}, Relationship.LEQ, 0.2, 2)
+		.constraint(new double[]{0,1}, Relationship.GEQ, 0.8, 2)
+		.constraint(new double[]{0,1}, Relationship.LEQ, 0.9, 2)
+		.get();
 cnet.setFactor(X0,fa);
 
 // set up the inference and run the queries
