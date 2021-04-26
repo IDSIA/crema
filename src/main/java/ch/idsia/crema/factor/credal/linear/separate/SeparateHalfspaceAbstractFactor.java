@@ -1,7 +1,6 @@
 package ch.idsia.crema.factor.credal.linear.separate;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.SeparatelySpecified;
 
 /**
  * An abstract implementation of the {@link SeparateHalfspaceAbstractFactor} interface.
@@ -9,11 +8,10 @@ import ch.idsia.crema.factor.credal.SeparatelySpecified;
  * @param <F> the managed type. This is usually the type itself.
  * @author david
  */
-public abstract class SeparateHalfspaceAbstractFactor<F extends SeparateHalfspaceAbstractFactor<F>> implements SeparatelySpecified<F> {
+public abstract class SeparateHalfspaceAbstractFactor implements SeparateHalfspaceFactor {
 
-	protected Strides dataDomain;
-
-	protected Strides groupDomain;
+	protected Strides dataDomain = Strides.empty();
+	protected Strides groupDomain = Strides.empty();
 
 	public SeparateHalfspaceAbstractFactor() {
 	}
@@ -23,11 +21,11 @@ public abstract class SeparateHalfspaceAbstractFactor<F extends SeparateHalfspac
 		setDataDomain(dataDomain);
 	}
 
-	public void setDataDomain(Strides dataDomain) {
+	private void setDataDomain(Strides dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	public void setConditioningDomain(Strides groupDomain) {
+	private void setConditioningDomain(Strides groupDomain) {
 		if (groupDomain == null) {
 			groupDomain = new Strides(new int[0], new int[0]);
 		}

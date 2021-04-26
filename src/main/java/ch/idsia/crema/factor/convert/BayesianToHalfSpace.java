@@ -4,6 +4,7 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactorFactory;
 import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.optim.linear.Relationship;
 
@@ -18,7 +19,7 @@ public class BayesianToHalfSpace implements Converter<BayesianFactor, SeparateHa
 		Strides left = Strides.as(var, cpt.getDomain().getCardinality(var));
 		Strides right = cpt.getDomain().remove(var);
 
-		SeparateHalfspaceFactor factor = new SeparateHalfspaceFactor(left, right);
+		SeparateHalfspaceFactorFactory shff = SeparateHalfspaceFactorFactory.factory().domain(left, right);
 
 		int left_var_size = cpt.getDomain().getCardinality(var);
 		List<Double> cpt_data = Doubles.asList(cpt.getData());
@@ -29,19 +30,19 @@ public class BayesianToHalfSpace implements Converter<BayesianFactor, SeparateHa
 				// Value constraint
 				double[] data = new double[left_var_size];
 				data[j] = 1.0;
-				factor.addConstraint(data, Relationship.EQ, v[j], i);
+				shff.constraint(data, Relationship.EQ, v[j], i);
 
 				// non-negative constraints
-				factor.addConstraint(data, Relationship.GEQ, 0.0, i);
+				shff.constraint(data, Relationship.GEQ, 0.0, i);
 			}
 
 			// normalization constraint
 			double[] ones = new double[left_var_size];
 			Arrays.fill(ones, 1.);
-			factor.addConstraint(ones, Relationship.EQ, 1.0, i);
+			shff.constraint(ones, Relationship.EQ, 1.0, i);
 		}
 
-		return factor;
+		return shff.get();
 	}
 
 	@Override

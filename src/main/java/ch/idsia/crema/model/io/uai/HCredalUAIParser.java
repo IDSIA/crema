@@ -2,6 +2,7 @@ package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -61,7 +62,7 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel<SeparateHalfsp
 				// reshaped coeff A
 				double[][] A2d = ArraysUtil.reshape2d(aCoeff[i], aCoeff[i].length / varsize);
 				// build the factor
-				cpt[i] = new SeparateHalfspaceFactor(model.getDomain(i), A2d, bCoeff[i], Relationship.LEQ);
+				cpt[i] = SeparateHalfspaceFactorFactory.factory().left(model.getDomain(i)).constraints(A2d, bCoeff[i], Relationship.LEQ).get();
 			} else {
 
 				int par_comb = model.getDomain(model.getParents(i)).getCombinations();
@@ -86,9 +87,9 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel<SeparateHalfsp
 				}
 
 				// build the factor
-				cpt[i] = new SeparateHalfspaceFactor(model.getDomain(i),
-						model.getDomain(model.getParents(i)),
-						A, b, Relationship.LEQ);
+				cpt[i] = SeparateHalfspaceFactorFactory.factory().domain(model.getDomain(i), model.getDomain(model.getParents(i)))
+						.constraints(A, b, Relationship.LEQ)
+						.get();
 
 			}
 		}

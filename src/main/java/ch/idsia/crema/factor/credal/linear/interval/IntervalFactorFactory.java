@@ -16,8 +16,8 @@ public class IntervalFactorFactory {
 	private Strides dataDomain = Strides.empty(); // content, left
 	private Strides groupDomain = Strides.empty(); // separation, right
 
-	TIntObjectMap<double[]> lowers = new TIntObjectHashMap<>();
-	TIntObjectMap<double[]> uppers = new TIntObjectHashMap<>();
+	private final TIntObjectMap<double[]> lowers = new TIntObjectHashMap<>();
+	private final TIntObjectMap<double[]> uppers = new TIntObjectHashMap<>();
 
 	private IntervalFactorFactory() {
 	}

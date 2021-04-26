@@ -3,6 +3,7 @@ package ch.idsia.crema.factor.credal.vertex.separate;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.convert.HalfspaceToVertex;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactorFactory;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.hull.LPConvexHull;
@@ -62,15 +63,15 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 			throw new IllegalArgumentException("Wrong relationship vector length: " + rel.length);
 		}
 
-		SeparateHalfspaceFactor k_const = new SeparateHalfspaceFactor(vertexDomain, Strides.empty());
+		SeparateHalfspaceFactorFactory shff = SeparateHalfspaceFactorFactory.factory().domain(vertexDomain, Strides.empty());
 		for (int i = 0; i < coefficients.length; i++) {
-			k_const.addConstraint(coefficients[i], rel[i], values[i]);
+			shff.constraint(coefficients[i], rel[i], values[i]);
 		}
 
 		// normalization constraint
 		double[] ones = new double[vertexDomain.getCombinations()];
 		Arrays.fill(ones, 1.);
-		k_const.addConstraint(ones, Relationship.EQ, 1.0);
+		shff.constraint(ones, Relationship.EQ, 1.0);
 
 		// non-negative constraints
 		double[] zeros = new double[vertexDomain.getCombinations()];
@@ -80,8 +81,10 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 		for (int i = 0; i < vertexDomain.getCombinations(); i++) {
 			double[] c = ArrayUtils.clone(zeros);
 			c[i] = 1.;
-			k_const.addConstraint(c, Relationship.GEQ, 0);
+			shff.constraint(c, Relationship.GEQ, 0);
 		}
+
+		SeparateHalfspaceFactor k_const = shff.get();
 
 		// HalfspaceToVertex returns always a VertexDefaultFactor
 		HalfspaceToVertex conversor = new HalfspaceToVertex();

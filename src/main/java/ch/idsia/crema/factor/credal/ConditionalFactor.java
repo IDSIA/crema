@@ -1,10 +1,9 @@
 package ch.idsia.crema.factor.credal;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.linear.separate.SeparateFactor;
 
 /**
- * An abstract implementation of the {@link SeparateFactor} interface.
+ * An abstract implementation of the {@link SeparatelySpecified} interface.
  *
  * @param <F> the managed type. This is usually the type itself.
  * @author david
