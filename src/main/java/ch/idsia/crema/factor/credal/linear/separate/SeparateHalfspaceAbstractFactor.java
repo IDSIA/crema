@@ -4,21 +4,21 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
 
 /**
- * An abstract implementation of the {@link SeparateFactor} interface.
+ * An abstract implementation of the {@link SeparateHalfspaceAbstractFactor} interface.
  *
  * @param <F> the managed type. This is usually the type itself.
  * @author david
  */
-public abstract class SeparateFactor<F extends SeparateFactor<F>> implements SeparatelySpecified<F> {
+public abstract class SeparateHalfspaceAbstractFactor<F extends SeparateHalfspaceAbstractFactor<F>> implements SeparatelySpecified<F> {
 
 	protected Strides dataDomain;
 
 	protected Strides groupDomain;
 
-	public SeparateFactor() {
+	public SeparateHalfspaceAbstractFactor() {
 	}
 
-	public SeparateFactor(Strides dataDomain, Strides groupDomain) {
+	public SeparateHalfspaceAbstractFactor(Strides dataDomain, Strides groupDomain) {
 		setConditioningDomain(groupDomain);
 		setDataDomain(dataDomain);
 	}

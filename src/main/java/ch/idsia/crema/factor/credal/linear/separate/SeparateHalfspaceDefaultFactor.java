@@ -17,11 +17,11 @@ import java.util.*;
  *
  * @author huber
  */
-public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFactor> implements SeparateLinearFactor<SeparateHalfspaceFactor> {
+public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFactor<SeparateHalfspaceDefaultFactor> implements SeparateLinearFactor<SeparateHalfspaceDefaultFactor> {
 
 	private List<List<LinearConstraint>> data;
 
-	public SeparateHalfspaceFactor(Strides content, Strides separation) {
+	public SeparateHalfspaceDefaultFactor(Strides content, Strides separation) {
 		super(content, separation);
 
 		data = new ArrayList<>(separation.getCombinations());
@@ -30,12 +30,12 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		}
 	}
 
-	public SeparateHalfspaceFactor(Strides content, Strides separation, List<List<LinearConstraint>> data) {
+	public SeparateHalfspaceDefaultFactor(Strides content, Strides separation, List<List<LinearConstraint>> data) {
 		super(content, separation);
 		this.data = data;
 	}
 
-	public SeparateHalfspaceFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
+	public SeparateHalfspaceDefaultFactor(Strides left, double[][] coefficients, double[] values, Relationship... rel) {
 		this(left, Strides.empty());
 
 		// Build the constraints (including non-negative constraints)
@@ -47,7 +47,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		}
 	}
 
-	public SeparateHalfspaceFactor(boolean normalized, boolean nonnegative, Strides left, double[][] coefficients, double[] values, Relationship... rel) {
+	public SeparateHalfspaceDefaultFactor(boolean normalized, boolean nonnegative, Strides left, double[][] coefficients, double[] values, Relationship... rel) {
 		this(left, Strides.empty());
 
 		LinearConstraint[] C = buildConstraints(normalized, nonnegative, coefficients, values, rel);
@@ -58,7 +58,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		}
 	}
 
-	public SeparateHalfspaceFactor(Strides left, Strides right, double[][][] coefficients, double[][] values, Relationship rel) {
+	public SeparateHalfspaceDefaultFactor(Strides left, Strides right, double[][][] coefficients, double[][] values, Relationship rel) {
 		this(left, right);
 
 		for (int i = 0; i < right.getCombinations(); i++) {
@@ -119,7 +119,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	}
 
 	@Override
-	public SeparateHalfspaceFactor copy() {
+	public SeparateHalfspaceDefaultFactor copy() {
 		List<List<LinearConstraint>> newData = new ArrayList<>(groupDomain.getCombinations());
 		for (List<LinearConstraint> datum : data) {
 			List<LinearConstraint> original = new ArrayList<>(datum);
@@ -131,7 +131,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 			}
 			newData.add(newMatrix);
 		}
-		return new SeparateHalfspaceFactor(dataDomain, groupDomain, newData);
+		return new SeparateHalfspaceDefaultFactor(dataDomain, groupDomain, newData);
 	}
 
 /*
@@ -187,7 +187,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 * @return
 	 */
 	@Override
-	public SeparateHalfspaceFactor filter(int variable, int state) {
+	public SeparateHalfspaceDefaultFactor filter(int variable, int state) {
 		int var_offset = groupDomain.indexOf(variable);
 
 		List<List<LinearConstraint>> newConstraints = new ArrayList<>();
@@ -197,7 +197,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 
 		if (dataDomain.contains(variable)) {
 			for (int i = 0; i < groupDomain.getCombinations(); i++) {
-				Collection<LinearConstraint> constraints = SeparateHalfspaceFactor.deterministic(dataDomain, state).getLinearProblem().getConstraints();
+				Collection<LinearConstraint> constraints = SeparateHalfspaceDefaultFactor.deterministic(dataDomain, state).getLinearProblem().getConstraints();
 				newConstraints.add(new ArrayList<>(constraints));
 			}
 
@@ -209,7 +209,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 			newGroupDomain = groupDomain.removeAt(var_offset);
 		}
 
-		return new SeparateHalfspaceFactor(newDataDomain, newGroupDomain, newConstraints);
+		return new SeparateHalfspaceDefaultFactor(newDataDomain, newGroupDomain, newConstraints);
 	}
 
 /*	@Override
@@ -287,7 +287,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 * @param assignments assignments of each combination of the parent
 	 * @return
 	 */
-	public static SeparateHalfspaceFactor deterministic(Strides left, Strides right, int... assignments) {
+	public static SeparateHalfspaceDefaultFactor deterministic(Strides left, Strides right, int... assignments) {
 
 		if (assignments.length != right.getCombinations())
 			throw new IllegalArgumentException("ERROR: length of assignments should be equal to the number of combinations of the parents");
@@ -295,7 +295,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		if (Ints.min(assignments) < 0 || Ints.max(assignments) >= left.getCombinations())
 			throw new IllegalArgumentException("ERROR: assignments of deterministic function should be in the inteval [0," + left.getCombinations() + ")");
 
-		SeparateHalfspaceFactor f = new SeparateHalfspaceFactor(left, right);
+		SeparateHalfspaceDefaultFactor f = new SeparateHalfspaceDefaultFactor(left, right);
 
 		int left_combinations = left.getCombinations();
 
@@ -309,7 +309,7 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 
 
 			// Build the constraints
-			LinearConstraint[] C = SeparateHalfspaceFactor.buildConstraints(true, true, coeff, values, Relationship.EQ);
+			LinearConstraint[] C = SeparateHalfspaceDefaultFactor.buildConstraints(true, true, coeff, values, Relationship.EQ);
 
 			// Add the constraints
 			for (LinearConstraint c : C) {
@@ -328,8 +328,8 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 * @param assignment int - single value to assign
 	 * @return
 	 */
-	public static SeparateHalfspaceFactor deterministic(Strides left, int assignment) {
-		return SeparateHalfspaceFactor.deterministic(left, Strides.empty(), assignment);
+	public static SeparateHalfspaceDefaultFactor deterministic(Strides left, int assignment) {
+		return SeparateHalfspaceDefaultFactor.deterministic(left, Strides.empty(), assignment);
 	}
 
 	/**
@@ -340,24 +340,24 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 * @param assignment int - single value to assign
 	 * @return
 	 */
-	public SeparateHalfspaceFactor getDeterministic(int var, int assignment) {
-		return SeparateHalfspaceFactor.deterministic(this.getDomain().intersection(var), assignment);
+	public SeparateHalfspaceDefaultFactor getDeterministic(int var, int assignment) {
+		return SeparateHalfspaceDefaultFactor.deterministic(this.getDomain().intersection(var), assignment);
 	}
 
 	public List<List<LinearConstraint>> getData() {
 		return data;
 	}
 
-	public SeparateHalfspaceFactor getPerturbedZeroConstraints(double eps) {
-		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+	public SeparateHalfspaceDefaultFactor getPerturbedZeroConstraints(double eps) {
+		SeparateHalfspaceDefaultFactor newFactor = new SeparateHalfspaceDefaultFactor(this.getDataDomain(), this.getSeparatingDomain());
 		for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
 			newFactor.setLinearProblemAt(i, ConstraintsUtil.perturbZeroConstraints(this.getLinearProblem(i).getConstraints(), eps));
 		}
 		return newFactor;
 	}
 
-	public SeparateHalfspaceFactor removeNormConstraints() {
-		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+	public SeparateHalfspaceDefaultFactor removeNormConstraints() {
+		SeparateHalfspaceDefaultFactor newFactor = new SeparateHalfspaceDefaultFactor(this.getDataDomain(), this.getSeparatingDomain());
 		for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
 			newFactor.setLinearProblemAt(i,
 					ConstraintsUtil.removeNormalization(this.getLinearProblemAt(i).getConstraints())
@@ -366,8 +366,8 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		return newFactor;
 	}
 
-	public SeparateHalfspaceFactor removeNonNegativeConstraints() {
-		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+	public SeparateHalfspaceDefaultFactor removeNonNegativeConstraints() {
+		SeparateHalfspaceDefaultFactor newFactor = new SeparateHalfspaceDefaultFactor(this.getDataDomain(), this.getSeparatingDomain());
 		for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
 			newFactor.setLinearProblemAt(i,
 					ConstraintsUtil.removeNonNegative(this.getLinearProblemAt(i).getConstraints())
@@ -376,8 +376,8 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 		return newFactor;
 	}
 
-	public SeparateHalfspaceFactor mergeCompatible() {
-		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(this.getDataDomain(), this.getSeparatingDomain());
+	public SeparateHalfspaceDefaultFactor mergeCompatible() {
+		SeparateHalfspaceDefaultFactor newFactor = new SeparateHalfspaceDefaultFactor(this.getDataDomain(), this.getSeparatingDomain());
 		for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
 			newFactor.setLinearProblemAt(i,
 					ConstraintsUtil.mergeCompatible(this.getLinearProblemAt(i).getConstraints())
@@ -400,14 +400,14 @@ public class SeparateHalfspaceFactor extends SeparateFactor<SeparateHalfspaceFac
 	 *
 	 * @return
 	 */
-	public SeparateHalfspaceFactor sortParents() {
+	public SeparateHalfspaceDefaultFactor sortParents() {
 		Strides oldLeft = getSeparatingDomain();
 		Strides newLeft = oldLeft.sort();
 		int parentComb = this.getSeparatingDomain().getCombinations();
 		IndexIterator it = oldLeft.getReorderedIterator(newLeft.getVariables());
 		int j;
 
-		SeparateHalfspaceFactor newFactor = new SeparateHalfspaceFactor(getDataDomain(), newLeft);
+		SeparateHalfspaceDefaultFactor newFactor = new SeparateHalfspaceDefaultFactor(getDataDomain(), newLeft);
 
 		// i -> j
 		for (int i = 0; i < parentComb; i++) {
