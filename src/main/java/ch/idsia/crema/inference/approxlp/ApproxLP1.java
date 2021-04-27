@@ -23,9 +23,15 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 
 	private Map<String, Object> init = null;
 
+	private boolean preprocess = true;
+
 	protected int evidenceNode = -1;
 
 	public ApproxLP1() {
+	}
+
+	public ApproxLP1(boolean preprocess) {
+		this.preprocess = preprocess;
 	}
 
 	public ApproxLP1(int evidenceNode) {
@@ -36,7 +42,18 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 		initialize(params);
 	}
 
+	public ApproxLP1(Map<String, ?> params, boolean preprocess) {
+		this.preprocess = preprocess;
+		initialize(params);
+	}
+
 	public ApproxLP1(Map<String, ?> params, int evidenceNode) {
+		initialize(params);
+		setEvidenceNode(evidenceNode);
+	}
+
+	public ApproxLP1(Map<String, ?> params, int evidenceNode, boolean preprocess) {
+		this.preprocess = preprocess;
 		initialize(params);
 		setEvidenceNode(evidenceNode);
 	}
@@ -49,6 +66,10 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 			this.init = new HashMap<>();
 		else
 			this.init = new HashMap<>(params);
+	}
+
+	public void setPreprocess(boolean preprocess) {
+		this.preprocess = preprocess;
 	}
 
 	/**
@@ -69,8 +90,11 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 	 */
 	@Override
 	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
-		final RemoveBarren<F> remove = new RemoveBarren<>();
-		final GraphicalModel<F> model = remove.execute(originalModel, evidence, query);
+		GraphicalModel<F> model = originalModel;
+		if (preprocess) {
+			final RemoveBarren<F> remove = new RemoveBarren<>();
+			model = remove.execute(originalModel, evidence, query);
+		}
 		return query(model, query);
 	}
 
@@ -78,11 +102,13 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 	 * Preconditions:
 	 * <ul>
 	 * <li>single evidence node
-	 * <li>Factors must be one of <ul>
+	 * <li>Factors must be one of
+	 * <ul>
 	 * 		<li>ExtensiveLinearFactors,
 	 * 		<li>BayesianFactor or
-	 * 		<li> SeparateLinearFactor
-	 * </ul></ul>
+	 * 		<li>SeparateLinearFactor
+	 * </ul>
+	 * </ul>
 	 * <p>
 	 *     Use the method {@link #setEvidenceNode(int)} to set the variable that is to be considered the summarization
 	 *     of the evidence (-1 if no evidence).
@@ -118,7 +144,6 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 
 			lowers[state] = runSearcher(model, lower);
 			uppers[state] = runSearcher(model, upper);
-
 		}
 
 		IntervalFactor result = new IntervalDefaultFactor(
