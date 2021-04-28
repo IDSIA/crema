@@ -105,6 +105,10 @@ public class BayesianFactorFactory {
 		return this;
 	}
 
+	public BayesianFactorFactory set(double value, int... states) {
+		return value(value, states);
+	}
+
 	public BayesianLogFactor log() {
 		if (logData != null)
 			return new BayesianLogFactor(domain, logData, true);
