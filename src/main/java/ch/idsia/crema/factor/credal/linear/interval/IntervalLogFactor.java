@@ -27,5 +27,65 @@ public class IntervalLogFactor extends IntervalDefaultFactor {
 		return new IntervalLogFactor(dataDomain, groupDomain, ArraysUtil.deepClone(lower), ArraysUtil.deepClone(upper), true);
 	}
 
-	// TODO: complete
+	@Override
+	public double[] getLower(int... states) {
+		return ArraysUtil.exp(getLogLower(states));
+	}
+
+	@Override
+	public double[] getUpper(int... states) {
+		return ArraysUtil.exp(getLogUpper(states));
+	}
+
+	@Override
+	public double[] getLowerAt(int group_offset) {
+		return ArraysUtil.exp(getLogLowerAt(group_offset));
+	}
+
+	@Override
+	public double[] getUpperAt(int group_offset) {
+		return ArraysUtil.exp(getLogUpperAt(group_offset));
+	}
+
+	@Override
+	public double[] getLogLower(int... states) {
+		return lower[groupDomain.getOffset(states)];
+	}
+
+	@Override
+	public double[] getLogUpper(int... states) {
+		return upper[groupDomain.getOffset(states)];
+	}
+
+	@Override
+	public double[] getLogLowerAt(int group_offset) {
+		return lower[group_offset];
+	}
+
+	@Override
+	public double[] getLogUpperAt(int group_offset) {
+		return upper[group_offset];
+	}
+
+	public IntervalDefaultFactor exp() {
+		return new IntervalDefaultFactor(dataDomain, groupDomain, ArraysUtil.exp(lower), ArraysUtil.exp(upper));
+	}
+
+	@Override
+	public IntervalLogFactor filter(int variable, int state) {
+		final IntervalDefaultFactor f = super.filter(variable, state);
+		return new IntervalLogFactor(f.dataDomain, f.groupDomain, f.lower, f.upper, true);
+	}
+
+	@Override
+	public IntervalLogFactor updateReachability() {
+		return new IntervalLogFactor(exp().updateReachability());
+	}
+
+	@Override
+	public IntervalDefaultFactor merge(IntervalFactor factor) {
+		final IntervalDefaultFactor f = super.merge(factor);
+		return new IntervalLogFactor(f.dataDomain, f.groupDomain, f.lower, f.upper, true);
+	}
+
 }

@@ -36,9 +36,17 @@ public interface IntervalFactor extends SeparateLinearFactor<IntervalFactor> {
 
 	double[] getLowerAt(int group_offset);
 
+	double[] getLogUpper(int... states);
+
+	double[] getLogLower(int... states);
+
+	double[] getLogUpperAt(int group_offset);
+
+	double[] getLogLowerAt(int group_offset);
+
 	IntervalFactor merge(IntervalFactor factor);
 
-	boolean updateReachability();
+	IntervalFactor updateReachability();
 
 	boolean isInside(BayesianFactor f);
 

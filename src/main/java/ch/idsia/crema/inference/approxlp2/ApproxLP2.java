@@ -102,12 +102,10 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 
 		}
 
-		IntervalFactor result = new IntervalDefaultFactor(
+		return new IntervalDefaultFactor(
 				model.getDomain(query), model.getDomain(), new double[][]{lowers}, new double[][]{uppers}
-		);
-		result.updateReachability();
-
-		return result;
+		)
+				.updateReachability();
 	}
 
 	private double runSearcher(GraphicalModel<F> model, Manager objective) {

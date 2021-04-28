@@ -58,6 +58,26 @@ public class IntervalDefaultFactor extends IntervalAbstractFactor {
 	}
 
 	@Override
+	public double[] getLogLower(int... states) {
+		return ArraysUtil.log(getLower(states));
+	}
+
+	@Override
+	public double[] getLogUpper(int... states) {
+		return ArraysUtil.log(getUpper(states));
+	}
+
+	@Override
+	public double[] getLogLowerAt(int group_offset) {
+		return ArraysUtil.log(getLowerAt(group_offset));
+	}
+
+	@Override
+	public double[] getLogUpperAt(int group_offset) {
+		return ArraysUtil.log(getUpperAt(group_offset));
+	}
+
+	@Override
 	public IntervalDefaultFactor filter(int variable, int state) {
 		int var_offset = groupDomain.indexOf(variable);
 		int var_stride = groupDomain.getStrideAt(var_offset);
@@ -81,24 +101,36 @@ public class IntervalDefaultFactor extends IntervalAbstractFactor {
 	}
 
 	@Override
-	public boolean updateReachability() {
+	public IntervalDefaultFactor updateReachability() {
+		double[][] newUpper = new double[upper.length][];
+		double[][] newLower = new double[lower.length][];
+
+		final int n = dataDomain.getCombinations();
+
 		for (int group = 0; group < groupDomain.getCombinations(); ++group) {
 
-			for (int s = 0; s < dataDomain.getCombinations(); ++s) {
+			newUpper[group] = new double[n];
+			newLower[group] = new double[n];
+
+			for (int s = 0; s < n; ++s) {
 				double up = -upper[group][s];
 				double lo = -lower[group][s];
 
-				for (int s2 = 0; s2 < dataDomain.getCombinations(); ++s2) {
+				for (int s2 = 0; s2 < n; ++s2) {
 					up += upper[group][s2];
 					lo += lower[group][s2];
 				}
 
-				upper[group][s] = Math.min(upper[group][s], 1 - lo);
-				lower[group][s] = Math.max(lower[group][s], 1 - up);
-				if (upper[group][s] < lower[group][s]) return false;
+				newUpper[group][s] = Math.min(upper[group][s], 1 - lo);
+				newLower[group][s] = Math.max(lower[group][s], 1 - up);
+				if (upper[group][s] < lower[group][s]) {
+					// TODO: is this an error?
+					System.err.printf("WARNING: inconsistent interval found for group %d value %d: upper is %f lower is %f %n", group, s, upper[group][s], lower[group][s]);
+				}
 			}
 		}
-		return true;
+
+		return new IntervalDefaultFactor(dataDomain, groupDomain, newLower, newUpper);
 	}
 
 	@Override
