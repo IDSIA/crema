@@ -2,7 +2,7 @@ package ch.idsia.crema.factor.symbolic;
 
 import ch.idsia.crema.factor.GenericFactor;
 
-public class PriorFactor extends SymbolicFactor {
+public class PriorFactor extends SymbolicAbstractFactor {
 
 	private final GenericFactor factor;
 
@@ -16,7 +16,7 @@ public class PriorFactor extends SymbolicFactor {
 	}
 
 	@Override
-	public SymbolicFactor[] getSources() {
-		return new SymbolicFactor[0];
+	public SymbolicAbstractFactor[] getSources() {
+		return new SymbolicAbstractFactor[0];
 	}
 }

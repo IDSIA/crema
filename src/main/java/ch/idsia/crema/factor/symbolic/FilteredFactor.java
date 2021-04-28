@@ -1,14 +1,12 @@
 package ch.idsia.crema.factor.symbolic;
 
-import ch.idsia.crema.core.Strides;
-
-public class FilteredFactor extends SymbolicFactor {
+public class FilteredFactor extends SymbolicAbstractFactor {
 
 	private final int variable;
 	private final int state;
-	private final SymbolicFactor source;
+	private final SymbolicAbstractFactor source;
 
-	public FilteredFactor(SymbolicFactor source, int variable, int state) {
+	public FilteredFactor(SymbolicAbstractFactor source, int variable, int state) {
 		// super(new Strides(source.getDomain(), source.getDomain().indexOf(variable)));
 		super(source.getDomain().remove(variable));
 		
@@ -17,7 +15,7 @@ public class FilteredFactor extends SymbolicFactor {
 		this.state = state;
 	}
 
-	public SymbolicFactor getSource() {
+	public SymbolicAbstractFactor getSource() {
 		return source;
 	}
 
@@ -30,7 +28,7 @@ public class FilteredFactor extends SymbolicFactor {
 	}
 
 	@Override
-	public SymbolicFactor[] getSources() {
-		return new SymbolicFactor[] { source };
+	public SymbolicAbstractFactor[] getSources() {
+		return new SymbolicAbstractFactor[] { source };
 	}
 }

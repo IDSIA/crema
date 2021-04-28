@@ -4,16 +4,16 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.OperableFactor;
 
 
-public abstract class SymbolicFactor implements OperableFactor<SymbolicFactor> {
+public abstract class SymbolicAbstractFactor implements OperableFactor<SymbolicAbstractFactor> {
 
 	private final Strides domain;
 
-	public SymbolicFactor(Strides domain) {
+	public SymbolicAbstractFactor(Strides domain) {
 		this.domain = domain;
 	}
 
 	@Override
-	public CombinedFactor combine(SymbolicFactor other) {
+	public CombinedFactor combine(SymbolicAbstractFactor other) {
 		return new CombinedFactor(this, other);
 	}
 
@@ -28,7 +28,7 @@ public abstract class SymbolicFactor implements OperableFactor<SymbolicFactor> {
 	}
 
 	@Override
-	public SymbolicFactor copy() {
+	public SymbolicAbstractFactor copy() {
 		// TODO: copy not this way
 		return null;
 	}
@@ -39,7 +39,7 @@ public abstract class SymbolicFactor implements OperableFactor<SymbolicFactor> {
 	}
 
 	@Override
-	public DividedFactor divide(SymbolicFactor factor) {
+	public DividedFactor divide(SymbolicAbstractFactor factor) {
 		return new DividedFactor(this, factor);
 	}
 
@@ -47,5 +47,5 @@ public abstract class SymbolicFactor implements OperableFactor<SymbolicFactor> {
 	 * Return the factors that originated this factor. 
 	 * @return
 	 */
-	public abstract SymbolicFactor[] getSources();
+	public abstract SymbolicAbstractFactor[] getSources();
 }

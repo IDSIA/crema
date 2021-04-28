@@ -1,18 +1,18 @@
 package ch.idsia.crema.factor.symbolic;
 
-public class MarginalizedFactor extends SymbolicFactor {
+public class MarginalizedFactor extends SymbolicAbstractFactor {
 
-	private final SymbolicFactor source;
+	private final SymbolicAbstractFactor source;
 	private final int variable;
 
-	public MarginalizedFactor(SymbolicFactor factor, int variable) {
+	public MarginalizedFactor(SymbolicAbstractFactor factor, int variable) {
 		super(factor.getDomain().removeAt(factor.getDomain().indexOf(variable)));
 
 		this.source = factor;
 		this.variable = variable;
 	}
 
-	public SymbolicFactor getSource() {
+	public SymbolicAbstractFactor getSource() {
 		return source;
 	}
 
@@ -20,7 +20,7 @@ public class MarginalizedFactor extends SymbolicFactor {
 		return variable;
 	}
 
-	public SymbolicFactor[] getSources() {
-		return new SymbolicFactor[] { source };
+	public SymbolicAbstractFactor[] getSources() {
+		return new SymbolicAbstractFactor[] { source };
 	}
 }
