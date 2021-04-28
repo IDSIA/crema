@@ -73,7 +73,6 @@ public class FactorUtil {
 		return first;
 	}
 
-
 	/**
 	 * Combine an array of factors (One is mandatory)
 	 *
@@ -125,6 +124,10 @@ public class FactorUtil {
 			first = op.combine(first, factors[i]);
 		}
 		return first;
+	}
+
+	public static <F extends OperableFactor<F>> F combine(Operation<F> op, F first, F second) {
+		return op.combine(first, second);
 	}
 
 	/**
@@ -187,6 +190,33 @@ public class FactorUtil {
 	 */
 	public static <F extends OperableFactor<F>> F filter(F factor, F indicator) {
 		return factor.combine(indicator).marginalize(indicator.getDomain().getVariables()[0]);
+	}
+
+	/**
+	 * Filter a variable in a state from a given factor.
+	 *
+	 * @param op
+	 * @param factor
+	 * @param variable
+	 * @param state
+	 * @param <F>
+	 * @return
+	 */
+	public static <F extends OperableFactor<F>> F filter(Operation<F> op, F factor, int variable, int state) {
+		return op.filter(factor, variable, state);
+	}
+
+	/**
+	 * Divide a factor by another factor.
+	 *
+	 * @param op
+	 * @param numerator
+	 * @param denominator
+	 * @param <F>
+	 * @return
+	 */
+	public static <F extends OperableFactor<F>> F divide(Operation<F> op, F numerator, F denominator) {
+		return op.divide(numerator, denominator);
 	}
 
 }

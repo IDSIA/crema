@@ -36,10 +36,9 @@ public class NLSerializer implements SolverSerializer {
 	}
 
 	protected void serialize(MarginalizedFactor factor, StringBuilder builder) {
-		SymbolicFactor source = factor.getSource();
+		SymbolicFactor source = factor.getFactor();
 
-		// IndexIterator iterator =
-		// source.getDomain().getFiteredIndexIterator(factor.getVariable(), 0);
+		// IndexIterator iterator = source.getDomain().getFiteredIndexIterator(factor.getVariable(), 0);
 		IndexIterator iterator = source.getDomain().getIterator(factor.getVariable());
 
 		int stride = source.getDomain().getStride(factor.getVariable());
@@ -86,21 +85,21 @@ public class NLSerializer implements SolverSerializer {
 	}
 
 	protected void serialize(FilteredFactor filtered, StringBuilder builder) {
-		int offset = filtered.getSource().getDomain().getPartialOffset(new int[]{filtered.getVariable()},
+		int offset = filtered.getFactor().getDomain().getPartialOffset(new int[]{filtered.getVariable()},
 				new int[]{filtered.getState()});
 
 		// IndexIterator source_iterator = filtered.getSource().getDomain().getFiteredIndexIterator(filtered.getVariable(), filtered.getState());
-		IndexIterator source_iterator = filtered.getSource().getDomain().getIterator(filtered.getVariable()).offset(offset);
+		IndexIterator source_iterator = filtered.getFactor().getDomain().getIterator(filtered.getVariable()).offset(offset);
 
 		for (int target_index = 0; target_index < filtered.getDomain().getCombinations(); ++target_index) {
 			int source_index = source_iterator.next();
 			builder.append(getName(filtered, target_index));
 			builder.append("=");
-			builder.append(getName(filtered.getSource(), source_index));
+			builder.append(getName(filtered.getFactor(), source_index));
 			builder.append('\n');
 		}
 
-		serializeAny(filtered.getSource(), builder);
+		serializeAny(filtered.getFactor(), builder);
 	}
 
 	protected void serialize(PriorFactor factor, StringBuilder builder) {

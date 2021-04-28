@@ -1,9 +1,11 @@
 package ch.idsia.crema.inference.bp;
 
+import ch.idsia.crema.factor.algebra.FactorAlgebra;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
+import ch.idsia.crema.factor.symbolic.serialize.SymbolicExecution;
 import ch.idsia.crema.inference.BayesianNetworkContainer;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
@@ -12,7 +14,6 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.bif.BIFParser;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -120,20 +121,23 @@ public class BeliefPropagationTest {
 		assertArrayEquals(new double[]{.9256, .0744}, q.getData(), 1e-3);
 	}
 
-	@Disabled // TODO: this need method filter() implemented for SymbolicFactors
 	@Test
 	public void testPropagationSymbolic() {
-		DAGModel<SymbolicFactor> m = new DAGModel<>();
-		int A = m.addVariable(2);
-		int B = m.addVariable(2);
-		int C = m.addVariable(2);
+		final DAGModel<SymbolicFactor> m = new DAGModel<>();
+		final int A = m.addVariable(2);
+		final int B = m.addVariable(2);
+		final int C = m.addVariable(2);
 
-		m.addParent(A, C);
-		m.addParent(B, C);
+		m.addParent(B, A);
+		m.addParent(C, A);
 
-		BayesianFactor fAC = BayesianFactorFactory.factory().domain(m.getDomain(A)).get();
-		BayesianFactor fBC = BayesianFactorFactory.factory().domain(m.getDomain(B)).get();
-		BayesianFactor fC = BayesianFactorFactory.factory().domain(m.getDomain(C)).get();
+		BayesianFactor fAC = BayesianFactorFactory.factory().domain(m.getDomain(A))
+				.data(new double[]{.4, .6}).get();
+		BayesianFactor fBC = BayesianFactorFactory.factory().domain(m.getDomain(A, B))
+				.data(new double[]{.1, .9, .2, .8}).get();
+		BayesianFactor fC = BayesianFactorFactory.factory().domain(m.getDomain(A, C))
+				.data(new double[]{.3, .7, .5, .5})
+				.get();
 
 		PriorFactor pAC = new PriorFactor(fAC);
 		PriorFactor pBC = new PriorFactor(fBC);
@@ -143,10 +147,18 @@ public class BeliefPropagationTest {
 		m.setFactor(B, pBC);
 		m.setFactor(C, pC);
 
-		BeliefPropagation<SymbolicFactor> bp = new BeliefPropagation<>();
-		SymbolicFactor factor = bp.query(m, 1);
+		BeliefPropagation<SymbolicFactor> bp = new BeliefPropagation<>(false);
+		SymbolicFactor factor = bp.query(m, A);
 
+		System.out.println(fAC.getDomain());
+		System.out.println(fBC.getDomain());
+		System.out.println(fC.getDomain());
 		System.out.println(factor);
+
+		SymbolicExecution<BayesianFactor> se = new SymbolicExecution<>(new FactorAlgebra<BayesianFactor>());
+		final BayesianFactor res = se.exec(factor);
+
+		System.out.println(res);
 	}
 
 	@Test
