@@ -679,11 +679,11 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 		return this.marginalize(this.getDomain().getVariables()[0]).getValue() == 1;
 	}
 
-	public static BayesianFactor random(Strides left, Strides right, int num_decimals, boolean zero_allowed) {
+	public static BayesianFactor random(Strides left, Strides right) {
 		double[][] data = new double[right.getCombinations()][];
 
 		for (int i = 0; i < data.length; i++) {
-			data[i] = RandomUtil.sampleNormalized(left.getCombinations(), num_decimals, zero_allowed);
+			data[i] = RandomUtil.sampleNormalized(left.getCombinations());
 		}
 
 		return new BayesianFactor(left.concat(right), Doubles.concat(data), false);
@@ -790,20 +790,17 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	 * Creates a new model with the same structure but with random probability values
 	 *
 	 * @param model
-	 * @param num_decimals
-	 * @param zero_allowed
 	 * @param variables
 	 * @return
 	 */
-	public static GraphicalModel<BayesianFactor> randomModel(GraphicalModel<BayesianFactor> model, int num_decimals,
-	                                                         boolean zero_allowed, int... variables) {
+	public static GraphicalModel<BayesianFactor> randomModel(GraphicalModel<BayesianFactor> model, int... variables) {
 		GraphicalModel<BayesianFactor> rmodel = model.copy();
 
 		if (variables.length == 0)
 			variables = rmodel.getVariables();
 
 		for (int v : variables) {
-			BayesianFactor f = random(rmodel.getDomain(v), rmodel.getDomain(rmodel.getParents(v)), num_decimals, zero_allowed);
+			BayesianFactor f = random(rmodel.getDomain(v), rmodel.getDomain(rmodel.getParents(v)));
 			rmodel.setFactor(v, f);
 		}
 
@@ -819,15 +816,15 @@ public class BayesianFactor implements Factor<BayesianFactor> {
 	@Override
 	public ObservationBuilder sample() {
 		double[] probs = this.getData();
-		if (this.getDomain().getVariables().length > 1) {
+		if (getDomain().getVariables().length > 1) {
 			double sum = DoubleStream.of(probs).sum();
 			probs = DoubleStream.of(probs).map(p -> p / sum).toArray();
 		}
-		return this.getDomain().observationOf(RandomUtil.sampleCategorical(probs));
+		return getDomain().observationOf(RandomUtil.sampleCategorical(probs));
 	}
 
 	public BayesianFactor scalarMultiply(double k) {
-		BayesianFactor f = this.copy();
+		BayesianFactor f = copy();
 		for (int i = 0; i < f.getData().length; i++) {
 			f.setValueAt(f.getValueAt(i) * k, i);
 		}
