@@ -760,7 +760,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
 
         // generate k precise factor
         List PMFs = IntStream.range(0, k - 1)
-                .mapToObj(i -> BayesianFactor.random(leftDomain, Strides.empty(), num_decimals, zero_allowed))
+                .mapToObj(i -> BayesianFactor.random(leftDomain, Strides.empty()))
                 .map(f -> new BayesianToVertex().apply(f, leftVar))
                 .collect(Collectors.toList());
 
@@ -770,7 +770,7 @@ public class VertexFactor implements CredalFactor, SeparatelySpecified<VertexFac
             if (k > 1) {
                 // generate a new distribution
                 VertexFactor f = new BayesianToVertex().apply(
-                        BayesianFactor.random(leftDomain, Strides.empty(), num_decimals, zero_allowed),
+                        BayesianFactor.random(leftDomain, Strides.empty()),
                         leftVar);
                 PMFs.add(f);
             }
