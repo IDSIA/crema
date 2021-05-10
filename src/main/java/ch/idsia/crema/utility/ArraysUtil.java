@@ -1151,4 +1151,28 @@ public class ArraysUtil {
 		return Arrays.equals(arr1, arr2);
 	}
 
+	public static void shuffle(double[] array) {
+		int index;
+		double temp;
+		Random random = new Random();
+		for (int i = array.length - 1; i > 0; i--) {
+			index = random.nextInt(i + 1);
+			temp = array[index];
+			array[index] = array[i];
+			array[i] = temp;
+		}
+	}
+
+	public static void shuffle(int[] array) {
+		int index;
+		int temp;
+		Random random = new Random();
+		for (int i = array.length - 1; i > 0; i--) {
+			index = random.nextInt(i + 1);
+			temp = array[index];
+			array[index] = array[i];
+			array[i] = temp;
+		}
+	}
+
 }

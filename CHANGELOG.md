@@ -1,3 +1,8 @@
+0.1.7.a
+===========
+
+- Fixed an issue with sampling of `BayesianFactors` #75
+
 0.1.7
 ===========
 
