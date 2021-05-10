@@ -32,17 +32,15 @@ public class VertexFactorUtilities {
 	 * @param leftDomain:   strides of the conditioned variables.
 	 * @param rightDomain:  strides of the conditioning variables.
 	 * @param k:            number of vertices
-	 * @param num_decimals: number of decimals in the probability values.
-	 * @param zero_allowed: flag to control if random probabilities can be zero.
 	 * @return
 	 */
-	public static VertexFactor random(Strides leftDomain, Strides rightDomain, int k, int num_decimals, boolean zero_allowed) {
+	public static VertexFactor random(Strides leftDomain, Strides rightDomain, int k) {
 		// array for storing the vertices
 		double[][][] data = new double[rightDomain.getCombinations()][][];
 
 		// generate independently for each parent
 		for (int i = 0; i < data.length; i++)
-			data[i] = random(leftDomain, k, num_decimals, zero_allowed).getVerticesAt(0);
+			data[i] = random(leftDomain, k).getVerticesAt(0);
 
 		// build final factor
 		return new VertexDefaultFactor(leftDomain, rightDomain, data);
@@ -53,11 +51,9 @@ public class VertexFactorUtilities {
 	 *
 	 * @param leftDomain:   strides of the variables.
 	 * @param k:            number of vertices
-	 * @param num_decimals: number of decimals in the probability values.
-	 * @param zero_allowed: flag to control if random probabilities can be zero.
 	 * @return
 	 */
-	public static VertexFactor random(Strides leftDomain, int k, int num_decimals, boolean zero_allowed) {
+	public static VertexFactor random(Strides leftDomain, int k) {
 		if (leftDomain.getVariables().length > 1)
 			throw new IllegalArgumentException("leftDomain must have only one variable.");
 
@@ -69,7 +65,7 @@ public class VertexFactorUtilities {
 
 		// generate k precise factor
 		List<VertexFactor> PMFs = IntStream.range(0, k - 1)
-				.mapToObj(i -> BayesianFactorUtilities.random(leftDomain, Strides.empty(), num_decimals, zero_allowed))
+				.mapToObj(i -> BayesianFactorUtilities.random(leftDomain, Strides.empty()))
 				.map(f -> new BayesianToVertex().apply(f, leftVar))
 				.collect(Collectors.toList());
 
@@ -79,7 +75,7 @@ public class VertexFactorUtilities {
 			if (k > 1) {
 				// generate a new distribution
 				VertexFactor f = new BayesianToVertex().apply(
-						BayesianFactorUtilities.random(leftDomain, Strides.empty(), num_decimals, zero_allowed),
+						BayesianFactorUtilities.random(leftDomain, Strides.empty()),
 						leftVar);
 				PMFs.add(f);
 			}

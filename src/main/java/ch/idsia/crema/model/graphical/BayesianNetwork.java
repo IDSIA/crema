@@ -41,19 +41,17 @@ public class BayesianNetwork extends DAGModel<BayesianFactor> {
 	 * Creates a new model with the same structure but with random probability values
 	 *
 	 * @param model
-	 * @param num_decimals
-	 * @param zero_allowed
 	 * @param variables
 	 * @return
 	 */
-	public static BayesianNetwork random(BayesianNetwork model, int num_decimals, boolean zero_allowed, int... variables) {
+	public static BayesianNetwork random(BayesianNetwork model, int... variables) {
 		BayesianNetwork rmodel = model.copy();
 
 		if (variables.length == 0)
 			variables = rmodel.getVariables();
 
 		for (int v : variables) {
-			BayesianFactor f = BayesianFactorUtilities.random(rmodel.getDomain(v), rmodel.getDomain(rmodel.getParents(v)), num_decimals, zero_allowed);
+			BayesianFactor f = BayesianFactorUtilities.random(rmodel.getDomain(v), rmodel.getDomain(rmodel.getParents(v)));
 			rmodel.setFactor(v, f);
 		}
 

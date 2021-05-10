@@ -11,11 +11,11 @@ import com.google.common.primitives.Doubles;
  */
 public class BayesianFactorUtilities {
 
-	public static BayesianFactor random(Strides left, Strides right, int num_decimals, boolean zero_allowed) {
+	public static BayesianFactor random(Strides left, Strides right) {
 		double[][] data = new double[right.getCombinations()][];
 
 		for (int i = 0; i < data.length; i++) {
-			data[i] = RandomUtil.sampleNormalized(left.getCombinations(), num_decimals, zero_allowed);
+			data[i] = RandomUtil.sampleNormalized(left.getCombinations());
 		}
 
 		return new BayesianDefaultFactor(left.concat(right), Doubles.concat(data));
