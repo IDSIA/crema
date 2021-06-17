@@ -223,16 +223,16 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 	}
 
 	@Override
-	protected void applyConvexHull(ConvexHull.Method m) {
+	protected void applyConvexHull(ConvexHull m) {
 		if (m != null) {
 			for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
-				data[i] = ConvexHull.as(m).apply(data[i]);
+				data[i] = m.apply(data[i]);
 			}
 		}
 	}
 
 	@Override
-	public VertexDefaultFactor convexHull(ConvexHull.Method m) {
+	public VertexDefaultFactor convexHull(ConvexHull m) {
 		VertexDefaultFactor f = this.copy();
 		f.applyConvexHull(m);
 		return f;

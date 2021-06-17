@@ -84,7 +84,7 @@ public class VertexFactorUtilities {
 			// merge all the PMFs
 			out = VertexFactorUtilities
 					.mergeVertices(PMFs.toArray(VertexFactor[]::new))
-					.convexHull(ConvexHull.Method.DEFAULT);
+					.convexHull(ConvexHull.DEFAULT);
 
 		} while (out.getVerticesAt(0).length < k);
 

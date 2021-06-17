@@ -55,7 +55,7 @@ public interface VertexFactor extends OperableFactor<VertexFactor>, SeparatelySp
 
 	double[][][] getData();
 
-	VertexFactor convexHull(ConvexHull.Method m);
+	VertexFactor convexHull(ConvexHull m);
 
 	VertexFactor merge(VertexFactor factor);
 

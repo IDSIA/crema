@@ -38,7 +38,7 @@ public class VerticesModel extends DAGModel<VertexFactor> {
 					.map(m -> new BayesianToVertex().apply(m.getFactor(v), v))
 					.toArray(VertexFactor[]::new));
 			if (convexHull)
-				f = f.convexHull(ConvexHull.Method.DEFAULT);
+				f = f.convexHull(ConvexHull.DEFAULT);
 
 			vmodel.setFactor(v, f);
 		}

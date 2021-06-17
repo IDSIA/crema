@@ -25,18 +25,18 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 	protected final Strides separatedDomain;
 	protected final Strides vertexDomain;
 
-	public static ConvexHull.Method CONVEX_HULL_MARG = null;
+	public static ConvexHull CONVEX_HULL_MARG = null;
 
 	/**
 	 * Set the convexhull method applied after marginalization. None by default.
 	 *
 	 * @param convexHullMarg
 	 */
-	public static void setConvexHullMarg(ConvexHull.Method convexHullMarg) {
+	public static void setConvexHullMarg(ConvexHull convexHullMarg) {
 		CONVEX_HULL_MARG = convexHullMarg;
 	}
 
-	public static ConvexHull.Method getConvexHullMarg() {
+	public static ConvexHull getConvexHullMarg() {
 		return CONVEX_HULL_MARG;
 	}
 
@@ -301,7 +301,7 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 		return build.toString();
 	}
 
-	protected abstract void applyConvexHull(ConvexHull.Method m);
+	protected abstract void applyConvexHull(ConvexHull m);
 
 	@Override
 	public VertexAbstractFactor divide(VertexFactor other) {

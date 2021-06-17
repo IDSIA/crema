@@ -149,7 +149,7 @@ public class ReducedHull implements ConvexHull {
 	 */
 	@Override
 	public double[][] apply(double[][] vertices) {
-		double[][] hull = ConvexHull.as(Method.LP_CONVEX_HULL).apply(vertices);
+		double[][] hull = ConvexHull.LP_CONVEX_HULL.apply(vertices);
 		int m = numPoints;
 		if (m < 0) m = vertices.length / 2;
 		init(hull);

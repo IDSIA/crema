@@ -17,7 +17,7 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 
 	private GraphicalModel<VertexFactor> model;
 
-	private ConvexHull.Method convexHullMarg = null;
+	private ConvexHull convexHullMarg = null;
 
 	/**
 	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
@@ -27,7 +27,7 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 		this.model = model;
 	}
 
-	public void setConvexHullMarg(ConvexHull.Method convexHullMarg) {
+	public void setConvexHullMarg(ConvexHull convexHullMarg) {
 		this.convexHullMarg = convexHullMarg;
 	}
 
@@ -80,7 +80,7 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 		ve.setNormalize(false);
 
 		// Set the convex hull method
-		ConvexHull.Method old_method = VertexAbstractFactor.getConvexHullMarg();
+		ConvexHull old_method = VertexAbstractFactor.getConvexHullMarg();
 		VertexAbstractFactor.setConvexHullMarg(convexHullMarg);
 
 		// run the query

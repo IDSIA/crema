@@ -21,7 +21,7 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 	}
 
 	@Override
-	protected void applyConvexHull(ConvexHull.Method m) {
+	protected void applyConvexHull(ConvexHull m) {
 		// TODO
 		throw new NotImplementedException();
 	}
@@ -85,7 +85,7 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 	}
 
 	@Override
-	public VertexFactor convexHull(ConvexHull.Method m) {
+	public VertexFactor convexHull(ConvexHull m) {
 		// TODO
 		throw new NotImplementedException();
 	}
