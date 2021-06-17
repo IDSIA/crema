@@ -150,12 +150,12 @@ public class CredalInferenceExample {
 
 		conversor.apply(cfx, 0).getData();
 
-		CredalApproxLP calp1 = new CredalApproxLP();
+		CredalApproxLP<SeparateHalfspaceFactor> calp1 = new CredalApproxLP<>();
 
 		System.out.println(Arrays.toString(calp1.query(modelSH, x).getUpper()));
 		System.out.println(Arrays.toString(calp1.query(modelSH, x).getLower()));
 
-		CredalApproxLP calp2 = new CredalApproxLP();
+		CredalApproxLP<SeparateHalfspaceFactor> calp2 = new CredalApproxLP<>();
 
 		System.out.println(Arrays.toString((calp2.query(modelSH, x)).getUpper()));
 		System.out.println(Arrays.toString((calp2.query(modelSH, x)).getLower()));

@@ -58,7 +58,7 @@ public class PGMpaper2 {
 		IO.write(cnet, "./models/pgm-hcredal.uai");
 
 		// set up the inference and run the queries
-		CredalApproxLP inf = new CredalApproxLP();
+		CredalApproxLP<SeparateHalfspaceFactor> inf = new CredalApproxLP<>();
 		IntervalFactor res1 = inf.query(cnet, ObservationBuilder.observe(a, 0), b);
 		IntervalFactor res2 = inf.query(cnet, b);
 

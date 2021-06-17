@@ -50,7 +50,7 @@ SeparateHalfspaceFactor fa = SeparateHalfspaceFactorFactory.factory().domain(cne
 cnet.setFactor(X0,fa);
 
 // set up the inference and run the queries
-CredalApproxLP inf = new CredalApproxLP();
+CredalApproxLP<SeparateHalfspaceFactor> inf = new CredalApproxLP<>();
 IntervalFactor res1 = inf.query(cnet, ObservationBuilder.observe(X0, 0), X1);
 IntervalFactor res2 = inf.query(cnet, X1);
 
