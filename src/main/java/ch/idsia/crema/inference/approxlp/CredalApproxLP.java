@@ -1,42 +1,42 @@
 package ch.idsia.crema.inference.approxlp;
 
+import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
-import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.graphical.MixedModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
-import ch.idsia.crema.preprocess.CutObservedSepHalfspace;
+import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
 
-// TODO: this class works only for SeparateHalfspaceFactor?
-public class CredalApproxLP implements Inference<GraphicalModel<SeparateHalfspaceFactor>, IntervalFactor> {
 
-	private GraphicalModel<SeparateHalfspaceFactor> model;
+public class CredalApproxLP<F extends FilterableFactor<F>> implements Inference<GraphicalModel<F>, IntervalFactor> {
+
+	private GraphicalModel<F> model;
 
 	public CredalApproxLP() {
 	}
 
 	@Deprecated
-	public CredalApproxLP(GraphicalModel<SeparateHalfspaceFactor> model) {
+	public CredalApproxLP(GraphicalModel<F> model) {
 		setModel(model);
 	}
 
-	public void setModel(GraphicalModel<SeparateHalfspaceFactor> model) {
+	public void setModel(GraphicalModel<F> model) {
 		this.model = model;
 	}
 
 	@Deprecated
-	public GraphicalModel<SeparateHalfspaceFactor> getInferenceModel(int target, TIntIntMap evidence) {
+	public GraphicalModel<F> getInferenceModel(int target, TIntIntMap evidence) {
 		// preprocessing
-		final CutObservedSepHalfspace cut = new CutObservedSepHalfspace();
-		final GraphicalModel<SeparateHalfspaceFactor> cutted = cut.execute(model, evidence);
+		final CutObserved<F> cut = new CutObserved<>();
+		final GraphicalModel<F> cutted = cut.execute(model, evidence);
 
-		RemoveBarren<SeparateHalfspaceFactor> removeBarren = new RemoveBarren<>();
+		RemoveBarren<F> removeBarren = new RemoveBarren<>();
 		return removeBarren.execute(cutted, evidence, target);
 	}
 
@@ -51,9 +51,9 @@ public class CredalApproxLP implements Inference<GraphicalModel<SeparateHalfspac
 	}
 
 	@Override
-	public IntervalFactor query(GraphicalModel<SeparateHalfspaceFactor> model, TIntIntMap evidence, int query) {
+	public IntervalFactor query(GraphicalModel<F> model, TIntIntMap evidence, int query) {
 		setModel(model);
-		final GraphicalModel<SeparateHalfspaceFactor> infModel = getInferenceModel(query, evidence);
+		final GraphicalModel<F> infModel = getInferenceModel(query, evidence);
 		final TIntIntMap filteredEvidence = new TIntIntHashMap();
 
 		// update the evidence
@@ -64,7 +64,7 @@ public class CredalApproxLP implements Inference<GraphicalModel<SeparateHalfspac
 		}
 
 		if (filteredEvidence.size() > 0) {
-			final BinarizeEvidence<SeparateHalfspaceFactor> be = new BinarizeEvidence<>();
+			final BinarizeEvidence<F> be = new BinarizeEvidence<>();
 			be.setSize(filteredEvidence.size());
 			MixedModel mixedModel = be.execute(model, filteredEvidence);
 			final int evbin = be.getEvidenceNode();
@@ -75,7 +75,7 @@ public class CredalApproxLP implements Inference<GraphicalModel<SeparateHalfspac
 
 		}
 
-		final ApproxLP1<SeparateHalfspaceFactor> alp1 = new ApproxLP1<>();
+		final ApproxLP1<F> alp1 = new ApproxLP1<>();
 		return alp1.query(infModel, query);
 	}
 

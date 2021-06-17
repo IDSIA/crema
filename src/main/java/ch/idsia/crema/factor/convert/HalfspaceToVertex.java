@@ -11,6 +11,7 @@ import ch.javasoft.xml.config.XmlConfigException;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.File;
@@ -38,6 +39,9 @@ public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, Ver
 			Collection<LinearConstraint> set = s.getLinearProblemAt(comb).getConstraints();
 			double[][] inequalities = toDoubleArrays(set, s.getDataDomain().getCombinations());
 			double[][] vertices = polcoToVertices(inequalities);
+
+			if(vertices.length==0)
+				throw new NoFeasibleSolutionException();
 
 			for (double[] v : vertices) {
 				vertList.add(v);

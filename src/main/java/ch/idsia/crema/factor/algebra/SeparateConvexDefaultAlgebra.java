@@ -32,7 +32,7 @@ public class SeparateConvexDefaultAlgebra extends SeparateDefaultAlgebra {
 	public VertexFactor convex(VertexFactor factor) {
 		double[][][] data = new double[factor.size()][][];
 		for (int ix = 0; ix < data.length; ++ix) {
-			data[ix] = LPConvexHull.compute(factor.getVerticesAt(ix), true); // TODO: data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], true);
+			data[ix] = LPConvexHull.compute(factor.getVerticesAt(ix)); // TODO: data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], true);
 		}
 
 		return new VertexDefaultFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
@@ -41,7 +41,7 @@ public class SeparateConvexDefaultAlgebra extends SeparateDefaultAlgebra {
 	public VertexFactor fullConvex(VertexFactor factor) {
 		double[][][] data = new double[factor.size()][][];
 		for (int ix = 0; ix < data.length; ++ix) {
-			data[ix] = LPConvexHull.compute(factor.getVerticesAt(ix), false); // TODO: data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], false);
+			data[ix] = LPConvexHull.compute(factor.getVerticesAt(ix)); // TODO: data[ix] = LPConvexHull.compute(factor.getInternalData()[ix], false);
 		}
 
 		return new VertexDefaultFactor(factor.getDataDomain(), factor.getSeparatingDomain(), data);
