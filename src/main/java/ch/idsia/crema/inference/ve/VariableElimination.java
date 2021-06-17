@@ -149,14 +149,6 @@ public class VariableElimination<F extends OperableFactor<F>> implements Inferen
 		return last;
 	}
 
-	/**
-	 * @deprecated use method {@link #query(GraphicalModel, TIntIntMap, int)}
-	 */
-	@Deprecated
-	public F apply(GraphicalModel<F> model, int[] query, TIntIntMap observations) throws InterruptedException {
-		return query(model, observations, query);
-	}
-
 	@Override
 	public F query(GraphicalModel<F> model, TIntIntMap evidence, int query) {
 		return query(model, evidence, new int[]{query});

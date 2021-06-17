@@ -8,7 +8,6 @@ import gnu.trove.map.TIntDoubleMap;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntDoubleHashMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.Arrays;
@@ -97,22 +96,6 @@ public class LikelihoodWeightingSampling extends StochasticSampling {
 		return Arrays.stream(query)
 				.mapToObj(q -> new BayesianDefaultFactor(model.getDomain(q), Px.get(q)))
 				.collect(Collectors.toList());
-	}
-
-	/**
-	 * @deprecated use method {@link #query(DAGModel, TIntIntMap, int)}
-	 */
-	@Deprecated
-	public Collection<BayesianFactor> apply(DAGModel<BayesianFactor> model, int[] query) {
-		return run(model, new TIntIntHashMap(), query);
-	}
-
-	/**
-	 * @deprecated use method {@link #query(DAGModel, TIntIntMap, int[])}
-	 */
-	@Deprecated
-	public Collection<BayesianFactor> apply(DAGModel<BayesianFactor> model, int[] query, TIntIntMap observations) {
-		return run(model, observations, query);
 	}
 
 }

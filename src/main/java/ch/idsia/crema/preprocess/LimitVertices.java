@@ -22,26 +22,17 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 
 	/**
 	 * @param max set the max value, default is 10.
+	 * @return
 	 */
-	public void setMax(int max) {
+	public LimitVertices setMax(int max) {
 		this.max = max;
-	}
-
-	/**
-	 * @deprecated set the parameter {@link #max} with {@link #setMax(int)} and use method {@link #execute(GraphicalModel)}
-	 * or {@link #executeInPlace(GraphicalModel)}
-	 */
-	@Deprecated
-	public GraphicalModel<VertexFactor> apply(GraphicalModel<VertexFactor> model, int max) {
-		setMax(max);
-		return execute(model);
+		return this;
 	}
 
 	@Override
 	public void executeInPlace(GraphicalModel<VertexFactor> model) {
 		for (int variable : model.getVariables()) {
 			VertexFactor factor = reduce(model.getFactor(variable), max);
-//			System.out.println("factor over " + factor.getDomain() + " has " + factor.getVertices().length + " vertices");
 			model.setFactor(variable, factor);
 		}
 	}

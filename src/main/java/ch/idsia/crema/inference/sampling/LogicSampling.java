@@ -5,7 +5,6 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.Arrays;
@@ -65,14 +64,6 @@ public class LogicSampling extends StochasticSampling {
 		return Arrays.stream(query)
 				.mapToObj(q -> new BayesianDefaultFactor(model.getDomain(q), Px.get(q)))
 				.collect(Collectors.toList());
-	}
-
-	/**
-	 * @deprecated use method {@link #query(DAGModel, int[])}
-	 */
-	@Deprecated
-	public Collection<BayesianFactor> apply(DAGModel<BayesianFactor> model, int[] query) {
-		return run(model, new TIntIntHashMap(), query);
 	}
 
 }

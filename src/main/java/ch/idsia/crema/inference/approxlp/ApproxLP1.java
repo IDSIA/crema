@@ -175,13 +175,4 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 		}
 	}
 
-	@Deprecated
-	public IntervalFactor apply(GraphicalModel<F> model, int query, TIntIntMap observations) {
-		if (observations.isEmpty()) {
-			return query(model, query);
-		} else {
-			return null;
-		}
-	}
-
 }

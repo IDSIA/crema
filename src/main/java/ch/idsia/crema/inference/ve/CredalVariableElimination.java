@@ -15,23 +15,18 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class CredalVariableElimination implements Inference<GraphicalModel<VertexFactor>, VertexFactor> {
 
-	private GraphicalModel<VertexFactor> model;
-
 	private ConvexHull convexHullMarg = null;
 
 	/**
-	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
+	 * @param convexHullMarg the {@link ConvexHull} method to use
+	 * @return
 	 */
-	@Deprecated
-	public void setModel(GraphicalModel<VertexFactor> model) {
-		this.model = model;
-	}
-
-	public void setConvexHullMarg(ConvexHull convexHullMarg) {
+	public CredalVariableElimination setConvexHullMarg(ConvexHull convexHullMarg) {
 		this.convexHullMarg = convexHullMarg;
+		return this;
 	}
 
-	public GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
+	protected GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
 		CutObserved<VertexFactor> cutObserved = new CutObserved<>();
 		// run making a copy of the model
 		GraphicalModel<VertexFactor> infModel = cutObserved.execute(model, evidence);
@@ -41,14 +36,6 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 		removeBarren.executeInPlace(infModel, evidence, target);
 
 		return infModel;
-	}
-
-	/**
-	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
-	 */
-	@Deprecated
-	public VertexFactor query(int target, TIntIntMap evidence) {
-		return query(model, evidence, target);
 	}
 
 	/**

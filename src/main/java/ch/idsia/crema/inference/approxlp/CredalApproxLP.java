@@ -16,22 +16,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class CredalApproxLP<F extends FilterableFactor<F>> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
-	private GraphicalModel<F> model;
-
-	public CredalApproxLP() {
-	}
-
-	@Deprecated
-	public CredalApproxLP(GraphicalModel<F> model) {
-		setModel(model);
-	}
-
-	public void setModel(GraphicalModel<F> model) {
-		this.model = model;
-	}
-
-	@Deprecated
-	public GraphicalModel<F> getInferenceModel(int target, TIntIntMap evidence) {
+	protected GraphicalModel<F> getInferenceModel(GraphicalModel<F> model, TIntIntMap evidence, int target) {
 		// preprocessing
 		final CutObserved<F> cut = new CutObserved<>();
 		final GraphicalModel<F> cutted = cut.execute(model, evidence);
@@ -40,20 +25,9 @@ public class CredalApproxLP<F extends FilterableFactor<F>> implements Inference<
 		return removeBarren.execute(cutted, evidence, target);
 	}
 
-	@Deprecated
-	public IntervalFactor query(int target) throws InterruptedException {
-		return query(target, new TIntIntHashMap());
-	}
-
-	@Deprecated
-	public IntervalFactor query(int target, TIntIntMap evidence) throws InterruptedException {
-		return query(model, evidence, target);
-	}
-
 	@Override
 	public IntervalFactor query(GraphicalModel<F> model, TIntIntMap evidence, int query) {
-		setModel(model);
-		final GraphicalModel<F> infModel = getInferenceModel(query, evidence);
+		final GraphicalModel<F> infModel = getInferenceModel(model, evidence, query);
 		final TIntIntMap filteredEvidence = new TIntIntHashMap();
 
 		// update the evidence

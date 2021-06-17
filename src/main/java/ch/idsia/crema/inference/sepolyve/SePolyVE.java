@@ -83,14 +83,6 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 	}
 
 	/**
-	 * @deprecated use method {@link #query(GraphicalModel, TIntIntMap, int)}
-	 */
-	@Deprecated
-	public VertexFactor run(GraphicalModel<VertexFactor> model, int query, TIntIntMap evidence) {
-		return query(model, evidence, query);
-	}
-
-	/**
 	 * Compute the marginal or posterior probability of query given evidence in the model.
 	 *
 	 * @param model    the model to use for inference

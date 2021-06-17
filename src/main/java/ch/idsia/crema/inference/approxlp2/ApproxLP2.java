@@ -49,14 +49,6 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 	}
 
 	/**
-	 * @deprecated use method {@link #query(GraphicalModel, TIntIntMap, int)}
-	 */
-	@Deprecated
-	public IntervalFactor query(GraphicalModel<F> originalModel, int query, TIntIntMap evidence) {
-		return query(originalModel, evidence, query);
-	}
-
-	/**
 	 * No need to remove barren variables!
 	 * <p>
 	 * Preconditions: model reduction (root node observations, single
