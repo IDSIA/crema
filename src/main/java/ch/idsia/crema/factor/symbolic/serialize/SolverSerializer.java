@@ -1,7 +1,6 @@
 package ch.idsia.crema.factor.symbolic.serialize;
 
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
-import ch.idsia.crema.model.Model;
 
 public interface SolverSerializer {
 

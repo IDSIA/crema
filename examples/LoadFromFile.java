@@ -1,5 +1,7 @@
+package examples;
+
 import ch.idsia.crema.IO;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 
 import java.io.IOException;

@@ -1,7 +1,6 @@
 package ch.idsia.crema.factor.credal;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.credal.set.CredalSet;
 
 /**
@@ -10,7 +9,7 @@ import ch.idsia.crema.factor.credal.set.CredalSet;
  *
  * @author huber
  */
-public class SeparatelySpecifiedCredalFactor<S extends CredalSet> implements GenericFactor, SeparatelySpecified<SeparatelySpecifiedCredalFactor<S>> {
+public class SeparatelySpecifiedCredalFactor<S extends CredalSet> implements SeparatelySpecified<SeparatelySpecifiedCredalFactor<S>> {
 	private Strides left, right;
 
 	private CredalSet[] sets;

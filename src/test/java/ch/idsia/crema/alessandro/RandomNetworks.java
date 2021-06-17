@@ -4,9 +4,10 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.VertexToInterval;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.inference.approxlp.ApproxLP1;
 import ch.idsia.crema.inference.sepolyve.MaxMemoryException;
 import ch.idsia.crema.inference.sepolyve.MaxTimeException;
@@ -285,7 +286,7 @@ public class RandomNetworks {
 			// and add them to the vertices list
 			data[cond] = generator.linvac(left_size, 0.1);
 		}
-		return new VertexFactor(left, conditioning, data);
+		return new VertexDefaultFactor(left, conditioning, data);
 	}
 
 	/*

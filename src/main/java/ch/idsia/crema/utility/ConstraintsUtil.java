@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+// TODO: maybe move in the package ch.idsia.crema.factor.credal.linear.separate?
 public class ConstraintsUtil {
 
 	public static Collection<LinearConstraint> perturbZeroConstraints(Collection<LinearConstraint> set, double eps) {

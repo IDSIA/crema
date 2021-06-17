@@ -1,51 +1,34 @@
 package ch.idsia.crema.factor.symbolic;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 
-
-public abstract class SymbolicFactor implements Factor<SymbolicFactor> {
-
-	private final Strides domain;
-
-	public SymbolicFactor(Strides domain) {
-		this.domain = domain;
-	}
+/**
+ * Author:  Claudio "Dna" Bonesana
+ * Project: crema
+ * Date:    28.04.2021 15:04
+ */
+public interface SymbolicFactor extends OperableFactor<SymbolicFactor> {
 
 	@Override
-	public CombinedFactor combine(SymbolicFactor other) {
-		return new CombinedFactor(this, other);
-	}
+	Strides getDomain();
 
 	@Override
-	public MarginalizedFactor marginalize(int variable) {
-		return new MarginalizedFactor(this, variable);
-	}
+	SymbolicFactor copy();
+
+	SymbolicFactor combine(SymbolicFactor other);
 
 	@Override
-	public Strides getDomain() {
-		return domain;
-	}
+	SymbolicFactor marginalize(int variable);
 
 	@Override
-	public SymbolicFactor copy() {
-		// TODO: copy not this way
-		return null;
-	}
+	SymbolicFactor filter(int variable, int state);
+
+	SymbolicFactor divide(SymbolicFactor factor);
+
+	SymbolicFactor[] getSources();
 
 	@Override
-	public FilteredFactor filter(int variable, int state) {
-		return new FilteredFactor(this, variable, state);
-	}
+	SymbolicFactor normalize(int... given);
 
-	@Override
-	public DividedFactor divide(SymbolicFactor factor) {
-		return new DividedFactor(this, factor);
-	}
-
-	/**
-	 * Return the factors that originated this factor. 
-	 * @return
-	 */
-	public abstract SymbolicFactor[] getSources();
 }

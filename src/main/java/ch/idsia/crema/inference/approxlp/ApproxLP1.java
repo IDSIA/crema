@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.approxlp;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalDefaultFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
@@ -145,12 +146,10 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 			uppers[state] = runSearcher(model, upper);
 		}
 
-		IntervalFactor result = new IntervalFactor(
+		return new IntervalDefaultFactor(
 				model.getDomain(query), model.getDomain(), new double[][]{lowers}, new double[][]{uppers}
-		);
-		result.updateReachability();
-
-		return result;
+		)
+				.updateReachability();
 	}
 
 	private double runSearcher(GraphicalModel<F> model, Manager objective) {

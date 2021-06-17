@@ -13,4 +13,5 @@ public class ConverterFactoryTest {
 	public void testItWorksAsIntended() {
 		System.out.println(ConverterFactory.INSTANCE.toString());
 	}
+
 }

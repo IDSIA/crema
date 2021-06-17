@@ -1,6 +1,6 @@
 package ch.idsia.crema.factor.symbolic;
 
-public class DividedFactor extends SymbolicFactor {
+public class DividedFactor extends SymbolicAbstractFactor {
 
 	private final SymbolicFactor numerator;
 	private final SymbolicFactor denominator;
@@ -11,16 +11,26 @@ public class DividedFactor extends SymbolicFactor {
 		this.denominator = denominator;
 	}
 
-	public SymbolicFactor getNumerator() { 
+	@Override
+	public SymbolicFactor copy() {
+		return new DividedFactor(numerator, denominator);
+	}
+
+	public SymbolicFactor getNumerator() {
 		return numerator;
 	}
 
-	public SymbolicFactor getDenominator() { 
+	public SymbolicFactor getDenominator() {
 		return denominator;
 	}
 
 	@Override
 	public SymbolicFactor[] getSources() {
-		return new SymbolicFactor[] { numerator, denominator };
+		return new SymbolicFactor[]{numerator, denominator};
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s.divide(%s)", numerator, denominator);
 	}
 }

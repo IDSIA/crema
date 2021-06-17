@@ -4,7 +4,7 @@ import ch.idsia.crema.core.Strides;
 
 import java.util.Arrays;
 
-public class VoidFactor implements Factor<VoidFactor> {
+public class VoidFactor implements OperableFactor<VoidFactor> {
 
 	private final Strides domain;
 	private final long max;
@@ -15,9 +15,7 @@ public class VoidFactor implements Factor<VoidFactor> {
 	}
 
 	/**
-	 * Returns the maximum domain size encountered
-	 *
-	 * @return
+	 * @return the maximum domain size encountered
 	 */
 	public long getMaxSize() {
 		return max;
@@ -31,7 +29,6 @@ public class VoidFactor implements Factor<VoidFactor> {
 	public VoidFactor copy() {
 		return new VoidFactor(domain, max);
 	}
-
 
 	@Override
 	public Strides getDomain() {
@@ -65,10 +62,10 @@ public class VoidFactor implements Factor<VoidFactor> {
 	}
 
 	/**
-	 * The specialized method that avoids the cast of the input variable.
+	 * Specialized method that avoids the cast of the input variable.
 	 *
-	 * @param factor
-	 * @return
+	 * @param factor input {@link VoidFactor} to combine with
+	 * @return a new {@link VoidFactor}, resulting of the combination of this and the given factors
 	 */
 	@Override
 	public VoidFactor combine(final VoidFactor factor) {
@@ -80,7 +77,6 @@ public class VoidFactor implements Factor<VoidFactor> {
 	public String toString() {
 		return "P(" + Arrays.toString(domain.getVariables()) + ")";
 	}
-
 
 	@Override
 	public VoidFactor divide(VoidFactor factor) {

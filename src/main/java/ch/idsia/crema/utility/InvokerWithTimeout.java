@@ -5,7 +5,6 @@ import java.util.concurrent.*;
 public class InvokerWithTimeout<R> {
 
 	public R run(Callable<R> task, long seconds) throws TimeoutException, InterruptedException, ExecutionException {
-
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 		// Do the call in a separate thread, get a Future back

@@ -1,7 +1,9 @@
 package ch.idsia.crema.inference;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TDoubleArrayList;
@@ -65,24 +67,31 @@ public class BayesianNetworkContainer {
 
 		BayesianFactor[] f = new BayesianFactor[11];
 
-		f[A] = new BayesianFactor(model.getDomain(A), new double[]{.6, .4});
-		f[B] = new BayesianFactor(model.getDomain(B), new double[]{.4, .6});
-		f[C] = new BayesianFactor(model.getDomain(A, C));
-		f[C].setData(new int[]{C, A}, new double[]{.1, .9, .2, .8});
-		f[D] = new BayesianFactor(model.getDomain(A, B, D));
-		f[D].setData(new int[]{D, A, B}, new double[]{.3, .7, .4, .6, .5, .5, .8, .2});
-		f[E] = new BayesianFactor(model.getDomain(E), new double[]{.6, .4});
-		f[F] = new BayesianFactor(model.getDomain(C, D, F));
-		f[F].setData(new int[]{F, C, D}, new double[]{.5, .5, .7, .3, .2, .8, .6, .4});
-		f[G] = new BayesianFactor(model.getDomain(E, G));
-		f[G].setData(new int[]{G, E}, new double[]{.6, .4, .5, .5});
-		f[H] = new BayesianFactor(model.getDomain(H), new double[]{.6, .4});
-		f[I] = new BayesianFactor(model.getDomain(C, I));
-		f[I].setData(new int[]{I, C}, new double[]{.1, .9, .8, .2});
-		f[J] = new BayesianFactor(model.getDomain(F, G, J));
-		f[J].setData(new int[]{J, F, G}, new double[]{.2, .8, .3, .7, .6, .4, .5, .5});
-		f[K] = new BayesianFactor(model.getDomain(G, H, K));
-		f[K].setData(new int[]{K, G, H}, new double[]{.4, .6, .8, .2, .5, .5, .7, .3});
+		f[A] = BayesianFactorFactory.factory().domain(model.getDomain(A)).data(new double[]{.6, .4}).get();
+		f[B] = BayesianFactorFactory.factory().domain(model.getDomain(B)).data(new double[]{.4, .6}).get();
+		f[C] = BayesianFactorFactory.factory().domain(model.getDomain(A, C))
+				.data(new int[]{C, A}, new double[]{.1, .9, .2, .8})
+				.get();
+		f[D] = BayesianFactorFactory.factory().domain(model.getDomain(A, B, D))
+				.data(new int[]{D, A, B}, new double[]{.3, .7, .4, .6, .5, .5, .8, .2})
+				.get();
+		f[E] = BayesianFactorFactory.factory().domain(model.getDomain(E)).data(new double[]{.6, .4}).get();
+		f[F] = BayesianFactorFactory.factory().domain(model.getDomain(C, D, F))
+				.data(new int[]{F, C, D}, new double[]{.5, .5, .7, .3, .2, .8, .6, .4})
+				.get();
+		f[G] = BayesianFactorFactory.factory().domain(model.getDomain(E, G))
+				.data(new int[]{G, E}, new double[]{.6, .4, .5, .5})
+				.get();
+		f[H] = BayesianFactorFactory.factory().domain(model.getDomain(H)).data(new double[]{.6, .4}).get();
+		f[I] = BayesianFactorFactory.factory().domain(model.getDomain(C, I))
+				.data(new int[]{I, C}, new double[]{.1, .9, .8, .2})
+				.get();
+		f[J] = BayesianFactorFactory.factory().domain(model.getDomain(F, G, J))
+				.data(new int[]{J, F, G}, new double[]{.2, .8, .3, .7, .6, .4, .5, .5})
+				.get();
+		f[K] = BayesianFactorFactory.factory().domain(model.getDomain(G, H, K))
+				.data(new int[]{K, G, H}, new double[]{.4, .6, .8, .2, .5, .5, .7, .3})
+				.get();
 
 		return new BayesianNetworkContainer(model, f, A, B, C, D, E, F, G, H, I, J, K);
 	}
@@ -98,32 +107,37 @@ public class BayesianNetworkContainer {
 
 		// Winter?
 		int A = model.addVariable(2);
-		f[A] = new BayesianFactor(model.getDomain(A), new double[]{.6, .4}, false);
+		f[A] = BayesianFactorFactory.factory().domain(model.getDomain(A)).data(new double[]{.6, .4}).get();
 
 		// Sprinkler?
 		int B = model.addVariable(2);
 		model.addParent(B, A);
-		f[B] = new BayesianFactor(model.getDomain(A, B), false);
-		f[B].setData(new int[]{B, A}, new double[]{.2, .8, .75, .25});
+		f[B] = BayesianFactorFactory.factory().domain(model.getDomain(A, B))
+				.data(new int[]{B, A}, new double[]{.2, .8, .75, .25})
+				.get();
 
 		// Rain?
 		int C = model.addVariable(2);
 		model.addParent(C, A);
-		f[C] = new BayesianFactor(model.getDomain(A, C), false);
-		f[C].setData(new int[]{C, A}, new double[]{.8, .2, .1, .9});
+		f[C] = BayesianFactorFactory.factory().domain(model.getDomain(A, C))
+				.data(new int[]{C, A}, new double[]{.8, .2, .1, .9})
+				.get();
 
 		// Wet Grass?
 		int D = model.addVariable(2);
 		model.addParent(D, B);
 		model.addParent(D, C);
-		f[D] = new BayesianFactor(model.getDomain(B, C, D), false);
-		f[D].setData(new int[]{D, B, C}, new double[]{.95, .05, .9, .1, .8, .2, 0, 1});
+		f[D] = BayesianFactorFactory.factory().domain(model.getDomain(B, C, D))
+				.data(new int[]{D, B, C}, new double[]{.95, .05, .9, .1, .8, .2, 0, 1})
+				.get();
+
 
 		// Slippery Road?
 		int E = model.addVariable(2);
 		model.addParent(E, C);
-		f[E] = new BayesianFactor(model.getDomain(C, E), false);
-		f[E].setData(new int[]{E, C}, new double[]{.7, .3, 0, 1});
+		f[E] = BayesianFactorFactory.factory().domain(model.getDomain(C, E))
+				.data(new int[]{E, C}, new double[]{.7, .3, 0, 1})
+				.get();
 
 		model.setFactors(f);
 
@@ -138,8 +152,8 @@ public class BayesianNetworkContainer {
 	 * @param p    parents for each node
 	 * @return a BN
 	 */
-	public static BayesianNetworkContainer random(long seed, int n, int p) {
-		Random random = new Random(seed);
+	public static BayesianNetworkContainer random(int n, int p) {
+		Random random = RandomUtil.getRandom();
 
 		BayesianNetwork model = new BayesianNetwork();
 		BayesianFactor[] f = new BayesianFactor[n];
@@ -149,7 +163,7 @@ public class BayesianNetworkContainer {
 		double d = random.nextDouble();
 
 		int root = model.addVariable(2);
-		f[root] = new BayesianFactor(model.getDomain(root), new double[]{d, 1 - d}, false);
+		f[root] = BayesianFactorFactory.factory().domain(model.getDomain(root)).data(new double[]{d, 1 - d}).get();
 
 		System.out.println(root + " " + f[root] + ": " + Arrays.toString(f[root].getData()));
 
@@ -178,8 +192,9 @@ public class BayesianNetworkContainer {
 
 			int[] parents = ints.toArray();
 			ints.sort();
-			f[v] = new BayesianFactor(model.getDomain(ints.toArray()), false);
-			f[v].setData(parents, doubles.toArray());
+			f[v] = BayesianFactorFactory.factory().domain(model.getDomain(ints.toArray()))
+					.data(parents, doubles.toArray())
+					.get();
 
 			System.out.println(v + " " + f[v] + ": " + Arrays.toString(f[v].getData()));
 		}
@@ -238,18 +253,24 @@ public class BayesianNetworkContainer {
 
 		BayesianFactor[] f = new BayesianFactor[6];
 
-		f[A1] = new BayesianFactor(model.getDomain(A1));
-		f[A1].setData(new int[]{A1}, new double[]{.7, .3});
-		f[A2] = new BayesianFactor(model.getDomain(A1, A2));
-		f[A2].setData(new int[]{A2, A1}, new double[]{.4, .6, .3, .7});
-		f[A3] = new BayesianFactor(model.getDomain(A1, A3));
-		f[A3].setData(new int[]{A3, A1}, new double[]{.5, .5, .8, .2});
-		f[A4] = new BayesianFactor(model.getDomain(A2, A4));
-		f[A4].setData(new int[]{A4, A2}, new double[]{.6, .4, .1, .9});
-		f[A5] = new BayesianFactor(model.getDomain(A2, A3, A5));
-		f[A5].setData(new int[]{A5, A2, A3}, new double[]{.1, .9, .8, .2, .4, .6, .6, .4});
-		f[A6] = new BayesianFactor(model.getDomain(A6, A3));
-		f[A6].setData(new int[]{A3, A6}, new double[]{.4, .6, .5, .5});
+		f[A1] = BayesianFactorFactory.factory().domain(model.getDomain(A1))
+				.data(new int[]{A1}, new double[]{.7, .3})
+				.get();
+		f[A2] = BayesianFactorFactory.factory().domain(model.getDomain(A1, A2))
+				.data(new int[]{A2, A1}, new double[]{.4, .6, .3, .7})
+				.get();
+		f[A3] = BayesianFactorFactory.factory().domain(model.getDomain(A1, A3))
+				.data(new int[]{A3, A1}, new double[]{.5, .5, .8, .2})
+				.get();
+		f[A4] = BayesianFactorFactory.factory().domain(model.getDomain(A2, A4))
+				.data(new int[]{A4, A2}, new double[]{.6, .4, .1, .9})
+				.get();
+		f[A5] = BayesianFactorFactory.factory().domain(model.getDomain(A2, A3, A5))
+				.data(new int[]{A5, A2, A3}, new double[]{.1, .9, .8, .2, .4, .6, .6, .4})
+				.get();
+		f[A6] = BayesianFactorFactory.factory().domain(model.getDomain(A6, A3))
+				.data(new int[]{A3, A6}, new double[]{.4, .6, .5, .5})
+				.get();
 
 		model.setFactors(f);
 

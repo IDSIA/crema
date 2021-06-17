@@ -8,32 +8,19 @@ import ch.idsia.crema.core.Strides;
  * @author davidhuber
  */
 public interface GenericFactor {
+
 	/**
-	 * Make a copy of the factor
-	 *
-	 * @return
+	 * @return a copy of the factor
 	 */
 	GenericFactor copy();
 
 	/**
-	 * The domain of the factor. This includes variables, sizes and strides.
-	 *
-	 * @return
+	 * @return The domain of the factor. This includes variables, sizes and strides.
 	 */
 	Strides getDomain();
 
-	default GenericFactor getDeterministic(int var, int state) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * Replaces the IDs of the variables in the domain
-	 *
-	 * @param new_vars
-	 * @return
-	 */
-	default GenericFactor renameDomain(int... new_vars) {
-		throw new UnsupportedOperationException("Not supported yet.");
+	default boolean isLog() {
+		return this.getClass().isAnnotationPresent(LogSpace.class);
 	}
 
 }

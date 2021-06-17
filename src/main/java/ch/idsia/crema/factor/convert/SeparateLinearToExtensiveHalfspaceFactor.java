@@ -2,8 +2,8 @@ package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.Converter;
-import ch.idsia.crema.factor.credal.linear.ExtensiveHalfspaceFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
+import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
 import ch.idsia.crema.utility.IndexIterator;
 import org.apache.commons.math3.linear.OpenMapRealVector;
 import org.apache.commons.math3.linear.RealVector;

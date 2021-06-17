@@ -3,7 +3,9 @@ package ch.idsia.crema.inference.ve;
 import ch.idsia.crema.core.DomainBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.factor.symbolic.serialize.MOD;
@@ -26,17 +28,19 @@ public class VariableEliminationTest {
 		// 0.1]]
 		BayesianFactor[] f = new BayesianFactor[4];
 
-		f[0] = new BayesianFactor(DomainBuilder.var(0, 1, 2).size(2, 2, 2), false);
-		f[1] = new BayesianFactor(DomainBuilder.var(1, 3).size(2, 2), false);
-		f[2] = new BayesianFactor(DomainBuilder.var(2, 3).size(2, 2), false);
-		f[3] = new BayesianFactor(DomainBuilder.var(3).size(2), false);
-		// f[4] = new BayesianFactor(DomainBuilder.var(0, 4).size(2, 2),
-		// false);
-
-		f[3].setData(new double[]{0.3, 0.7});
-		f[1].setData(new double[]{0.4, 0.6, 0.5, 0.5});
-		f[2].setData(new double[]{0.7, 0.3, 0.1, 0.9});
-		f[0].setData(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7});
+		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1, 2).size(2, 2, 2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.get();
+		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1, 3).size(2, 2))
+				.data(new double[]{0.4, 0.6, 0.5, 0.5})
+				.get();
+		f[2] = BayesianFactorFactory.factory().domain(DomainBuilder.var(2, 3).size(2, 2))
+				.data(new double[]{0.7, 0.3, 0.1, 0.9})
+				.get();
+		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2))
+				.data(new double[]{0.3, 0.7})
+				.get();
+		// f[4] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 4).size(2, 2)).data().get();
 
 		int[] seq = new int[]{0, 1, 2, 3};
 
@@ -60,15 +64,18 @@ public class VariableEliminationTest {
 	public void testInferenceNotBarren() {
 		BayesianFactor[] f = new BayesianFactor[4];
 
-		f[0] = new BayesianFactor(DomainBuilder.var(0, 1, 2).size(2, 2, 2), false);
-		f[1] = new BayesianFactor(DomainBuilder.var(1, 3).size(2, 2), false);
-		f[2] = new BayesianFactor(DomainBuilder.var(2, 3).size(2, 2), false);
-		f[3] = new BayesianFactor(DomainBuilder.var(3).size(2), false);
-
-		f[3].setData(new double[]{0.3, 0.7});
-		f[1].setData(new double[]{0.4, 0.6, 0.5, 0.5});
-		f[2].setData(new double[]{0.7, 0.3, 0.1, 0.9});
-		f[0].setData(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7});
+		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1, 2).size(2, 2, 2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.get();
+		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1, 3).size(2, 2))
+				.data(new double[]{0.4, 0.6, 0.5, 0.5})
+				.get();
+		f[2] = BayesianFactorFactory.factory().domain(DomainBuilder.var(2, 3).size(2, 2))
+				.data(new double[]{0.7, 0.3, 0.1, 0.9})
+				.get();
+		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2))
+				.data(new double[]{0.3, 0.7})
+				.get();
 
 		int[] seq = new int[]{0, 1, 2, 3};
 
@@ -92,9 +99,7 @@ public class VariableEliminationTest {
 	 */
 	@Test
 	public void testInferenceLoneFactor() {
-		BayesianFactor f = new BayesianFactor(DomainBuilder.var(3).size(2), false);
-
-		f.setData(new double[]{0.3, 0.7});
+		BayesianFactor f = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2)).data(new double[]{0.3, 0.7}).get();
 
 		int[] seq = new int[]{3};
 
@@ -112,15 +117,18 @@ public class VariableEliminationTest {
 	public void testInferenceMultiple() {
 		BayesianFactor[] f = new BayesianFactor[4];
 
-		f[0] = new BayesianFactor(DomainBuilder.var(0, 1, 2).size(2, 2, 2), false);
-		f[1] = new BayesianFactor(DomainBuilder.var(1, 3).size(2, 2), false);
-		f[2] = new BayesianFactor(DomainBuilder.var(2, 3).size(2, 2), false);
-		f[3] = new BayesianFactor(DomainBuilder.var(3).size(2), false);
-
-		f[3].setData(new double[]{0.3, 0.7});
-		f[1].setData(new double[]{0.4, 0.6, 0.5, 0.5});
-		f[2].setData(new double[]{0.7, 0.3, 0.1, 0.9});
-		f[0].setData(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7});
+		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1, 2).size(2, 2, 2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.get();
+		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1, 3).size(2, 2))
+				.data(new double[]{0.4, 0.6, 0.5, 0.5})
+				.get();
+		f[2] = BayesianFactorFactory.factory().domain(DomainBuilder.var(2, 3).size(2, 2))
+				.data(new double[]{0.7, 0.3, 0.1, 0.9})
+				.get();
+		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2))
+				.data(new double[]{0.3, 0.7})
+				.get();
 
 		int[] seq = new int[]{0, 1, 2, 3};
 
@@ -142,18 +150,19 @@ public class VariableEliminationTest {
 	public void testInferencePosterior() {
 		BayesianFactor[] f = new BayesianFactor[4];
 
-		f[0] = new BayesianFactor(DomainBuilder.var(0, 1, 2).size(2, 2, 2), false);
-		f[1] = new BayesianFactor(DomainBuilder.var(1, 3).size(2, 2), false);
-		f[2] = new BayesianFactor(DomainBuilder.var(2, 3).size(2, 2), false);
-		f[3] = new BayesianFactor(DomainBuilder.var(3).size(2), false);
-		// f[4] = new BayesianFactor(DomainBuilder.var(0, 3).size(2, 2),
-		// false);
-
-		f[3].setData(new double[]{0.3, 0.7});
-		f[1].setData(new double[]{0.4, 0.6, 0.5, 0.5});
-		f[2].setData(new double[]{0.7, 0.3, 0.1, 0.9});
-		f[0].setData(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7});
-		// f[4].setData(new double[] { 0, 1, 1, 0 });
+		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1, 2).size(2, 2, 2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.get();
+		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1, 3).size(2, 2))
+				.data(new double[]{0.4, 0.6, 0.5, 0.5})
+				.get();
+		f[2] = BayesianFactorFactory.factory().domain(DomainBuilder.var(2, 3).size(2, 2))
+				.data(new double[]{0.7, 0.3, 0.1, 0.9})
+				.get();
+		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var(3).size(2))
+				.data(new double[]{0.3, 0.7})
+				.get();
+		// f[4] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 3).size(2, 2)).data(new double[] { 0, 1, 1, 0 }).get();
 
 		int[] seq = new int[]{0, 1, 2, 3};
 
@@ -171,9 +180,9 @@ public class VariableEliminationTest {
 
 	@Test
 	public void testWorkingAsIntended() {
-		IntervalFactor pa = new IntervalFactor(new Strides(new int[]{2}, new int[]{4}), new Strides(new int[]{}, new int[]{}));
-		IntervalFactor pba = new IntervalFactor(new Strides(new int[]{1}, new int[]{3}), new Strides(new int[]{2}, new int[]{4}));
-		IntervalFactor pcba = new IntervalFactor(new Strides(new int[]{3}, new int[]{3}), new Strides(new int[]{1, 2}, new int[]{3, 4}));
+		IntervalFactor pa = IntervalFactorFactory.factory().domain(new Strides(new int[]{2}, new int[]{4}), new Strides(new int[]{}, new int[]{})).get();
+		IntervalFactor pba = IntervalFactorFactory.factory().domain(new Strides(new int[]{1}, new int[]{3}), new Strides(new int[]{2}, new int[]{4})).get();
+		IntervalFactor pcba = IntervalFactorFactory.factory().domain(new Strides(new int[]{3}, new int[]{3}), new Strides(new int[]{1, 2}, new int[]{3, 4})).get();
 
 		SymbolicFactor fa = new PriorFactor(pa);
 		SymbolicFactor fb = new PriorFactor(pba);

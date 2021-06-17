@@ -1,12 +1,12 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 
 import java.io.IOException;
 
 
-public abstract class NetUAIWriter<T extends DAGModel<? extends Factor<?>>> extends UAIWriter<T> {
+public abstract class NetUAIWriter<T extends DAGModel<? extends OperableFactor<?>>> extends UAIWriter<T> {
 
 	public NetUAIWriter(T target, String filename) {
 		super(target, filename);

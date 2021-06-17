@@ -2,7 +2,9 @@ package ch.idsia.crema.factor.symbolic;
 
 import ch.idsia.crema.factor.GenericFactor;
 
-public class PriorFactor extends SymbolicFactor {
+import java.util.Arrays;
+
+public class PriorFactor extends SymbolicAbstractFactor {
 
 	private final GenericFactor factor;
 
@@ -11,12 +13,22 @@ public class PriorFactor extends SymbolicFactor {
 		this.factor = lf;
 	}
 
+	@Override
+	public PriorFactor copy() {
+		return new PriorFactor(factor);
+	}
+
 	public GenericFactor getFactor() {
 		return factor;
 	}
 
 	@Override
-	public SymbolicFactor[] getSources() {
-		return new SymbolicFactor[0];
+	public SymbolicAbstractFactor[] getSources() {
+		return new SymbolicAbstractFactor[0];
+	}
+
+	@Override
+	public String toString() {
+		return String.format("P(%s)", Arrays.toString(getDomain().getVariables()));
 	}
 }

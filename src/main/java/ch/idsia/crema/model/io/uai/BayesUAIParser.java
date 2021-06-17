@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -57,7 +58,7 @@ public class BayesUAIParser extends NetUAIParser<BayesianNetwork> {
 			double[] data = probs[i];
 			if (parents[i].length > 0)
 				data = ArraysUtil.changeEndian(probs[i], dom.getSizes());
-			cpt[i] = new BayesianFactor(dom, data);
+			cpt[i] = new BayesianDefaultFactor(dom, data);
 
 		}
 

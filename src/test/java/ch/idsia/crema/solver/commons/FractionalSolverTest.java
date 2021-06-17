@@ -2,7 +2,8 @@ package ch.idsia.crema.solver.commons;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
@@ -26,9 +27,11 @@ public class FractionalSolverTest {
 		model.addVariable(2);
 
 		// root
-		IntervalFactor f0 = new IntervalFactor(model.getDomain(n0), model.getDomain(n1));
-		f0.set(new double[]{0.1, 0.3, 0.5}, new double[]{0.3, 0.8, 0.6}, 0);
-		f0.set(new double[]{0.1, 0.5, 0.1}, new double[]{0.3, 0.8, 0.7}, 1);
+		IntervalFactor f0 = IntervalFactorFactory.factory()
+				.domain(model.getDomain(n0), model.getDomain(n1))
+				.set(new double[]{0.1, 0.3, 0.5}, new double[]{0.3, 0.8, 0.6}, 0)
+				.set(new double[]{0.1, 0.5, 0.1}, new double[]{0.3, 0.8, 0.7}, 1)
+				.get();
 
 		double[] num = {0.052, 0.12, 0.0, 0.0, 0.0, 0.0};
 		double[] denom = {0.052, 0.12, 0.126, 0.28, 0.024, 0.0545};

@@ -1,8 +1,10 @@
 package ch.idsia.crema.model.io.bif;
 
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
+import org.apache.commons.lang3.ArrayUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -102,11 +104,10 @@ public class XMLBIFParser {
 			int[] sorted = Arrays.copyOf(parents, parents.length + 1);
 			System.arraycopy(parents, 0, sorted, 1, parents.length);
 			sorted[0] = variable;
-			parents = sorted.clone();
+			parents = ArrayUtils.clone(sorted);
 			Arrays.sort(sorted);
 
-			BayesianFactor factor = new BayesianFactor(model.getDomain(sorted), false);
-			factor.setData(parents, table);
+			BayesianFactor factor = new BayesianDefaultFactor(model.getDomain(sorted), parents, table);
 			model.setFactor(variable, factor);
 		}
 

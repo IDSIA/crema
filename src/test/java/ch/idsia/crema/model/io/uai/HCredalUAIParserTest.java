@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceDefaultFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +36,7 @@ public class HCredalUAIParserTest {
 
 		for (int i = 0; i < model.getVariables().length; i++) {
 			System.out.println("Variable " + i);
-			model.getFactor(i).printLinearProblem();
+			((SeparateHalfspaceDefaultFactor) model.getFactor(i)).printLinearProblem();
 		}
 	}
 

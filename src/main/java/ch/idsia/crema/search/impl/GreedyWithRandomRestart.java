@@ -1,5 +1,7 @@
 package ch.idsia.crema.search.impl;
 
+import ch.idsia.crema.utility.RandomUtil;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,7 @@ public class GreedyWithRandomRestart<M, S> extends AbstractSearch<M, S> {
 	public static final int MAX_RESTARTS_DEFAULT = 5;
 	public static final int MAX_PLATEAU_DEFAULT = 3;
 
-	protected Random random = new Random();
+	protected Random random = RandomUtil.getRandom();
 
 	private int maxRestarts = MAX_RESTARTS_DEFAULT;
 	private int restarts = MAX_RESTARTS_DEFAULT; // counting down

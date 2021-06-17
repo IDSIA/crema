@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.credal.set;
 
 import ch.idsia.crema.core.Strides;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class Precise extends AbstractSet {
 
@@ -26,7 +27,7 @@ public class Precise extends AbstractSet {
 	public Precise copy() {
 		double[] v = null;
 		if (vertex != null) {
-			v = vertex.clone();
+			v = ArrayUtils.clone(vertex);
 		}
 
 		return new Precise(getDomain(), v);

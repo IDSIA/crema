@@ -46,7 +46,7 @@ public class Move {
 
 	@Override
 	public String toString() {
-		return "Free " + free + " scores " + scorecache + " values " + Arrays.toString(valuescache.getData());
+		return "Free " + free + " scores " + scorecache + " values " + (valuescache == null ? "null" : Arrays.toString(valuescache.getData()));
 	}
 
 }

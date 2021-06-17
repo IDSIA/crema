@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.bp;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.junction.JunctionTree;
@@ -25,7 +25,7 @@ import static ch.idsia.crema.utility.ArraysUtil.difference;
  * Project: CreMA
  * Date:    14.02.2018 10:03
  */
-public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
+public class BeliefPropagation<F extends OperableFactor<F>> implements Inference<DAGModel<F>, F> {
 
 	protected DAGModel<F> model;
 	protected DirectedAcyclicGraph<Clique, DefaultEdge> collectingTree;
@@ -209,8 +209,8 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 	 * <p>
 	 * Use the {@link #queryFullPropagated(int)} method for query multiple variables over the same evidence and model.
 	 *
-	 * @param model    the model to use for inference
-	 * @param query    the variable that will be queried
+	 * @param model the model to use for inference
+	 * @param query the variable that will be queried
 	 * @return the marginal probability of the query variable
 	 */
 	public F fullPropagation(DAGModel<F> model, int query) {
@@ -335,7 +335,7 @@ public class BeliefPropagation<F extends Factor<F>> implements Inference<DAGMode
 	 * Executes the collecting step of the Belief Propagation algorithm.
 	 *
 	 * @param variable the variable to query as root of the tree
-	 * @return the precise {@link Factor} associated with the variable
+	 * @return the precise {@link ch.idsia.crema.factor.GenericFactor} associated with the variable
 	 */
 	public F collectingEvidence(int variable) {
 		// populate messages

@@ -25,7 +25,7 @@ public class Solution {
 
 	Solution(Solution source, Move move) {
 		// shallow copy
-		this.data = new TIntObjectHashMap<BayesianFactor>(source.data);
+		this.data = new TIntObjectHashMap<>(source.data);
 
 		if (move.getValues() == null) throw new IllegalArgumentException("The provided move has never been evaluated");
 		this.free = move.getFree(); // info about what just change (usefull for neighbourhood)

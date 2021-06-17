@@ -1,26 +1,25 @@
 package ch.idsia.crema.factor;
 
-import ch.idsia.crema.model.math.Operation;
+import ch.idsia.crema.factor.algebra.Operation;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * A utility class with function to help with factors. This methods are not part
+ * A utility class with function to help with factors. These methods are not part
  * of the Factor API to avoid clogging.
  *
  * @author david
  */
 public class FactorUtil {
+
 	/**
-	 * Normalize a Factor over a set of its variable (may be empty)
-	 *
-	 * @param f
-	 * @param over
-	 * @return
+	 * @param f    factor to normalize
+	 * @param over set of variables to keep
+	 * @return a normalized {@link GenericFactor} over a set of its variable (may be empty)
 	 */
-	public static <F extends GenericFactor> F normalize(Operation<F> op, F f, int... over) {
+	public static <F extends OperableFactor<F>> F normalize(Operation<F> op, F f, int... over) {
 		F div = marginal(op, f, over);
 		return op.divide(f, div);
 	}
@@ -32,7 +31,7 @@ public class FactorUtil {
 	 * @param over
 	 * @return
 	 */
-	public static <F extends Factor<F>> F normalize(F f, int... over) {
+	public static <F extends OperableFactor<F>> F normalize(F f, int... over) {
 		F div = f;
 		for (int v : ArraysUtil.removeAllFromSortedArray(f.getDomain().getVariables(), over)) {
 			div = div.marginalize(v);
@@ -43,7 +42,7 @@ public class FactorUtil {
 	/**
 	 * Combine a factor with a collection of other factors
 	 */
-	public static <F extends Factor<F>> F combine(F first, Collection<F> others) {
+	public static <F extends OperableFactor<F>> F combine(F first, Collection<F> others) {
 		for (F other : others) {
 			first = first.combine(other);
 		}
@@ -53,7 +52,7 @@ public class FactorUtil {
 	/**
 	 * Combine a collection of factors
 	 */
-	public static <F extends Factor<F>> F combine(Collection<F> factors) {
+	public static <F extends OperableFactor<F>> F combine(Collection<F> factors) {
 		Iterator<F> iterator = factors.iterator();
 		F first = iterator.next();
 		while (iterator.hasNext()) {
@@ -66,14 +65,13 @@ public class FactorUtil {
 	 * Combine a factor with an array of other factors
 	 */
 	@SafeVarargs
-	public static <F extends Factor<F>> F combine(F first, F... others) {
+	public static <F extends OperableFactor<F>> F combine(F first, F... others) {
 		for (F other : others) {
 			first = first.combine(other);
 		}
 
 		return first;
 	}
-
 
 	/**
 	 * Combine an array of factors (One is mandatory)
@@ -82,7 +80,7 @@ public class FactorUtil {
 	 * @return
 	 */
 	@SafeVarargs
-	public static <F extends Factor<F>> F combine(F... factors) {
+	public static <F extends OperableFactor<F>> F combine(F... factors) {
 		F first = factors[0];
 		for (int i = 1; i < factors.length; ++i) {
 			first = first.combine(factors[i]);
@@ -93,7 +91,7 @@ public class FactorUtil {
 	/**
 	 * Combine a collection of factors using a custom operator
 	 */
-	public static <F extends GenericFactor> F combine(Operation<F> op, Collection<F> factors) {
+	public static <F extends OperableFactor<F>> F combine(Operation<F> op, Collection<F> factors) {
 		Iterator<F> iterator = factors.iterator();
 		F first = iterator.next();
 		while (iterator.hasNext()) {
@@ -107,7 +105,7 @@ public class FactorUtil {
 	 * Combine a factor with an array of factors using an operation set.
 	 */
 	@SafeVarargs
-	public static <F extends GenericFactor> F combine(Operation<F> op, F first, F... others) {
+	public static <F extends OperableFactor<F>> F combine(Operation<F> op, F first, F... others) {
 		for (F other : others) {
 			first = op.combine(first, other);
 		}
@@ -120,7 +118,7 @@ public class FactorUtil {
 	 * @throws IndexOutOfBoundsException if factors is empty
 	 */
 	@SafeVarargs
-	public static <F extends GenericFactor> F combine(Operation<F> op, F... factors) {
+	public static <F extends OperableFactor<F>> F combine(Operation<F> op, F... factors) {
 		F first = factors[0];
 		for (int i = 1; i < factors.length; ++i) {
 			first = op.combine(first, factors[i]);
@@ -128,11 +126,15 @@ public class FactorUtil {
 		return first;
 	}
 
+	public static <F extends OperableFactor<F>> F combine(Operation<F> op, F first, F second) {
+		return op.combine(first, second);
+	}
+
 	/**
 	 * return the marginal of a factors. Not this is a marginalization of all
 	 * but the "over" variables
 	 */
-	public static <F extends Factor<F>> F marginal(F factor, int... over) {
+	public static <F extends OperableFactor<F>> F marginal(F factor, int... over) {
 		for (int var : ArraysUtil.removeAllFromSortedArray(factor.getDomain().getVariables(), over)) {
 			factor = factor.marginalize(var);
 		}
@@ -142,7 +144,7 @@ public class FactorUtil {
 	/**
 	 * marginalize multiple variables out of a factor
 	 */
-	public static <F extends Factor<F>> F marginalize(F factor, int... vars) {
+	public static <F extends OperableFactor<F>> F marginalize(F factor, int... vars) {
 		for (int var : vars) {
 			factor = factor.marginalize(var);
 		}
@@ -151,10 +153,10 @@ public class FactorUtil {
 
 
 	/**
-	 * return the marginal of a factors. Not this is a marginalization of all
+	 * return the marginal of a factors. Note this is a marginalization of all
 	 * but the "over" variables
 	 */
-	public static <F extends GenericFactor> F marginal(Operation<F> op, F factor, int... over) {
+	public static <F extends OperableFactor<F>> F marginal(Operation<F> op, F factor, int... over) {
 		for (int var : ArraysUtil.removeAllFromSortedArray(factor.getDomain().getVariables(), over)) {
 			factor = op.marginalize(factor, var);
 		}
@@ -164,7 +166,7 @@ public class FactorUtil {
 	/**
 	 * marginalize multiple variables out of a factor
 	 */
-	public static <F extends GenericFactor> F marginalize(Operation<F> op, F factor, int... vars) {
+	public static <F extends OperableFactor<F>> F marginalize(Operation<F> op, F factor, int... vars) {
 		for (int var : vars) {
 			factor = op.marginalize(factor, var);
 		}
@@ -186,8 +188,35 @@ public class FactorUtil {
 	 * @param indicator
 	 * @return
 	 */
-	public static <F extends Factor<F>> F filter(F factor, F indicator) {
+	public static <F extends OperableFactor<F>> F filter(F factor, F indicator) {
 		return factor.combine(indicator).marginalize(indicator.getDomain().getVariables()[0]);
+	}
+
+	/**
+	 * Filter a variable in a state from a given factor.
+	 *
+	 * @param op
+	 * @param factor
+	 * @param variable
+	 * @param state
+	 * @param <F>
+	 * @return
+	 */
+	public static <F extends OperableFactor<F>> F filter(Operation<F> op, F factor, int variable, int state) {
+		return op.filter(factor, variable, state);
+	}
+
+	/**
+	 * Divide a factor by another factor.
+	 *
+	 * @param op
+	 * @param numerator
+	 * @param denominator
+	 * @param <F>
+	 * @return
+	 */
+	public static <F extends OperableFactor<F>> F divide(Operation<F> op, F numerator, F denominator) {
+		return op.divide(numerator, denominator);
 	}
 
 }

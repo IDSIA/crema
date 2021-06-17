@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.bp;
 
-import ch.idsia.crema.factor.Factor;
+import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.CutObserved;
@@ -27,7 +27,7 @@ import static ch.idsia.crema.utility.ArraysUtil.outersection;
  * Project: crema
  * Date:    01.03.2021 17:35
  */
-public class LoopyBeliefPropagation<F extends Factor<F>> implements Inference<DAGModel<F>, F> {
+public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Inference<DAGModel<F>, F> {
 
 	protected static class Neighbour {
 		final Integer i;

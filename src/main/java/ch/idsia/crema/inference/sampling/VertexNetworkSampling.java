@@ -1,6 +1,6 @@
 package ch.idsia.crema.inference.sampling;
 
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 
@@ -29,7 +29,7 @@ public class VertexNetworkSampling {
 		bnet.addVariables(model.getVariables());
 		for (int v : model.getVariables()) {
 			bnet.addParents(v, model.getParents(v));
-			bnet.setFactor(v, model.getFactor(v).sampleVertex());
+			bnet.setFactor(v, model.getFactor(v).sample());
 		}
 		return bnet;
 	}

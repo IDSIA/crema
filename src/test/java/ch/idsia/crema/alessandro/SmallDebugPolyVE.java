@@ -1,7 +1,8 @@
 package ch.idsia.crema.alessandro;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
 import ch.idsia.crema.inference.sepolyve.SePolyVE;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -31,14 +32,19 @@ public class SmallDebugPolyVE {
 			domain[i] = Strides.as(nodes[i], 2);
 		}
 		VertexFactor[] K = new VertexFactor[2];
-		K[0] = new VertexFactor(domain[0], Strides.EMPTY);
-		K[1] = new VertexFactor(domain[1], domain[0]);
-		K[0].addVertex(new double[]{.1, .9});
-		K[0].addVertex(new double[]{.2, .8});
-		K[1].addVertex(new double[]{.8, .2}, 0);
-		K[1].addVertex(new double[]{.9, .1}, 0);
-		K[1].addVertex(new double[]{.2, .8}, 1);
-		K[1].addVertex(new double[]{.3, .7}, 1);
+
+		K[0] = VertexFactorFactory.factory().domain(domain[0])
+				.addVertex(new double[]{.1, .9})
+				.addVertex(new double[]{.2, .8})
+				.get();
+
+		K[1] = VertexFactorFactory.factory().domain(domain[1], domain[0])
+				.addVertex(new double[]{.8, .2}, 0)
+				.addVertex(new double[]{.9, .1}, 0)
+				.addVertex(new double[]{.2, .8}, 1)
+				.addVertex(new double[]{.3, .7}, 1)
+				.get();
+
 		for (int i = 0; i < 2; i++) {
 			model.setFactor(nodes[i], K[i]);
 		}

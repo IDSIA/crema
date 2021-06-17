@@ -56,10 +56,10 @@ public interface Model<F extends GenericFactor> {
 	 * <p>Implementer must make sure that returned array could be modified and
 	 * such changes must not affect the network or previously return arrays</p>
 	 * <p>
-	 * XXX is the sorting of the result needed. RemoveBarren does need it to be sorted!
 	 *
 	 * @return
 	 */
+	// TODO is the sorting of the result needed. RemoveBarren does need it to be sorted!
 	int[] getVariables();
 
 	/**
@@ -79,7 +79,7 @@ public interface Model<F extends GenericFactor> {
 	 *
 	 * @param variables the array (vararg) of variables we are interested in
 	 * @return an array of the same size of variables containing their size
-	 * @see {@link Model.getSize}
+	 * @see Model#getSizes(int...)
 	 */
 	int[] getSizes(int... variables);
 

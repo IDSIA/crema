@@ -1,6 +1,9 @@
+package examples.docs;
+
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
 import ch.idsia.crema.inference.ve.CredalVariableElimination;
 import ch.idsia.crema.model.graphical.DAGModel;
 
@@ -19,18 +22,20 @@ public class Starting {
         model.addParent(B,A);
 
         // Define a credal set of the partent node
-        VertexFactor fu = new VertexFactor(model.getDomain(A), Strides.empty());
-        fu.addVertex(new double[]{0., 1-p, p});
-        fu.addVertex(new double[]{1-p, 0., p});
+        VertexFactor fu = VertexFactorFactory.factory().domain(model.getDomain(A), Strides.empty())
+                .addVertex(new double[]{0., 1-p, p})
+                .addVertex(new double[]{1-p, 0., p})
+                .get();
+
         model.setFactor(A,fu);
 
 
         // Define the credal set of the child
-        VertexFactor fx = new VertexFactor(model.getDomain(B), model.getDomain(A));
-
-        fx.addVertex(new double[]{1., 0.,}, 0);
-        fx.addVertex(new double[]{1., 0.,}, 1);
-        fx.addVertex(new double[]{0., 1.,}, 2);
+        VertexFactor fx = VertexFactorFactory.factory().domain(model.getDomain(B), model.getDomain(A))
+                .addVertex(new double[]{1., 0.,}, 0)
+                .addVertex(new double[]{1., 0.,}, 1)
+                .addVertex(new double[]{0., 1.,}, 2)
+                .get();
 
         model.setFactor(B,fx);
 

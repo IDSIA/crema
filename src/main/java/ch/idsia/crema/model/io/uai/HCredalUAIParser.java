@@ -1,8 +1,8 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Rafael Cabañas
  */
-public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Factor<?>>> {
+public class HCredalUAIParser extends NetUAIParser<GraphicalModel<SeparateHalfspaceFactor>> {
 
 	private double[][] aCoeff = new double[numberOfVariables][];
 	private double[][] bCoeff = new double[numberOfVariables][];
@@ -40,8 +40,8 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Fact
 	}
 
 	@Override
-	protected GraphicalModel<? extends  Factor<?>> build() {
-		GraphicalModel model = new DAGModel<>();
+	protected GraphicalModel<SeparateHalfspaceFactor> build() {
+		GraphicalModel<SeparateHalfspaceFactor> model = new DAGModel<>();
 
 		// Add the variables
 		for (int i = 0; i < numberOfVariables; i++) {
@@ -62,7 +62,7 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Fact
 				// reshaped coeff A
 				double[][] A2d = ArraysUtil.reshape2d(aCoeff[i], aCoeff[i].length / varsize);
 				// build the factor
-				cpt[i] = new SeparateHalfspaceFactor(model.getDomain(i), A2d, bCoeff[i], Relationship.LEQ);
+				cpt[i] = SeparateHalfspaceFactorFactory.factory().left(model.getDomain(i)).constraints(A2d, bCoeff[i], Relationship.LEQ).get();
 			} else {
 
 				int par_comb = model.getDomain(model.getParents(i)).getCombinations();
@@ -87,9 +87,9 @@ public class HCredalUAIParser extends NetUAIParser<GraphicalModel<? extends Fact
 				}
 
 				// build the factor
-				cpt[i] = new SeparateHalfspaceFactor(model.getDomain(i),
-						model.getDomain(model.getParents(i)),
-						A, b, Relationship.LEQ);
+				cpt[i] = SeparateHalfspaceFactorFactory.factory().domain(model.getDomain(i), model.getDomain(model.getParents(i)))
+						.constraints(A, b, Relationship.LEQ)
+						.get();
 
 			}
 		}
