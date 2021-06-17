@@ -6,6 +6,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import ch.idsia.crema.utility.SeparateIndexIterator;
+import ch.idsia.crema.utility.hull.ConvexHull;
 import com.google.common.primitives.Doubles;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -24,7 +25,20 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 	protected final Strides separatedDomain;
 	protected final Strides vertexDomain;
 
-	public static boolean CONVEX_HULL_MARG = false;
+	public static ConvexHull.Method CONVEX_HULL_MARG = null;
+
+	/**
+	 * Set the convexhull method applied after marginalization. None by default.
+	 *
+	 * @param convexHullMarg
+	 */
+	public static void setConvexHullMarg(ConvexHull.Method convexHullMarg) {
+		CONVEX_HULL_MARG = convexHullMarg;
+	}
+
+	public static ConvexHull.Method getConvexHullMarg() {
+		return CONVEX_HULL_MARG;
+	}
 
 	public VertexAbstractFactor(Strides vertexDomain, Strides separatedDomain) {
 		this.separatedDomain = separatedDomain;
@@ -149,8 +163,8 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 
 		F f = builder.get(left, getSeparatingDomain(), target_data);
 
-		if (CONVEX_HULL_MARG)
-			f.applyConvexHull();
+		if (CONVEX_HULL_MARG != null)
+			f.applyConvexHull(CONVEX_HULL_MARG);
 
 		return f;
 	}
@@ -287,7 +301,7 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 		return build.toString();
 	}
 
-	protected abstract void applyConvexHull();
+	protected abstract void applyConvexHull(ConvexHull.Method m);
 
 	@Override
 	public VertexAbstractFactor divide(VertexFactor other) {

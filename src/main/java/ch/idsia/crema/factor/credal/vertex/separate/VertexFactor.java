@@ -4,6 +4,7 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
+import ch.idsia.crema.utility.hull.ConvexHull;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -54,7 +55,7 @@ public interface VertexFactor extends OperableFactor<VertexFactor>, SeparatelySp
 
 	double[][][] getData();
 
-	VertexFactor convexHull();
+	VertexFactor convexHull(ConvexHull.Method m);
 
 	VertexFactor merge(VertexFactor factor);
 

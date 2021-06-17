@@ -484,6 +484,17 @@ public class ArraysUtil {
 	}
 
 	/**
+	 * Find the sorted symmetric difference of two non-sorted integer arrays.
+	 *
+	 * @param arr1 the first array
+	 * @param arr2 the second array
+	 * @return symetric difference of both arrays
+	 */
+	public static int[] symmetricDiff(int[] arr1, int[] arr2) {
+		return unionSet(difference(arr1, arr2), difference(arr2, arr1));
+	}
+
+	/**
 	 * @param arr1 first array
 	 * @param arr2 second array
 	 * @return an array which is the union of the two arrays without the common elements

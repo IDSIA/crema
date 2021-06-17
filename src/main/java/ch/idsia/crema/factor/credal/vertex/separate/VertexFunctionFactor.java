@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.utility.hull.ConvexHull;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.function.Function;
@@ -20,7 +21,7 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 	}
 
 	@Override
-	protected void applyConvexHull() {
+	protected void applyConvexHull(ConvexHull.Method m) {
 		// TODO
 		throw new NotImplementedException();
 	}
@@ -84,7 +85,7 @@ public class VertexFunctionFactor extends VertexAbstractFactor {
 	}
 
 	@Override
-	public VertexFactor convexHull() {
+	public VertexFactor convexHull(ConvexHull.Method m) {
 		// TODO
 		throw new NotImplementedException();
 	}

@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
-	public static double EPS = 0.0;
+	public static double EPS = 1e-9;
 
 	private Map<String, Object> init = null;
 
@@ -133,7 +133,7 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 
 			if (evidenceNode == -1) {
 				// without evidence we are looking for a marginal
-				EPS = 0.0;
+				EPS = 1e-9;
 				lower = new Marginal(model, GoalType.MINIMIZE, query, state);
 				upper = new Marginal(model, GoalType.MAXIMIZE, query, state);
 			} else {

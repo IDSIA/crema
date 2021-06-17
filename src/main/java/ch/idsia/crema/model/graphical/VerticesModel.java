@@ -4,6 +4,7 @@ import ch.idsia.crema.factor.convert.BayesianToVertex;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorUtilities;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.hull.ConvexHull;
 
 import java.util.stream.Stream;
 
@@ -37,7 +38,7 @@ public class VerticesModel extends DAGModel<VertexFactor> {
 					.map(m -> new BayesianToVertex().apply(m.getFactor(v), v))
 					.toArray(VertexFactor[]::new));
 			if (convexHull)
-				f = f.convexHull();
+				f = f.convexHull(ConvexHull.Method.DEFAULT);
 
 			vmodel.setFactor(v, f);
 		}

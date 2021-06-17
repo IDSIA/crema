@@ -25,9 +25,9 @@ public class CutObserved<F extends FilterableFactor<F>> implements TransformerEv
 	// TODO: remove this method in favor of #execute (below)
 	@Override
 	public void executeInPlace(GraphicalModel<F> model, TIntIntMap evidence) {
-		int size = evidence.size();
+		final int size = evidence.size();
 
-		TIntIntIterator iterator = evidence.iterator();
+		final TIntIntIterator iterator = evidence.iterator();
 		for (int o = 0; o < size; ++o) {
 			iterator.advance();
 			final int observed = iterator.key();

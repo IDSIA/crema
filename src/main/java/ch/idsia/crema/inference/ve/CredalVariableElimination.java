@@ -1,11 +1,13 @@
 package ch.idsia.crema.inference.ve;
 
+import ch.idsia.crema.factor.credal.vertex.separate.VertexAbstractFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
+import ch.idsia.crema.utility.hull.ConvexHull;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
@@ -15,12 +17,18 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 
 	private GraphicalModel<VertexFactor> model;
 
+	private ConvexHull.Method convexHullMarg = null;
+
 	/**
 	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
 	 */
 	@Deprecated
 	public void setModel(GraphicalModel<VertexFactor> model) {
 		this.model = model;
+	}
+
+	public void setConvexHullMarg(ConvexHull.Method convexHullMarg) {
+		this.convexHullMarg = convexHullMarg;
 	}
 
 	public GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
@@ -71,7 +79,19 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 		ve.setFactors(infModel.getFactors());
 		ve.setNormalize(false);
 
+		// Set the convex hull method
+		ConvexHull.Method old_method = VertexAbstractFactor.getConvexHullMarg();
+		VertexAbstractFactor.setConvexHullMarg(convexHullMarg);
+
+		// run the query
 		VertexFactor output = ve.run(query);
+
+		for(double[][] d :output.getData())
+			if(d.length==0)
+				throw new IllegalStateException("Zero-vertices in result");
+
+		// restore the previous convex hull method
+		VertexAbstractFactor.setConvexHullMarg(old_method);
 
 		return output.normalize();
 	}

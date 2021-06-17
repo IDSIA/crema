@@ -6,7 +6,7 @@ import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactorFactory;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
-import ch.idsia.crema.utility.hull.LPConvexHull;
+import ch.idsia.crema.utility.hull.ConvexHull;
 import com.google.common.primitives.Doubles;
 import gnu.trove.list.TIntList;
 import org.apache.commons.lang3.ArrayUtils;
@@ -223,16 +223,18 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 	}
 
 	@Override
-	protected void applyConvexHull() {
-		for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
-			data[i] = LPConvexHull.compute(data[i], true);
+	protected void applyConvexHull(ConvexHull.Method m) {
+		if (m != null) {
+			for (int i = 0; i < this.getSeparatingDomain().getCombinations(); i++) {
+				data[i] = ConvexHull.as(m).apply(data[i]);
+			}
 		}
 	}
 
 	@Override
-	public VertexDefaultFactor convexHull() {
+	public VertexDefaultFactor convexHull(ConvexHull.Method m) {
 		VertexDefaultFactor f = this.copy();
-		f.applyConvexHull();
+		f.applyConvexHull(m);
 		return f;
 	}
 

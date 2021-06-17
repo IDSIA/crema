@@ -3,6 +3,7 @@ package ch.idsia.crema.factor.credal.vertex.separate;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactorUtilities;
 import ch.idsia.crema.factor.convert.BayesianToVertex;
+import ch.idsia.crema.utility.hull.ConvexHull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -83,7 +84,7 @@ public class VertexFactorUtilities {
 			// merge all the PMFs
 			out = VertexFactorUtilities
 					.mergeVertices(PMFs.toArray(VertexFactor[]::new))
-					.convexHull();
+					.convexHull(ConvexHull.Method.DEFAULT);
 
 		} while (out.getVerticesAt(0).length < k);
 
