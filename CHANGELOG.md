@@ -6,6 +6,7 @@
   * For each `factor` we can have multiple implementations.
   * `Factor`s are **immutable** now: the creation of a new factor is delegated to the `constructor` or to a dedicated `Factory` class.
   * `SymbolicFactor`s can now be used to keep track of operations done by algorithms.
+- Added code for isipta21benchamrk ( #76 #77 )
 
 0.1.7.a
 ===========
