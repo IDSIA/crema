@@ -72,7 +72,7 @@ Add the following code in the  pom.xml of your project:
         <dependency>
             <groupId>ch.idsia</groupId>
             <artifactId>crema</artifactId>
-            <version>0.1.7</version>
+            <version>0.2.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
