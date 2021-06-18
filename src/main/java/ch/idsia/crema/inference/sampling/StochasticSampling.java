@@ -20,10 +20,6 @@ import java.util.Collection;
  */
 public abstract class StochasticSampling implements InferenceJoined<DAGModel<BayesianFactor>, BayesianFactor> {
 
-	protected DAGModel<BayesianFactor> model;
-
-	protected TIntIntMap evidence;
-
 	protected long iterations = 100;
 
 	protected Boolean preprocess = true;
@@ -46,16 +42,20 @@ public abstract class StochasticSampling implements InferenceJoined<DAGModel<Bay
 
 	/**
 	 * @param preprocess true to activate pre-processing, default is true.
+	 * @return the same object for a chained config
 	 */
-	public void setPreprocess(Boolean preprocess) {
+	public StochasticSampling setPreprocess(Boolean preprocess) {
 		this.preprocess = preprocess;
+		return this;
 	}
 
 	/**
 	 * @param iterations number to iteration to perform, default value is 100.
+	 * @return the same object for a chained config
 	 */
-	public void setIterations(long iterations) {
+	public StochasticSampling setIterations(long iterations) {
 		this.iterations = iterations;
+		return this;
 	}
 
 	protected DAGModel<BayesianFactor> preprocess(DAGModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
@@ -70,22 +70,6 @@ public abstract class StochasticSampling implements InferenceJoined<DAGModel<Bay
 		}
 
 		return model;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	@Deprecated
-	public void setEvidence(TIntIntMap evidence) {
-		this.evidence = evidence;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	@Deprecated
-	public void setModel(DAGModel<BayesianFactor> model) {
-		this.model = model.copy();
 	}
 
 	/**

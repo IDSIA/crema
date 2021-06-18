@@ -2,7 +2,8 @@ package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
+import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
+import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.commons.Simplex;
 import ch.idsia.crema.utility.RandomUtil;
@@ -31,7 +32,7 @@ public class ExtensiveLinearToRandomBayesianFactor implements Converter<Extensiv
 		solver.solve(rand, 1.0);
 		double[] vertex = solver.getVertex();
 
-		return new BayesianFactor(s.getDomain(), vertex, true);
+		return new BayesianLogFactor(s.getDomain(), vertex);
 	}
 
 	@Override

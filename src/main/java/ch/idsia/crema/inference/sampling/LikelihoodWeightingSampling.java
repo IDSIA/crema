@@ -1,5 +1,6 @@
 package ch.idsia.crema.inference.sampling;
 
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.CutObserved;
@@ -7,7 +8,6 @@ import gnu.trove.map.TIntDoubleMap;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntDoubleHashMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.Arrays;
@@ -94,24 +94,8 @@ public class LikelihoodWeightingSampling extends StochasticSampling {
 		}
 
 		return Arrays.stream(query)
-				.mapToObj(q -> new BayesianFactor(model.getDomain(q), Px.get(q)))
+				.mapToObj(q -> new BayesianDefaultFactor(model.getDomain(q), Px.get(q)))
 				.collect(Collectors.toList());
-	}
-
-	/**
-	 * @deprecated use method {@link #query(DAGModel, TIntIntMap, int)}
-	 */
-	@Deprecated
-	public Collection<BayesianFactor> apply(DAGModel<BayesianFactor> model, int[] query) {
-		return run(model, new TIntIntHashMap(), query);
-	}
-
-	/**
-	 * @deprecated use method {@link #query(DAGModel, TIntIntMap, int[])}
-	 */
-	@Deprecated
-	public Collection<BayesianFactor> apply(DAGModel<BayesianFactor> model, int[] query, TIntIntMap observations) {
-		return run(model, observations, query);
 	}
 
 }

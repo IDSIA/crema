@@ -110,14 +110,15 @@ public class LikelihoodWeightingSamplingTest {
 
 	@Test
 	public void vsVariableElimination3() {
-		final Random random = new Random(42);
+		RandomUtil.setRandomSeed(42);
+		final Random random = RandomUtil.getRandom();
 
 		final int e = 5;
 		final int m = 1000;
 		final int n = 10;
 		final int p = 3;
 
-		final BayesianNetwork model = BayesianNetworkContainer.random(42, n, p).network;
+		final BayesianNetwork model = BayesianNetworkContainer.random(n, p).network;
 
 		// TODO: this test has an issue with variable elimination and empty nodes
 

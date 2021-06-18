@@ -1,13 +1,17 @@
 package ch.idsia.crema.factor.convert;
 
 import ch.idsia.crema.factor.Converter;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.set.HCredalSet;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.javasoft.polco.adapter.Options;
 import ch.javasoft.polco.adapter.PolcoAdapter;
 import ch.javasoft.xml.config.XmlConfigException;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
 
 import java.io.File;
@@ -27,19 +31,25 @@ public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, Ver
 
 	@Override
 	public VertexFactor apply(SeparateHalfspaceFactor s, Integer var) {
-		VertexFactor vfactor = new VertexFactor(s.getDataDomain(), s.getSeparatingDomain());
-
 		// polco will convert to VCredalSet
+		final List<double[]> vertList = new ArrayList<>();
+		final TIntList combinations = new TIntArrayList();
+
 		for (int comb = 0; comb < s.getSeparatingDomain().getCombinations(); ++comb) {
 			Collection<LinearConstraint> set = s.getLinearProblemAt(comb).getConstraints();
 			double[][] inequalities = toDoubleArrays(set, s.getDataDomain().getCombinations());
 			double[][] vertices = polcoToVertices(inequalities);
 
-			for (double[] v : vertices)
-				vfactor.addVertex(v, comb);
+			if(vertices.length==0)
+				throw new NoFeasibleSolutionException();
+
+			for (double[] v : vertices) {
+				vertList.add(v);
+				combinations.add(comb);
+			}
 		}
 
-		return vfactor;
+		return new VertexDefaultFactor(s.getDataDomain(), s.getSeparatingDomain(), vertList, combinations);
 	}
 
 	@Override
@@ -84,8 +94,7 @@ public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, Ver
 			}
 			if (!origin)
 				vertices.add(row);
-//			else
-//				System.out.println("Removed 000");
+
 		}
 
 		return vertices.toArray(new double[0][]);

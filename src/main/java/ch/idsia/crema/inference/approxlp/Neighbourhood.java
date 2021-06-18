@@ -4,8 +4,8 @@ import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
-import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
+import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.NeighbourhoodFunction;
 import gnu.trove.list.array.TIntArrayList;
@@ -62,7 +62,7 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 		} else if (factor instanceof BayesianFactor) {
 			return (BayesianFactor) factor;
 		}
-		return null;
+		throw new IllegalArgumentException("Unsupported class for random generation: " + factor.getClass());
 	}
 
 	private void initialize(TIntSet locked) {

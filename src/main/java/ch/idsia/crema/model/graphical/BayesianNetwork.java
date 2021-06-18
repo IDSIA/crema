@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorUtilities;
 import gnu.trove.map.TIntIntMap;
 
 import java.util.stream.DoubleStream;
@@ -34,6 +35,27 @@ public class BayesianNetwork extends DAGModel<BayesianFactor> {
 
 	public double sumLogProb(TIntIntMap[] data) {
 		return DoubleStream.of(this.logProb(data)).sum();
+	}
+
+	/**
+	 * Creates a new model with the same structure but with random probability values
+	 *
+	 * @param model
+	 * @param variables
+	 * @return
+	 */
+	public static BayesianNetwork random(BayesianNetwork model, int... variables) {
+		BayesianNetwork rmodel = model.copy();
+
+		if (variables.length == 0)
+			variables = rmodel.getVariables();
+
+		for (int v : variables) {
+			BayesianFactor f = BayesianFactorUtilities.random(rmodel.getDomain(v), rmodel.getDomain(rmodel.getParents(v)));
+			rmodel.setFactor(v, f);
+		}
+
+		return rmodel;
 	}
 
 }

@@ -1,5 +1,7 @@
 package ch.idsia.crema.entropy;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.util.stream.DoubleStream;
 
 public class AbellanEntropy {
@@ -13,7 +15,7 @@ public class AbellanEntropy {
 	 */
 	private int minLS(double[] arr, boolean[] b) {
 		int index = 0;
-		boolean[] b2 = b.clone();
+		boolean[] b2 = ArrayUtils.clone(b);
 		double myMin;
 		if (!allFalse(b2)) {
 			for (int i = 0; i < arr.length; i++) {
@@ -66,7 +68,7 @@ public class AbellanEntropy {
 	 * @return
 	 */
 	private int secondMinLS(double[] arr, boolean[] b) {
-		boolean[] b2 = b.clone();
+		boolean[] b2 = ArrayUtils.clone(b);
 		int index = minLS(arr, b2);
 		// FIXME: what if index is -1?
 		double min1 = arr[index];

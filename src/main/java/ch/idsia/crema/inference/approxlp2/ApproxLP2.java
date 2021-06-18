@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.approxlp2;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalDefaultFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
@@ -15,11 +16,21 @@ import java.util.Map;
 public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
 	private Map<String, Object> init = null;
+	private boolean preprocess = true;
 
 	public ApproxLP2() {
 	}
 
+	public ApproxLP2(boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
 	public ApproxLP2(Map<String, ?> params) {
+		initialize(params);
+	}
+
+	public ApproxLP2(Map<String, ?> params, boolean preprocess) {
+		this.preprocess = preprocess;
 		initialize(params);
 	}
 
@@ -33,12 +44,8 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 			this.init = new HashMap<>(params);
 	}
 
-	/**
-	 * @deprecated use method {@link #query(GraphicalModel, TIntIntMap, int)}
-	 */
-	@Deprecated
-	public IntervalFactor query(GraphicalModel<F> originalModel, int query, TIntIntMap evidence) {
-		return query(originalModel, evidence, query);
+	public void setPreprocess(boolean preprocess) {
+		this.preprocess = preprocess;
 	}
 
 	/**
@@ -48,7 +55,6 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 	 * node evidence. Factors must be of type ExtensiveLinearFactors,
 	 * BayesianFactor or SeparateLinearFactor
 	 * <p>
-	 * XXX must support multiple evidence here and in the variable elimination
 	 *
 	 * @param originalModel the data model
 	 * @param evidence      the variable that is to be considered the summarization of the
@@ -56,10 +62,14 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 	 * @param query         the variable whose intervals we are interested in
 	 * @return the result of the inference
 	 */
+	// TODO must support multiple evidence here and in the variable elimination
 	@Override
 	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
-		RemoveBarren<F> remove = new RemoveBarren<>();
-		GraphicalModel<F> model = remove.execute(originalModel, evidence, query);
+		GraphicalModel<F> model = originalModel;
+		if (preprocess) {
+			RemoveBarren<F> remove = new RemoveBarren<>();
+			model = remove.execute(originalModel, evidence, query);
+		}
 
 		int states = model.getSize(query);
 
@@ -84,12 +94,10 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 
 		}
 
-		IntervalFactor result = new IntervalFactor(
+		return new IntervalDefaultFactor(
 				model.getDomain(query), model.getDomain(), new double[][]{lowers}, new double[][]{uppers}
-		);
-		result.updateReachability();
-
-		return result;
+		)
+				.updateReachability();
 	}
 
 	private double runSearcher(GraphicalModel<F> model, Manager objective) {

@@ -116,7 +116,7 @@ public class ArraysUtil {
 	 * @return int[] the sorted array
 	 */
 	public static int[] sort(int[] base) {
-		int[] copy = base.clone();
+		int[] copy = ArrayUtils.clone(base);
 		Arrays.sort(copy);
 		return copy;
 	}
@@ -170,7 +170,7 @@ public class ArraysUtil {
 	public static double[][] deepClone(double[][] data) {
 		double[][] result = new double[data.length][];
 		for (int i = 0; i < data.length; ++i) {
-			result[i] = data[i].clone();
+			result[i] = ArrayUtils.clone(data[i]);
 		}
 		return result;
 	}
@@ -181,6 +181,76 @@ public class ArraysUtil {
 			result[i] = deepClone(data[i]);
 		}
 		return result;
+	}
+
+	/**
+	 * Convert an array in log-space using {@link FastMath#log(double)}. Creates a new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] log(double[] data) {
+		double[] logged = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			logged[i] = FastMath.log(data[i]);
+		}
+		return logged;
+	}
+
+	/**
+	 * Convert an array of array in log-space using {@link FastMath#log(double)}. Creates a new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[][] log(double[][] data) {
+		double[][] logged = new double[data.length][];
+		for (int i = 0; i < data.length; i++) {
+			logged[i] = log(data[i]);
+		}
+		return logged;
+	}
+
+	/**
+	 * Convert an array in log-space using  {@link FastMath#log1p(double)}. Creates a new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] log1p(double[] data) {
+		double[] logged = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			logged[i] = FastMath.log1p(data[i]);
+		}
+		return logged;
+	}
+
+	/**
+	 * Convert an array from log-space to normal space using {@link FastMath#exp(double)}. Creates a new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] exp(double[] data) {
+		double[] normal = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			normal[i] = FastMath.exp(data[i]);
+		}
+		return normal;
+	}
+
+	/**
+	 * Convert an array of array from log-space to normal space using {@link FastMath#exp(double)}. Creates a new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[][] exp(double[][] data) {
+		double[][] normal = new double[data.length][];
+		for (int i = 0; i < data.length; i++) {
+			normal[i] = exp(data[i]);
+		}
+		return normal;
 	}
 
 	/**
@@ -411,6 +481,17 @@ public class ArraysUtil {
 	 */
 	public static int[] difference(int[] arr1, int[] arr2) {
 		return IntStream.of(arr1).filter(y -> IntStream.of(arr2).noneMatch(x -> x == y)).toArray();
+	}
+
+	/**
+	 * Find the sorted symmetric difference of two non-sorted integer arrays.
+	 *
+	 * @param arr1 the first array
+	 * @param arr2 the second array
+	 * @return symetric difference of both arrays
+	 */
+	public static int[] symmetricDiff(int[] arr1, int[] arr2) {
+		return unionSet(difference(arr1, arr2), difference(arr2, arr1));
 	}
 
 	/**
@@ -695,7 +776,7 @@ public class ArraysUtil {
 	 * @return
 	 */
 	public static double[][] enumerate(double[] vect, int start) {
-		return IntStream.range(0 + start, vect.length + start).mapToObj(i -> new double[]{i, vect[i - start]})
+		return IntStream.range(start, vect.length + start).mapToObj(i -> new double[]{i, vect[i - start]})
 				.toArray(double[][]::new);
 	}
 
@@ -737,7 +818,7 @@ public class ArraysUtil {
 	 * @param num_decimals
 	 * @return
 	 */
-	public static double[] round(double arr[], int num_decimals) {
+	public static double[] round(double[] arr, int num_decimals) {
 
 		double[] data = Arrays.copyOf(arr, arr.length);
 
@@ -1034,7 +1115,7 @@ public class ArraysUtil {
 	 * @return
 	 */
 	public static int[] reverse(int[] is) {
-		int[] rev = is.clone();
+		int[] rev = ArrayUtils.clone(is);
 		ArrayUtils.reverse(rev);
 		return rev;
 	}
@@ -1079,6 +1160,30 @@ public class ArraysUtil {
 		}
 
 		return Arrays.equals(arr1, arr2);
+	}
+
+	public static void shuffle(double[] array) {
+		int index;
+		double temp;
+		Random random = new Random();
+		for (int i = array.length - 1; i > 0; i--) {
+			index = random.nextInt(i + 1);
+			temp = array[index];
+			array[index] = array[i];
+			array[i] = temp;
+		}
+	}
+
+	public static void shuffle(int[] array) {
+		int index;
+		int temp;
+		Random random = new Random();
+		for (int i = array.length - 1; i > 0; i--) {
+			index = random.nextInt(i + 1);
+			temp = array[index];
+			array[index] = array[i];
+			array[i] = temp;
+		}
 	}
 
 }

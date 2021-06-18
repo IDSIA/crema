@@ -1,6 +1,7 @@
 package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.junit.jupiter.api.Test;
@@ -21,32 +22,38 @@ public class DAGModelTest {
 
 		// Winter?
 		int A = real.addVariable(2);
-		f[A] = new BayesianFactor(real.getDomain(A), new double[]{.6, .4}, false);
+		f[A] = BayesianFactorFactory.factory().domain(real.getDomain(A))
+				.data(new double[]{.6, .4})
+				.get();
 
 		// Sprinkler?
 		int B = real.addVariable(2);
 		real.addParent(B, A);
-		f[B] = new BayesianFactor(real.getDomain(A, B), false);
-		f[B].setData(new int[]{B, A}, new double[]{.2, .8, .75, .25});
+		f[B] = BayesianFactorFactory.factory().domain(real.getDomain(A, B))
+				.data(new int[]{B, A}, new double[]{.2, .8, .75, .25})
+				.get();
 
 		// Rain?
 		int C = real.addVariable(2);
 		real.addParent(C, A);
-		f[C] = new BayesianFactor(real.getDomain(A, C), false);
-		f[C].setData(new int[]{C, A}, new double[]{.8, .2, .1, .9});
+		f[C] = BayesianFactorFactory.factory().domain(real.getDomain(A, C))
+				.data(new int[]{C, A}, new double[]{.8, .2, .1, .9})
+				.get();
 
 		// Wet Grass?
 		int D = real.addVariable(2);
 		real.addParent(D, B);
 		real.addParent(D, C);
-		f[D] = new BayesianFactor(real.getDomain(B, C, D), false);
-		f[D].setData(new int[]{D, B, C}, new double[]{.95, .05, .9, .1, .8, .2, 0, 1});
+		f[D] = BayesianFactorFactory.factory().domain(real.getDomain(B, C, D))
+				.data(new int[]{D, B, C}, new double[]{.95, .05, .9, .1, .8, .2, 0, 1})
+				.get();
 
 		// Slippery Road?
 		int E = real.addVariable(2);
 		real.addParent(E, C);
-		f[E] = new BayesianFactor(real.getDomain(C, E), false);
-		f[E].setData(new int[]{E, C}, new double[]{.7, .3, 0, 1});
+		f[E] = BayesianFactorFactory.factory().domain(real.getDomain(C, E))
+				.data(new int[]{E, C}, new double[]{.7, .3, 0, 1})
+				.get();
 
 		real.setFactors(f);
 

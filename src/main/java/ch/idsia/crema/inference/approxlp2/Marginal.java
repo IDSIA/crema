@@ -1,10 +1,12 @@
 package ch.idsia.crema.inference.approxlp2;
 
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
-import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
+import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearSolver;
 import ch.idsia.crema.solver.commons.Simplex;
@@ -106,8 +108,12 @@ public class Marginal extends Manager {
 //		}
 
 		BayesianFactor solution = from.getData().get(free);
-		solution = new BayesianFactor(solution.getDomain(), solution.isLog());
-		solution.setData(solver.getVertex());
+
+		if (solution.isLog()) {
+			solution = new BayesianLogFactor(solution.getDomain(), solver.getVertex());
+		} else {
+			solution = new BayesianDefaultFactor(solution.getDomain(), solver.getVertex());
+		}
 
 		doing.setValues(solution);
 		doing.setScore(solver.getValue());

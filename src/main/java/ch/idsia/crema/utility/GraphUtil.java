@@ -20,4 +20,5 @@ public class GraphUtil {
 		source.vertexSet().forEach(destination::addVertex);
 		source.edgeSet().forEach(e -> destination.addEdge(source.getEdgeSource(e), source.getEdgeTarget(e)));
 	}
+
 }

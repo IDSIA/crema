@@ -1,45 +1,28 @@
 package ch.idsia.crema.factor.symbolic.serialize;
 
-import java.lang.annotation.Target;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.stream.IntStream;
-
-import javax.management.relation.Relation;
-
-import org.apache.commons.math3.optim.linear.LinearConstraint;
-import org.apache.commons.math3.optim.linear.LinearConstraintSet;
-import org.apache.commons.math3.optim.linear.Relationship;
-
-import ch.idsia.crema.core.Instantiation;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.credal.linear.ExtensiveLinearFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
-import ch.idsia.crema.factor.credal.linear.LinearFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateFactor;
-import ch.idsia.crema.factor.credal.linear.SeparateLinearFactor;
-import ch.idsia.crema.factor.symbolic.CombinedFactor;
-import ch.idsia.crema.factor.symbolic.DividedFactor;
-import ch.idsia.crema.factor.symbolic.FilteredFactor;
-import ch.idsia.crema.factor.symbolic.MarginalizedFactor;
-import ch.idsia.crema.factor.symbolic.PriorFactor;
-import ch.idsia.crema.factor.symbolic.SymbolicFactor;
-import ch.idsia.crema.model.Model;
+import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.symbolic.*;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import org.apache.commons.math3.optim.linear.LinearConstraint;
+import org.apache.commons.math3.optim.linear.Relationship;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 public class MOD implements SolverSerializer {
 
-    private HashMap<SymbolicFactor, String> factorname = new HashMap<>();
+    private final HashMap<SymbolicFactor, String> factorname = new HashMap<>();
 
-    private StringBuilder variables = new StringBuilder();
+    private final StringBuilder variables = new StringBuilder();
 
-    private StringBuilder constraints = new StringBuilder();
+    private final StringBuilder constraints = new StringBuilder();
     private int constraint_count = 0;
 
     private String getVariable(SymbolicFactor factor, int left) {
@@ -89,7 +72,7 @@ public class MOD implements SolverSerializer {
         int state = factor.getState();
 
         Strides new_dom = factor.getDomain();
-        Strides old_dom = factor.getSource().getDomain();
+        Strides old_dom = factor.getFactor().getDomain();
 
         IndexIterator new_iter = new_dom.getIterator();
         IndexIterator old_iter = old_dom.getIterator(new_dom, ObservationBuilder.observe(var, state));
@@ -108,7 +91,7 @@ public class MOD implements SolverSerializer {
     private void processMarginalizedFactor(MarginalizedFactor factor) {
         int var = factor.getVariable();
         Strides new_dom = factor.getDomain();
-        Strides old_dom = factor.getSource().getDomain();
+        Strides old_dom = factor.getFactor().getDomain();
 
         int states = old_dom.getCardinality(var);
 
@@ -125,7 +108,7 @@ public class MOD implements SolverSerializer {
             for (int state = 0; state < states; state++) {
                 int src_offset = sourceIter.next();
                 //System.out.println(src_offset + Arrays.toString(old_dom.getStatesFor(src_offset)));
-                items[state] = getVariable(factor.getSource(), src_offset);
+                items[state] = getVariable(factor.getFactor(), src_offset);
             }
             addSum(name, items);
         }
@@ -219,15 +202,16 @@ public class MOD implements SolverSerializer {
                 constraints.append(" >= ");
                 break;
             case LEQ:
-                constraints.append(" = ");
+                constraints.append(" <= ");
                 break;
+            default:
         }
         constraints.append(value);
     }
 
     /**
      * Add a variable with a bound to the mod var section
-     * 
+     *
      * @param var   the unique name of the variable
      * @param lower the lower bound
      * @param upper the upper bound
@@ -235,7 +219,7 @@ public class MOD implements SolverSerializer {
     protected void addBounds(String var, double lower, double upper) {
         variables.append("var ").append(var).append(" >= ").append(lower).append(" <= ").append(upper).append(";\n");
     }
-    
+
     protected void addEquality(String new_name, String old_name) {
         constraints .append("s.t. c")
                     .append(constraint_count++)
@@ -245,7 +229,7 @@ public class MOD implements SolverSerializer {
                     .append(old_name)
                     .append(";\n");
     }
-    
+
     private void addSum(String name, String[] items) {
         constraints .append("s.t. c")
                     .append(constraint_count++)
@@ -255,7 +239,7 @@ public class MOD implements SolverSerializer {
                     .append(String.join(" + ", items))
                     .append(";\n");
     }
-    
+
     private void addProduct(String name, String[] items) {
         constraints .append("s.t. c")
                     .append(constraint_count++)
@@ -265,7 +249,7 @@ public class MOD implements SolverSerializer {
                     .append(String.join(" * ", items))
                     .append(";\n");
     }
-    
+
     private void addDivision(String name, String num_name, String den_name) {
         constraints .append("s.t. c")
                     .append(constraint_count++)
@@ -280,7 +264,6 @@ public class MOD implements SolverSerializer {
 
     @Override
     public String serialize(SymbolicFactor target, int state, boolean maximize) {
-    
         LinkedList<SymbolicFactor> fifo = new LinkedList<>();
         fifo.addLast(target);
         while(!fifo.isEmpty()) {
@@ -289,17 +272,13 @@ public class MOD implements SolverSerializer {
             dispatch(factor);
         }
 
-        StringBuilder post = new StringBuilder();
-        post.append(maximize ? "maximize goal: " : "minimize goal: ");
-        post.append(getVariable(target, state)).append(";\n");
-
-        post.append("option solver couenne;\n");
-        post.append("solve;\n");
-        post.append("display goal;\n");
-        post.append("display {j in 1.._nvars} (_varname[j],_var[j]);\n");
-        
-        
-        return  variables.toString() + "\n" + constraints.toString() + "\n" + post.toString();
+        String post = (maximize ? "maximize goal: " : "minimize goal: ") +
+                getVariable(target, state) + ";\n" +
+                "option solver couenne;\n" +
+                "solve;\n" +
+                "display goal;\n" +
+                "display {j in 1.._nvars} (_varname[j],_var[j]);\n";
+        return  variables + "\n" + constraints + "\n" + post;
     }
-    
+
 }

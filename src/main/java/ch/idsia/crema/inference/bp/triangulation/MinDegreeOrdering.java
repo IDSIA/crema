@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 public class MinDegreeOrdering extends Triangulate {
 
 	/**
-	 * Apply the Min-Degree-Ordering algorithm to a moralized {@link DirectedAcyclicGraph>} in order to find an
+	 * Apply the Min-Degree-Ordering algorithm to a moralized {@link DirectedAcyclicGraph} in order to find an
 	 * elimination sequence and triangulate the input model.
 	 *
-	 * @return a triangulated {@link DirectedAcyclicGraph>}
+	 * @return a triangulated {@link DirectedAcyclicGraph}
 	 */
 	@Override
 	public TriangulatedGraph exec() {

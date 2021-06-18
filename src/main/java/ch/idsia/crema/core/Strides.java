@@ -243,23 +243,6 @@ public final class Strides implements Domain {
 				targetDomain.getCombinations());
 	}
 
-	
-	/**
-	 * Create an iterator over the domain defined by the specified vars and cardinalities.
-	 * The cardinalities of matching variables must be equal.
-	 * 
-	 * @return
-	 * @deprecated please use {@link Strides::getIterator(variables, cardinalities)}
-	 */
-	/*@Deprecated
-	public final IndexIterator getSupersetIndexIterator(int[] variables, int[] cardinalities) {
-		int combs = 1;
-		for (int card : cardinalities)
-			combs *= card;
-		return getSupersetIndexIterator(variables, cardinalities, combs);
-	}
-	*/
-	
 	private IndexIterator getSupersetIndexIterator(final int[] over, final int[] target_size, int combinations) {
 		final int[] target_strides = new int[over.length];
 

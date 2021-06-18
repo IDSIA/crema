@@ -1,6 +1,6 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import org.junit.jupiter.api.Test;
 

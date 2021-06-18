@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.inference.BayesianNetworkContainer;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
@@ -119,11 +120,11 @@ public class LogicSamplingTest {
 		model.addParent(C, S);
 		model.addParent(H, B);
 
-		model.setFactor(M, new BayesianFactor(model.getDomain(M), new double[]{.9, .1}));
-		model.setFactor(S, new BayesianFactor(model.getDomain(M, S), new double[]{.2, .05, .8, .95}));
-		model.setFactor(B, new BayesianFactor(model.getDomain(M, B), new double[]{.8, .2, .2, .8}));
-		model.setFactor(C, new BayesianFactor(model.getDomain(S, B, C), new double[]{.8, .8, .8, .05, .2, .2, .2, .95}));
-		model.setFactor(H, new BayesianFactor(model.getDomain(H, B), new double[]{.8, .6, .2, .4}));
+		model.setFactor(M, BayesianFactorFactory.factory().domain(model.getDomain(M)).data(new double[]{.9, .1}).get());
+		model.setFactor(S, BayesianFactorFactory.factory().domain(model.getDomain(M, S)).data(new double[]{.2, .05, .8, .95}).get());
+		model.setFactor(B, BayesianFactorFactory.factory().domain(model.getDomain(M, B)).data(new double[]{.8, .2, .2, .8}).get());
+		model.setFactor(C, BayesianFactorFactory.factory().domain(model.getDomain(S, B, C)).data(new double[]{.8, .8, .8, .05, .2, .2, .2, .95}).get());
+		model.setFactor(H, BayesianFactorFactory.factory().domain(model.getDomain(H, B)).data(new double[]{.8, .6, .2, .4}).get());
 
 
 		int[] its = {1, 10, 100, 1000, 10000, 100000};

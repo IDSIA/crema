@@ -1,8 +1,8 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.Factor;
-import ch.idsia.crema.factor.credal.linear.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.OperableFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.ConstraintsUtil;
@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-public class HCredalUAIWriter extends NetUAIWriter<DAGModel<? extends Factor<?>>> {
+public class HCredalUAIWriter extends NetUAIWriter<DAGModel<? extends OperableFactor<?>>> {
 
-	public HCredalUAIWriter(DAGModel<? extends Factor<?>> target, String filename) {
+	public HCredalUAIWriter(DAGModel<? extends OperableFactor<?>> target, String filename) {
 		super(target, filename);
 		TYPE = UAITypes.HCREDAL;
 	}

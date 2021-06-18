@@ -1,7 +1,8 @@
 package ch.idsia.crema.model.io.uai;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
@@ -57,7 +58,7 @@ public class VCredalUAIParser extends NetUAIParser<GraphicalModel<VertexFactor>>
 
 		for (int i = 0; i < numberOfVariables; i++) {
 
-			cpt[i] = new VertexFactor(model.getDomain(i), model.getDomain(parents[i]), vertices[i]);
+			cpt[i] = new VertexDefaultFactor(model.getDomain(i), model.getDomain(parents[i]), vertices[i]);
 		}
 
 		model.setFactors(cpt);

@@ -1,5 +1,7 @@
 package ch.idsia.crema.search.impl;
 
+import ch.idsia.crema.utility.RandomUtil;
+
 import java.util.List;
 import java.util.Random;
 
@@ -10,7 +12,7 @@ public class RandomWalk<M, S> extends AbstractSearch<M, S> {
 
 
 	public RandomWalk() {
-		generator = new Random();
+		generator = RandomUtil.getRandom();
 	}
 
 	public void setSeed(long seed) {

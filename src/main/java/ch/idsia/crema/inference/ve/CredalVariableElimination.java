@@ -1,11 +1,13 @@
 package ch.idsia.crema.inference.ve;
 
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexAbstractFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import ch.idsia.crema.preprocess.RemoveBarren;
+import ch.idsia.crema.utility.hull.ConvexHull;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.apache.commons.lang3.ArrayUtils;
@@ -13,17 +15,18 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class CredalVariableElimination implements Inference<GraphicalModel<VertexFactor>, VertexFactor> {
 
-	private GraphicalModel<VertexFactor> model;
+	private ConvexHull convexHullMarg = null;
 
 	/**
-	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
+	 * @param convexHullMarg the {@link ConvexHull} method to use
+	 * @return
 	 */
-	@Deprecated
-	public void setModel(GraphicalModel<VertexFactor> model) {
-		this.model = model;
+	public CredalVariableElimination setConvexHullMarg(ConvexHull convexHullMarg) {
+		this.convexHullMarg = convexHullMarg;
+		return this;
 	}
 
-	public GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
+	protected GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
 		CutObserved<VertexFactor> cutObserved = new CutObserved<>();
 		// run making a copy of the model
 		GraphicalModel<VertexFactor> infModel = cutObserved.execute(model, evidence);
@@ -33,14 +36,6 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 		removeBarren.executeInPlace(infModel, evidence, target);
 
 		return infModel;
-	}
-
-	/**
-	 * @deprecated use {@link #query(GraphicalModel, TIntIntMap, int)}
-	 */
-	@Deprecated
-	public VertexFactor query(int target, TIntIntMap evidence) {
-		return query(model, evidence, target);
 	}
 
 	/**
@@ -71,7 +66,19 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 		ve.setFactors(infModel.getFactors());
 		ve.setNormalize(false);
 
+		// Set the convex hull method
+		ConvexHull old_method = VertexAbstractFactor.getConvexHullMarg();
+		VertexAbstractFactor.setConvexHullMarg(convexHullMarg);
+
+		// run the query
 		VertexFactor output = ve.run(query);
+
+		for(double[][] d :output.getData())
+			if(d.length==0)
+				throw new IllegalStateException("Zero-vertices in result");
+
+		// restore the previous convex hull method
+		VertexAbstractFactor.setConvexHullMarg(old_method);
 
 		return output.normalize();
 	}

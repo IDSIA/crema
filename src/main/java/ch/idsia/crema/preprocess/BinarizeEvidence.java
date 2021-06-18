@@ -66,22 +66,6 @@ public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvide
 		return evidenceNode;
 	}
 
-	@Deprecated
-	public GraphicalModel<GenericFactor> execute(GraphicalModel<F> model, TIntIntMap evidence, int size, boolean log) {
-		setSize(size);
-		return execute(model, evidence);
-	}
-
-	/**
-	 * @deprecated use method{@link #execute(GraphicalModel, TIntIntMap)}
-	 */
-	@Deprecated
-	public int executeInplace(GraphicalModel<F> model, TIntIntMap evidence, int size, boolean log) {
-		setSize(size);
-		execute(model, evidence);
-		return evidenceNode;
-	}
-
 	/**
 	 * Execute the binarization and return a new Factor
 	 *
@@ -94,7 +78,7 @@ public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvide
 		MixedModel model = new MixedModel((DAGModel<GenericFactor>) original.copy());
 		int[] keys = evidence.keys();
 
-		// TODO: XXX do we need to sort the keys????
+		// TODO: do we need to sort the keys????
 
 		int new_var = -1;
 

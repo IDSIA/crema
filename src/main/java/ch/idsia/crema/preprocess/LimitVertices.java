@@ -1,7 +1,8 @@
 package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.core.Strides;
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
@@ -21,26 +22,17 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 
 	/**
 	 * @param max set the max value, default is 10.
+	 * @return
 	 */
-	public void setMax(int max) {
+	public LimitVertices setMax(int max) {
 		this.max = max;
-	}
-
-	/**
-	 * @deprecated set the parameter {@link #max} with {@link #setMax(int)} and use method {@link #execute(GraphicalModel)}
-	 * or {@link #executeInPlace(GraphicalModel)}
-	 */
-	@Deprecated
-	public GraphicalModel<VertexFactor> apply(GraphicalModel<VertexFactor> model, int max) {
-		setMax(max);
-		return execute(model);
+		return this;
 	}
 
 	@Override
 	public void executeInPlace(GraphicalModel<VertexFactor> model) {
 		for (int variable : model.getVariables()) {
 			VertexFactor factor = reduce(model.getFactor(variable), max);
-//			System.out.println("factor over " + factor.getDomain() + " has " + factor.getVertices().length + " vertices");
 			model.setFactor(variable, factor);
 		}
 	}
@@ -99,6 +91,6 @@ public class LimitVertices implements TransformerModel<VertexFactor, GraphicalMo
 			if (hull.length == max) break;
 		}
 
-		return new VertexFactor(factor.getDomain(), Strides.EMPTY, new double[][][]{hull});
+		return new VertexDefaultFactor(factor.getDomain(), Strides.EMPTY, new double[][][]{hull});
 	}
 }

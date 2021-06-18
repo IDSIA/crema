@@ -3,7 +3,9 @@ package ch.idsia.crema.inference.approxlp;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.inference.approxlp2.ApproxLP2;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -26,21 +28,23 @@ public class PosteriorTest {
 		int E = model.addVariable(2);
 		int X0 = model.addVariable(2);
 
-		IntervalFactor fe = new IntervalFactor(model.getDomain(E), model.getDomain(X0));
-		fe.setLower(new double[]{0.2, 0.7}, 0);
-		fe.setUpper(new double[]{0.3, 0.8}, 0);
+		IntervalFactor fe = IntervalFactorFactory.factory().domain(model.getDomain(E), model.getDomain(X0))
+				.lower(new double[]{0.2, 0.7}, 0)
+				.upper(new double[]{0.3, 0.8}, 0)
 
-		fe.setLower(new double[]{0.6, 0.0}, 1);
-		fe.setUpper(new double[]{1.0, 0.4}, 1);
+				.lower(new double[]{0.6, 0.0}, 1)
+				.upper(new double[]{1.0, 0.4}, 1)
+				.get();
 		model.setFactor(E, fe);
 
-		IntervalFactor fx0 = new IntervalFactor(model.getDomain(X0), model.getDomain());
-		fx0.setBounds(0.1, 0.2, 0);
-		fx0.setBounds(0.8, 0.9, 1);
+		IntervalFactor fx0 = IntervalFactorFactory.factory().domain(model.getDomain(X0), model.getDomain())
+				.bounds(0.1, 0.2, 0)
+				.bounds(0.8, 0.9, 1)
+				.get();
 
 		// alternative bounds set
-		// fx0.setLower(new double[] { .1, .8 });
-		// fx0.setUpper(new double[] { .2, .9 });
+		//.lower(new double[] { .1, .8 });
+		//.upper(new double[] { .2, .9 });
 		model.setFactor(X0, fx0);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
@@ -76,24 +80,27 @@ public class PosteriorTest {
 		int X0 = model.addVariable(2);
 		int Xj = model.addVariable(3);
 
-		BayesianFactor fe = new BayesianFactor(model.getDomain(E, X0), false);
-		fe.setData(new double[]{.3, .6, .1, .6, .2, .2});
+		BayesianFactor fe = BayesianFactorFactory.factory().domain(model.getDomain(E, X0))
+				.data(new double[]{.3, .6, .1, .6, .2, .2})
+				.get();
 		model.setFactor(E, fe);
 
-		IntervalFactor fx0 = new IntervalFactor(model.getDomain(X0), model.getDomain(Xj));
-		fx0.setBounds(0.1, 0.2, 0, 0);
-		fx0.setBounds(0.8, 0.9, 1, 0);
+		IntervalFactor fx0 = IntervalFactorFactory.factory().domain(model.getDomain(X0), model.getDomain(Xj))
+				.bounds(0.1, 0.2, 0, 0)
+				.bounds(0.8, 0.9, 1, 0)
 
-		fx0.setBounds(0.5, 0.8, 0, 1);
-		fx0.setBounds(0.2, 0.5, 1, 1);
+				.bounds(0.5, 0.8, 0, 1)
+				.bounds(0.2, 0.5, 1, 1)
 
-		fx0.setBounds(0.4, 0.8, 0, 2);
-		fx0.setBounds(0.2, 0.6, 1, 2);
+				.bounds(0.4, 0.8, 0, 2)
+				.bounds(0.2, 0.6, 1, 2)
+				.get();
 
 		model.setFactor(X0, fx0);
 
-		BayesianFactor fj = new BayesianFactor(model.getDomain(Xj), false);
-		fj.setData(new double[]{.3, .5, .2});
+		BayesianFactor fj = BayesianFactorFactory.factory().domain(model.getDomain(Xj))
+				.data(new double[]{.3, .5, .2})
+				.get();
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
@@ -120,14 +127,16 @@ public class PosteriorTest {
 		int E = model.addVariable(2);
 		int X0 = model.addVariable(3);
 
-		BayesianFactor fe = new BayesianFactor(model.getDomain(E, X0), false);
-		fe.setData(new double[]{.3, .7, .6, .4, .8, .2});
+		BayesianFactor fe = BayesianFactorFactory.factory().domain(model.getDomain(E, X0))
+				.data(new double[]{.3, .7, .6, .4, .8, .2})
+				.get();
 		model.setFactor(E, fe);
 
-		IntervalFactor fx0 = new IntervalFactor(model.getDomain(X0), model.getDomain());
-		fx0.setBounds(0.1, 0.2, 0);
-		fx0.setBounds(0.2, 0.5, 1);
-		fx0.setBounds(0.5, 0.7, 2);
+		IntervalFactor fx0 = IntervalFactorFactory.factory().domain(model.getDomain(X0), model.getDomain())
+				.bounds(0.1, 0.2, 0)
+				.bounds(0.2, 0.5, 1)
+				.bounds(0.5, 0.7, 2)
+				.get();
 
 		model.setFactor(X0, fx0);
 
@@ -156,19 +165,22 @@ public class PosteriorTest {
 		int Xj = model.addVariable(2);
 		int X0 = model.addVariable(2);
 
-		BayesianFactor fe = new BayesianFactor(model.getDomain(E, Xj), false);
-		fe.setData(new double[]{.3, .7, .6, .4});
+		BayesianFactor fe = BayesianFactorFactory.factory().domain(model.getDomain(E, Xj))
+				.data(new double[]{.3, .7, .6, .4})
+				.get();
 		model.setFactor(E, fe);
 
-		BayesianFactor fx0 = new BayesianFactor(model.getDomain(X0), false);
-		fx0.setData(new double[]{.3, .7});
+		BayesianFactor fx0 = BayesianFactorFactory.factory().domain(model.getDomain(X0))
+				.data(new double[]{.3, .7})
+				.get();
 		model.setFactor(X0, fx0);
 
-		IntervalFactor fj = new IntervalFactor(model.getDomain(Xj), model.getDomain(X0));
-		fj.setBounds(.2, .6, 0, 0);
-		fj.setBounds(.4, .8, 1, 0);
-		fj.setBounds(.4, .7, 0, 1);
-		fj.setBounds(.3, .6, 1, 1);
+		IntervalFactor fj = IntervalFactorFactory.factory().domain(model.getDomain(Xj), model.getDomain(X0))
+				.bounds(.2, .6, 0, 0)
+				.bounds(.4, .8, 1, 0)
+				.bounds(.4, .7, 0, 1)
+				.bounds(.3, .6, 1, 1)
+				.get();
 		model.setFactor(Xj, fj);
 
 		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
@@ -199,20 +211,24 @@ public class PosteriorTest {
 		int n3 = model.addVariable(2);
 
 		// root
-		BayesianFactor f0 = new BayesianFactor(model.getDomain(n0, n1, n2), false);
-		f0.setData(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7});
+		BayesianFactor f0 = BayesianFactorFactory.factory().domain(model.getDomain(n0, n1, n2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.8, 0.2, 0.3, 0.7})
+				.get();
 		model.setFactor(n0, f0);
 
-		BayesianFactor f3 = new BayesianFactor(model.getDomain(n3), false);
-		f3.setData(new double[]{0.3, 0.7});
+		BayesianFactor f3 = BayesianFactorFactory.factory().domain(model.getDomain(n3))
+				.data(new double[]{0.3, 0.7})
+				.get();
 		model.setFactor(n3, f3);
 
-		BayesianFactor f1 = new BayesianFactor(model.getDomain(n1, n3), false);
-		f1.setData(new double[]{0.4, 0.6, 0.5, 0.5});
+		BayesianFactor f1 = BayesianFactorFactory.factory().domain(model.getDomain(n1, n3))
+				.data(new double[]{0.4, 0.6, 0.5, 0.5})
+				.get();
 		model.setFactor(n1, f1);
 
-		BayesianFactor f2 = new BayesianFactor(model.getDomain(n2, n3), false);
-		f2.setData(new double[]{0.7, 0.3, 0.1, 0.9});
+		BayesianFactor f2 = BayesianFactorFactory.factory().domain(model.getDomain(n2, n3))
+				.data(new double[]{0.7, 0.3, 0.1, 0.9})
+				.get();
 		model.setFactor(n2, f2);
 
 		TIntIntMap evidence = new TIntIntHashMap();
@@ -245,26 +261,30 @@ public class PosteriorTest {
 		int n3 = model.addVariable(2);
 
 		// root
-		BayesianFactor f0 = new BayesianFactor(model.getDomain(n0, n1, n2), false);
-		f0.setData(new double[]{0.1, 0.9, 0.4, 0.6, 0.5, 0.5, 0.8, 0.2, 0.3, 0.7, 0.9, 0.1});
+		BayesianFactor f0 = BayesianFactorFactory.factory().domain(model.getDomain(n0, n1, n2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.5, 0.5, 0.8, 0.2, 0.3, 0.7, 0.9, 0.1})
+				.get();
 		model.setFactor(n0, f0);
 
-		IntervalFactor f3 = new IntervalFactor(model.getDomain(n3), model.getDomain());
-		f3.setBounds(.3, .4, 0);
-		f3.setBounds(.6, .7, 1);
+		IntervalFactor f3 = IntervalFactorFactory.factory().domain(model.getDomain(n3), model.getDomain())
+				.bounds(.3, .4, 0)
+				.bounds(.6, .7, 1)
+				.get();
 		model.setFactor(n3, f3);
 
-		IntervalFactor f1 = new IntervalFactor(model.getDomain(n1), model.getDomain(n3));
-		f1.setBounds(.1, .6, 0, 0);
-		f1.setBounds(.5, .8, 1, 0);
-		f1.setBounds(.3, .8, 2, 0);
-		f1.setBounds(.3, .7, 0, 1);
-		f1.setBounds(.3, .5, 1, 1);
-		f1.setBounds(.2, .4, 2, 1);
+		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(n1), model.getDomain(n3))
+				.bounds(.1, .6, 0, 0)
+				.bounds(.5, .8, 1, 0)
+				.bounds(.3, .8, 2, 0)
+				.bounds(.3, .7, 0, 1)
+				.bounds(.3, .5, 1, 1)
+				.bounds(.2, .4, 2, 1)
+				.get();
 		model.setFactor(n1, f1);
 
-		BayesianFactor f2 = new BayesianFactor(model.getDomain(n2, n3), false);
-		f2.setData(new double[]{0.7, 0.3, 0.1, 0.9});
+		BayesianFactor f2 = BayesianFactorFactory.factory().domain(model.getDomain(n2, n3))
+				.data(new double[]{0.7, 0.3, 0.1, 0.9})
+				.get();
 		model.setFactor(n2, f2);
 
 		TIntIntMap evidence = new TIntIntHashMap();
@@ -319,36 +339,41 @@ public class PosteriorTest {
 		int n4 = model.addVariable(3);
 
 		// root
-		BayesianFactor f0 = new BayesianFactor(model.getDomain(n0, n1, n2), false);
-		f0.setData(new double[]{0.1, 0.9, 0.4, 0.6, 0.5, 0.5, 0.8, 0.2, 0.3, 0.7, 0.9, 0.1});
+		BayesianFactor f0 = BayesianFactorFactory.factory().domain(model.getDomain(n0, n1, n2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.5, 0.5, 0.8, 0.2, 0.3, 0.7, 0.9, 0.1})
+				.get();
 		model.setFactor(n0, f0);
 
-		IntervalFactor f3 = new IntervalFactor(model.getDomain(n3), model.getDomain(n4));
-		f3.setBounds(.3, .4, 0, 0);
-		f3.setBounds(.6, .7, 1, 0);
-		f3.setBounds(.1, .4, 0, 1);
-		f3.setBounds(.6, .9, 1, 1);
-		f3.setBounds(.2, .5, 0, 2);
-		f3.setBounds(.5, .8, 1, 2);
+		IntervalFactor f3 = IntervalFactorFactory.factory().domain(model.getDomain(n3), model.getDomain(n4))
+				.bounds(.3, .4, 0, 0)
+				.bounds(.6, .7, 1, 0)
+				.bounds(.1, .4, 0, 1)
+				.bounds(.6, .9, 1, 1)
+				.bounds(.2, .5, 0, 2)
+				.bounds(.5, .8, 1, 2)
+				.get();
 		model.setFactor(n3, f3);
 
-		IntervalFactor f4 = new IntervalFactor(model.getDomain(n4), model.getDomain());
-		f4.setBounds(.1, .6, 0);
-		f4.setBounds(.3, .7, 1);
-		f4.setBounds(.1, .4, 2);
+		IntervalFactor f4 = IntervalFactorFactory.factory().domain(model.getDomain(n4), model.getDomain())
+				.bounds(.1, .6, 0)
+				.bounds(.3, .7, 1)
+				.bounds(.1, .4, 2)
+				.get();
 		model.setFactor(n4, f4);
 
-		IntervalFactor f1 = new IntervalFactor(model.getDomain(n1), model.getDomain(n3));
-		f1.setBounds(.1, .6, 0, 0);
-		f1.setBounds(.5, .8, 1, 0);
-		f1.setBounds(.3, .8, 2, 0);
-		f1.setBounds(.3, .7, 0, 1);
-		f1.setBounds(.3, .5, 1, 1);
-		f1.setBounds(.2, .4, 2, 1);
+		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(n1), model.getDomain(n3))
+				.bounds(.1, .6, 0, 0)
+				.bounds(.5, .8, 1, 0)
+				.bounds(.3, .8, 2, 0)
+				.bounds(.3, .7, 0, 1)
+				.bounds(.3, .5, 1, 1)
+				.bounds(.2, .4, 2, 1)
+				.get();
 		model.setFactor(n1, f1);
 
-		BayesianFactor f2 = new BayesianFactor(model.getDomain(n2, n3), false);
-		f2.setData(new double[]{0.7, 0.3, 0.1, 0.9});
+		BayesianFactor f2 = BayesianFactorFactory.factory().domain(model.getDomain(n2, n3))
+				.data(new double[]{0.7, 0.3, 0.1, 0.9})
+				.get();
 		model.setFactor(n2, f2);
 
 		TIntIntMap evidence = new TIntIntHashMap();
@@ -402,52 +427,59 @@ public class PosteriorTest {
 		int n5 = model.addVariable(3);
 
 		// stray
-		BayesianFactor fx = new BayesianFactor(model.getDomain(n), false);
-		fx.setData(new double[]{0.1, 0.3, 0.6});
+		BayesianFactor fx = BayesianFactorFactory.factory().domain(model.getDomain(n))
+				.data(new double[]{0.1, 0.3, 0.6})
+				.get();
 		model.setFactor(n, fx);
 
-		IntervalFactor fy = new IntervalFactor(model.getDomain(n5), model.getDomain(n));
-		fy.setBounds(.3, .4, 0, 0);
-		fy.setBounds(.2, .7, 1, 0);
-		fy.setBounds(.2, .5, 2, 0);
-		fy.setBounds(.1, .4, 0, 1);
-		fy.setBounds(.3, .9, 1, 1);
-		fy.setBounds(.2, .5, 2, 1);
-		fy.setBounds(.2, .5, 0, 2);
-		fy.setBounds(.3, .8, 1, 2);
-		fy.setBounds(.3, .8, 2, 2);
+		IntervalFactor fy = IntervalFactorFactory.factory().domain(model.getDomain(n5), model.getDomain(n))
+				.bounds(.3, .4, 0, 0)
+				.bounds(.2, .7, 1, 0)
+				.bounds(.2, .5, 2, 0)
+				.bounds(.1, .4, 0, 1)
+				.bounds(.3, .9, 1, 1)
+				.bounds(.2, .5, 2, 1)
+				.bounds(.2, .5, 0, 2)
+				.bounds(.3, .8, 1, 2)
+				.bounds(.3, .8, 2, 2)
+				.get();
 		model.setFactor(n5, fy);
 
-		BayesianFactor f0 = new BayesianFactor(model.getDomain(n0, n1, n2), false);
-		f0.setData(new double[]{0.1, 0.9, 0.4, 0.6, 0.5, 0.5, 0.8, 0.2, 0.3, 0.7, 0.9, 0.1});
+		BayesianFactor f0 = BayesianFactorFactory.factory().domain(model.getDomain(n0, n1, n2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6, 0.5, 0.5, 0.8, 0.2, 0.3, 0.7, 0.9, 0.1})
+				.get();
 		model.setFactor(n0, f0);
 
-		IntervalFactor f3 = new IntervalFactor(model.getDomain(n3), model.getDomain(n4));
-		f3.setBounds(.3, .4, 0, 0);
-		f3.setBounds(.6, .7, 1, 0);
-		f3.setBounds(.1, .4, 0, 1);
-		f3.setBounds(.6, .9, 1, 1);
-		f3.setBounds(.2, .5, 0, 2);
-		f3.setBounds(.5, .8, 1, 2);
+		IntervalFactor f3 = IntervalFactorFactory.factory().domain(model.getDomain(n3), model.getDomain(n4))
+				.bounds(.3, .4, 0, 0)
+				.bounds(.6, .7, 1, 0)
+				.bounds(.1, .4, 0, 1)
+				.bounds(.6, .9, 1, 1)
+				.bounds(.2, .5, 0, 2)
+				.bounds(.5, .8, 1, 2)
+				.get();
 		model.setFactor(n3, f3);
 
-		IntervalFactor f4 = new IntervalFactor(model.getDomain(n4), model.getDomain());
-		f4.setBounds(.1, .6, 0);
-		f4.setBounds(.3, .7, 1);
-		f4.setBounds(.1, .4, 2);
+		IntervalFactor f4 = IntervalFactorFactory.factory().domain(model.getDomain(n4), model.getDomain())
+				.bounds(.1, .6, 0)
+				.bounds(.3, .7, 1)
+				.bounds(.1, .4, 2)
+				.get();
 		model.setFactor(n4, f4);
 
-		IntervalFactor f1 = new IntervalFactor(model.getDomain(n1), model.getDomain(n3));
-		f1.setBounds(.1, .6, 0, 0);
-		f1.setBounds(.5, .8, 1, 0);
-		f1.setBounds(.3, .8, 2, 0);
-		f1.setBounds(.3, .7, 0, 1);
-		f1.setBounds(.3, .5, 1, 1);
-		f1.setBounds(.2, .4, 2, 1);
+		IntervalFactor f1 = IntervalFactorFactory.factory().domain(model.getDomain(n1), model.getDomain(n3))
+				.bounds(.1, .6, 0, 0)
+				.bounds(.5, .8, 1, 0)
+				.bounds(.3, .8, 2, 0)
+				.bounds(.3, .7, 0, 1)
+				.bounds(.3, .5, 1, 1)
+				.bounds(.2, .4, 2, 1)
+				.get();
 		model.setFactor(n1, f1);
 
-		BayesianFactor f2 = new BayesianFactor(model.getDomain(n2, n3), false);
-		f2.setData(new double[]{0.7, 0.3, 0.1, 0.9});
+		BayesianFactor f2 = BayesianFactorFactory.factory().domain(model.getDomain(n2, n3))
+				.data(new double[]{0.7, 0.3, 0.1, 0.9})
+				.get();
 		model.setFactor(n2, f2);
 
 		TIntIntMap evidence = new TIntIntHashMap();

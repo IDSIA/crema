@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.approxlp;
 
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
@@ -50,7 +51,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 			double[] realObj = new double[size];
 			realObj[x0state] = 1.0;
 
-			x0factor = new BayesianFactor(model.getDomain(x0), realObj, false);
+			x0factor = new BayesianDefaultFactor(model.getDomain(x0), realObj);
 		}
 		return x0factor;
 	}
@@ -131,7 +132,7 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 
 	public static BayesianFactor replaceZerosInMarginal(BayesianFactor f) {
 		BayesianFactor out = f.copy();
-		out.replaceInLine(0, EPS);
+		out.replace(0, EPS);
 		return out.normalize();
 	}
 }

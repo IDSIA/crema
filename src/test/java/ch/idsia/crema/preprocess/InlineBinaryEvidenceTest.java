@@ -1,7 +1,8 @@
 package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.MixedModel;
 import gnu.trove.map.TIntIntMap;
@@ -19,8 +20,10 @@ public class InlineBinaryEvidenceTest {
 
 			int n0 = model.addVariable(3);
 
-			IntervalFactor f0 = new IntervalFactor(model.getDomain(n0), model.getDomain());
-			f0.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5});
+			IntervalFactor f0 = IntervalFactorFactory.factory()
+					.domain(model.getDomain(n0), model.getDomain())
+					.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
+					.get();
 			model.setFactor(n0, f0);
 
 			TIntIntMap evidence = new TIntIntHashMap();
@@ -53,8 +56,10 @@ public class InlineBinaryEvidenceTest {
 		for (int i = 0; i < 2; ++i) {
 			int n = model.addVariable(3);
 
-			IntervalFactor f0 = new IntervalFactor(model.getDomain(n), model.getDomain());
-			f0.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5});
+			IntervalFactor f0 = IntervalFactorFactory.factory()
+					.domain(model.getDomain(n), model.getDomain())
+					.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
+					.get();
 			model.setFactor(n, f0);
 
 			evidence.put(n, 0);
@@ -84,8 +89,10 @@ public class InlineBinaryEvidenceTest {
 		for (int i = 0; i < 2; ++i) {
 			int n = model.addVariable(3);
 
-			IntervalFactor f0 = new IntervalFactor(model.getDomain(n), model.getDomain());
-			f0.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5});
+			IntervalFactor f0 = IntervalFactorFactory.factory()
+					.domain(model.getDomain(n), model.getDomain())
+					.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
+					.get();
 			model.setFactor(n, f0);
 
 			evidence.put(n, 1);
@@ -115,8 +122,10 @@ public class InlineBinaryEvidenceTest {
 		for (int i = 0; i < 3; ++i) {
 			int n = model.addVariable(2);
 
-			IntervalFactor f0 = new IntervalFactor(model.getDomain(n), model.getDomain());
-			f0.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5});
+			IntervalFactor f0 = IntervalFactorFactory.factory()
+					.domain(model.getDomain(n), model.getDomain())
+					.set(new double[]{0.2, 0.7, 0.1}, new double[]{0.3, 0.8, 0.5})
+					.get();
 			model.setFactor(n, f0);
 
 			evidence.put(n, 0);

@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.fe.tree;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.inference.fe.EliminationTree;
 import ch.idsia.crema.inference.fe.FactorElimination2;
 import ch.idsia.crema.model.graphical.DAGModel;
@@ -50,19 +51,25 @@ public class EliminationTreeTest {
 
 		BayesianFactor[] f = new BayesianFactor[5];
 
-		f[A] = new BayesianFactor(model.getDomain(A), new double[]{.6, .4}, false);
+		f[A] = BayesianFactorFactory.factory().domain(model.getDomain(A))
+				.data(new double[]{.6, .4})
+				.get();
 
-		f[B] = new BayesianFactor(model.getDomain(A, B), false);
-		f[B].setData(new int[]{B, A}, new double[]{.2, .8, .75, .25});
+		f[B] = BayesianFactorFactory.factory().domain(model.getDomain(A, B))
+				.data(new int[]{B, A}, new double[]{.2, .8, .75, .25})
+				.get();
 
-		f[C] = new BayesianFactor(model.getDomain(A, C), false);
-		f[C].setData(new int[]{C, A}, new double[]{.8, .2, .1, .9});
+		f[C] = BayesianFactorFactory.factory().domain(model.getDomain(A, C))
+				.data(new int[]{C, A}, new double[]{.8, .2, .1, .9})
+				.get();
 
-		f[D] = new BayesianFactor(model.getDomain(B, C, D), false);
-		f[D].setData(new int[]{D, B, C}, new double[]{.95, .05, .9, .1, .8, .2, 0, 1});
+		f[D] = BayesianFactorFactory.factory().domain(model.getDomain(B, C, D))
+				.data(new int[]{D, B, C}, new double[]{.95, .05, .9, .1, .8, .2, 0, 1})
+				.get();
 
-		f[E] = new BayesianFactor(model.getDomain(C, E), false);
-		f[E].setData(new int[]{E, C}, new double[]{.7, .3, 0, 1});
+		f[E] = BayesianFactorFactory.factory().domain(model.getDomain(C, E))
+				.data(new int[]{E, C}, new double[]{.7, .3, 0, 1})
+				.get();
 
 		model.setFactors(f);
 

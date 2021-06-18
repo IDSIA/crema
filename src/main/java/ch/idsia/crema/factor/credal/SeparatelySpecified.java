@@ -1,8 +1,8 @@
 package ch.idsia.crema.factor.credal;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.factor.GenericFactor;
-import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * A separately specified Factor has a for each possible
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.NotImplementedException;
  *
  * @author david
  */
-public interface SeparatelySpecified<F extends SeparatelySpecified<F>> {
+public interface SeparatelySpecified<F extends SeparatelySpecified<F>> extends FilterableFactor<F> {
 
 	/**
 	 * The domain of the separated part. This is usually the conditioning of the Factor.
@@ -31,24 +31,5 @@ public interface SeparatelySpecified<F extends SeparatelySpecified<F>> {
 	 * @return
 	 */
 	Strides getDataDomain();
-
-	/**
-	 * A separately specified factor must be able to filter out given
-	 * variables on the grouping side of the factor.
-	 *
-	 * @param variable
-	 * @param state
-	 * @return
-	 */
-	F filter(int variable, int state);
-
-	/**
-	 * Sorts the parents following the global variable order
-	 *
-	 * @return
-	 */
-	default F sortParents() {
-		throw new NotImplementedException("sortParents not implemented");
-	}
 
 }

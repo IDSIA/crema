@@ -1,6 +1,7 @@
 package ch.idsia.crema.tutorial;
 
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
@@ -70,9 +71,9 @@ public class NetworkTutorial {
 		model.addParent(A, C);
 		model.addParent(B, C);
 
-		BayesianFactor fac = new BayesianFactor(model.getDomain(A));
-		BayesianFactor fbc = new BayesianFactor(model.getDomain(B));
-		BayesianFactor fc = new BayesianFactor(model.getDomain(C));
+		BayesianFactor fac = new BayesianDefaultFactor(model.getDomain(A), new double[0]);
+		BayesianFactor fbc = new BayesianDefaultFactor(model.getDomain(B), new double[0]);
+		BayesianFactor fc = new BayesianDefaultFactor(model.getDomain(C), new double[0]);
 
 		// populate factors here
 

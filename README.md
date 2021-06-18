@@ -10,45 +10,49 @@ learning and inference algorithms for credal models.
 An example of exact inference in a credal network is given below.
 
 ```java
-import ch.idsia.crema.factor.credal.vertex.VertexFactor;
-import ch.idsia.crema.inference.ve.CredalVariableElimination;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
+import ch.idsia.crema.inference.ve.CredalVariableElimination;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 
 public class Starting {
-    public static void main(String[] args) {
-        double p = 0.2;
-        double eps = 0.0001;
+	public static void main(String[] args) {
+		double p = 0.2;
+		double eps = 0.0001;
 
-        /*  CN defined with vertex Factor  */
+		/*  CN defined with vertex Factor  */
 
-        // Define the model (with vertex factors)
-        GraphicalModel<VertexFactor> model = new DAGModel<>();
-              int A = model.addVariable(3);
-        int B = model.addVariable(2);
-        
-        model.addParent(B,A);
+		// Define the model (with vertex factors)
+		GraphicalModel<VertexFactor> model = new DAGModel<>();
+		int A = model.addVariable(3);
+		int B = model.addVariable(2);
 
-        // Define a credal set of the partent node
-        VertexFactor fu = new VertexFactor(model.getDomain(A), Strides.empty());
-        fu.addVertex(new double[]{0., 1-p, p});
-        fu.addVertex(new double[]{1-p, 0., p});
-        
-        model.setFactor(A,fu);
+		model.addParent(B, A);
 
-        // Define the credal set of the child
-        VertexFactor fx = new VertexFactor(model.getDomain(B), model.getDomain(A));
-        fx.addVertex(new double[]{1., 0.,}, 0);
-        fx.addVertex(new double[]{1., 0.,}, 1);
-        fx.addVertex(new double[]{0., 1.,}, 2);
+		// Define a credal set of the partent node
+		VertexFactor fu = VertexFactorFactory.factory().domain(model.getDomain(A), Strides.empty())
+				.addVertex(new double[]{0., 1 - p, p})
+				.addVertex(new double[]{1 - p, 0., p})
+				.get();
 
-        model.setFactor(B,fx);
+		model.setFactor(A, fu);
 
-        // Run exact inference
-        CredalVariableElimination<VertexFactor> inf = new CredalVariableElimination<>(model);
-        inf.query(A, ObservationBuilder.observe(B,0));
-    }
+		// Define the credal set of the child
+		VertexFactor fx = VertexFactorFactory.factory().domain(model.getDomain(B), model.getDomain(A))
+				.addVertex(new double[]{1., 0.,}, 0)
+				.addVertex(new double[]{1., 0.,}, 1)
+				.addVertex(new double[]{0., 1.,}, 2)
+				.get();
+
+		model.setFactor(B, fx);
+
+		// Run exact inference
+		CredalVariableElimination inf = new CredalVariableElimination();
+		inf.query(model, ObservationBuilder.observe(B, 0), A);
+	}
 }
 ``` 
 
@@ -68,7 +72,7 @@ Add the following code in the  pom.xml of your project:
         <dependency>
             <groupId>ch.idsia</groupId>
             <artifactId>crema</artifactId>
-            <version>0.1.6</version>
+            <version>0.1.7</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

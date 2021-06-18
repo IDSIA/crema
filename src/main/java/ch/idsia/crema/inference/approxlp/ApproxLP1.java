@@ -1,7 +1,8 @@
 package ch.idsia.crema.inference.approxlp;
 
 import ch.idsia.crema.factor.GenericFactor;
-import ch.idsia.crema.factor.credal.linear.IntervalFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalDefaultFactor;
+import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
@@ -18,13 +19,19 @@ import java.util.Map;
  */
 public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
-	public static double EPS = 0.0;
+	public static double EPS = 1e-9;
 
 	private Map<String, Object> init = null;
+
+	private boolean preprocess = true;
 
 	protected int evidenceNode = -1;
 
 	public ApproxLP1() {
+	}
+
+	public ApproxLP1(boolean preprocess) {
+		this.preprocess = preprocess;
 	}
 
 	public ApproxLP1(int evidenceNode) {
@@ -35,7 +42,18 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 		initialize(params);
 	}
 
+	public ApproxLP1(Map<String, ?> params, boolean preprocess) {
+		this.preprocess = preprocess;
+		initialize(params);
+	}
+
 	public ApproxLP1(Map<String, ?> params, int evidenceNode) {
+		initialize(params);
+		setEvidenceNode(evidenceNode);
+	}
+
+	public ApproxLP1(Map<String, ?> params, int evidenceNode, boolean preprocess) {
+		this.preprocess = preprocess;
 		initialize(params);
 		setEvidenceNode(evidenceNode);
 	}
@@ -48,6 +66,10 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 			this.init = new HashMap<>();
 		else
 			this.init = new HashMap<>(params);
+	}
+
+	public void setPreprocess(boolean preprocess) {
+		this.preprocess = preprocess;
 	}
 
 	/**
@@ -68,8 +90,11 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 	 */
 	@Override
 	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
-		final RemoveBarren<F> remove = new RemoveBarren<>();
-		final GraphicalModel<F> model = remove.execute(originalModel, evidence, query);
+		GraphicalModel<F> model = originalModel;
+		if (preprocess) {
+			final RemoveBarren<F> remove = new RemoveBarren<>();
+			model = remove.execute(originalModel, evidence, query);
+		}
 		return query(model, query);
 	}
 
@@ -77,11 +102,13 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 	 * Preconditions:
 	 * <ul>
 	 * <li>single evidence node
-	 * <li>Factors must be one of <ul>
+	 * <li>Factors must be one of
+	 * <ul>
 	 * 		<li>ExtensiveLinearFactors,
 	 * 		<li>BayesianFactor or
-	 * 		<li> SeparateLinearFactor
-	 * </ul></ul>
+	 * 		<li>SeparateLinearFactor
+	 * </ul>
+	 * </ul>
 	 * <p>
 	 *     Use the method {@link #setEvidenceNode(int)} to set the variable that is to be considered the summarization
 	 *     of the evidence (-1 if no evidence).
@@ -106,7 +133,7 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 
 			if (evidenceNode == -1) {
 				// without evidence we are looking for a marginal
-				EPS = 0.0;
+				EPS = 1e-9;
 				lower = new Marginal(model, GoalType.MINIMIZE, query, state);
 				upper = new Marginal(model, GoalType.MAXIMIZE, query, state);
 			} else {
@@ -117,15 +144,12 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 
 			lowers[state] = runSearcher(model, lower);
 			uppers[state] = runSearcher(model, upper);
-
 		}
 
-		IntervalFactor result = new IntervalFactor(
+		return new IntervalDefaultFactor(
 				model.getDomain(query), model.getDomain(), new double[][]{lowers}, new double[][]{uppers}
-		);
-		result.updateReachability();
-
-		return result;
+		)
+				.updateReachability();
 	}
 
 	private double runSearcher(GraphicalModel<F> model, Manager objective) {
@@ -148,15 +172,6 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 		} catch (InterruptedException e) {
 			// TODO: maybe return NaN?
 			throw new IllegalStateException(e);
-		}
-	}
-
-	@Deprecated
-	public IntervalFactor apply(GraphicalModel<F> model, int query, TIntIntMap observations) {
-		if (observations.isEmpty()) {
-			return query(model, query);
-		} else {
-			return null;
 		}
 	}
 
