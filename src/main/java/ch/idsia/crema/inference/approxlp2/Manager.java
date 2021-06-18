@@ -40,6 +40,10 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 		this.sequence = new MinFillOrdering().apply(model);
 	}
 
+	public GoalType getGoal() {
+		return goal;
+	}
+
 	/**
 	 * This is a custom bayesian factor over x0 with a 1 for x0state.
 	 * The value is cached.

@@ -18,10 +18,33 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 	private Map<String, Object> init = null;
 	private boolean preprocess = true;
 
+	private boolean noSearch = false;
+	private int maxGenerations = 10;
+
 	public ApproxLP2() {
 	}
 
+	/**
+	 * By default, the preprocessing methods is just {@link RemoveBarren<F>}.
+	 *
+	 * @param preprocess apply preprocessing methods to the model before inference (default: true)
+	 */
 	public ApproxLP2(boolean preprocess) {
+		this.preprocess = preprocess;
+	}
+
+	/**
+	 * Instead of use the optimized search, generate random networks.
+	 *
+	 * @param maxGenerations max generation to perform (default: 10)
+	 */
+	public ApproxLP2(int maxGenerations) {
+		this.noSearch = true;
+		this.maxGenerations = maxGenerations;
+	}
+
+	public ApproxLP2(int maxGenerations, boolean preprocess) {
+		this(maxGenerations);
 		this.preprocess = preprocess;
 	}
 
@@ -102,6 +125,31 @@ public class ApproxLP2<F extends GenericFactor> implements Inference<GraphicalMo
 
 	private double runSearcher(GraphicalModel<F> model, Manager objective) {
 		Neighbourhood neighbourhood = new Neighbourhood(model);
+
+		if (noSearch) {
+			// TODO: this should be another AbstractSearcher (SimpleRandomSearch?)
+			Solution optimal = neighbourhood.random();
+			double opt_score = objective.eval(optimal);
+
+			for (int i = 0; i < maxGenerations; i++) {
+				Solution solution = neighbourhood.random();
+				double score = objective.eval(optimal);
+
+				if (objective.getGoal() == GoalType.MAXIMIZE) {
+					if (score > opt_score) {
+						opt_score = score;
+						optimal = solution;
+					}
+				} else {
+					if (score < opt_score) {
+						opt_score = score;
+						optimal = solution;
+					}
+				}
+			}
+
+			return opt_score;
+		}
 
 		GreedyWithRandomRestart<Move, Solution> searcher = new GreedyWithRandomRestart<>();
 		searcher.setNeighbourhoodFunction(neighbourhood);
