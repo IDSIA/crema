@@ -4,6 +4,7 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianDeterministicFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.BayesianUtilities;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.GraphicalModel;
@@ -105,7 +106,7 @@ public class FrequentistEM extends DiscreteEM {
 
 			BayesianFactor f = countVar.divide(countVar.marginalize(var));
 
-			if (f.KLDivergence(posteriorModel.getFactor(var)) > klthreshold) {
+			if (BayesianUtilities.KLDivergence(f, posteriorModel.getFactor(var)) > klthreshold) {
 				posteriorModel.setFactor(var, f);
 				updated = true;
 			}

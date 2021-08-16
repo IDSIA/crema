@@ -121,9 +121,4 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 		throw new NotImplementedException();
 	}
 
-	@Override
-	public double KLDivergence(BayesianFactor approx) {
-		// TODO
-		throw new NotImplementedException();
-	}
 }

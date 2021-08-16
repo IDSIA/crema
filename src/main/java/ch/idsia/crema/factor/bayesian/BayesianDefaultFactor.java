@@ -16,7 +16,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -408,20 +407,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return ArraysUtil.almostEquals(data, other.data, 0.00000001);
 	}
 
-	@Override
-	public double KLDivergence(BayesianFactor approx) {
-		IndexIterator it = approx.getDomain().getReorderedIterator(getDomain().getVariables());
-		double kl = 0;
-		for (int i = 0; i < data.length; i++) {
-			int j = it.next();
-			double p = getValueAt(i);
-			double q = approx.getValueAt(j);
-
-			kl += p * (Math.log(p) - Math.log(q));
-		}
-		return kl;
-	}
-
 	/*
 	TODO: analyse better this method and update it
 	public BayesianDefaultFactor fixPrecision(int num_decimals, int... left_vars) {
@@ -451,7 +436,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	@Override
 	public BayesianDefaultFactor reorderDomain(Strides newStrides) {
 		if (!(getDomain().isConsistentWith(newStrides) && getDomain().getSize() == newStrides.getSize())) {
-			throw new IllegalArgumentException("ERROR: wrong input Strides");
+			throw new IllegalArgumentException("Wrong input Strides");
 		}
 
 		// at position i, now we put the axis that were at varMap[i]
@@ -521,21 +506,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		}
 
 		return new BayesianDefaultFactor(domain, data);
-	}
-
-	public boolean isDeterministic(int... given) {
-		if (!DoubleStream.of(data).allMatch(x -> x == 0.0 || x == 1.0))
-			return false;
-
-		int[] left = ArraysUtil.difference(getDomain().getVariables(), given);
-
-		BayesianDefaultFactor f = this;
-		for (int v : left) {
-			f = f.marginalize(v);
-		}
-
-		// TODO: _all_ match?
-		return DoubleStream.of(f.data).allMatch(x -> x == 1.0);
 	}
 
 	public int[] getAssignments(int... given) {
@@ -622,30 +592,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		}
 
 		return logprob;
-	}
-
-	/**
-	 * Combine this factor with the provided one and return the
-	 * result as a new factor.
-	 *
-	 * @param factors
-	 * @return
-	 */
-	public static BayesianDefaultFactor combineAll(BayesianDefaultFactor... factors) {
-		if (factors.length < 1)
-			throw new IllegalArgumentException("wrong number of factors");
-		else if (factors.length == 1)
-			return factors[0].copy();
-
-		BayesianDefaultFactor out = factors[0];
-		for (int i = 1; i < factors.length; i++) {
-			out = out.combine(factors[i]);
-		}
-		return out;
-	}
-
-	public static BayesianDefaultFactor combineAll(Collection<BayesianDefaultFactor> factors) {
-		return combineAll(factors.toArray(BayesianDefaultFactor[]::new));
 	}
 
 }

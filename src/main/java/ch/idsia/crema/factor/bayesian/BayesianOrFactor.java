@@ -7,6 +7,6 @@ package ch.idsia.crema.factor.bayesian;
  */
 public class BayesianOrFactor {
 
-	// TODO
+	// TODO: this should be a BayesianFunctionFactor
 
 }
