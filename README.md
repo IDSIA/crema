@@ -1,10 +1,9 @@
 [![GitHub version](https://badge.fury.io/gh/idsia%2Fcrema.svg)](https://badge.fury.io/gh/idsia%2Fcrema)
-[![Build Status](https://travis-ci.org/IDSIA/crema.svg?branch=master)](https://travis-ci.org/IDSIA/crema)
-
+![example workflow](https://github.com/IDSIA/crema/actions/workflows/maven.yaml/badge.svg?branch=master)
 
 <img src="docs/static/img/logo.png" alt="Crema" width="500"/>
 
-CreMA is a open-source java toolbox that provides multiple
+CreMA is an open-source java toolbox that provides multiple
 learning and inference algorithms for credal models.
 
 An example of exact inference in a credal network is given below.
