@@ -2,7 +2,7 @@ package ch.idsia.crema.inference.sampling;
 
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.CutObserved;
 import gnu.trove.map.TIntDoubleMap;
 import gnu.trove.map.TIntIntMap;
@@ -40,8 +40,8 @@ public class LikelihoodWeightingSampling extends StochasticSampling {
 	 * Algorithm 46 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 */
 	@Override
-	public Collection<BayesianFactor> run(DAGModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
-		final DAGModel<BayesianFactor> model = preprocess(original, evidence, query);
+	public Collection<BayesianFactor> run(GraphicalModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
+		final GraphicalModel<BayesianFactor> model = preprocess(original, evidence, query);
 
 		if (!preprocess) {
 			// this is mandatory

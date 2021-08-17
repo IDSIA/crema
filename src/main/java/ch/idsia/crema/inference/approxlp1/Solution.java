@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.approxlp;
+package ch.idsia.crema.inference.approxlp1;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -27,11 +27,12 @@ public class Solution {
 		// shallow copy
 		this.data = new TIntObjectHashMap<>(source.data);
 
-		if (move.getValues() == null) throw new IllegalArgumentException("The provided move has never been evaluated");
+		if (move.getValues() == null)
+			throw new IllegalArgumentException("The provided move has never been evaluated");
+
 		this.free = move.getFree(); // info about what just change (usefull for neighbourhood)
 		this.data.put(free, move.getValues());
 		this.scorecache = move.getScore();
-
 	}
 
 	int getFree() {

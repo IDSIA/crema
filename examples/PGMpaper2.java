@@ -6,7 +6,7 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactorFactory;
-import ch.idsia.crema.inference.approxlp.CredalApproxLP;
+import ch.idsia.crema.inference.approxlp1.CredalApproxLP;
 import ch.idsia.crema.model.graphical.DAGModel;
 import org.apache.commons.math3.optim.linear.Relationship;
 

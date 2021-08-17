@@ -9,7 +9,7 @@ import ch.idsia.crema.utility.RandomUtil;
 
 import java.util.Random;
 
-public class HalfspaceToRandomBayesian implements Converter<SeparateHalfspaceFactor, BayesianFactor> {
+public class HalfspaceToRandomBayesianFactor implements Converter<SeparateHalfspaceFactor, BayesianFactor> {
 
 	private final Random random = RandomUtil.getRandom();
 
@@ -42,7 +42,5 @@ public class HalfspaceToRandomBayesian implements Converter<SeparateHalfspaceFac
 	public Class<SeparateHalfspaceFactor> getSourceClass() {
 		return SeparateHalfspaceFactor.class;
 	}
-
-
 
 }

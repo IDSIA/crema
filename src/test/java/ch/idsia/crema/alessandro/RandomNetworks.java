@@ -8,7 +8,7 @@ import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
-import ch.idsia.crema.inference.approxlp.ApproxLP1;
+import ch.idsia.crema.inference.approxlp1.ApproxLP1;
 import ch.idsia.crema.inference.sepolyve.MaxMemoryException;
 import ch.idsia.crema.inference.sepolyve.MaxTimeException;
 import ch.idsia.crema.inference.sepolyve.NodeInfo;
