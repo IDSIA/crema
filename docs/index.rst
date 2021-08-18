@@ -5,7 +5,6 @@
 
 
 
-
 Crema: A Java Toolbox for Credal Models Algorithms
 =========================================================================
 
@@ -28,6 +27,7 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
 
 .. .. toctree::
 .. :hidden:
+
 
 .. Home <self>
 
@@ -60,6 +60,7 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
 
    tutorials/factors.rst
    tutorials/domains.rst
+   tutorials/iterators.rst
    tutorials/networks.rst
    tutorials/bayesian_inference.rst
 
@@ -72,7 +73,6 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
    notes/contact
 
 
-
 .. Indices and tables
   ==================
 
@@ -81,13 +81,8 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
   * :ref:`search`
   
 
-
-
 .. role:: bash(code)
    :language: bash
 .. role:: python(code)
    :language: python3
-
-
-
 
