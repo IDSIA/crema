@@ -44,7 +44,7 @@ class VertexToRandomBayesianTest {
 		System.out.println(f2);
 		System.out.println(f3);
 
-		// TODO: find why this works, while in ApproxLP0Test it raise exceptions
+		// TODO: this checks only that everything works, check also that it is correct!!!
 	}
 
 }

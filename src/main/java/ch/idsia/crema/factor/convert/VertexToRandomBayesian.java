@@ -4,6 +4,8 @@ import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 
 import java.util.Random;
@@ -31,14 +33,23 @@ public class VertexToRandomBayesian implements Converter<VertexFactor, BayesianF
 	public BayesianFactor apply(VertexFactor v, Integer var) {
 		final BayesianFactorFactory bff = BayesianFactorFactory.factory().domain(v.getDomain());
 
+		final int[] vars = ArraysUtil.append(
+				v.getDataDomain().getVariables(),
+				v.getSeparatingDomain().getVariables()
+		);
+
+		// visiting BayesianFactor domain in a modified order
+		final IndexIterator targetIterator = v.getDomain().getReorderedIterator(vars);
+
 		for (int i = 0; i < v.getSeparatingDomain().getCombinations(); i++) {
 			final double[][] vertices = v.getVerticesAt(i);
 			final int j = random.nextInt(vertices.length);
 			final double[] vertex = vertices[j];
 
-			final int offset = v.getSeparatingDomain().getOffset(i);
-
-			bff.valuesAt(vertex, offset * vertex.length);
+			for (double value : vertex) {
+				final int offset = targetIterator.next();
+				bff.valueAt(value, offset);
+			}
 		}
 
 		if (log) {
