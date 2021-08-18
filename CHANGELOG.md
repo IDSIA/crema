@@ -1,3 +1,12 @@
+0.2.1
+===========
+
+- New ApproxLP0 algorithm ( #83 )
+- Added new `VertexToRandomBayesian` converter ( #84 )
+  Renamed `approxlp` package to `approxpl1`  ( #84 )
+- Replaced CI/CD pipeline with GitHub actions ( #84 )
+
+
 0.2.0
 ===========
 
