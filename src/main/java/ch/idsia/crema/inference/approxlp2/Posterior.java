@@ -41,6 +41,7 @@ public class Posterior extends Manager {
 			return null;
 		}
 		simplex.loadProblem(factor, goal);
+
 		return simplex;
 	}
 
@@ -60,7 +61,6 @@ public class Posterior extends Manager {
 	 */
 	@Override
 	public double eval(Solution from, Move doing) {
-
 		int free = doing.getFree();
 		int[] parents = model.getParents(free);
 		int pindex = Arrays.binarySearch(parents, x0);
@@ -182,6 +182,7 @@ public class Posterior extends Manager {
 		}
 
 		BayesianFactor solution = from.getData().get(free);
+
 		if (solution.isLog()) {
 			solution = new BayesianLogFactor(solution.getDomain(), solver.getVertex());
 		} else {
@@ -192,12 +193,12 @@ public class Posterior extends Manager {
 		doing.setScore(solver.getValue());
 
 		fixNotMoving(from, doing);
+
 		return doing.getScore();
 	}
 
 	@Override
 	public double eval(Solution solution) {
-
 		if (!Double.isNaN(solution.getScore()))
 			return solution.getScore();
 

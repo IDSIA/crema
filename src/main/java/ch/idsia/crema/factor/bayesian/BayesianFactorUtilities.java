@@ -20,4 +20,11 @@ public class BayesianFactorUtilities {
 
 		return new BayesianDefaultFactor(left.concat(right), Doubles.concat(data));
 	}
+
+	public static BayesianFactor replaceZerosInMarginal(BayesianFactor f, double EPS) {
+		BayesianFactor out = f.copy();
+		out.replace(0, EPS);
+		return out.normalize();
+	}
+
 }

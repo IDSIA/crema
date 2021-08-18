@@ -105,6 +105,11 @@ public class BayesianFactorFactory {
 		return this;
 	}
 
+	public BayesianFactorFactory valuesAt(double[] d, int index) {
+		System.arraycopy(d, 0, data, index, d.length);
+		return this;
+	}
+
 	public BayesianFactorFactory set(double value, int... states) {
 		return value(value, states);
 	}

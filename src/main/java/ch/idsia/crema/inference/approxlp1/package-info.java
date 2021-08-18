@@ -5,4 +5,4 @@
  * @author huber
  *
  */
-package ch.idsia.crema.inference.approxlp;
+package ch.idsia.crema.inference.approxlp1;

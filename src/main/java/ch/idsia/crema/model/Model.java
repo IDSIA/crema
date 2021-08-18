@@ -101,6 +101,16 @@ public interface Model<F extends GenericFactor> {
 	int addVariable(int size);
 
 	/**
+	 * Add a new variable to the model. Added variables will be appended to the model with the given label/index/id.
+	 * Next variables added will have an index greater of the highest index in the model.
+	 *
+	 * @param vid - the label/index/id of the variable
+	 * @param size - int the number of states in the variable
+	 * @return the same value of vid
+	 */
+	int addVariable(int vid, int size);
+
+	/**
 	 * Specify all the factor of the model via a single array.
 	 * Factors must be ordered by variable. First factor is therefor
 	 * for first variable.

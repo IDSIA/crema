@@ -11,7 +11,7 @@ import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.factor.credal.vertex.generator.CNGenerator;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
-import ch.idsia.crema.inference.approxlp.ApproxLP1;
+import ch.idsia.crema.inference.approxlp1.ApproxLP1;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.search.ISearch;
 import org.junit.jupiter.api.Disabled;
