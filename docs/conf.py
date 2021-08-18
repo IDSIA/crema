@@ -219,7 +219,5 @@ texinfo_documents = [
      'Miscellaneous'),
 ]
 
-
-
-
-graphviz_dot="C:\\Program Files\\Graphviz\\bin\\dot.exe"
+if os.name == 'nt':
+    graphviz_dot="C:\\Program Files\\Graphviz\\bin\\dot.exe"
