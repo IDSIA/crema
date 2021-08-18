@@ -2,7 +2,7 @@ package ch.idsia.crema.inference.approxlp2;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesianFactor;
+import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesian;
 import ch.idsia.crema.factor.convert.HalfspaceToRandomBayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
 import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
@@ -58,7 +58,7 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 
 	private BayesianFactor random(GenericFactor factor) {
 		if (factor instanceof ExtensiveLinearFactor) {
-			return new ExtensiveLinearToRandomBayesianFactor().apply((ExtensiveLinearFactor<?>) factor);
+			return new ExtensiveLinearToRandomBayesian().apply((ExtensiveLinearFactor<?>) factor);
 		} else if (factor instanceof SeparateHalfspaceFactor) {
 			return new HalfspaceToRandomBayesianFactor().apply((SeparateHalfspaceFactor) factor, -1);
 		} else if (factor instanceof SeparateLinearFactor) {

@@ -2,7 +2,7 @@ package ch.idsia.crema.inference.approxlp0;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesianFactor;
+import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesian;
 import ch.idsia.crema.factor.convert.HalfspaceToRandomBayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
 import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
@@ -17,6 +17,7 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,9 +35,27 @@ import java.util.stream.IntStream;
  */
 public class ApproxLP0<F extends GenericFactor> implements Inference<GraphicalModel<F>, IntervalFactor> {
 
+	/**
+	 * Flag, if true applies pre-processing before each inference.
+	 */
 	private boolean preprocess = true;
+	/**
+	 * Number of Bayesian Network to generate.
+	 */
 	private int n = 100;
+	/**
+	 * Bayesian inference engine to use.
+	 */
 	private Inference<GraphicalModel<BayesianFactor>, BayesianFactor> inference = new LikelihoodWeightingSampling();
+
+	/**
+	 * Generated networks of the last inference done.
+	 */
+	private List<GraphicalModel<BayesianFactor>> networks = new ArrayList<>();
+	/**
+	 * Generated outputs of the last inference done.
+	 */
+	private List<BayesianFactor> outputs = new ArrayList<>();
 
 	public ApproxLP0() {
 	}
@@ -108,6 +127,20 @@ public class ApproxLP0<F extends GenericFactor> implements Inference<GraphicalMo
 	}
 
 	/**
+	 * @return a list of all the generated Bayesian networks for the last query done.
+	 */
+	public List<GraphicalModel<BayesianFactor>> getNetworks() {
+		return networks;
+	}
+
+	/**
+	 * @return a list of all the sampled factors for the last query done.
+	 */
+	public List<BayesianFactor> getOutputs() {
+		return outputs;
+	}
+
+	/**
 	 * This method generates a certain amount of networks, specified by the {@code n} parameter, from the given
 	 * {@code model} and then use the chosen {@code inference} engine.
 	 *
@@ -126,11 +159,11 @@ public class ApproxLP0<F extends GenericFactor> implements Inference<GraphicalMo
 			model = originalModel;
 		}
 
-		final List<GraphicalModel<BayesianFactor>> networks = IntStream.range(0, n)
+		networks = IntStream.range(0, n)
 				.mapToObj(i -> randomBayesianNetwork(model))
 				.collect(Collectors.toList());
 
-		final List<BayesianFactor> outputs = networks.stream()
+		outputs = networks.stream()
 				.map(net -> inference.query(net, evidence, query))
 				.collect(Collectors.toList());
 
@@ -166,12 +199,20 @@ public class ApproxLP0<F extends GenericFactor> implements Inference<GraphicalMo
 	private GraphicalModel<BayesianFactor> randomBayesianNetwork(GraphicalModel<F> model) {
 		final GraphicalModel<BayesianFactor> network = new DAGModel<>();
 
+		// add nodes
 		for (int var : model.getVariables()) {
-			network.addVariable(model.getSize(var));
-			network.addParents(var, model.getParents(var));
+			network.addVariable(var, model.getSize(var));
+		}
 
+		// add parents
+		for (int var : model.getVariables()) {
+			network.addParents(var, model.getParents(var));
+		}
+
+		// add factors
+		for (int var : model.getVariables()) {
 			if (model.getFactorsMap().containsKey(var)) {
-				BayesianFactor r = randomBayesianFactor(model.getFactor(var));
+				BayesianFactor r = randomBayesianFactor(model.getFactor(var), var);
 				network.setFactor(var, r);
 			}
 		}
@@ -184,13 +225,13 @@ public class ApproxLP0<F extends GenericFactor> implements Inference<GraphicalMo
 	 * @return a {@link BayesianFactor}, randomly sampled from the given credal factor, or {@code null} if another not
 	 * supported {@link GenericFactor}
 	 */
-	private BayesianFactor randomBayesianFactor(GenericFactor factor) {
+	private BayesianFactor randomBayesianFactor(GenericFactor factor, int var) {
 		if (factor instanceof ExtensiveLinearFactor) {
-			return new ExtensiveLinearToRandomBayesianFactor().apply((ExtensiveLinearFactor<?>) factor);
+			return new ExtensiveLinearToRandomBayesian().apply((ExtensiveLinearFactor<?>) factor);
 		} else if (factor instanceof SeparateHalfspaceFactor) {
-			return new HalfspaceToRandomBayesianFactor().apply((SeparateHalfspaceFactor) factor, -1);
+			return new HalfspaceToRandomBayesianFactor().apply((SeparateHalfspaceFactor) factor, var);
 		} else if (factor instanceof SeparateLinearFactor) {
-			return new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) factor, -1);
+			return new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) factor, var);
 		} else if (factor instanceof BayesianFactor) {
 			return (BayesianFactor) factor;
 		}

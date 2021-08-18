@@ -207,6 +207,7 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		return vid;
 	}
 
+	@Override
 	public int addVariable(int vid, int size) {
 		if (vid > max) max = vid;
 		max++;
