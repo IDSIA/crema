@@ -25,7 +25,6 @@ public abstract class DiscreteEM extends ExpectationMaximization<BayesianFactor>
 				fve.setNormalize(true);
 
 				return fve.query(infModel, evidence, queries);
-
 			}
 
 			@Override

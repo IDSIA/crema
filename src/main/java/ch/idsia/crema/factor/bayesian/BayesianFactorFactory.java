@@ -5,6 +5,8 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 
+import java.util.stream.IntStream;
+
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: crema
@@ -115,13 +117,35 @@ public class BayesianFactorFactory {
 	}
 
 	public BayesianLogFactor log() {
-		if (logData != null)
-			return new BayesianLogFactor(domain, logData, true);
-		return new BayesianLogFactor(domain, data);
+		// sort variables
+		final int[] vars = ArraysUtil.sort(domain.getVariables());
+		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
+		final IndexIterator it = domain.getReorderedIterator(vars);
+
+		final boolean isLog = logData != null;
+		final double[] src = isLog ? logData : data;
+		final double[] d = new double[src.length];
+
+		for (int i = 0; i < d.length; i++) {
+			d[i] = src[it.next()];
+		}
+
+		return new BayesianLogFactor(new Strides(vars, sizes), d, isLog);
 	}
 
 	public BayesianDefaultFactor get() {
-		return new BayesianDefaultFactor(domain, data);
+		// sort variables
+		final int[] vars = ArraysUtil.sort(domain.getVariables());
+		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
+		final IndexIterator it = domain.getReorderedIterator(vars);
+
+		final double[] d = new double[data.length];
+
+		for (int i = 0; i < d.length; i++) {
+			d[i] = data[it.next()];
+		}
+
+		return new BayesianDefaultFactor(new Strides(vars, sizes), d);
 	}
 
 }

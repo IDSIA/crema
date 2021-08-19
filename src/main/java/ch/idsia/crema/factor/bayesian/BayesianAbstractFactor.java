@@ -102,9 +102,7 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 	@SuppressWarnings("unchecked")
 	protected <F extends BayesianAbstractFactor> F combine(F factor, BayesianFactorBuilder<F> builder, GenericOperationFunction<F> op) {
 		// domains should be sorted
-		this.sortDomain();
 		factor = (F) factor.copy();
-		factor.sortDomain();
 
 		final Strides target = getDomain().union(factor.getDomain());
 		final int length = target.getSize();
@@ -301,43 +299,6 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 				two = new BayesianLogFactor(factor);
 
 			return combine(two, BayesianLogFactor::new, ops::combine);
-		}
-	}
-
-	/**
-	 * <p>
-	 * This generic implementation checks if {@link #isLog()} the current factor and also the given one. If both are
-	 * false, then a {@link SimpleBayesianOperation} algebra will be used and a {@link BayesianDefaultFactor} will be
-	 * produced; otherwise a {@link LogBayesianOperation} algebra will be used, the second factor will be converted to
-	 * a {@link BayesianLogFactor} (if needed) and a {@link BayesianLogFactor} will be returned.
-	 * </p>
-	 *
-	 * <p>
-	 * The {@link BayesianOperation#add(BayesianFactor, int, BayesianFactor, int)} method will be used.
-	 * </p>
-	 *
-	 * @param factor the other factor to combine with
-	 * @return a {@link BayesianLogFactor} if this factor works in log-space, otherwise a {@link BayesianDefaultFactor}
-	 */
-	@Override
-	public BayesianAbstractFactor addition(BayesianFactor factor) {
-		BayesianAbstractFactor two = (BayesianAbstractFactor) factor;
-
-		final boolean oneIsLog = this.isLog();
-		final boolean twoIsLog = factor.isLog();
-		final BayesianOperation<BayesianAbstractFactor> ops;
-
-		if (!oneIsLog && !twoIsLog) {
-			ops = new SimpleBayesianOperation<>();
-
-			return combine(two, BayesianDefaultFactor::new, ops::add);
-		} else {
-			ops = new LogBayesianOperation<>();
-
-			if (!factor.isLog())
-				two = new BayesianLogFactor(factor);
-
-			return combine(two, BayesianLogFactor::new, ops::add);
 		}
 	}
 

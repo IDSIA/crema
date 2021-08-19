@@ -29,6 +29,10 @@ public class VertexToRandomBayesian implements Converter<VertexFactor, BayesianF
 		this.log = log;
 	}
 
+	public BayesianFactor apply(VertexFactor v) {
+		return apply(v, -1);
+	}
+
 	@Override
 	public BayesianFactor apply(VertexFactor v, Integer var) {
 		final BayesianFactorFactory bff = BayesianFactorFactory.factory().domain(v.getDomain());

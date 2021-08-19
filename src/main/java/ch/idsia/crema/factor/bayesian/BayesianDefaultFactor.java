@@ -341,37 +341,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	}
 
 	/**
-	 * The specialized method that avoids the cast of the input variable.
-	 *
-	 * <p>
-	 * This implementation uses long values for strides, sizes and indices,
-	 * allowing for combined operations. Increasing the index is, for instance,
-	 * one single add instead of two. The values will contain in the Lower 32bit
-	 * this factor's values and in the upper 32 the parameter's ones. Given that
-	 * most architectures are 64 bit, this should give a tiny performance
-	 * improvement.
-	 * </p>
-	 *
-	 * <p>
-	 * If the input factor is also a {@link BayesianDefaultFactor}, a fast algebra i used. If the input is a
-	 * {@link BayesianLogFactor}, the factor will be first converted in the normal-space.
-	 * </p>
-	 *
-	 * @param factor input factor
-	 * @return a {@link BayesianDefaultFactor}, sum of the probabilities of this with the input factor
-	 */
-	@Override
-	public BayesianDefaultFactor addition(BayesianFactor factor) {
-		if (factor.isLog())
-			factor = ((BayesianLogFactor) factor).exp();
-
-		if (factor instanceof BayesianDefaultFactor)
-			return combine((BayesianDefaultFactor) factor, BayesianDefaultFactor::new, ops::add);
-
-		return (BayesianDefaultFactor) super.addition(factor);
-	}
-
-	/**
 	 * <p>
 	 * If the input factor is also a {@link BayesianDefaultFactor}, a fast algebra i used. If the input is a
 	 * {@link BayesianLogFactor}, the factor will be first converted in the normal-space.
@@ -407,33 +376,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return ArraysUtil.almostEquals(data, other.data, 0.00000001);
 	}
 
-	/*
-	TODO: analyse better this method and update it
-	public BayesianDefaultFactor fixPrecision(int num_decimals, int... left_vars) {
-		Strides left = getDomain().intersection(left_vars);
-		Strides right = getDomain().remove(left);
-
-		BayesianDefaultFactor newFactor = this.reorderDomain(left.concat(right));
-
-		double[][] newData = new double[right.getCombinations()][left.getCombinations()];
-		double[][] oldData = ArraysUtil.reshape2d(newFactor.data, right.getCombinations());
-
-		for (int i = 0; i < right.getCombinations(); i++) {
-			newData[i] = ArraysUtil.roundNonZerosToTarget(oldData[i], 1.0, num_decimals);
-		}
-
-		newFactor.setData(Doubles.concat(newData));
-		return newFactor.reorderDomain(this.getDomain());
-	}
-	*/
-
-	public boolean isMarginalNormalized() {
-		if (getDomain().getVariables().length > 1)
-			return false;
-		return this.marginalize(this.getDomain().getVariables()[0]).getValue() == 1;
-	}
-
-	@Override
 	public BayesianDefaultFactor reorderDomain(Strides newStrides) {
 		if (!(getDomain().isConsistentWith(newStrides) && getDomain().getSize() == newStrides.getSize())) {
 			throw new IllegalArgumentException("Wrong input Strides");
@@ -447,7 +389,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return new BayesianDefaultFactor(newStrides, ArraysUtil.swapVectorStrides(this.data, this.getDomain().getSizes(), varMap));
 	}
 
-	@Override
 	public BayesianDefaultFactor reorderDomain(int... vars) {
 		int[] all_vars = Ints.concat(vars,
 				IntStream.of(getDomain().getVariables())
@@ -460,20 +401,45 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 						IntStream.of(all_vars).map(v -> this.getDomain().getCardinality(v)).toArray()));
 	}
 
-	@Override
-	public void sortDomain() {
+	public BayesianDefaultFactor sortDomain() {
 		if (!ArrayUtils.isSorted(this.getDomain().getVariables())) {
-			BayesianDefaultFactor sorted = this.reorderDomain(this.getDomain().sort());
-			this.domain = sorted.domain;
-			this.data = sorted.data;
+			return this.reorderDomain(this.getDomain().sort());
 		}
+		return this;
 	}
 
-	public BayesianDefaultFactor renameDomain(int... new_vars) {
-		return new BayesianDefaultFactor(new Strides(new_vars, getDomain().getSizes()), ArrayUtils.clone(data));
+	/**
+	 * The specialized method that avoids the cast of the input variable.
+	 *
+	 * <p>
+	 * This implementation uses long values for strides, sizes and indices,
+	 * allowing for combined operations. Increasing the index is, for instance,
+	 * one single add instead of two. The values will contain in the Lower 32bit
+	 * this factor's values and in the upper 32 the parameter's ones. Given that
+	 * most architectures are 64 bit, this should give a tiny performance
+	 * improvement.
+	 * </p>
+	 *
+	 * <p>
+	 * If the input factor is also a {@link BayesianDefaultFactor}, a fast algebra i used. If the input is a
+	 * {@link BayesianLogFactor}, the factor will be first converted in the normal-space.
+	 * </p>
+	 *
+	 * @param factor input factor
+	 * @return a {@link BayesianDefaultFactor}, sum of the probabilities of this with the input factor
+	 */
+	public BayesianDefaultFactor addition(BayesianDefaultFactor factor) {
+		if (factor.isLog())
+			factor = ((BayesianLogFactor) factor).exp();
+
+		return combine(factor, BayesianDefaultFactor::new, ops::add);
 	}
 
-	@Override
+	/**
+	 * @param value
+	 * @param replacement
+	 * @return
+	 */
 	public BayesianDefaultFactor replace(double value, double replacement) {
 		final double[] data = ArrayUtils.clone(this.data);
 
@@ -485,7 +451,12 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return new BayesianDefaultFactor(domain, data);
 	}
 
-	@Override
+	/**
+	 * Replaces all Not-a-Number values with the given value.
+	 *
+	 * @param replacement
+	 * @return
+	 */
 	public BayesianDefaultFactor replaceNaN(double replacement) {
 		final double[] data = ArrayUtils.clone(this.data);
 
@@ -497,7 +468,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return new BayesianDefaultFactor(domain, data);
 	}
 
-	@Override
 	public BayesianDefaultFactor scale(double k) {
 		final double[] data = new double[this.data.length];
 

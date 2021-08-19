@@ -45,47 +45,6 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 	}
 
 	@Override
-	public BayesianFactor reorderDomain(Strides newStrides) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFactor reorderDomain(int... vars) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFactor replace(double value, double replacement) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFactor replaceNaN(double replacement) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFactor scale(double k) {
-		return null;
-	}
-
-	@Override
-	public void sortDomain() {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFunctionFactor addition(BayesianFactor factor) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
 	public double logProb(TIntIntMap[] data, int leftVar) {
 		// TODO
 		throw new NotImplementedException();

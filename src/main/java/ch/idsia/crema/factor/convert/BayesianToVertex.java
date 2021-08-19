@@ -5,8 +5,8 @@ import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
-import com.google.common.primitives.Doubles;
-import com.google.common.primitives.Ints;
+import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 
@@ -14,22 +14,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BayesianToVertex implements Converter<BayesianFactor, VertexFactor> {
-	public static final BayesianToVertex INSTANCE = new BayesianToVertex();
 
 	@Override
-	public VertexFactor apply(BayesianFactor cpt, Integer var) {
-		Strides left = Strides.as(var, cpt.getDomain().getCardinality(var));
-		Strides right = cpt.getDomain().remove(var);
+	public VertexFactor apply(BayesianFactor factor, Integer var) {
+		final Strides left = Strides.as(var, factor.getDomain().getCardinality(var));
+		final Strides right = factor.getDomain().remove(var);
 
-		cpt = cpt.reorderDomain(Ints.concat(left.getVariables(), right.getVariables()));
-		int left_var_size = cpt.getDomain().getCardinality(var);
-		List<Double> cpt_data = Doubles.asList(cpt.getData());
+		final int[] vars = ArraysUtil.append(
+				left.getVariables(),
+				right.getVariables()
+		);
 
-		List<double[]> vertices = new ArrayList<>();
-		TIntList combinations = new TIntArrayList();
+		final IndexIterator it = factor.getDomain().getReorderedIterator(vars);
+		final int states = factor.getDomain().getCardinality(var);
+
+		final List<double[]> vertices = new ArrayList<>();
+		final TIntList combinations = new TIntArrayList();
 
 		for (int i = 0; i < right.getCombinations(); i++) {
-			double[] v = Doubles.toArray(cpt_data.subList(i * left_var_size, (i + 1) * left_var_size));
+			final double[] v = new double[states];
+			for (int j = 0; j < states; j++) {
+				v[j] = factor.getValueAt(it.next());
+			}
 			vertices.add(v);
 			combinations.add(i);
 		}
