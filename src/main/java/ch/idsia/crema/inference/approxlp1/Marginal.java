@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.approxlp;
+package ch.idsia.crema.inference.approxlp1;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
@@ -100,12 +100,12 @@ public class Marginal extends Manager {
 			f = f.divide(norm).combine(p);
 
 			objective = f.filter(x0, x0state).getData();
-
 		}
 
 		solver.solve(objective, 0.0);
 
 		BayesianFactor solution = from.getData().get(free);
+
 		if (solution.isLog()) {
 			solution = new BayesianLogFactor(solution.getDomain(), solver.getVertex());
 		} else {
@@ -119,7 +119,6 @@ public class Marginal extends Manager {
 
 		return doing.getScore();
 	}
-
 
 	@Override
 	public double eval(Solution solution) {

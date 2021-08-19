@@ -22,6 +22,7 @@ import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 public class Marginal extends Manager {
 
 	private static final double BAD = Double.NaN;
+
 	private final SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
 	public Marginal(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state) {

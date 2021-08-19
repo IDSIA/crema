@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.approxlp;
+package ch.idsia.crema.inference.approxlp1;
 
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.factor.GenericFactor;
@@ -168,6 +168,7 @@ public class Posterior extends Manager {
 			System.err.println("NoFeasibleSolution: " + free + " " + (Arrays.stream(tmp.getData()).sum() == 1.0) + " " + Arrays.toString(tmp.getData()));
 			throw ex;
 		}
+
 		BayesianFactor solution = from.getData().get(free);
 
 		if (solution.isLog()) {

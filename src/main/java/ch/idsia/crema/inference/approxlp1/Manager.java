@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.approxlp;
+package ch.idsia.crema.inference.approxlp1;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
@@ -39,9 +39,13 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 		this.sequence = new MinFillOrdering().apply(model);
 	}
 
+	public GoalType getGoal() {
+		return goal;
+	}
+
 	/**
-	 * This is a custom bayesian factor over x0 with a 1 for x0state. The value
-	 * is cached.
+	 * This is a custom bayesian factor over x0 with a 1 for x0state.
+	 * The value is cached.
 	 *
 	 * @return
 	 */
@@ -130,9 +134,4 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 		return false;
 	}
 
-	public static BayesianFactor replaceZerosInMarginal(BayesianFactor f) {
-		BayesianFactor out = f.copy();
-		out.replace(0, EPS);
-		return out.normalize();
-	}
 }
