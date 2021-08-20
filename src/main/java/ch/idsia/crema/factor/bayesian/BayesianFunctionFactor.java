@@ -1,6 +1,5 @@
 package ch.idsia.crema.factor.bayesian;
 
-import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.IndexIterator;
 import gnu.trove.map.TIntIntMap;
@@ -21,6 +20,14 @@ public abstract class BayesianFunctionFactor extends BayesianAbstractFactor {
 
 	public BayesianFunctionFactor(Strides domain, Function<Integer, Double> f) {
 		super(domain);
+		this.f = f;
+	}
+
+	protected BayesianFunctionFactor(Strides domain) {
+		super(domain);
+	}
+
+	protected void setF(Function<Integer, Double> f) {
 		this.f = f;
 	}
 
@@ -60,12 +67,6 @@ public abstract class BayesianFunctionFactor extends BayesianAbstractFactor {
 
 	@Override
 	public double logProb(TIntIntMap[] data, int leftVar) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public ObservationBuilder sample() {
 		// TODO
 		throw new NotImplementedException();
 	}

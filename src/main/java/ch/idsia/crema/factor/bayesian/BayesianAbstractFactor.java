@@ -1,10 +1,13 @@
 package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.core.Domain;
+import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.algebra.GenericOperationFunction;
 import ch.idsia.crema.factor.algebra.bayesian.*;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
+import ch.idsia.crema.utility.RandomUtil;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Arrays;
@@ -337,6 +340,29 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 
 			return divide(two, BayesianLogFactor::new, ops::divide);
 		}
+	}
+
+	/**
+	 * Uses cumulative probability to get a sample from this {@link BayesianFactor}.
+	 *
+	 * @return An {@link ObservationBuilder} that can be used as evidence
+	 */
+	@Override
+	public ObservationBuilder sample() {
+		final double p = RandomUtil.getRandom().nextDouble();
+
+		final IndexIterator it = getDomain().getIterator();
+		double sum = 0;
+		int i = 0;
+		while (it.hasNext()) {
+			i = it.next();
+			sum += getValueAt(i);
+			if (sum > p) {
+				break;
+			}
+		}
+
+		return getDomain().observationOf(i);
 	}
 
 	@Override
