@@ -10,16 +10,13 @@ import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import com.google.common.primitives.Doubles;
-import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * BayesianDefaultFactor
@@ -376,38 +373,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return ArraysUtil.almostEquals(data, other.data, 0.00000001);
 	}
 
-	public BayesianDefaultFactor reorderDomain(Strides newStrides) {
-		if (!(getDomain().isConsistentWith(newStrides) && getDomain().getSize() == newStrides.getSize())) {
-			throw new IllegalArgumentException("Wrong input Strides");
-		}
-
-		// at position i, now we put the axis that were at varMap[i]
-		int[] varMap = IntStream.of(newStrides.getVariables())
-				.map(v -> ArraysUtil.indexOf(v, getDomain().getVariables()))
-				.toArray();
-
-		return new BayesianDefaultFactor(newStrides, ArraysUtil.swapVectorStrides(this.data, this.getDomain().getSizes(), varMap));
-	}
-
-	public BayesianDefaultFactor reorderDomain(int... vars) {
-		int[] all_vars = Ints.concat(vars,
-				IntStream.of(getDomain().getVariables())
-						.filter(v -> !ArrayUtils.contains(vars, v)).toArray()
-		);
-
-		return reorderDomain(
-				new Strides(
-						all_vars,
-						IntStream.of(all_vars).map(v -> this.getDomain().getCardinality(v)).toArray()));
-	}
-
-	public BayesianDefaultFactor sortDomain() {
-		if (!ArrayUtils.isSorted(this.getDomain().getVariables())) {
-			return this.reorderDomain(this.getDomain().sort());
-		}
-		return this;
-	}
-
 	/**
 	 * The specialized method that avoids the cast of the input variable.
 	 *
@@ -478,19 +443,6 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		return new BayesianDefaultFactor(domain, data);
 	}
 
-	public int[] getAssignments(int... given) {
-		int[] left = ArraysUtil.difference(getDomain().getVariables(), given);
-
-		int leftSize = IntStream.of(left).map(v -> getDomain().getCardinality(v)).reduce(1, (a, b) -> a * b);
-
-		int rightCombinations = data.length / leftSize;
-
-		BayesianDefaultFactor f = reorderDomain(Ints.concat(left, given));
-
-		double[][] data = ArraysUtil.reshape2d(f.data, rightCombinations, leftSize);
-		return Ints.concat(Stream.of(data).map(v -> ArraysUtil.where(v, x -> x != 0.0)).toArray(int[][]::new));
-	}
-
 	/**
 	 * Sample the distribution of this factor. In case of more than one variable in the the domain, the probabilities
 	 * are normalized and hence the factor is considered to be a joint distribution.
@@ -509,18 +461,24 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	}
 
 	public BayesianDefaultFactor[] getMarginalFactors(int leftVar) {
-		Strides left = Strides.as(leftVar, this.getDomain().getCardinality(leftVar));
-		Strides right = this.getDomain().remove(leftVar);
+		final Strides left = Strides.as(leftVar, getDomain().getCardinality(leftVar));
+		final Strides right = getDomain().remove(leftVar);
 
-		BayesianDefaultFactor cpt = this.reorderDomain(Ints.concat(left.getVariables(), right.getVariables()));
-		int leftVarSize = cpt.getDomain().getCardinality(leftVar);
-		List<Double> cpt_data = Doubles.asList(cpt.data);
+		final int[] vars = ArraysUtil.append(left.getVariables(), right.getVariables());
 
-		BayesianDefaultFactor[] factors = new BayesianDefaultFactor[right.getCombinations()];
+		final IndexIterator it = getDomain().getReorderedIterator(vars);
+		final int states = getDomain().getCardinality(leftVar);
+
+		final BayesianDefaultFactor[] factors = new BayesianDefaultFactor[right.getCombinations()];
 
 		for (int i = 0; i < right.getCombinations(); i++) {
-			double[] v = Doubles.toArray(cpt_data.subList(i * leftVarSize, (i + 1) * leftVarSize));
-			factors[i] = new BayesianDefaultFactor(cpt.getDomain().intersection(leftVar), v);
+			final double[] v = new double[states];
+
+			for (int j = 0; j < states; j++) {
+				v[j] = getValueAt(it.next());
+			}
+
+			factors[i] = new BayesianDefaultFactor(getDomain().intersection(leftVar), v);
 		}
 
 		return factors;
@@ -531,7 +489,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		double logprob = 0;
 
 		int[] datavars = ObservationBuilder.getVariables(data);
-		int[] vars = this.getDomain().getVariables();
+		int[] vars = getDomain().getVariables();
 		if (ArraysUtil.difference(vars, datavars).length > 1)
 			throw new IllegalArgumentException("Wrong variables in data");
 
@@ -539,12 +497,12 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 			throw new IllegalArgumentException("Wrong left variable");
 
 		// filter data to variables in the current factor
-		data = ObservationBuilder.filter(data, this.getDomain().getVariables());
+		data = ObservationBuilder.filter(data, getDomain().getVariables());
 
 		if (vars.length > 1) {
 
-			Strides rightDomain = this.getDomain().remove(leftVar);
-			BayesianDefaultFactor[] factors = this.getMarginalFactors(leftVar);
+			Strides rightDomain = getDomain().remove(leftVar);
+			BayesianDefaultFactor[] factors = getMarginalFactors(leftVar);
 
 			for (int i = 0; i < rightDomain.getCombinations(); i++) {
 				TIntIntMap[] data_i = ObservationBuilder.filter(data, rightDomain.getVariables(), rightDomain.statesOf(i));
@@ -553,7 +511,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 
 		} else {
 			double[] observations = Doubles.concat(ObservationBuilder.toDoubles(data, leftVar));
-			int numStates = this.getDomain().getSizeAt(0);
+			int numStates = getDomain().getSizeAt(0);
 			int[] M = IntStream.range(0, numStates)
 					.map(i -> (int) DoubleStream.of(observations)
 							.filter(x -> x == i).count()).toArray();

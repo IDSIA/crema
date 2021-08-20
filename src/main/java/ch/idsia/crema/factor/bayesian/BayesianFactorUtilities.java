@@ -45,7 +45,7 @@ public class BayesianFactorUtilities {
 	 * @param two the factor on the right to combine with
 	 * @return a {@link BayesianLogFactor} if this factor works in log-space, otherwise a {@link BayesianDefaultFactor}
 	 */
-	public BayesianAbstractFactor addition(BayesianAbstractFactor one, BayesianAbstractFactor two) {
+	public static BayesianAbstractFactor addition(BayesianAbstractFactor one, BayesianAbstractFactor two) {
 		final boolean oneIsLog = one.isLog();
 		final boolean twoIsLog = two.isLog();
 		final BayesianOperation<BayesianAbstractFactor> ops;
@@ -87,7 +87,7 @@ public class BayesianFactorUtilities {
 	}
 
 	// TODO: what to do with this method?
-	public boolean isDeterministic(BayesianFactor f, int... given) {
+	public static boolean isDeterministic(BayesianFactor f, int... given) {
 		if (!DoubleStream.of(f.getData()).allMatch(x -> x == 0.0 || x == 1.0))
 			return false;
 

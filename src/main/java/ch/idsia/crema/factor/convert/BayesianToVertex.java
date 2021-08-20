@@ -20,10 +20,7 @@ public class BayesianToVertex implements Converter<BayesianFactor, VertexFactor>
 		final Strides left = Strides.as(var, factor.getDomain().getCardinality(var));
 		final Strides right = factor.getDomain().remove(var);
 
-		final int[] vars = ArraysUtil.append(
-				left.getVariables(),
-				right.getVariables()
-		);
+		final int[] vars = ArraysUtil.append(left.getVariables(), right.getVariables());
 
 		final IndexIterator it = factor.getDomain().getReorderedIterator(vars);
 		final int states = factor.getDomain().getCardinality(var);

@@ -45,26 +45,7 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 			for (double[] p : ArraysUtil.reshape2d(probs, probs.length / vsize, vsize))
 				append("", str(p));
 
-			// append(probs);
-
 			append("");
-
-/*
-            if(f != null){
-                if(target.isEndogenous(v)) {
-                   int[] assig = target.getFactor(v).getAssignments(target.getParents(v));
-                   tofile(assig.length+"\t");
-                   tofileln(assig);
-                }else{
-                    double[] probs = target.getFactor(v).getData();
-                    tofile(probs.length+"\t");
-                    tofileln(probs);
-
-                }
-            }else{
-                tofileln(0);
-            }
- */
 		}
 	}
 
