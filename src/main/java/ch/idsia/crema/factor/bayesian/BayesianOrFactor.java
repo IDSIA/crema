@@ -82,7 +82,16 @@ public class BayesianOrFactor extends BayesianFunctionFactor {
 
 	@Override
 	public BayesianAbstractFactor filter(int variable, int state) {
-		return super.filter(variable, state);
+		final Strides newDomain = getDomain().remove(variable);
+		final int p = ArraysUtil.indexOf(variable, parents);
+
+		if (p > -1 && parents.length == 1 && trueStates[p] != state)
+			return BayesianFactorFactory.zero(newDomain);
+
+		if (p > -1 && trueStates[p] == state)
+			return BayesianFactorFactory.one(newDomain);
+
+		return new BayesianOrFactor(newDomain, ArrayUtils.remove(parents, p), ArrayUtils.remove(trueStates, p));
 	}
 
 }
