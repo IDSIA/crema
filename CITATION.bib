@@ -1,11 +1,16 @@
-@INPROCEEDINGS{huber2020a,
-    title = {{CREMA}: a {J}ava library for credal network inference},
-    editor = {Jaeger, M. and Nielsen, T.D.},
-    publisher = {PMLR},
-    address = {Aalborg, Denmark},
-    series = {Proceedings of Machine Learning Research},
-    booktitle = {Proceedings of the 10th International Conference on Probabilistic Graphical Models ({PGM} 2020)},
-    author = {Huber, D. and Caba\~nas, R. and Antonucci, A. and Zaffalon, M.},
-    year = {2020},
-    url = {https://pgm2020.cs.aau.dk}
+
+@InProceedings{pmlr-v138-huber20a,
+  title = 	 {CREMA: A Java Library for Credal Network Inference},
+  author =       {Huber, David and Caba\~nas, Rafael and Antonucci, Alessandro and Zaffalon, Marco},
+  booktitle = 	 {Proceedings of the 10th International Conference on Probabilistic Graphical Models},
+  pages = 	 {613--616},
+  year = 	 {2020},
+  editor = 	 {Jaeger, Manfred and Nielsen, Thomas Dyhre},
+  volume = 	 {138},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {23--25 Sep},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v138/huber20a/huber20a.pdf},
+  url = 	 {https://proceedings.mlr.press/v138/huber20a.html},
+  abstract = 	 {We present CREMA (Credal Models Algorithms), a Java library for inference in credal networks. These models are analogous to Bayesian networks, but their local parameters are only constrained to vary in, so-called credal, sets. Inference in credal networks is intended as the computation of the bounds of a query with respect to those local variations. For credal networks the task is harder than in Bayesian networks, being NP^PP-hard in general models. Yet, scalable approximate algorithms have been shown to provide good accuracies on large or dense models, while exact techniques can be designed to process small or sparse models. CREMA embeds these algorithms and also offers an API to build and query credal networks together with a specification format. This makes CREMA, whose features are discussed and described by a simple example, the most advanced tool for credal network modelling and inference developed so far.}
 }
