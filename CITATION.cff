@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you write a scientific paper describing research that made use of the CREMA library, please cite the following paper."
+authors:
+- family-names: "Huber"
+  given-names: "David"
+- family-names: "Cabañas"
+  given-names: "Rafael"
+- family-names: "Antonucci"
+  given-names: "Alessandro"
+- family-names: "Zaffalon"
+  given-names: "Marco"
+title: "CREMA: a Java library for credal network inference"
+editor: "Jaeger, M. and Nielsen, T.D."
+publisher = "PMLR"
+address = "Aalborg, Denmark"
+series = "Proceedings of Machine Learning Research"
+booktitle = "Proceedings of the 10th International Conference on Probabilistic Graphical Models (PGM 2020)"
+year: 2020
+url: "https://pgm2020.cs.aau.dk"
