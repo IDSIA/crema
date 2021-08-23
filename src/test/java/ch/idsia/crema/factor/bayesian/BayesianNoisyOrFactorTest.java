@@ -16,7 +16,7 @@ import java.util.Arrays;
  * Project: crema
  * Date:    20.08.2021 10:56
  */
-class BayesianOrFactorTest {
+class BayesianNoisyOrFactorTest {
 
 	@Test
 	void testingModelWithOrNode() {
@@ -26,17 +26,17 @@ class BayesianOrFactorTest {
 		final int O = m.addVariable(2);
 		m.addParents(O, A, B);
 
-		final BayesianFactor fA = new BayesianDefaultFactor(m.getDomain(A), new double[]{.3, .7});
-		final BayesianFactor fB = new BayesianDefaultFactor(m.getDomain(B), new double[]{.6, .4});
-		final BayesianFactor OR = new BayesianOrFactor(m.getDomain(A, B, O), A, B);
+		final BayesianFactor TRUE = new BayesianDefaultFactor(m.getDomain(A), new double[]{.3, .7});
+		final BayesianFactor FALSE = new BayesianDefaultFactor(m.getDomain(B), new double[]{.6, .4});
+		final BayesianFactor OR = new BayesianNoisyOrFactor(m.getDomain(A, B, O), new int[]{A, B}, new double[]{.1, .2});
 
-		m.setFactor(A, fA);
-		m.setFactor(B, fB);
+		m.setFactor(A, TRUE);
+		m.setFactor(B, FALSE);
 		m.setFactor(O, OR);
 
 		System.out.printf("vars=%s%n", Arrays.toString(OR.getDomain().getVariables()));
 
-		final double[] expected = {1., 0., 0., 0., 0., 1., 1., 1.};
+		final double[] expected = {1., .1, .2, .02, .0, .9, .8, .98};
 
 		final IndexIterator it = OR.getDomain().getIterator();
 		int i = 0;
@@ -45,8 +45,8 @@ class BayesianOrFactorTest {
 			final double v = OR.getValueAt(offset);
 			final int[] states = OR.getDomain().getStatesFor(offset);
 
-			System.out.printf("states=%10s | %3d | %.1f%n", Arrays.toString(states), i, v);
-			Assertions.assertEquals(expected[i], v);
+			System.out.printf("states=%10s | %3d | %.4f%n", Arrays.toString(states), i, v);
+			Assertions.assertEquals(expected[i], v, 1e-3);
 			i++;
 		}
 
@@ -59,14 +59,15 @@ class BayesianOrFactorTest {
 		final BayesianFactor q_b1 = ve.query(m, new TIntIntHashMap(new int[]{B}, new int[]{1}), O);
 		final BayesianFactor q_ab0 = ve.query(m, new TIntIntHashMap(new int[]{A, B}, new int[]{0, 0}), O);
 
-		Assertions.assertEquals(one, q_a1);
-		Assertions.assertEquals(one, q_b1);
+		// TODO: chek results
+		System.out.println(q_a1);
+		System.out.println(q_b1);
 		Assertions.assertEquals(zero, q_ab0);
 	}
 
 	@Test
 	void testFilterToOne() {
-		final BayesianFactor o = new BayesianOrFactor(DomainBuilder.var(1, 2).size(2, 2).strides(), 1);
+		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2).size(2, 2).strides(), new int[]{1}, new double[]{.1});
 		final BayesianFactor b = o.filter(1, 1);
 		final BayesianFactor one = BayesianFactorFactory.one(2);
 
@@ -75,7 +76,7 @@ class BayesianOrFactorTest {
 
 	@Test
 	void testFilterToZero() {
-		final BayesianFactor o = new BayesianOrFactor(DomainBuilder.var(1, 2).size(2, 2).strides(), 1);
+		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2).size(2, 2).strides(), new int[]{1}, new double[]{.3});
 		final BayesianFactor a = o.filter(1, 0);
 		final BayesianFactor zero = BayesianFactorFactory.zero(2);
 
@@ -84,7 +85,7 @@ class BayesianOrFactorTest {
 
 	@Test
 	void testFilterMultipleParents() {
-		final BayesianFactor o = new BayesianOrFactor(DomainBuilder.var(1, 2, 3).size(2, 2, 2).strides(), 1, 2);
+		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2, 3).size(2, 2, 2).strides(), new int[]{1, 2}, new double[]{.3, .4});
 		final BayesianFactor a = o.filter(1, 0);
 		final BayesianFactor b = o.filter(2, 0);
 		final BayesianFactor c = o.filter(1, 1);
@@ -103,7 +104,7 @@ class BayesianOrFactorTest {
 		Assertions.assertEquals(one, d);
 		Assertions.assertEquals(zero, e);
 
-		Assertions.assertTrue(a instanceof BayesianOrFactor);
-		Assertions.assertTrue(b instanceof BayesianOrFactor);
+		Assertions.assertTrue(a instanceof BayesianNoisyOrFactor);
+		Assertions.assertTrue(b instanceof BayesianNoisyOrFactor);
 	}
 }

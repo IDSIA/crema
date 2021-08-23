@@ -28,7 +28,7 @@ public class BayesianAndFactor extends BayesianFunctionFactor {
 	protected int[] trueStates;
 
 	/**
-	 * An OR factor where the true states for each parent are defined externally.
+	 * An AND factor where the true states for each parent are defined externally.
 	 *
 	 * @param domain     working domain of this factor
 	 * @param parents    variables that are parents of this factor
@@ -43,7 +43,7 @@ public class BayesianAndFactor extends BayesianFunctionFactor {
 	}
 
 	/**
-	 * An OR factor where the true state for each parent is the higher state available.
+	 * An AND factor where the true state for each parent is the higher state available.
 	 *
 	 * @param domain  working domain of this factor
 	 * @param parents variables that are parents of this factor

@@ -56,7 +56,7 @@ public class BayesianOrFactor extends BayesianFunctionFactor {
 	 * @param offset offset to get the value for
 	 * @return 1.0 when at least one of the parents is in the TRUE state, otherwise 0.0
 	 */
-	private double f(int offset) {
+	protected double f(int offset) {
 		final int[] states = domain.getStatesFor(offset);
 		final int[] vars = domain.getVariables();
 
