@@ -6,6 +6,7 @@ import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.math3.util.FastMath;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 /**
@@ -71,4 +72,8 @@ public abstract class BayesianFunctionFactor extends BayesianAbstractFactor {
 		throw new NotImplementedException();
 	}
 
+	@Override
+	public String toString() {
+		return "f(" + Arrays.toString(domain.getVariables()) + ")";
+	}
 }

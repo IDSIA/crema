@@ -4,6 +4,7 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.ArraysUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 /**
@@ -82,16 +83,19 @@ public class BayesianOrFactor extends BayesianFunctionFactor {
 
 	@Override
 	public BayesianAbstractFactor filter(int variable, int state) {
-		final Strides newDomain = getDomain().remove(variable);
 		final int p = ArraysUtil.indexOf(variable, parents);
 
-		if (p > -1 && parents.length == 1 && trueStates[p] != state)
-			return BayesianFactorFactory.zero(newDomain);
-
 		if (p > -1 && trueStates[p] == state)
-			return BayesianFactorFactory.one(newDomain);
+			return BayesianFactorFactory.one(this.variable);
 
-		return new BayesianOrFactor(newDomain, ArrayUtils.remove(parents, p), ArrayUtils.remove(trueStates, p));
+		if (p > -1 && trueStates[p] != state && parents.length == 1)
+			return BayesianFactorFactory.zero(this.variable);
+
+		return new BayesianOrFactor(getDomain().remove(variable), ArrayUtils.remove(parents, p), ArrayUtils.remove(trueStates, p));
 	}
 
+	@Override
+	public String toString() {
+		return "OR(" + Arrays.toString(domain.getVariables()) + ")";
+	}
 }

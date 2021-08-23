@@ -22,20 +22,19 @@ public class BayesianFactorFactory {
 	}
 
 	/**
-	 * @param domain the domain where this factor is defined
-	 * @return a {@link BayesianDefaultFactor} defined on the given domain with a single state equal to 1.
+	 * @param var the variable associated with this factor. This variable will be considered binary
+	 * @return a {@link BayesianDefaultFactor} where state 1 has probability 1.0.
 	 */
-	public static BayesianDefaultFactor one(Domain domain) {
-		return new BayesianDefaultFactor(domain, new double[]{1.});
+	public static BayesianDefaultFactor one(int var) {
+		return new BayesianDefaultFactor(Strides.var(var, 2), new double[]{0., 1.});
 	}
 
 	/**
-	 * * @param domain the domain where this factor is defined domain
-	 *
-	 * @return a {@link BayesianDefaultFactor} defined on the given domain with a single state equal to 0.
+	 * @param var the variable associated with this factor. This variable will be considered binary
+	 * @return a {@link BayesianDefaultFactor} where state 0 has probability 1.0.
 	 */
-	public static BayesianDefaultFactor zero(Domain domain) {
-		return new BayesianDefaultFactor(domain, new double[]{0.});
+	public static BayesianDefaultFactor zero(int var) {
+		return new BayesianDefaultFactor(Strides.var(var, 2), new double[]{1., 0.});
 	}
 
 	/**
