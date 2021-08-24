@@ -40,13 +40,13 @@ public class BIFParserTest {
 		assertEquals(2, bn.getParents(map.get("dysp")).length, "dysp");
 
 		assertArrayEquals(new double[]{.01, .99}, obj.variableFactors.get("asia").getData());
-		assertArrayEquals(new double[]{.05, .95, .01, .99}, obj.variableFactors.get("tub").getData());
+		assertArrayEquals(new double[]{.05, .01, .95, .99}, obj.variableFactors.get("tub").getData());
 		assertArrayEquals(new double[]{.5, .5}, obj.variableFactors.get("smoke").getData());
-		assertArrayEquals(new double[]{.1, .9, .01, .99}, obj.variableFactors.get("lung").getData());
-		assertArrayEquals(new double[]{.6, .4, .3, .7}, obj.variableFactors.get("bronc").getData());
-		assertArrayEquals(new double[]{1., 0., 1., 0., 1., 0., 0., 1.}, obj.variableFactors.get("either").getData());
-		assertArrayEquals(new double[]{.98, .02, .05, .95}, obj.variableFactors.get("xray").getData());
-		assertArrayEquals(new double[]{.9, .1, .7, .3, .8, .2, .1, .9}, obj.variableFactors.get("dysp").getData());
+		assertArrayEquals(new double[]{.1, .01, .9, .99}, obj.variableFactors.get("lung").getData());
+		assertArrayEquals(new double[]{.6, .3, .4, .7}, obj.variableFactors.get("bronc").getData());
+		assertArrayEquals(new double[]{1., 1., 1., 0., 0., 0., 0., 1.}, obj.variableFactors.get("either").getData());
+		assertArrayEquals(new double[]{.98, .05, .02, .95}, obj.variableFactors.get("xray").getData());
+		assertArrayEquals(new double[]{.9, .7, .8, .1, .1, .3, .2, .9}, obj.variableFactors.get("dysp").getData());
 	}
 
 	@Test
@@ -71,9 +71,9 @@ public class BIFParserTest {
 
 		assertArrayEquals(new double[]{.9, .1}, obj.variableFactors.get("Pollution").getData());
 		assertArrayEquals(new double[]{.3, .7}, obj.variableFactors.get("Smoker").getData());
-		assertArrayEquals(new double[]{.03, .97, .05, .95, .001, .999, .02, .98}, obj.variableFactors.get("Cancer").getData());
-		assertArrayEquals(new double[]{.9, .1, .2, .8}, obj.variableFactors.get("Xray").getData());
-		assertArrayEquals(new double[]{.65, .35, .3, .7}, obj.variableFactors.get("Dyspnoea").getData());
+		assertArrayEquals(new double[]{.03, .05, .001, .02, .97, .95, .999, .98}, obj.variableFactors.get("Cancer").getData());
+		assertArrayEquals(new double[]{.9, .2, .1, .8}, obj.variableFactors.get("Xray").getData());
+		assertArrayEquals(new double[]{.65, .3, .35, .7}, obj.variableFactors.get("Dyspnoea").getData());
 	}
 
 	@Test
@@ -98,9 +98,9 @@ public class BIFParserTest {
 
 		assertArrayEquals(new double[]{.01, .99}, obj.variableFactors.get("Burglary").getData());
 		assertArrayEquals(new double[]{.02, .98}, obj.variableFactors.get("Earthquake").getData());
-		assertArrayEquals(new double[]{.95, .05, .29, .71, .94, .06, .001, .999}, obj.variableFactors.get("Alarm").getData());
-		assertArrayEquals(new double[]{.9, .1, .05, .95}, obj.variableFactors.get("JohnCalls").getData());
-		assertArrayEquals(new double[]{.7, .3, .01, .99}, obj.variableFactors.get("MaryCalls").getData());
+		assertArrayEquals(new double[]{.95, .29, .94, .001, .05, .71, .06, .999}, obj.variableFactors.get("Alarm").getData());
+		assertArrayEquals(new double[]{.9, .05, .1, .95}, obj.variableFactors.get("JohnCalls").getData());
+		assertArrayEquals(new double[]{.7, .01, .3, .99}, obj.variableFactors.get("MaryCalls").getData());
 	}
 
 	@Test

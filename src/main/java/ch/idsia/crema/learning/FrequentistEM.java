@@ -15,6 +15,8 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import java.util.Collection;
 import java.util.stream.IntStream;
 
+import static ch.idsia.crema.factor.bayesian.BayesianFactorUtilities.KLDivergence;
+
 public class FrequentistEM extends DiscreteEM {
 
 	private double regularization = 0.00001;
@@ -33,16 +35,16 @@ public class FrequentistEM extends DiscreteEM {
 		this(model, (new MinFillOrdering()).apply(model));
 	}
 
+	@Override
 	protected void stepPrivate(Collection<TIntIntMap> stepArgs) {
 		// E-stage
-		TIntObjectMap<BayesianFactor> counts = expectation(stepArgs.toArray(TIntIntMap[]::new));
+		TIntObjectMap<BayesianDefaultFactor> counts = expectation(stepArgs.toArray(TIntIntMap[]::new));
 		// M-stage
 		maximization(counts);
 	}
 
-	protected TIntObjectMap<BayesianFactor> expectation(TIntIntMap[] observations) {
-
-		TIntObjectMap<BayesianFactor> factors = new TIntObjectHashMap<>();
+	private TIntObjectMap<BayesianDefaultFactor> expectation(TIntIntMap[] observations) {
+		TIntObjectMap<BayesianDefaultFactor> factors = new TIntObjectHashMap<>();
 		TIntObjectMap<double[]> counts = new TIntObjectHashMap<>();
 		TIntObjectMap<Strides> domains = new TIntObjectHashMap<>();
 		for (int variable : posteriorModel.getVariables()) {
@@ -92,20 +94,20 @@ public class FrequentistEM extends DiscreteEM {
 		return factors;
 	}
 
-	private void maximization(TIntObjectMap<BayesianFactor> counts) {
+	private void maximization(TIntObjectMap<BayesianDefaultFactor> counts) {
 		updated = false;
 
 		for (int var : trainableVars) {
-			BayesianFactor countVar = counts.get(var);
+			BayesianDefaultFactor countVar = counts.get(var);
 
 			if (regularization > 0.0) {
-				BayesianFactor reg = posteriorModel.getFactor(var).scale(regularization);
-				countVar = countVar.addition(reg);
+				BayesianDefaultFactor reg = (BayesianDefaultFactor) posteriorModel.getFactor(var);
+				countVar = countVar.addition(reg.scale(regularization));
 			}
 
 			BayesianFactor f = countVar.divide(countVar.marginalize(var));
 
-			if (f.KLDivergence(posteriorModel.getFactor(var)) > klthreshold) {
+			if (KLDivergence(f, posteriorModel.getFactor(var)) > klthreshold) {
 				posteriorModel.setFactor(var, f);
 				updated = true;
 			}

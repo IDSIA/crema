@@ -3,7 +3,7 @@ package ch.idsia.crema.model.io.uai;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
-import com.google.common.primitives.Ints;
+import ch.idsia.crema.utility.IndexIterator;
 
 
 public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
@@ -15,7 +15,7 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 
 	@Override
 	protected void sanityChecks() {
-		// TODO
+		// TODO: there aren't right?
 	}
 
 	@Override
@@ -23,39 +23,29 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 		append("");
 		for (int v : target.getVariables()) {
 
-			BayesianFactor f = target.getFactor(v);
-			int vsize = f.getDomain().getCardinality(v);
+			final BayesianFactor f = target.getFactor(v);
+			final int vsize = f.getDomain().getCardinality(v);
 
-			f = f.reorderDomain(Ints.concat(new int[]{v},
+			final int[] vars = ArraysUtil.append(
+					new int[]{v},
 					ArraysUtil.reverse(target.getParents(v))
-			));
+			);
 
-			double[] probs = f.getData();
+			// TODO: verify this
+			final IndexIterator it = f.getDomain().getReorderedIterator(vars);
+
+			final double[] probs = new double[f.getDomain().getCombinations()];
+
+			for (int i = 0; i < probs.length; i++) {
+				probs[i] = f.getValueAt(it.next());
+			}
+
 			append(probs.length);
 
 			for (double[] p : ArraysUtil.reshape2d(probs, probs.length / vsize, vsize))
 				append("", str(p));
 
-			// append(probs);
-
 			append("");
-
-/*
-            if(f != null){
-                if(target.isEndogenous(v)) {
-                   int[] assig = target.getFactor(v).getAssignments(target.getParents(v));
-                   tofile(assig.length+"\t");
-                   tofileln(assig);
-                }else{
-                    double[] probs = target.getFactor(v).getData();
-                    tofile(probs.length+"\t");
-                    tofileln(probs);
-
-                }
-            }else{
-                tofileln(0);
-            }
- */
 		}
 	}
 

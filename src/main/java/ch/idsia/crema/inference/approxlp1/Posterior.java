@@ -171,14 +171,14 @@ public class Posterior extends Manager {
 
 		BayesianFactor solution = from.getData().get(free);
 
-		if (solution.isLog()) {
-			solution = new BayesianLogFactor(solution.getDomain(), solver.getVertex());
-		} else {
-			solution = new BayesianDefaultFactor(solution.getDomain(), solver.getVertex());
-		}
-
 		// replaces 0.0 values in solution
-		solution = solution.replace(0.0, ApproxLP1.EPS);
+		if (solution.isLog()) {
+			solution = new BayesianLogFactor(solution.getDomain(), solver.getVertex())
+					.replace(0.0, ApproxLP1.EPS);
+		} else {
+			solution = new BayesianDefaultFactor(solution.getDomain(), solver.getVertex())
+					.replace(0.0, ApproxLP1.EPS);
+		}
 
 		doing.setValues(solution);
 		doing.setScore(solver.getValue());

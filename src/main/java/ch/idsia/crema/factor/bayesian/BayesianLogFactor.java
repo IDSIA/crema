@@ -92,10 +92,10 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 *
 	 * @param stride data domain
 	 * @param data   ordered and already in log-space
-	 * @param isLog  not used
+	 * @param isLog  if true, the data array will be used as is, otherwise it will be logged by the constructor
 	 */
 	BayesianLogFactor(Strides stride, double[] data, boolean isLog) {
-		super(stride, data);
+		super(stride, isLog ? data : ArraysUtil.log(data));
 	}
 
 	/**
@@ -247,14 +247,11 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 * @return a {@link BayesianLogFactor}, sum of the probabilities of this with the other factor
 	 */
 	@Override
-	public BayesianLogFactor addition(BayesianFactor factor) {
-		if (!factor.isLog() && factor instanceof BayesianDefaultFactor)
-			factor = new BayesianLogFactor((BayesianDefaultFactor) factor);
+	public BayesianLogFactor addition(BayesianDefaultFactor factor) {
+		if (!factor.isLog())
+			factor = new BayesianLogFactor(factor);
 
-		if (factor instanceof BayesianLogFactor)
-			return combine((BayesianLogFactor) factor, (dom, data) -> new BayesianLogFactor(dom, data, true), ops::add);
-
-		return (BayesianLogFactor) super.addition(factor);
+		return combine((BayesianLogFactor) factor, (dom, data) -> new BayesianLogFactor(dom, data, true), ops::add);
 	}
 
 	/**
