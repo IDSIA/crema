@@ -14,7 +14,7 @@ jobs:
       # Use avinal/github-pages-deploy-action@<latest-release-tag> for latest stable release
       - uses: avinal/github-pages-deploy-action@main
         with:
-          GITHUB_TOKEN: ${{ CREMA_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CREMA_TOKEN }}
           LANGUAGE: "java"
           # Write make command to generate html e.g.- "make html"
           MAKE_COMMAND: "make html"
