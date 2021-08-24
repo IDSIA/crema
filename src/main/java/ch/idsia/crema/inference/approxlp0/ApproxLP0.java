@@ -5,11 +5,13 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesian;
 import ch.idsia.crema.factor.convert.HalfspaceToRandomBayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
+import ch.idsia.crema.factor.convert.VertexToRandomBayesian;
 import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
 import ch.idsia.crema.factor.credal.linear.interval.IntervalDefaultFactor;
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.sampling.LikelihoodWeightingSampling;
 import ch.idsia.crema.model.graphical.DAGModel;
@@ -65,6 +67,13 @@ public class ApproxLP0<F extends GenericFactor> implements Inference<GraphicalMo
 	 */
 	public ApproxLP0(int n) {
 		this.n = n;
+	}
+
+	/**
+	 * @param preprocess if true, applies {@link RemoveBarren} to the input model before use it (default: true)
+	 */
+	public ApproxLP0(boolean preprocess) {
+		this.preprocess = preprocess;
 	}
 
 	/**
@@ -232,6 +241,8 @@ public class ApproxLP0<F extends GenericFactor> implements Inference<GraphicalMo
 			return new HalfspaceToRandomBayesianFactor().apply((SeparateHalfspaceFactor) factor, var);
 		} else if (factor instanceof SeparateLinearFactor) {
 			return new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) factor, var);
+		} else if (factor instanceof VertexFactor) {
+			return new VertexToRandomBayesian().apply((VertexFactor) factor, var);
 		} else if (factor instanceof BayesianFactor) {
 			return (BayesianFactor) factor;
 		}

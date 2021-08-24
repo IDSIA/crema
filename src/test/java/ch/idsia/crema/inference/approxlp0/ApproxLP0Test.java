@@ -2,6 +2,9 @@ package ch.idsia.crema.inference.approxlp0;
 
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
+import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.io.uai.UAIParser;
 import ch.idsia.crema.utility.RandomUtil;
@@ -88,4 +91,64 @@ class ApproxLP0Test {
 		// Assertions.assertArrayEquals(eUpper, qUpper, 1e-03);
 	}
 
+	@Test
+	void minimal() {
+		final int n = 10;
+
+		// naive-Bayes like model with root A and Bi children
+		final DAGModel<VertexFactor> m = new DAGModel<>();
+		final int A = m.addVariable(2);
+		final int[] B = new int[n];
+		for (int i = 0; i < n; i++) {
+			B[i] = m.addVariable(2);
+			m.addParent(B[i], A);
+		}
+
+		final double[][] P = {
+				{},         // P0, unused
+				{.30, .70}, // P1
+				{.60, .40},
+				{.15, .85},
+				{.58, .42},
+				{.81, .19},
+				{.32, .68}, // P6
+		};
+
+		// K(A) = [P1(A),P2(A)]
+		final VertexFactor fA = VertexFactorFactory.factory()
+				.vertexDomain(m.getDomain(A))
+				.addVertex(P[1])
+				.addVertex(P[2])
+				.get();
+		m.setFactor(A, fA);
+
+		// K(B|A=0) = [P3(B|A=0),P4(B|A=0)]
+		// K(B|A=1) = [P5(B|A=1),P6(B|A=1)]
+		final VertexFactor[] fB = new VertexFactor[n];
+		for (int i = 0; i < n; i++) {
+			fB[i] = VertexFactorFactory.factory()
+					.vertexDomain(m.getDomain(B[i]))
+					.separatedDomain(m.getDomain(A))
+					.addVertex(P[3], 0)
+					.addVertex(P[4], 0)
+					.addVertex(P[5], 1)
+					.addVertex(P[6], 1)
+					.get();
+			m.setFactor(B[i], fB[i]);
+		}
+
+		System.out.println(m);
+
+		final ApproxLP0<VertexFactor> alp0 = new ApproxLP0<>(false);
+
+		// P(A|B1=0, ..., Bn=0)
+		final TIntIntHashMap obs = new TIntIntHashMap();
+		for (int i = 0; i < n; i++)
+			obs.put(B[i], 0);
+
+		final IntervalFactor qA = alp0.query(m, obs, A);
+		alp0.getNetworks().forEach(System.out::println);
+
+		System.out.println(qA);
+	}
 }
