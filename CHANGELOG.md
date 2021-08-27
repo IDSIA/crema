@@ -5,6 +5,8 @@
 - New ApproxLP0 algorithm ( #83 )
 - Renamed `approxlp` package to `approxpl1`  ( #84 )
 - Added new `VertexToRandomBayesian` converter ( #84 )
+
+Extra:
 - Replaced CI/CD pipeline with GitHub actions ( #84 )
 - Added CITATION.cff and CITATION.bib files
 

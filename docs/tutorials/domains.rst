@@ -7,6 +7,7 @@ Domains
 .. contents:: Table of Contents
     :local:
 
+
 Domain interface
 =======
 
@@ -24,6 +25,7 @@ This simple interface declares basic methods to query the domain about variables
 .. Note::
     Returned arrays should never be modified!
 
+
 SimpleDomain
 ============
 
@@ -33,22 +35,24 @@ This class encapsulates two integer arrays. One with the variable labels and one
 .. literalinclude:: ../../src/test/java/ch/idsia/crema/tutorial/DomainsTutorial.java
     :start-after: [simple-domain]
     :end-before: [simple-domain]
-    :dedent: 8
+    :dedent: 2
 
 .. Warning::
     When creating a :code:`SimpleDomain` the list of variables must be sorted! 
     Crema will **not** automatically sort them, but for some operations will assume they are.
 
+
 DomainBuilder
 =============
-While creating a :code:`SimpleDomain` by passing the arrays of variables and their sizes is possible and valid, 
+
+While creating a :code:`SimpleDomain` by passing the arrays of variables and their sizes is possible and valid,
 a slightly more friendly method is available using the :code:`DomainBuilder`. 
 Laveraging the ellipses of Java the :code:`DomainBuilder` class avoids the explicit creation of the arrays as shown in the following example.
 
 .. literalinclude:: ../../src/test/java/ch/idsia/crema/tutorial/DomainsTutorial.java
     :start-after: [domain-builder-1]
     :end-before: [domain-builder-1]
-    :dedent: 8
+    :dedent: 2
 
 
 Strides
@@ -71,11 +75,10 @@ We we first look at how :code:`Strides` instances can be created conveniently.
 .. Note::
     The variable's cardinalities are accumlated starting from the variable at index 0.
 
-
 .. literalinclude:: ../../src/test/java/ch/idsia/crema/tutorial/DomainsTutorial.java
     :start-after: [strides]
     :end-before: [strides]
-    :dedent: 8
+    :dedent: 2
 
 Again, just as with the :code:`SimpleDomain`, creating the object specifying the arrays is valid, but not the most readable solution.
 The following example shows an alternative way of creation where variables are added along with their cardinality.
@@ -83,7 +86,7 @@ The following example shows an alternative way of creation where variables are a
 .. literalinclude:: ../../src/test/java/ch/idsia/crema/tutorial/DomainsTutorial.java
     :start-after: [domain-builder-strides]
     :end-before: [domain-builder-strides]
-    :dedent: 8
+    :dedent: 2
 
 
 Alternative ways to create strides are based on operations on them. Generally Domains are considered unmutable objects and any alteration will result in a new instance.
@@ -91,7 +94,7 @@ Alternative ways to create strides are based on operations on them. Generally Do
 .. literalinclude:: ../../src/test/java/ch/idsia/crema/tutorial/DomainsTutorial.java
     :start-after: [strides-remove]
     :end-before: [strides-remove]
-    :dedent: 8
+    :dedent: 2
 
 A number of common set operations are available:
 
@@ -100,8 +103,6 @@ A number of common set operations are available:
 - remove
 
 .. _Enhanced domain:
+
 Working with Strides
 --------------------
-
-
-
