@@ -1,4 +1,4 @@
-name: Javadoc
+name: Deploy Library
 
 on:
   # after a new release
