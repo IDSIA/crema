@@ -41,6 +41,6 @@ jobs:
 
       - name: Deploy to repo
         run: >
-          echo "<settings><servers><server><id>${repo.id}</id><username>${repo.login}</username><password>${repo.pwd}</password></server></servers></settings>" > $HOME/.m2/settings.xml
+          echo "<settings><servers><server><id>\${repo.id}</id><username>\${repo.login}</username><password>\${repo.pwd}</password></server></servers></settings>" > $HOME/.m2/settings.xml
           ;
           mvn -Drepo.id=github -Drepo.login=cbonesana -Drepo.pwd=${{ secrets.CREMA_TOKEN }} -Dmaven.test.skip=true clean deploy
