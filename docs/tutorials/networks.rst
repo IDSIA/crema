@@ -42,7 +42,7 @@ For a Bayesian Network we will use a :code:`BayesianFactor`.
 .. literalinclude:: ../../src/test/java/ch/idsia/crema/tutorial/NetworkTutorial.java
     :start-after: [creating-sparse-model]
     :end-before: [creating-sparse-model]
-    :dedent: 8
+    :dedent: 2
     :language: java
 
 

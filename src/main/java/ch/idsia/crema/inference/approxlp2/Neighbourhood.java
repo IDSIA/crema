@@ -2,9 +2,11 @@ package ch.idsia.crema.inference.approxlp2;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesianFactor;
+import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesian;
+import ch.idsia.crema.factor.convert.HalfspaceToRandomBayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
 import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.NeighbourhoodFunction;
@@ -18,12 +20,11 @@ import java.util.List;
 
 public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 
-	private final GraphicalModel<? extends GenericFactor> model;
 	private int[] freeable;
+	private final GraphicalModel<? extends GenericFactor> model;
 
 	public Neighbourhood(GraphicalModel<? extends GenericFactor> model, int... locked) {
 		this.model = model;
-
 		initialize(new TIntHashSet(locked));
 	}
 
@@ -57,7 +58,9 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 
 	private BayesianFactor random(GenericFactor factor) {
 		if (factor instanceof ExtensiveLinearFactor) {
-			return new ExtensiveLinearToRandomBayesianFactor().apply((ExtensiveLinearFactor<?>) factor);
+			return new ExtensiveLinearToRandomBayesian().apply((ExtensiveLinearFactor<?>) factor);
+		} else if (factor instanceof SeparateHalfspaceFactor) {
+			return new HalfspaceToRandomBayesianFactor().apply((SeparateHalfspaceFactor) factor, -1);
 		} else if (factor instanceof SeparateLinearFactor) {
 			return new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) factor, -1);
 		} else if (factor instanceof BayesianFactor) {

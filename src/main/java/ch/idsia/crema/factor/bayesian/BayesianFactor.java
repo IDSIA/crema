@@ -28,12 +28,25 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 	 */
 	double getValue(int... states);
 
+	/**
+	 * @param index offset based on the factor's domain
+	 * @return the value associated to the given states
+	 */
 	double getValueAt(int index);
 
+	/**
+	 * @param states specified in the order of the factor's domain
+	 * @return the value associated to the given states in log format
+	 */
 	double getLogValue(int... states);
 
+	/**
+	 * @param index offset based on the factor's domain
+	 * @return the value associated to the given states in log format
+	 */
 	double getLogValueAt(int index);
 
+	// TODO: this method should only for internal use
 	double[] getData();
 
 	@Override
@@ -53,22 +66,6 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 
 	// TODO: these methods below need more consideration on what to do with them and where to put them
 	ObservationBuilder sample();
-
-	double KLDivergence(BayesianFactor approx);
-
-	BayesianFactor replace(double value, double replacement);
-
-	BayesianFactor replaceNaN(double replacement);
-
-	BayesianFactor scale(double k);
-
-	BayesianFactor reorderDomain(Strides newStrides);
-
-	BayesianFactor reorderDomain(int... vars);
-
-	void sortDomain();
-
-	BayesianFactor addition(BayesianFactor factor);
 
 	double logProb(TIntIntMap[] data, int leftVar);
 

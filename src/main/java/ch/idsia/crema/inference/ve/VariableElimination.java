@@ -3,14 +3,11 @@ package ch.idsia.crema.inference.ve;
 import ch.idsia.crema.factor.FactorUtil;
 import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.algebra.Operation;
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.order.OrderingStrategy;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
-import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -159,41 +156,6 @@ public class VariableElimination<F extends OperableFactor<F>> implements Inferen
 		setEvidence(observations);
 		setFactors(model.getFactors());
 		return run(queries);
-	}
-
-	public F conditionalQuery(int target, int... conditioning) {
-		return conditionalQuery(new int[]{target}, conditioning);
-	}
-
-	@SuppressWarnings("unchecked")
-	public F conditionalQuery(int[] target, int... conditioning) {
-		TIntIntMap evid = this.evidence;
-		this.evidence = null;
-
-		if (evid == null)
-			evid = new TIntIntHashMap();
-
-		conditioning = ArraysUtil.unique(Ints.concat(conditioning, evid.keys()));
-
-		// Computes the join
-		BayesianFactor numerator = (BayesianFactor) run(Ints.concat(target, conditioning));
-
-		BayesianFactor denomintor = numerator;
-		for (int v : target) {
-			if (ArraysUtil.contains(v, conditioning))
-				throw new IllegalArgumentException("Variable " + v + " cannot be in target and conditioning set");
-			denomintor = denomintor.marginalize(v);
-		}
-
-		// Conditional probability
-		BayesianFactor cond = numerator.divide(denomintor);
-
-		// Sets evidence
-		for (int v : evid.keys())
-			cond = cond.filter(v, evid.get(v));
-
-		this.evidence = evid;
-		return (F) cond.replaceNaN(0.0);
 	}
 
 }

@@ -1,10 +1,13 @@
 package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.core.Domain;
+import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.algebra.GenericOperationFunction;
 import ch.idsia.crema.factor.algebra.bayesian.*;
 import ch.idsia.crema.utility.ArraysUtil;
+import ch.idsia.crema.utility.IndexIterator;
+import ch.idsia.crema.utility.RandomUtil;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Arrays;
@@ -102,9 +105,7 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 	@SuppressWarnings("unchecked")
 	protected <F extends BayesianAbstractFactor> F combine(F factor, BayesianFactorBuilder<F> builder, GenericOperationFunction<F> op) {
 		// domains should be sorted
-		this.sortDomain();
 		factor = (F) factor.copy();
-		factor.sortDomain();
 
 		final Strides target = getDomain().union(factor.getDomain());
 		final int length = target.getSize();
@@ -313,43 +314,6 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 	 * </p>
 	 *
 	 * <p>
-	 * The {@link BayesianOperation#add(BayesianFactor, int, BayesianFactor, int)} method will be used.
-	 * </p>
-	 *
-	 * @param factor the other factor to combine with
-	 * @return a {@link BayesianLogFactor} if this factor works in log-space, otherwise a {@link BayesianDefaultFactor}
-	 */
-	@Override
-	public BayesianAbstractFactor addition(BayesianFactor factor) {
-		BayesianAbstractFactor two = (BayesianAbstractFactor) factor;
-
-		final boolean oneIsLog = this.isLog();
-		final boolean twoIsLog = factor.isLog();
-		final BayesianOperation<BayesianAbstractFactor> ops;
-
-		if (!oneIsLog && !twoIsLog) {
-			ops = new SimpleBayesianOperation<>();
-
-			return combine(two, BayesianDefaultFactor::new, ops::add);
-		} else {
-			ops = new LogBayesianOperation<>();
-
-			if (!factor.isLog())
-				two = new BayesianLogFactor(factor);
-
-			return combine(two, BayesianLogFactor::new, ops::add);
-		}
-	}
-
-	/**
-	 * <p>
-	 * This generic implementation checks if {@link #isLog()} the current factor and also the given one. If both are
-	 * false, then a {@link SimpleBayesianOperation} algebra will be used and a {@link BayesianDefaultFactor} will be
-	 * produced; otherwise a {@link LogBayesianOperation} algebra will be used, the second factor will be converted to
-	 * a {@link BayesianLogFactor} (if needed) and a {@link BayesianLogFactor} will be returned.
-	 * </p>
-	 *
-	 * <p>
 	 * The {@link BayesianOperation#divide(BayesianFactor, int, BayesianFactor, int)} method will be used.
 	 * </p>
 	 *
@@ -376,6 +340,29 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 
 			return divide(two, BayesianLogFactor::new, ops::divide);
 		}
+	}
+
+	/**
+	 * Uses cumulative probability to get a sample from this {@link BayesianFactor}.
+	 *
+	 * @return An {@link ObservationBuilder} that can be used as evidence
+	 */
+	@Override
+	public ObservationBuilder sample() {
+		final double p = RandomUtil.getRandom().nextDouble();
+
+		final IndexIterator it = getDomain().getIterator();
+		double sum = 0;
+		int i = 0;
+		while (it.hasNext()) {
+			i = it.next();
+			sum += getValueAt(i);
+			if (sum > p) {
+				break;
+			}
+		}
+
+		return getDomain().observationOf(i);
 	}
 
 	@Override

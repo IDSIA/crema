@@ -12,7 +12,6 @@ import ch.idsia.crema.search.ObjectiveFunction;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
-
 abstract class Manager implements ObjectiveFunction<Move, Solution> {
 
 	public static final double BAD = Double.NaN;
@@ -40,6 +39,10 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 		this.sequence = new MinFillOrdering().apply(model);
 	}
 
+	public GoalType getGoal() {
+		return goal;
+	}
+
 	/**
 	 * This is a custom bayesian factor over x0 with a 1 for x0state.
 	 * The value is cached.
@@ -64,7 +67,8 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 	 * @param move
 	 */
 	protected void fixNotMoving(Solution from, Move move) {
-		if (Double.isNaN(from.getScore())) return;
+		if (Double.isNaN(from.getScore()))
+			return;
 
 		BayesianFactor original = from.getData().get(move.getFree());
 		if (original.equals(move.getValues())) {
@@ -106,22 +110,27 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 
 	@Override
 	public boolean isImprovement(double change) {
-		if (goal == GoalType.MAXIMIZE) change = -change;
+		if (goal == GoalType.MAXIMIZE)
+			change = -change;
 		return change < 0;
 	}
 
 	@Override
 	public boolean isImprovement(double from, double to) {
-		if (Double.isNaN(to)) return false;
-		if (Double.isNaN(from)) return true;
+		if (Double.isNaN(to))
+			return false;
+		if (Double.isNaN(from))
+			return true;
 
 		return isImprovement(to - from);
 	}
 
 	@Override
 	public boolean isBound(double value) {
-		if (goal == GoalType.MAXIMIZE && value >= 1.0 - EPS) return true;
-		if (goal == GoalType.MINIMIZE && value <= 0.0 + EPS) return true;
+		if (goal == GoalType.MAXIMIZE && value >= 1.0 - EPS)
+			return true;
+		if (goal == GoalType.MINIMIZE && value <= 0.0 + EPS)
+			return true;
 		return false;
 	}
 

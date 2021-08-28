@@ -1,4 +1,4 @@
-package ch.idsia.crema.inference.approxlp;
+package ch.idsia.crema.inference.approxlp1;
 
 import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.factor.GenericFactor;

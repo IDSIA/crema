@@ -61,7 +61,8 @@ public class SeparateLinearToRandomBayesian implements Converter<SeparateLinearF
 			solver.loadProblem(s.getLinearProblemAt(offset), random.nextBoolean() ? GoalType.MINIMIZE : GoalType.MAXIMIZE);
 
 			double[] rand = new double[s.getDataDomain().getCombinations()];
-			for (int i = 0; i < rand.length; ++i) rand[i] = random.nextDouble();
+			for (int i = 0; i < rand.length; ++i)
+				rand[i] = random.nextDouble();
 
 			solver.solve(rand, 0.0);
 			double[] vertex = solver.getVertex();

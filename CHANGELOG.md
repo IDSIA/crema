@@ -1,3 +1,15 @@
+0.2.1
+===========
+
+- New *logics* Bayesian factors, such as `Not`, `And`, `Or`, and `NoisyOr` ( #86 )
+- New ApproxLP0 algorithm ( #83 )
+- Renamed `approxlp` package to `approxpl1`  ( #84 )
+- Added new `VertexToRandomBayesian` converter ( #84 )
+
+Extra:
+- Replaced CI/CD pipeline with GitHub actions ( #84 )
+- Added CITATION.cff and CITATION.bib files
+
 0.2.0
 ===========
 

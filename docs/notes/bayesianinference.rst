@@ -15,6 +15,7 @@ the model. This will return the posterior of a variable considered the root of t
 .. literalinclude:: ../../examples/BeliefPropagation.java
    :language: java
    :lines: 42-44
+   :dedent: 2
 
 
 To perform an inference on a variable, as an example if you want the marginal of ``P(A)``, use the ``query()`` method as
@@ -23,6 +24,7 @@ in the example below:
 .. literalinclude:: ../../examples/BeliefPropagation.java
    :language: java
    :lines: 55-60
+   :dedent: 2
 
 
 If you want to use evidence, you need to create first a ``TIntIntHashMap`` that will include the state of the various
@@ -31,6 +33,7 @@ variables, in the belo case  we query for ``P(A | B=0)``:
 .. literalinclude:: ../../examples/BeliefPropagation.java
    :language: java
    :lines: 62-69
+   :dedent: 2
 
 
 Full example:

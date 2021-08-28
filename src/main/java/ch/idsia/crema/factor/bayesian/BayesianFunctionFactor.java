@@ -1,11 +1,12 @@
 package ch.idsia.crema.factor.bayesian;
 
-import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.utility.IndexIterator;
 import gnu.trove.map.TIntIntMap;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.math3.util.FastMath;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 /**
@@ -14,7 +15,7 @@ import java.util.function.Function;
  * Date:    16.04.2021 18:43
  */
 // TODO: this class can be moved between AbstractBayesianFactor and BayesianDefaultFactor (f is an accessor to data)
-public class BayesianFunctionFactor extends BayesianAbstractFactor {
+public abstract class BayesianFunctionFactor extends BayesianAbstractFactor {
 
 	protected Function<Integer, Double> f;
 
@@ -23,9 +24,22 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 		this.f = f;
 	}
 
+	protected BayesianFunctionFactor(Strides domain) {
+		super(domain);
+	}
+
+	protected void setF(Function<Integer, Double> f) {
+		this.f = f;
+	}
+
 	@Override
-	public BayesianFunctionFactor copy() {
-		return new BayesianFunctionFactor(domain, f);
+	public double getValue(int... states) {
+		return getValueAt(getDomain().getOffset(states));
+	}
+
+	@Override
+	public double getLogValue(int... states) {
+		return getLogValueAt(getDomain().getOffset(states));
 	}
 
 	@Override
@@ -40,49 +54,16 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 
 	@Override
 	public double[] getData() {
-		// TODO
-		throw new NotImplementedException();
-	}
+		// TODO: do we really want to allow the generation of the FULL table of all possible values?
+		final IndexIterator it = getDomain().getIterator();
+		final int size = getDomain().getCombinations();
 
-	@Override
-	public BayesianFactor reorderDomain(Strides newStrides) {
-		// TODO
-		throw new NotImplementedException();
-	}
+		final double[] v = new double[size];
+		for (int i = 0; i < size; i++) {
+			v[i] = getValueAt(it.next());
+		}
 
-	@Override
-	public BayesianFactor reorderDomain(int... vars) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFactor replace(double value, double replacement) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFactor replaceNaN(double replacement) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFactor scale(double k) {
-		return null;
-	}
-
-	@Override
-	public void sortDomain() {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFunctionFactor addition(BayesianFactor factor) {
-		// TODO
-		throw new NotImplementedException();
+		return v;
 	}
 
 	@Override
@@ -92,38 +73,7 @@ public class BayesianFunctionFactor extends BayesianAbstractFactor {
 	}
 
 	@Override
-	public BayesianFunctionFactor filter(int variable, int state) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFunctionFactor combine(BayesianFactor other) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFunctionFactor marginalize(int variable) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public BayesianFunctionFactor divide(BayesianFactor factor) {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public ObservationBuilder sample() {
-		// TODO
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public double KLDivergence(BayesianFactor approx) {
-		// TODO
-		throw new NotImplementedException();
+	public String toString() {
+		return "f(" + Arrays.toString(domain.getVariables()) + ")";
 	}
 }

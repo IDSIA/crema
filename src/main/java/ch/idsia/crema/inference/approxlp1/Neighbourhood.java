@@ -1,10 +1,13 @@
-package ch.idsia.crema.inference.approxlp;
+package ch.idsia.crema.inference.approxlp1;
 
 import ch.idsia.crema.factor.GenericFactor;
+import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesianFactor;
+import ch.idsia.crema.factor.convert.ExtensiveLinearToRandomBayesian;
+import ch.idsia.crema.factor.convert.HalfspaceToRandomBayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToRandomBayesian;
 import ch.idsia.crema.factor.credal.linear.extensive.ExtensiveLinearFactor;
+import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.NeighbourhoodFunction;
@@ -43,7 +46,9 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 		TIntObjectHashMap<BayesianFactor> factors = new TIntObjectHashMap<>();
 		for (int var : model.getVariables()) {
 			// lets assume the model has factors for all variables!
-			BayesianFactor r = random(model.getFactor(var)).replace(0.0, ApproxLP1.EPS);
+			BayesianFactor r = random(model.getFactor(var));
+			if (r instanceof BayesianDefaultFactor)
+				r = ((BayesianDefaultFactor) r).replace(0.0, ApproxLP1.EPS);
 			factors.put(var, r);
 		}
 		return new Solution(factors, Double.NaN);
@@ -56,9 +61,11 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 
 	private BayesianFactor random(GenericFactor factor) {
 		if (factor instanceof ExtensiveLinearFactor) {
-			return new ExtensiveLinearToRandomBayesianFactor().apply((ExtensiveLinearFactor<?>) factor);
+			return new ExtensiveLinearToRandomBayesian().apply((ExtensiveLinearFactor<?>) factor);
+		} else if (factor instanceof SeparateHalfspaceFactor) {
+			return new HalfspaceToRandomBayesianFactor().apply((SeparateHalfspaceFactor) factor);
 		} else if (factor instanceof SeparateLinearFactor) {
-			return new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) factor, -1);
+			return new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) factor);
 		} else if (factor instanceof BayesianFactor) {
 			return (BayesianFactor) factor;
 		}
