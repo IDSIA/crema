@@ -3,7 +3,10 @@ name: Deploy Library
 on:
   # after a new release
   release:
-    types: [released, edited]
+    types: [released]
+  
+  # when manually launched
+  workflow_dispatch:
 
 jobs:
   deploy-pages:
