@@ -21,7 +21,8 @@ ch.idsia.crema.factor.credal.vertex.separate
 ch.idsia.crema.factor.symbolic
 ch.idsia.crema.factor.symbolic.serialize
 ch.idsia.crema.inference
-ch.idsia.crema.inference.approxlp
+ch.idsia.crema.inference.approxlp0
+ch.idsia.crema.inference.approxlp1
 ch.idsia.crema.inference.approxlp2
 ch.idsia.crema.inference.bp
 ch.idsia.crema.inference.bp.cliques
