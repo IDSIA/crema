@@ -1,0 +1,43 @@
+name: Javadoc
+
+on:
+  # after a new release
+  release:
+    types: [released, edited]
+
+jobs:
+  deploy-pages:
+    name: Deploy to GitHub repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          architecture: x64
+
+      - name: Install lpsolve and polco dependencies
+        run: >
+          mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.2:get
+          -DgroupId=net.sf.lpsolve
+          -DartifactId=lp_solve
+          -Dversion=5.5.2
+          -Dpackaging=jar
+          -DremoteRepositories=https://raw.github.com/idsia/crema/mvn-repo/
+          ;
+          mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.2:get
+          -DgroupId=ch.javasoft.polco
+          -DartifactId=polco
+          -Dversion=4.7.1
+          -Dpackaging=jar
+          -DremoteRepositories=https://raw.github.com/idsia/crema/mvn-repo/
+
+      - name: Deploy to repo
+        run: >
+          echo "<settings><servers><server><id>${repo.id}</id><username>${repo.login}</username><password>${repo.pwd}</password></server></servers></settings>" > $HOME/.m2/settings.xml
+          ;
+          mvn -Drepo.id=github -Drepo.login=cbonesana -Drepo.pwd=${{ secrets.CREMA_TOKEN }} -Dmaven.test.skip=true clean deploy
