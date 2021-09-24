@@ -185,7 +185,7 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 		final TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
 		for (int i : data.keys()) {
-			constraints.get(i).addAll(i, ConstraintsUtil.removeNormalization(getLinearProblemAt(i).getConstraints()));
+			constraints.get(i).addAll(ConstraintsUtil.removeNormalization(getLinearProblemAt(i).getConstraints()));
 		}
 		return new SeparateHalfspaceDefaultFactor(getDataDomain(), getSeparatingDomain(), constraints);
 	}
@@ -195,7 +195,7 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 		final TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
 		for (int i : data.keys()) {
-			constraints.get(i).addAll(i, ConstraintsUtil.removeNonNegative(getLinearProblemAt(i).getConstraints()));
+			constraints.get(i).addAll(ConstraintsUtil.removeNonNegative(getLinearProblemAt(i).getConstraints()));
 		}
 		return new SeparateHalfspaceDefaultFactor(getDataDomain(), getSeparatingDomain(), constraints);
 	}
