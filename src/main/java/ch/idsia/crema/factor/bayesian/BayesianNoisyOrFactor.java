@@ -79,7 +79,7 @@ public class BayesianNoisyOrFactor extends BayesianFunctionFactor {
 			}
 		}
 
-		if (states[vars[variable]] == 1) {
+		if (states[ArraysUtil.indexOf(variable, vars)] == 1) {
 			// P(or = y | ...)
 			return 1 - Q;
 		}

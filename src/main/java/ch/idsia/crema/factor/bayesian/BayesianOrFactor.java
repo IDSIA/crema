@@ -60,7 +60,7 @@ public class BayesianOrFactor extends BayesianFunctionFactor {
 		final int[] states = domain.getStatesFor(offset);
 		final int[] vars = domain.getVariables();
 
-		final boolean invert = states[vars[variable]] == 1;
+		final boolean invert = states[ArraysUtil.indexOf(variable, vars)] == 1;
 		final double r_true = invert ? 1.0 : 0.0;
 		final double r_false = invert ? 0.0 : 1.0;
 
