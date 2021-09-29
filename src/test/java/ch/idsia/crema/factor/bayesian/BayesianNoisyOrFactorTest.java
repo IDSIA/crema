@@ -68,15 +68,6 @@ class BayesianNoisyOrFactorTest {
 	}
 
 	@Test
-	void testFilterToOne() {
-		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2).size(2, 2).strides(), new int[]{1}, new double[]{.1});
-		final BayesianFactor b = o.filter(1, 1);
-		final BayesianFactor one = BayesianFactorFactory.one(2);
-
-		Assertions.assertEquals(one, b);
-	}
-
-	@Test
 	void testFilterToZero() {
 		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2).size(2, 2).strides(), new int[]{1}, new double[]{.3});
 		final BayesianFactor a = o.filter(1, 0);
@@ -97,17 +88,24 @@ class BayesianNoisyOrFactorTest {
 		final BayesianFactor aa = a.filter(2, 1);
 		final BayesianFactor bb = b.filter(1, 1);
 
-		final BayesianFactor one = BayesianFactorFactory.one(3);
-		final BayesianFactor zero = BayesianFactorFactory.zero(3);
+		Assertions.assertEquals(.3, c.getValue(0, 0));
+		Assertions.assertEquals(.7, c.getValue(0, 1));
+		Assertions.assertEquals(.12, c.getValue(1, 0));
+		Assertions.assertEquals(.88, c.getValue(1, 1));
 
-		Assertions.assertEquals(one, aa);
-		Assertions.assertEquals(one, bb);
-		Assertions.assertEquals(one, c);
-		Assertions.assertEquals(one, d);
-		Assertions.assertEquals(zero, e);
+		Assertions.assertEquals(.4, aa.getValue(0));
+		Assertions.assertEquals(.3, bb.getValue(0));
+
+		Assertions.assertEquals(2, aa.getDomain().getSizes()[0]);
+		Assertions.assertEquals(2, bb.getDomain().getSizes()[0]);
 
 		Assertions.assertTrue(a instanceof BayesianNoisyOrFactor);
 		Assertions.assertTrue(b instanceof BayesianNoisyOrFactor);
+		Assertions.assertTrue(c instanceof BayesianNoisyOrFactor);
+		Assertions.assertTrue(d instanceof BayesianNoisyOrFactor);
+		Assertions.assertTrue(e instanceof BayesianNoisyOrFactor);
+		Assertions.assertTrue(aa instanceof BayesianNoisyOrFactor);
+		Assertions.assertTrue(bb instanceof BayesianNoisyOrFactor);
 	}
 
 	@Test
