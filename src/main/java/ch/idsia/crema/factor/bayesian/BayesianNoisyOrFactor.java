@@ -48,6 +48,20 @@ public class BayesianNoisyOrFactor extends BayesianFunctionFactor {
 	 */
 	protected int[] observedStates;
 
+	private BayesianNoisyOrFactor(BayesianNoisyOrFactor factor) {
+		super(factor.getDomain());
+		setF(this::f);
+		this.variable = factor.variable;
+		this.parents = ArrayUtils.clone(factor.parents);
+		this.trueStates = ArrayUtils.clone(factor.trueStates);
+		this.inhibitors = ArrayUtils.clone(factor.inhibitors);
+
+		this.isObserved = factor.isObserved;
+		this.isObservedState = factor.isObservedState;
+		this.observedVariables = ArrayUtils.clone(factor.observedVariables);
+		this.observedStates = ArrayUtils.clone(factor.observedStates);
+	}
+
 	/**
 	 * A Noisy OR factor where the true states for each parent are defined externally.
 	 *
@@ -165,7 +179,7 @@ public class BayesianNoisyOrFactor extends BayesianFunctionFactor {
 
 	@Override
 	public BayesianFactor copy() {
-		return new BayesianNoisyOrFactor(domain, ArrayUtils.clone(parents), ArrayUtils.clone(trueStates), ArrayUtils.clone(inhibitors));
+		return new BayesianNoisyOrFactor(this);
 	}
 
 	@Override
