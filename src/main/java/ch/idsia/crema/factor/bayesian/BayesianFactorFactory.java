@@ -222,4 +222,176 @@ public class BayesianFactorFactory {
 		return new BayesianDefaultFactor(new Strides(vars, sizes), d);
 	}
 
+	/**
+	 * Requires a pre-defined Domain.
+	 *
+	 * @param parent variable that is the parent of this factor
+	 * @return a logic {@link BayesianNotFactor}
+	 */
+	public BayesianNotFactor not(int parent) {
+		return new BayesianNotFactor(domain, parent);
+	}
+
+	/**
+	 * Requires a pre-defined Domain.
+	 *
+	 * @param parent    variable that is the parent of this factor
+	 * @param trueState index of the state to be considered as TRUE for the given parent
+	 * @return a logic {@link BayesianAndFactor}
+	 */
+	public BayesianAndFactor not(int parent, int trueState) {
+		return new BayesianAndFactor(domain, parent, trueState);
+	}
+
+	/**
+	 * Requires a pre-defined Domain.
+	 *
+	 * @param parents variables that are parents of this factor
+	 * @return a logic {@link BayesianAndFactor}
+	 */
+	public BayesianAndFactor and(int... parents) {
+		// sort variables
+		final int[] vars = ArraysUtil.sort(domain.getVariables());
+		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
+		final int[] order = ArraysUtil.order(parents);
+
+		// sort parents
+		final int[] pars = new int[parents.length];
+
+		for (int i = 0; i < order.length; i++) {
+			int o = order[i];
+			pars[i] = parents[o];
+		}
+		return new BayesianAndFactor(new Strides(vars, sizes), pars);
+	}
+
+	/**
+	 * Requires a pre-defined Domain.
+	 *
+	 * @param trueStates index of the state to be considered as TRUE for each given parent
+	 * @param parents    variables that are parents of this factor
+	 * @return a logic {@link BayesianAndFactor}
+	 */
+	public BayesianAndFactor and(int[] parents, int[] trueStates) {
+		// sort variables
+		final int[] vars = ArraysUtil.sort(domain.getVariables());
+		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
+		final int[] order = ArraysUtil.order(parents);
+
+		// sort parents
+		final int[] pars = new int[parents.length];
+		final int[] trus = new int[trueStates.length];
+
+		for (int i = 0; i < order.length; i++) {
+			int o = order[i];
+			pars[i] = parents[o];
+			trus[i] = trueStates[o];
+		}
+
+		return new BayesianAndFactor(new Strides(vars, sizes), pars, trus);
+	}
+
+	/**
+	 * Requires a pre-defined Domain.
+	 *
+	 * @param parents variables that are parents of this factor
+	 * @return a logic {@link BayesianOrFactor}
+	 */
+	public BayesianOrFactor or(int... parents) {
+		// sort variables
+		final int[] vars = ArraysUtil.sort(domain.getVariables());
+		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
+		final int[] order = ArraysUtil.order(parents);
+
+		// sort parents
+		final int[] pars = new int[parents.length];
+
+		for (int i = 0; i < order.length; i++) {
+			int o = order[i];
+			pars[i] = parents[o];
+		}
+		return new BayesianOrFactor(new Strides(vars, sizes), pars);
+	}
+
+	/**
+	 * Requires a pre-defined Domain.
+	 *
+	 * @param trueStates index of the state to be considered as TRUE for each given parent
+	 * @param parents    variables that are parents of this factor
+	 * @return a logic {@link BayesianOrFactor}
+	 */
+	public BayesianOrFactor or(int[] parents, int[] trueStates) {
+		// sort variables
+		final int[] vars = ArraysUtil.sort(domain.getVariables());
+		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
+		final int[] order = ArraysUtil.order(parents);
+
+		// sort parents
+		final int[] pars = new int[parents.length];
+		final int[] trus = new int[trueStates.length];
+
+		for (int i = 0; i < order.length; i++) {
+			int o = order[i];
+			pars[i] = parents[o];
+			trus[i] = trueStates[o];
+		}
+
+		return new BayesianOrFactor(new Strides(vars, sizes), pars, trus);
+	}
+
+	/**
+	 * Requires a pre-defined Domain.
+	 *
+	 * @param parents    variables that are parents of this factor
+	 * @param inhibitors values for the noise for each given parent
+	 * @return a logic {@link BayesianNoisyOrFactor}
+	 */
+	public BayesianNoisyOrFactor noisyOr(int[] parents, double[] inhibitors) {
+		// sort variables
+		final int[] vars = ArraysUtil.sort(domain.getVariables());
+		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
+		final int[] order = ArraysUtil.order(parents);
+
+		// sort parents
+		final int[] pars = new int[parents.length];
+		final double[] inbs = new double[inhibitors.length];
+
+		for (int i = 0; i < order.length; i++) {
+			int o = order[i];
+			pars[i] = parents[o];
+			inbs[i] = inhibitors[o];
+		}
+
+		return new BayesianNoisyOrFactor(new Strides(vars, sizes), pars, inbs);
+	}
+
+	/**
+	 * Requires a pre-defined Domain.
+	 *
+	 * @param parents    variables that are parents of this factor
+	 * @param trueStates index of the state to be considered as TRUE for each given parent
+	 * @param inhibitors values for the noise for each given parent
+	 * @return a logic {@link BayesianNoisyOrFactor}
+	 */
+	public BayesianNoisyOrFactor noisyOr(int[] parents, int[] trueStates, double[] inhibitors) {
+		// sort variables
+		final int[] vars = ArraysUtil.sort(domain.getVariables());
+		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
+		final int[] order = ArraysUtil.order(parents);
+
+		// sort parents
+		final int[] pars = new int[parents.length];
+		final int[] trus = new int[trueStates.length];
+		final double[] inbs = new double[inhibitors.length];
+
+		for (int i = 0; i < order.length; i++) {
+			int o = order[i];
+			pars[i] = parents[o];
+			trus[i] = trueStates[o];
+			inbs[i] = inhibitors[o];
+		}
+
+		return new BayesianNoisyOrFactor(new Strides(vars, sizes), pars, trus, inbs);
+	}
+
 }

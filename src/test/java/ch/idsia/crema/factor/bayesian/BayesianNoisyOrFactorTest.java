@@ -88,6 +88,8 @@ class BayesianNoisyOrFactorTest {
 		final BayesianFactor aa = a.filter(2, 1);
 		final BayesianFactor bb = b.filter(1, 1);
 
+		final BayesianFactor zero = BayesianFactorFactory.zero(3);
+
 		Assertions.assertEquals(.3, c.getValue(0, 0));
 		Assertions.assertEquals(.7, c.getValue(0, 1));
 		Assertions.assertEquals(.12, c.getValue(1, 0));
@@ -99,11 +101,12 @@ class BayesianNoisyOrFactorTest {
 		Assertions.assertEquals(2, aa.getDomain().getSizes()[0]);
 		Assertions.assertEquals(2, bb.getDomain().getSizes()[0]);
 
+		Assertions.assertEquals(zero, e);
+
 		Assertions.assertTrue(a instanceof BayesianNoisyOrFactor);
 		Assertions.assertTrue(b instanceof BayesianNoisyOrFactor);
 		Assertions.assertTrue(c instanceof BayesianNoisyOrFactor);
 		Assertions.assertTrue(d instanceof BayesianNoisyOrFactor);
-		Assertions.assertTrue(e instanceof BayesianNoisyOrFactor);
 		Assertions.assertTrue(aa instanceof BayesianNoisyOrFactor);
 		Assertions.assertTrue(bb instanceof BayesianNoisyOrFactor);
 	}
