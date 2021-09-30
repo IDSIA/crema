@@ -67,6 +67,10 @@ public class BayesianNoisyOrFactor extends BayesianLogicFactor {
 		this.inhibitors = ArrayUtils.clone(factor.inhibitors);
 	}
 
+	public double[] getInhibitors() {
+		return inhibitors;
+	}
+
 	/**
 	 * @param offset offset to get the value for
 	 * @return applies the inhibitions to compute the value

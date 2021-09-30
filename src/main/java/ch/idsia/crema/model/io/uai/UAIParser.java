@@ -132,4 +132,26 @@ public abstract class UAIParser<T> {
 		return Double.parseDouble(popElement());
 	}
 
+	protected int[] popIntegers() {
+		final int numValues = popInteger();
+		final int[] data = new int[numValues];
+
+		for (int j = 0; j < numValues; j++) {
+			data[j] = popInteger();
+		}
+
+		return data;
+	}
+
+	protected double[] popDoubles() {
+		final int numValues = popInteger();
+		final double[] data = new double[numValues];
+
+		for (int j = 0; j < numValues; j++) {
+			data[j] = popDouble();
+		}
+
+		return data;
+	}
+
 }

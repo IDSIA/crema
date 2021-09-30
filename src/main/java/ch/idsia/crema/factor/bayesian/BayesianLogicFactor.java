@@ -127,6 +127,18 @@ public abstract class BayesianLogicFactor extends BayesianFunctionFactor {
 		this.observedStates = ArrayUtils.clone(factor.observedStates);
 	}
 
+	public int getVariable() {
+		return variable;
+	}
+
+	public int[] getParents() {
+		return parents;
+	}
+
+	public int[] getTrueStates() {
+		return trueStates;
+	}
+
 	/**
 	 * The function that implements the logic of this factor.
 	 *
