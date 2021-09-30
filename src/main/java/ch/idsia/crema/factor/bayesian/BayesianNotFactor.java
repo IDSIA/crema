@@ -45,6 +45,14 @@ public class BayesianNotFactor extends BayesianFunctionFactor {
 		this.variable = factor.variable;
 	}
 
+	public int getParent() {
+		return parent;
+	}
+
+	public int getTrueState() {
+		return trueState;
+	}
+
 	protected double f(int offset) {
 		final int[] states = domain.getStatesFor(offset);
 		final int[] vars = domain.getVariables();
