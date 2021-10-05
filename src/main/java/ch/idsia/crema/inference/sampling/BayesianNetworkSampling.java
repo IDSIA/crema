@@ -18,37 +18,62 @@ import java.util.stream.IntStream;
 public class BayesianNetworkSampling {
 
 	/**
-	 * @param model model to sample
-	 * @param vars
-	 * @return
+	 * @param model model to use for sampling
+	 * @param obs   map of existing observations
+	 * @param vars  variables to return
+	 * @return a {@link TIntIntMap} of states sampled from the model with the given evidence
 	 */
-	public TIntIntMap sample(DAGModel<BayesianFactor> model, int... vars) {
-		TIntIntMap obs = new TIntIntHashMap();
+	public TIntIntMap sample(DAGModel<BayesianFactor> model, TIntIntMap obs, int... vars) {
+		final TIntIntMap s = new TIntIntHashMap(obs);
 
 		// follow DAG in topological order
-		for (Integer integer : model.getNetwork()) {
-			BayesianFactor f = model.getFactor(integer).copy();
-			for (int pa : model.getParents(integer)) {
-				f = f.filter(pa, obs.get(pa));
+		for (Integer v : model.getNetwork()) {
+			if (s.containsKey(v))
+				continue;
+			BayesianFactor f = model.getFactor(v).copy();
+			for (int pa : model.getParents(v)) {
+				f = f.filter(pa, s.get(pa));
 			}
-			obs.putAll(f.sample());
+			s.putAll(f.sample());
 		}
 
 		if (vars.length == 0)
 			vars = model.getVariables();
 
-		for (int v : obs.keys())
+		for (int v : s.keys())
 			if (!ArraysUtil.contains(v, vars))
-				obs.remove(v);
+				s.remove(v);
 
-		return obs;
+		return s;
 	}
 
 	/**
-	 * @param model model to sample
-	 * @param N     number of samples
-	 * @param vars
-	 * @return
+	 * @param model model to use for sampling
+	 * @param vars  variables to return
+	 * @return a {@link TIntIntMap} of states sampled from the model without prior evidence
+	 */
+	public TIntIntMap sample(DAGModel<BayesianFactor> model, int... vars) {
+		return sample(model, new TIntIntHashMap(), vars);
+	}
+
+
+	/**
+	 * @param model model to use for sampling
+	 * @param obs   map of existing observations
+	 * @param N     number of samples to produce
+	 * @param vars  variables to return
+	 * @return the specified number of {@link TIntIntMap} of states sampled from the model with the given evidence
+	 */
+	public TIntIntMap[] samples(DAGModel<BayesianFactor> model, TIntIntMap obs, int N, int... vars) {
+		return IntStream.range(0, N).mapToObj(i -> sample(model, obs, vars)).toArray(TIntIntMap[]::new);
+	}
+
+
+	/**
+	 * @param model model to use for sampling
+	 * @param N     number of samples to produce
+	 * @param vars  variables to return
+	 * @return the specified number of {@link TIntIntMap} of states sampled from the model without prior evidence
 	 */
 	public TIntIntMap[] samples(DAGModel<BayesianFactor> model, int N, int... vars) {
 		return IntStream.range(0, N).mapToObj(i -> sample(model, vars)).toArray(TIntIntMap[]::new);
