@@ -51,19 +51,48 @@ public class RandomUtil {
 		return probs.length - 1;
 	}
 
+	/**
+	 * Set a new {@link #random} object to use and reset the supplier function to the original one.
+	 *
+	 * @param random the {@link Random} object to use.
+	 */
 	public static void setRandom(Random random) {
 		RandomUtil.random = random;
+		setRandom(() -> random);
 	}
 
+	/**
+	 * Change the current {@link #supplier} function with a new one.
+	 * <p>
+	 * Note that <b>ALL</b> future call to the {@link #getRandom()} method will use this function!
+	 *
+	 * @param random new supplier of {@link Random} objects
+	 */
 	public static void setRandom(Supplier<Random> random) {
 		supplier = random;
 	}
 
+	/**
+	 * Change the current {@link #random} object with a new random initialized with the given seed.
+	 *
+	 * @param seed new random seed to use
+	 */
 	public static void setRandomSeed(long seed) {
 		setRandom(new Random(seed));
 	}
 
+	/**
+	 * @return a {@link Random} object based on the current {@link #supplier} function.
+	 */
 	public static Random getRandom() {
 		return supplier.get();
 	}
+
+	/**
+	 * Set the {@link #supplier} function back to the original one.
+	 */
+	public static void reset() {
+		setRandom(() -> random);
+	}
+
 }

@@ -1,5 +1,6 @@
 package ch.idsia.crema.utility;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,11 @@ import java.util.stream.IntStream;
  * Date:    06.10.2021 10:24
  */
 class RandomUtilTest {
+
+	@AfterEach
+	void tearDown() {
+		RandomUtil.reset();
+	}
 
 	@Test
 	void testRandomSupplier() {
