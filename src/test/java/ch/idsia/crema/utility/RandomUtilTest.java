@@ -42,16 +42,19 @@ class RandomUtilTest {
 	void testConcurrentRandomExecution() throws Exception {
 		final ExecutorService es = Executors.newFixedThreadPool(2);
 
-		final Map<String, Random> randoms = new ConcurrentHashMap<>();
+		final Map<String, Random> randoms = new ConcurrentHashMap<>(Map.of(
+				"Thread0", new Random(0),
+				"Thread1", new Random(1),
+				"Thread2", new Random(0),
+				"Thread3", new Random(1)
+		));
 
 		RandomUtil.setRandom(() -> randoms.get(Thread.currentThread().getName()));
 
 		final List<Callable<int[]>> tasks = IntStream.range(0, 4)
 				.mapToObj(i -> (Callable<int[]>) () -> {
-					final int seed = i % 2;
-					final String tName = "Thread" + seed;
+					final String tName = "Thread" + i;
 					Thread.currentThread().setName(tName);
-					randoms.put(tName, new Random(seed));
 
 					return IntStream.generate(() -> RandomUtil.getRandom().nextInt(10))
 							.limit(10)
