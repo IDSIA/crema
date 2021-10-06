@@ -1,11 +1,14 @@
 package ch.idsia.crema.utility;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 
 public class RandomUtil {
 
 	private static Random random = new Random(1234);
+
+	private static Supplier<Random> supplier = () -> random;
 
 	/**
 	 * Sample of vector where the sum of all its elements is 1
@@ -18,7 +21,7 @@ public class RandomUtil {
 
 		double sum = 0;
 		for (int i = 0; i < size; i++) {
-			probs[i] = random.nextDouble();
+			probs[i] = getRandom().nextDouble();
 			sum += probs[i];
 		}
 
@@ -35,7 +38,7 @@ public class RandomUtil {
 	}
 
 	public static int sampleCategorical(double[] probs) {
-		final double x = random.nextDouble();
+		final double x = getRandom().nextDouble();
 
 		double sum = 0;
 		for (int i = 0; i < probs.length; i++) {
@@ -52,11 +55,15 @@ public class RandomUtil {
 		RandomUtil.random = random;
 	}
 
+	public static void setRandom(Supplier<Random> random) {
+		supplier = random;
+	}
+
 	public static void setRandomSeed(long seed) {
 		setRandom(new Random(seed));
 	}
 
 	public static Random getRandom() {
-		return random;
+		return supplier.get();
 	}
 }
