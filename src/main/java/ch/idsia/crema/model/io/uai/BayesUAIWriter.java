@@ -1,6 +1,6 @@
 package ch.idsia.crema.model.io.uai;
 
-import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.factor.bayesian.*;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
@@ -24,27 +24,54 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 		for (int v : target.getVariables()) {
 
 			final BayesianFactor f = target.getFactor(v);
-			final int vsize = f.getDomain().getCardinality(v);
 
-			final int[] vars = ArraysUtil.append(
-					new int[]{v},
-					ArraysUtil.reverse(target.getParents(v))
-			);
+			if (f instanceof BayesianDefaultFactor) {
 
-			// TODO: verify this
-			final IndexIterator it = f.getDomain().getReorderedIterator(vars);
+				final int vsize = f.getDomain().getCardinality(v);
 
-			final double[] probs = new double[f.getDomain().getCombinations()];
+				final int[] vars = ArraysUtil.append(
+						new int[]{v},
+						ArraysUtil.reverse(target.getParents(v))
+				);
 
-			for (int i = 0; i < probs.length; i++) {
-				probs[i] = f.getValueAt(it.next());
+				// TODO: verify this
+				final IndexIterator it = f.getDomain().getReorderedIterator(vars);
+
+				final double[] probs = new double[f.getDomain().getCombinations()];
+
+				for (int i = 0; i < probs.length; i++) {
+					probs[i] = f.getValueAt(it.next());
+				}
+
+				append(probs.length);
+
+				for (double[] p : ArraysUtil.reshape2d(probs, probs.length / vsize, vsize))
+					append("", str(p));
+
+			} else if (f instanceof BayesianLogicFactor) {
+				if (f instanceof BayesianAndFactor) {
+					append("AND");
+				} else if (f instanceof BayesianOrFactor) {
+					append("OR");
+				} else if (f instanceof BayesianNoisyOrFactor) {
+					append("NOISY-OR");
+					final double[] inhibitors = ((BayesianNoisyOrFactor) f).getInhibitors();
+					append(str(inhibitors.length), str(inhibitors));
+				}
+				final int[] parents = ((BayesianLogicFactor) f).getParents();
+				final int[] trueStates = ((BayesianLogicFactor) f).getTrueStates();
+
+				append(str(parents.length), str(parents));
+				append(str(trueStates.length), str(trueStates));
+
+			} else if (f instanceof BayesianNotFactor) {
+				append("NOT");
+				append(((BayesianNotFactor) f).getParent());
+				append(((BayesianNotFactor) f).getTrueState());
+
+			} else {
+				throw new IllegalArgumentException("Cannot serialize factor of class " + f.getClass());
 			}
-
-			append(probs.length);
-
-			for (double[] p : ArraysUtil.reshape2d(probs, probs.length / vsize, vsize))
-				append("", str(p));
-
 			append("");
 		}
 	}

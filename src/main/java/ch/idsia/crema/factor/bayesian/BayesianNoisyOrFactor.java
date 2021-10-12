@@ -5,31 +5,19 @@ import ch.idsia.crema.utility.ArraysUtil;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: crema
  * Date:    16.08.2021 15:33
  */
-public class BayesianNoisyOrFactor extends BayesianFunctionFactor {
+public class BayesianNoisyOrFactor extends BayesianLogicFactor {
 
-	/**
-	 * Variables defined on this factor (not parents).
-	 */
-	protected int variable;
-	/**
-	 * Variables that are parents.
-	 */
-	protected int[] parents;
-	/**
-	 * Value of the TRUE state for each parent.
-	 */
-	protected int[] trueStates;
 	/**
 	 * Noise activators.
 	 */
 	protected double[] inhibitors;
+
 
 	/**
 	 * A Noisy OR factor where the true states for each parent are defined externally.
@@ -40,11 +28,8 @@ public class BayesianNoisyOrFactor extends BayesianFunctionFactor {
 	 * @param inhibitors value for the noise for each given parent
 	 */
 	public BayesianNoisyOrFactor(Strides domain, int[] parents, int[] trueStates, double[] inhibitors) {
-		super(domain);
+		super(domain, parents, trueStates);
 		setF(this::f);
-		this.variable = ArraysUtil.difference(domain.getVariables(), parents)[0];
-		this.parents = parents;
-		this.trueStates = trueStates;
 		this.inhibitors = inhibitors;
 	}
 
@@ -56,13 +41,41 @@ public class BayesianNoisyOrFactor extends BayesianFunctionFactor {
 	 * @param inhibitors value for the noise for each given parent
 	 */
 	public BayesianNoisyOrFactor(Strides domain, int[] parents, double[] inhibitors) {
-		this(domain, parents, IntStream.of(parents).map(p -> domain.getCardinality(p) - 1).toArray(), inhibitors);
+		super(domain, parents);
+		this.inhibitors = inhibitors;
+	}
+
+	/**
+	 * Copy constructor.
+	 *
+	 * @param factor factor to copy from
+	 */
+	private BayesianNoisyOrFactor(BayesianNoisyOrFactor factor) {
+		super(factor);
+		this.inhibitors = ArrayUtils.clone(factor.inhibitors);
+	}
+
+	/**
+	 * A Noisy OR factor that has been filtered over the given variable and its state.
+	 *
+	 * @param factor   original factor to filter from
+	 * @param variable filtered variable
+	 * @param state    state of the filtered variable
+	 */
+	protected BayesianNoisyOrFactor(BayesianNoisyOrFactor factor, int variable, int state) {
+		super(factor, variable, state);
+		this.inhibitors = ArrayUtils.clone(factor.inhibitors);
+	}
+
+	public double[] getInhibitors() {
+		return inhibitors;
 	}
 
 	/**
 	 * @param offset offset to get the value for
-	 * @return 1.0 when at least one of the parents is in the TRUE state, otherwise 0.0
+	 * @return applies the inhibitions to compute the value
 	 */
+	@Override
 	protected double f(int offset) {
 		final int[] states = domain.getStatesFor(offset);
 		final int[] vars = domain.getVariables();
@@ -79,36 +92,47 @@ public class BayesianNoisyOrFactor extends BayesianFunctionFactor {
 			}
 		}
 
-		if (states[vars[variable]] == 1) {
+		// inhibitor value of observed parents
+		for (int v : observedVariables) {
+			final int x = ArraysUtil.indexOf(v, observedVariables);
+			final int p = ArraysUtil.indexOf(v, parents);
+			if (x > -1 && p > -1 && observedStates[x] == trueStates[p]) {
+				Q *= inhibitors[p];
+			}
+		}
+
+		// output if the node has evidence
+		if (isObserved && observedState == 1)
 			// P(or = y | ...)
 			return 1 - Q;
-		}
+		if (isObserved)
+			// P(or = n | ...)
+			return Q;
+
+		// output if the node has no evidence
+		if (states[ArraysUtil.indexOf(variable, vars)] == 1)
+			// P(or = y | ...)
+			return 1 - Q;
+
 		// P(or = n | ...)
 		return Q;
 	}
 
 	@Override
 	public BayesianFactor copy() {
-		return new BayesianNoisyOrFactor(domain, ArrayUtils.clone(parents), ArrayUtils.clone(trueStates), ArrayUtils.clone(inhibitors));
+		return new BayesianNoisyOrFactor(this);
 	}
 
 	@Override
 	public BayesianAbstractFactor filter(int variable, int state) {
-		// TODO: is this still valid for noisy-or?
 		final int p = ArraysUtil.indexOf(variable, parents);
 
-		if (p > -1 && trueStates[p] == state)
-			return BayesianFactorFactory.one(this.variable);
-
-		if (p > -1 && trueStates[p] != state && parents.length == 1)
+		if (p > -1 && trueStates[p] != state && parents.length - observedVariables.length == 1)
+			// last parents' state is off
 			return BayesianFactorFactory.zero(this.variable);
 
-		return new BayesianNoisyOrFactor(
-				getDomain().remove(variable),
-				ArrayUtils.remove(parents, p),
-				ArrayUtils.remove(trueStates, p),
-				ArrayUtils.remove(inhibitors, p)
-		);
+		// parent or variable is observed
+		return new BayesianNoisyOrFactor(this, variable, state);
 	}
 
 	@Override
