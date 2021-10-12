@@ -95,9 +95,9 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 		TIntObjectMap<List<LinearConstraint>> data = getData();
 
-		for (int k : data.keys())
+	/*	for (int k : data.keys())
 			newConstraints.put(k, new ArrayList<>());
-
+*/
 		// TODO: consider case with more than one variable on the left
 
 		if (dataDomain.contains(variable)) {
@@ -108,10 +108,13 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 		} else {
 			IndexIterator it = getSeparatingDomain().getFiteredIndexIterator(new int[]{variable}, new int[]{state});
+			int j = 0; // index in the new domain
 			while (it.hasNext()) {
 				int i = it.next();
-				newConstraints.put(i, data.get(i));
+				newConstraints.put(j, data.get(i));
+				j++;
 			}
+
 
 			newGroupDomain = groupDomain.removeAt(var_offset);
 		}
