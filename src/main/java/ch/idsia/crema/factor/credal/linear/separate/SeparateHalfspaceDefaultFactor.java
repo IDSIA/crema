@@ -95,9 +95,7 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 		TIntObjectMap<List<LinearConstraint>> data = getData();
 
-	/*	for (int k : data.keys())
-			newConstraints.put(k, new ArrayList<>());
-*/
+
 		// TODO: consider case with more than one variable on the left
 
 		if (dataDomain.contains(variable)) {
