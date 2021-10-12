@@ -62,10 +62,11 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 	private BayesianFactor random(GenericFactor factor) {
 		if (factor instanceof ExtensiveLinearFactor) {
 			return new ExtensiveLinearToRandomBayesian().apply((ExtensiveLinearFactor<?>) factor);
+		// TODO: issue #98, make this work without non-negative constraints
+		//} else if (factor instanceof SeparateHalfspaceFactor) {
+		//	return new HalfspaceToRandomBayesianFactor().apply((SeparateHalfspaceFactor) factor);
 		} else if (factor instanceof SeparateLinearFactor) {
 			return new SeparateLinearToRandomBayesian().apply((SeparateLinearFactor<?>) factor);
-		} else if (factor instanceof SeparateHalfspaceFactor) {
-			return new HalfspaceToRandomBayesianFactor().apply((SeparateHalfspaceFactor) factor);
 		} else if (factor instanceof BayesianFactor) {
 			return (BayesianFactor) factor;
 		}
