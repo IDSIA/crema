@@ -51,4 +51,23 @@ public class BayesianEntropyTest {
 
 		assertEquals(0, h, 1e-3);
 	}
+
+	@Test
+	void testEntropyDeterministic() {
+		BayesianFactor f1 = new BayesianDefaultFactor(new int[]{1}, new int[]{2}, new double[]{0., 1.});
+		BayesianFactor f2 = new BayesianDefaultFactor(new int[]{1}, new int[]{3}, new double[]{0., 1., 0.});
+		BayesianFactor f3 = new BayesianDefaultFactor(new int[]{1}, new int[]{4}, new double[]{0., 1., 0., 0.});
+		BayesianFactor f4 = new BayesianDefaultFactor(new int[]{1}, new int[]{4}, new double[]{0., .5, .5, 0.});
+
+		double h1 = H(f1);
+		double h2 = H(f2);
+		double h3 = H(f3);
+		double h4 = H(f4);
+
+		// adding .0 to avoid -0.0 numerical issue
+		assertEquals(.0, h1, 1e-6);
+		assertEquals(.0, h2, 1e-6);
+		assertEquals(.0, h3, 1e-6);
+		assertEquals(.5, h4, 1e-3);
+	}
 }
