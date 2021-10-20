@@ -11,9 +11,6 @@ import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
  * Author:  Claudio "Dna" Bonesana
  * Project: crema
@@ -248,5 +245,20 @@ public class LoopyBeliefPropagationTest {
 		System.out.println("VE:  P(Rain|Winter = false) =                      " + Qve);
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
+	}
+
+	@Test
+	void testObsOnQueryVariable() {
+		final BayesianNetwork model = BayesianNetworkContainer.mix5Variables().network;
+
+		final BeliefPropagation<BayesianFactor> lbp = new BeliefPropagation<>();
+
+		final TIntIntMap evidence = new TIntIntHashMap();
+		evidence.put(0, 1);
+
+		final BayesianFactor q = lbp.query(model, evidence, 0);
+		System.out.println(q);
+
+		assertEquals(1.0, q.getValue(0));
 	}
 }
