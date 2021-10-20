@@ -249,4 +249,19 @@ public class LoopyBeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 	}
+
+	@Test
+	void testObsOnQueryVariable() {
+		final BayesianNetwork model = BayesianNetworkContainer.mix5Variables().network;
+
+		final BeliefPropagation<BayesianFactor> lbp = new BeliefPropagation<>();
+
+		final TIntIntMap evidence = new TIntIntHashMap();
+		evidence.put(0, 1);
+
+		final BayesianFactor q = lbp.query(model, evidence, 0);
+		System.out.println(q);
+
+		assertEquals(1.0, q.getValue(0));
+	}
 }

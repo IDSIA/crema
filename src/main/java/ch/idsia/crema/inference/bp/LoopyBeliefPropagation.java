@@ -14,10 +14,8 @@ import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.SimpleGraph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static ch.idsia.crema.utility.ArraysUtil.outersection;
@@ -180,11 +178,18 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 	 */
 	@Override
 	public F query(DAGModel<F> original, TIntIntMap evidence, int query) {
-		final DAGModel<F> model = preprocess(original, evidence, query);
+		return query(original, evidence, new int[]{query}).get(0);
+	}
+
+	public List<F> query(DAGModel<F> original, TIntIntMap evidence, int... queries) {
+		final DAGModel<F> model = preprocess(original, evidence, queries);
 
 		initModel(model);
 		messagePassing(evidence);
-		return variableMarginal(query);
+
+		return Arrays.stream(queries)
+				.mapToObj(this::variableMarginal)
+				.collect(Collectors.toList());
 	}
 
 	protected void sendMessage(int i, int j, DAGModel<F> model, TIntIntMap evidence, Map<Pair<Integer, Integer>, F> new_messages) {
