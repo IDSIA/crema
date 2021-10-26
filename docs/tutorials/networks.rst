@@ -1,9 +1,9 @@
 .. highlight:: java
 
 
-===============
+================
 Graphical Models
-===============
+================
 
 Crema includes a few packages to work with probabilistc graphical models. 
 These include support the network representations, algorithms and modifiers. 

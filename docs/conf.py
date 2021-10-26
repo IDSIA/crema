@@ -39,11 +39,11 @@ extensions = ['sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.autodoc',
-    'sphinxcontrib.napoleon',
- #   'nbsphinx',
- "sphinx.ext.graphviz",
+    'sphinx.ext.napoleon',
+#   'nbsphinx',
+    'sphinx.ext.graphviz',
     'recommonmark',
-    ]
+]
 
 
 # Napoleon settings
@@ -136,12 +136,12 @@ html_logo = 'static/img/logo-doc.png'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['static']
+html_static_path = ['_static']
 
 html_context = {
-    'css_files': [
-        'static/css/crema_theme.css'
-    ],
+#     'css_files': [
+#         '_static/css/crema_theme.css'
+#     ],
 }
 
 
