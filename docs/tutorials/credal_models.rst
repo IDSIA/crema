@@ -1,9 +1,10 @@
-Model Definition
-================
+============
+Credal Model
+============
 
 
 Credal Set Specification
-------------------------
+========================
 
 For the definition of a credal set, the domains should be first specified.
 Discrete variable domains in Crema are managed with objects of class ``Strides``.
@@ -35,7 +36,7 @@ its constraints. This is done with the class ``SeparateHalfspaceFactor``.
 
 
 Credal Network Specification
-----------------------------
+============================
 
 For defining a credal network, create an object of class ``SparseModel``, specify
 the structure of the graph and associate the factors.
