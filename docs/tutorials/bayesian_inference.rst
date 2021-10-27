@@ -14,23 +14,21 @@ Exact Inference
 Variable Elimination
 ~~~~~~~~~~~~~~~~~~~~
 
+The ``VariableElimination`` inference algorithm uses a given *elimination sequence* in order to perform the inference.
+Each elimination sequence depends on the structure of the model and the variable to query.
+
+The implementation of this algorithm in Crema need an *algebra* to work. If this algebra is available externally, it is
+possible to use the ``VariableElimination<F>`` implementation; while if the existing ``FactorAlgebra`` is enough for the
+used factor, the wrapper class ``FactorVariableElimination<F>`` can be used.
 
 
 Belief Propagation
 ~~~~~~~~~~~~~~~~~~
 
-The ``BeliefPropagation`` inference algorithm works on the ``BayesianFactors`` of a ``BayesainNetwork``.
+The ``BeliefPropagation`` inference algorithm works by analyzing the model and build a ``JunctionTree``. Then it will
+use the *message passing* algorithm to performing the inference.
 
-The simplest way to run an inference using this algorithm is to instantiate it as an ``Inference`` object.
-
-.. literalinclude:: ../../examples/BeliefPropagationExample.java
-   :language: java
-   :start-after: [p1]
-   :end-before: [p2]
-   :dedent: 2
-
-
-Each call to a ``query()`` method will build a new ``JunctionTree`` from zero.
+Each call to the ``query()`` method will build a new ``JunctionTree`` from zero.
 
 To perform an inference on a variable, as an example if you want the marginal of ``P(A)``, use the ``query()`` method as
 in the example below:
@@ -73,10 +71,9 @@ query variable.
    :dedent: 2
 
 
-Full example:
-
-.. literalinclude:: ../../examples/BeliefPropagationExample.java
-   :language: java
+.. Full example:
+   .. literalinclude:: ../../examples/BeliefPropagationExample.java
+      :language: java
 
 
 Approximate Inference
@@ -86,7 +83,14 @@ Approximate Inference
 Sampling
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
+Crema offers two implementation of ``StochasticSampling`` for ``BayesianFactor``: the ``LogicSampling`` and the
+``LikelihoodWeightingSampling``. These sampling algorithms have different levels of precision based on the number of
+iterations performed.
+
 
 Loopy Belief Propagation
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
+This is an approximate version of the ``BeliefPropagation``: is uses the same *message passing* algorithm but without the
+burden to build a *junction tree*. The performance, and quality, of the algorithm can be managed by the number of
+iterations to execute.

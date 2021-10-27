@@ -52,8 +52,8 @@ Factor B
     We use the factory to set the probabilities for states ``0`` and ``1``.
 
 Factor C
-    We use the factory to set the whole joint probability for variable ``C`` using the states of all the variables in
-    the domain. In order: ``C``, ``A``, ``B``. Compare the order with the definition of ``domC``.
+    We use the factory to set the whole joint probability table for variable ``C`` using the states of all the variables
+    in the domain. In order: ``C``, ``A``, ``B``. Compare the order with the variable order in the definition of ``domC``.
 
 
 Full example:
