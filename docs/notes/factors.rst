@@ -264,6 +264,21 @@ offers two methods to access the values: one for log (as an example, ``BayesianF
 normal space (following the example, ``BayesianFactor#getValue(int)``).
 
 
+Factory
+=======
+
+Although all factors can be instantiated directly with the ``new`` keyord, many factor groups have a so called *factory*
+class. This is an helper class that simplify the build of the factors with helper methods and functions. All factor
+classes have the ``factory()`` static method that will instantiate the factory. All the methods of a factory can be
+chained together in a fluent way.
+
+To obtain a factor once the factory setup is complete, just call one of the builder methods like ``get()`` or ``log()``.
+
+.. note::
+
+   Check the latest version of the `JavaDoc <https://idsia.github.io/crema/javadoc/>`_ to find more on this argument.
+
+
 Conversion
 ==========
 
