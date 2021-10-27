@@ -37,12 +37,9 @@ public class BeliefPropagationExample {
 		// Assign factors to model
 		model.setFactors(factors);
 
-		// Output factor
-		BayesianFactor factor;
-
 		// [p1] Perform a query using the inference interface
 		Inference<DAGModel<BayesianFactor>, BayesianFactor> inf = new BeliefPropagation<>();
-		factor = inf.query(model, A);
+		BayesianFactor factor = inf.query(model, A);
 
 		// [p2] Simple Inference
 		// P(A)
