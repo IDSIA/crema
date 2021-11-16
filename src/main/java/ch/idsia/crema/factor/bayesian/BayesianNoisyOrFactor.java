@@ -16,7 +16,7 @@ public class BayesianNoisyOrFactor extends BayesianLogicFactor {
 	/**
 	 * Noise activators.
 	 */
-	protected double[] inhibitors;
+	protected double[] strengths;
 
 
 	/**
@@ -25,24 +25,24 @@ public class BayesianNoisyOrFactor extends BayesianLogicFactor {
 	 * @param domain     working domain of this factor
 	 * @param parents    variables that are parents of this factor
 	 * @param trueStates index of the state to be considered as TRUE for each given parent
-	 * @param inhibitors value for the noise for each given parent
+	 * @param strengths  value of the strength of the inhibition (the probability of yes, given yes)
 	 */
-	public BayesianNoisyOrFactor(Strides domain, int[] parents, int[] trueStates, double[] inhibitors) {
+	public BayesianNoisyOrFactor(Strides domain, int[] parents, int[] trueStates, double[] strengths) {
 		super(domain, parents, trueStates);
 		setF(this::f);
-		this.inhibitors = inhibitors;
+		this.strengths = strengths;
 	}
 
 	/**
 	 * A Noisy OR factor where the true state for each parent is the higher state available.
 	 *
-	 * @param domain     working domain of this factor
-	 * @param parents    variables that are parents of this factor
-	 * @param inhibitors value for the noise for each given parent
+	 * @param domain    working domain of this factor
+	 * @param parents   variables that are parents of this factor
+	 * @param strengths value of the strength of the inhibition
 	 */
-	public BayesianNoisyOrFactor(Strides domain, int[] parents, double[] inhibitors) {
+	public BayesianNoisyOrFactor(Strides domain, int[] parents, double[] strengths) {
 		super(domain, parents);
-		this.inhibitors = inhibitors;
+		this.strengths = strengths;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class BayesianNoisyOrFactor extends BayesianLogicFactor {
 	 */
 	private BayesianNoisyOrFactor(BayesianNoisyOrFactor factor) {
 		super(factor);
-		this.inhibitors = ArrayUtils.clone(factor.inhibitors);
+		this.strengths = ArrayUtils.clone(factor.strengths);
 	}
 
 	/**
@@ -64,16 +64,16 @@ public class BayesianNoisyOrFactor extends BayesianLogicFactor {
 	 */
 	protected BayesianNoisyOrFactor(BayesianNoisyOrFactor factor, int variable, int state) {
 		super(factor, variable, state);
-		this.inhibitors = ArrayUtils.clone(factor.inhibitors);
+		this.strengths = ArrayUtils.clone(factor.strengths);
 	}
 
-	public double[] getInhibitors() {
-		return inhibitors;
+	public double[] getStrengths() {
+		return strengths;
 	}
 
 	/**
 	 * @param offset offset to get the value for
-	 * @return applies the inhibitions to compute the value
+	 * @return applies the strength of the inhibitions to compute the value
 	 */
 	@Override
 	protected double f(int offset) {
@@ -87,7 +87,7 @@ public class BayesianNoisyOrFactor extends BayesianLogicFactor {
 			final int p = ArraysUtil.indexOf(v, parents);
 			if (p > -1) {
 				if (trueStates[p] == states[i]) {
-					Q *= inhibitors[p];
+					Q *= 1 - strengths[p];
 				}
 			}
 		}
@@ -97,7 +97,7 @@ public class BayesianNoisyOrFactor extends BayesianLogicFactor {
 			final int x = ArraysUtil.indexOf(v, observedVariables);
 			final int p = ArraysUtil.indexOf(v, parents);
 			if (x > -1 && p > -1 && observedStates[x] == trueStates[p]) {
-				Q *= inhibitors[p];
+				Q *= 1 - strengths[p];
 			}
 		}
 

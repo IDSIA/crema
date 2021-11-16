@@ -52,7 +52,7 @@ public class BayesUAIWriterTest {
 		f[0] = BayesianFactorFactory.factory().domain(bn.getDomain(x1)).data(new double[]{.5, .5}).get();
 		f[1] = BayesianFactorFactory.factory().domain(bn.getDomain(x2)).data(new double[]{.5, .5}).get();
 		f[2] = BayesianFactorFactory.factory().domain(bn.getDomain(x1, x2, x3))
-				.noisyOr(new int[]{x1, x2}, new int[]{0, 1}, new double[]{.4, .7});
+				.noisyOr(new int[]{x1, x2}, new int[]{0, 1}, new double[]{.6, .3});
 
 		bn.setFactors(f);
 
@@ -70,7 +70,7 @@ public class BayesUAIWriterTest {
 		final BayesianNoisyOrFactor fa = (BayesianNoisyOrFactor) bn.getFactor(2);
 		final BayesianNoisyOrFactor fb = (BayesianNoisyOrFactor) bn2.getFactor(2);
 
-		Assertions.assertArrayEquals(fa.getInhibitors(), fb.getInhibitors());
+		Assertions.assertArrayEquals(fa.getStrengths(), fb.getStrengths());
 		Assertions.assertArrayEquals(fa.getParents(), fb.getParents());
 	}
 

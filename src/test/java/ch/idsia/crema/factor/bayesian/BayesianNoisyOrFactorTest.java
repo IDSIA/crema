@@ -30,7 +30,7 @@ class BayesianNoisyOrFactorTest {
 
 		final BayesianFactor TRUE = new BayesianDefaultFactor(m.getDomain(A), new double[]{.3, .7});
 		final BayesianFactor FALSE = new BayesianDefaultFactor(m.getDomain(B), new double[]{.6, .4});
-		final BayesianFactor OR = new BayesianNoisyOrFactor(m.getDomain(A, B, O), new int[]{A, B}, new double[]{.1, .2});
+		final BayesianFactor OR = new BayesianNoisyOrFactor(m.getDomain(A, B, O), new int[]{A, B}, new double[]{.9, .8});
 
 		m.setFactor(A, TRUE);
 		m.setFactor(B, FALSE);
@@ -69,7 +69,7 @@ class BayesianNoisyOrFactorTest {
 
 	@Test
 	void testFilterToZero() {
-		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2).size(2, 2).strides(), new int[]{1}, new double[]{.3});
+		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2).size(2, 2).strides(), new int[]{1}, new double[]{.7});
 		final BayesianFactor a = o.filter(1, 0);
 		final BayesianFactor zero = BayesianFactorFactory.zero(2);
 
@@ -78,7 +78,7 @@ class BayesianNoisyOrFactorTest {
 
 	@Test
 	void testFilterMultipleParents() {
-		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2, 3).size(2, 2, 2).strides(), new int[]{1, 2}, new double[]{.3, .4});
+		final BayesianFactor o = new BayesianNoisyOrFactor(DomainBuilder.var(1, 2, 3).size(2, 2, 2).strides(), new int[]{1, 2}, new double[]{.7, .6});
 		final BayesianFactor a = o.filter(1, 0);
 		final BayesianFactor b = o.filter(2, 0);
 		final BayesianFactor c = o.filter(1, 1);
@@ -90,13 +90,13 @@ class BayesianNoisyOrFactorTest {
 
 		final BayesianFactor zero = BayesianFactorFactory.zero(3);
 
-		Assertions.assertEquals(.3, c.getValue(0, 0));
-		Assertions.assertEquals(.7, c.getValue(0, 1));
-		Assertions.assertEquals(.12, c.getValue(1, 0));
-		Assertions.assertEquals(.88, c.getValue(1, 1));
+		Assertions.assertEquals(.3, c.getValue(0, 0), 1e-6);
+		Assertions.assertEquals(.7, c.getValue(0, 1), 1e-6);
+		Assertions.assertEquals(.12, c.getValue(1, 0), 1e-6);
+		Assertions.assertEquals(.88, c.getValue(1, 1), 1e-6);
 
-		Assertions.assertEquals(.4, aa.getValue(0));
-		Assertions.assertEquals(.3, bb.getValue(0));
+		Assertions.assertEquals(.4, aa.getValue(0), 1e-6);
+		Assertions.assertEquals(.3, bb.getValue(0), 1e-6);
 
 		Assertions.assertEquals(2, aa.getDomain().getSizes()[0]);
 		Assertions.assertEquals(2, bb.getDomain().getSizes()[0]);
@@ -123,8 +123,8 @@ class BayesianNoisyOrFactorTest {
 			m.addParent(A, B[i]);
 		}
 
-		// inhibitors
-		final double[] p = {.20, .25, .30, .35, .40, .45, .50, .55, .60, .65};
+		// strengths
+		final double[] p = {.80, .75, .70, .65, .60, .55, .50, .45, .40, .35};
 
 		// Noisy-Or
 		final BayesianFactor fA = new BayesianNoisyOrFactor(m.getDomain(preAppend(B, A)), B, p);
