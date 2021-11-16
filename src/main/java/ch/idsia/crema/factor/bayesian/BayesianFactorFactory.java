@@ -342,11 +342,11 @@ public class BayesianFactorFactory {
 	/**
 	 * Requires a pre-defined Domain.
 	 *
-	 * @param parents    variables that are parents of this factor
-	 * @param inhibitors values for the noise for each given parent
+	 * @param parents   variables that are parents of this factor
+	 * @param strengths values for the inhibition strength for each given parent
 	 * @return a logic {@link BayesianNoisyOrFactor}
 	 */
-	public BayesianNoisyOrFactor noisyOr(int[] parents, double[] inhibitors) {
+	public BayesianNoisyOrFactor noisyOr(int[] parents, double[] strengths) {
 		// sort variables
 		final int[] vars = ArraysUtil.sort(domain.getVariables());
 		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
@@ -354,12 +354,12 @@ public class BayesianFactorFactory {
 
 		// sort parents
 		final int[] pars = new int[parents.length];
-		final double[] inbs = new double[inhibitors.length];
+		final double[] inbs = new double[strengths.length];
 
 		for (int i = 0; i < order.length; i++) {
 			int o = order[i];
 			pars[i] = parents[o];
-			inbs[i] = inhibitors[o];
+			inbs[i] = strengths[o];
 		}
 
 		return new BayesianNoisyOrFactor(new Strides(vars, sizes), pars, inbs);
@@ -370,10 +370,10 @@ public class BayesianFactorFactory {
 	 *
 	 * @param parents    variables that are parents of this factor
 	 * @param trueStates index of the state to be considered as TRUE for each given parent
-	 * @param inhibitors values for the noise for each given parent
+	 * @param strengths  values for the inhibition strength for each given parent
 	 * @return a logic {@link BayesianNoisyOrFactor}
 	 */
-	public BayesianNoisyOrFactor noisyOr(int[] parents, int[] trueStates, double[] inhibitors) {
+	public BayesianNoisyOrFactor noisyOr(int[] parents, int[] trueStates, double[] strengths) {
 		// sort variables
 		final int[] vars = ArraysUtil.sort(domain.getVariables());
 		final int[] sizes = IntStream.of(vars).map(domain::indexOf).map(domain::getSizeAt).toArray();
@@ -382,13 +382,13 @@ public class BayesianFactorFactory {
 		// sort parents
 		final int[] pars = new int[parents.length];
 		final int[] trus = new int[trueStates.length];
-		final double[] inbs = new double[inhibitors.length];
+		final double[] inbs = new double[strengths.length];
 
 		for (int i = 0; i < order.length; i++) {
 			int o = order[i];
 			pars[i] = parents[o];
 			trus[i] = trueStates[o];
-			inbs[i] = inhibitors[o];
+			inbs[i] = strengths[o];
 		}
 
 		return new BayesianNoisyOrFactor(new Strides(vars, sizes), pars, trus, inbs);

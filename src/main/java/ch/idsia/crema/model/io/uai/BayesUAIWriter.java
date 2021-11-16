@@ -55,8 +55,8 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 					append("OR");
 				} else if (f instanceof BayesianNoisyOrFactor) {
 					append("NOISY-OR");
-					final double[] inhibitors = ((BayesianNoisyOrFactor) f).getInhibitors();
-					append(str(inhibitors.length), str(inhibitors));
+					final double[] strengths = ((BayesianNoisyOrFactor) f).getStrengths();
+					append(str(strengths.length), str(strengths));
 				}
 				final int[] parents = ((BayesianLogicFactor) f).getParents();
 				final int[] trueStates = ((BayesianLogicFactor) f).getTrueStates();
