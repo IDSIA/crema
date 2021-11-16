@@ -60,7 +60,7 @@ public class BayesUAIWriterTest {
 
 		String str = String.join("\n", lines.subList(14, lines.size()));
 
-		Assertions.assertEquals("NOISY-OR\n2 0.4 0.7\n2 0 1\n2 0 1\n", str);
+		Assertions.assertEquals("NOISY-OR\n2 0.6 0.3\n2 0 1\n2 0 1\n", str);
 
 		BayesianNetwork bn2 = new BayesUAIParser(lines).parse();
 
