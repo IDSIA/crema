@@ -2,15 +2,17 @@ package examples;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
+import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.bp.BeliefPropagation;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import gnu.trove.map.hash.TIntIntHashMap;
 
-public class BeliefPropagation {
+public class BeliefPropagationExample {
 
 	public static void main(String[] args) {
-		/* Define your Bayesian Network model */
 
+		// Define your Bayesian Network model
 		BayesianNetwork model = new BayesianNetwork();
 		int A = model.addVariable(2);
 		int B = model.addVariable(2);
@@ -19,7 +21,7 @@ public class BeliefPropagation {
 		model.addParent(B, A);
 		model.addParent(C, A);
 
-		// define the Bayesian Factors
+		// Define the Bayesian Factors
 		BayesianFactor[] factors = new BayesianFactor[3];
 
 		factors[A] = BayesianFactorFactory.factory().domain(model.getDomain(A))
@@ -35,38 +37,39 @@ public class BeliefPropagation {
 		// Assign factors to model
 		model.setFactors(factors);
 
-		// Instantiate the inference algorithm over BayesianFactors using the model
-		BayesianFactor factor;
+		// [p1] Perform a query using the inference interface
+		Inference<DAGModel<BayesianFactor>, BayesianFactor> inf = new BeliefPropagation<>();
+		BayesianFactor factor = inf.query(model, A);
 
-		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>();
-
-		// perform a full update
-		factor = bp.fullPropagation(model, A);
-
-		// perform the distribution step
-		bp.distributingEvidence();
-
-		// perform the collection step
-		factor = bp.collectingEvidence(A);
-
-		// Simple Inference
-
+		// [p2] Simple Inference
 		// P(A)
-		BayesianFactor pA = bp.query(model, A);
+		BayesianFactor pA = inf.query(model, A);
 
-		// Inference with evidence
-
+		// [p3] Inference with evidence
 		// P(A | B=0)
 		TIntIntHashMap evidence = new TIntIntHashMap();
 		evidence.put(B, 0);
 
-		BayesianFactor pAB0 = bp.query(model, evidence, A);
+		BayesianFactor pAb0 = inf.query(model, evidence, A);
 
 		// P(A | B=0, C=1)
 		evidence = new TIntIntHashMap();
 		evidence.put(B, 0);
 		evidence.put(C, 1);
 
-		BayesianFactor pAB0C1 = bp.query(model, evidence, A);
+		BayesianFactor pAb0c1 = inf.query(model, evidence, A);
+
+		// [p4] Instantiate the inference algorithm over BayesianFactors using the model
+		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>();
+
+		// [p5] Perform a full update
+		factor = bp.fullPropagation(model, A);
+
+		// Perform the distribution step
+		bp.distributingEvidence();
+
+		// Perform the collection step
+		factor = bp.collectingEvidence(A);
+		// [p6] end
 	}
 }

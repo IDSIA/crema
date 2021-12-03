@@ -95,8 +95,6 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 		TIntObjectMap<List<LinearConstraint>> data = getData();
 
-		for (int k : data.keys())
-			newConstraints.put(k, new ArrayList<>());
 
 		// TODO: consider case with more than one variable on the left
 
@@ -108,10 +106,13 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 		} else {
 			IndexIterator it = getSeparatingDomain().getFiteredIndexIterator(new int[]{variable}, new int[]{state});
+			int j = 0; // index in the new domain
 			while (it.hasNext()) {
 				int i = it.next();
-				newConstraints.put(i, data.get(i));
+				newConstraints.put(j, data.get(i));
+				j++;
 			}
+
 
 			newGroupDomain = groupDomain.removeAt(var_offset);
 		}
@@ -185,7 +186,7 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 		final TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
 		for (int i : data.keys()) {
-			constraints.get(i).addAll(i, ConstraintsUtil.removeNormalization(getLinearProblemAt(i).getConstraints()));
+			constraints.get(i).addAll(ConstraintsUtil.removeNormalization(getLinearProblemAt(i).getConstraints()));
 		}
 		return new SeparateHalfspaceDefaultFactor(getDataDomain(), getSeparatingDomain(), constraints);
 	}
@@ -195,7 +196,7 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 		final TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
 		for (int i : data.keys()) {
-			constraints.get(i).addAll(i, ConstraintsUtil.removeNonNegative(getLinearProblemAt(i).getConstraints()));
+			constraints.get(i).addAll(ConstraintsUtil.removeNonNegative(getLinearProblemAt(i).getConstraints()));
 		}
 		return new SeparateHalfspaceDefaultFactor(getDataDomain(), getSeparatingDomain(), constraints);
 	}

@@ -1,3 +1,15 @@
+0.2.2
+===========
+
+- Fixes and updates to `BayesianLogicFactors` serialization ( #92 #94 #95 #103 )
+- Added new capabilities for `BayesianNetworkSampling` ( #96 )
+- Added possibility to use lambda functions to `RandomUtil#getRandom()` ( #97 )
+- Added multi query to `LoopyBeliefPropagation` ( #101 )
+- Restored behavior of pre 1.7.0 for `Neighborhood#random()` method ( #100 )
+- Fixed an issue with `BayesianEntropy `
+- New documentation ( #102 )
+
+
 0.2.1
 ===========
 

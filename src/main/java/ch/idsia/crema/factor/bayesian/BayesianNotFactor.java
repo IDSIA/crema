@@ -25,6 +25,7 @@ public class BayesianNotFactor extends BayesianFunctionFactor {
 	 */
 	protected int trueState;
 
+
 	protected BayesianNotFactor(Strides domain, int parent, int trueState) {
 		super(domain);
 		if (domain.getVariables().length > 2)
@@ -37,6 +38,19 @@ public class BayesianNotFactor extends BayesianFunctionFactor {
 
 	public BayesianNotFactor(Strides domain, int parent) {
 		this(domain, parent, domain.getCardinality(parent) - 1);
+	}
+
+	private BayesianNotFactor(BayesianNotFactor factor) {
+		this(factor.getDomain(), factor.parent, factor.trueState);
+		this.variable = factor.variable;
+	}
+
+	public int getParent() {
+		return parent;
+	}
+
+	public int getTrueState() {
+		return trueState;
 	}
 
 	protected double f(int offset) {
@@ -54,7 +68,7 @@ public class BayesianNotFactor extends BayesianFunctionFactor {
 
 	@Override
 	public BayesianFactor copy() {
-		return new BayesianNotFactor(getDomain(), parent, trueState);
+		return new BayesianNotFactor(this);
 	}
 
 	@Override
