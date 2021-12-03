@@ -7,6 +7,7 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
 import com.google.common.primitives.Ints;
 import gnu.trove.map.TIntIntMap;
+import gnu.trove.map.hash.TIntIntHashMap;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -61,6 +62,10 @@ public class ConditionalVariableElimination extends VariableElimination<Bayesian
 			cond = ((BayesianDefaultFactor) cond).replaceNaN(0.0);
 
 		return cond;
+	}
+
+	public BayesianFactor query(GraphicalModel<BayesianFactor> model, int... target) {
+		return this.query(model, new TIntIntHashMap(), target);
 	}
 
 }

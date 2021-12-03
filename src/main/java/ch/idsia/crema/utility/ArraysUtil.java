@@ -1184,4 +1184,23 @@ public class ArraysUtil {
 		}
 	}
 
+	/**
+	 * Function that transforms an array such that all the non-zero elements sum exactly 1.0
+	 * @param vector
+	 * @return
+	 */
+	public static double[] normalizeNonZeros(double[] vector){
+		if(Arrays.stream(vector).sum()!=1.0) {
+			// Find the last element different to zero
+			int idx = vector.length - 1;
+			while (idx > 0 && vector[idx] == 0.0) idx--;
+
+			double sum = 0.0;
+			for (int i = 0; i < idx; i++) sum += vector[i];
+			vector[idx] = 1.0 - sum;
+		}
+		return vector;
+
+	}
+
 }
