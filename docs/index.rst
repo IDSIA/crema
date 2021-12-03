@@ -5,12 +5,13 @@
 
 
 
+==================================================
 Crema: A Java Toolbox for Credal Models Algorithms
-=========================================================================
+==================================================
 
 
 .. image:: _static/img/logo.png
-   	:scale: 50 %
+   	:scale: 30 %
    	:align: center
 
 |
@@ -24,7 +25,6 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
 * Models can be loaded and exported in UAI-based format for credal networks.
 
 
-
 .. .. toctree::
 .. :hidden:
 
@@ -36,21 +36,21 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
    :includehidden:
    :maxdepth: 1
    :caption: Quick Start
-   
-   notes/getting30s
-   notes/requirements
-   notes/installation
+
+   quick/installation
+   quick/getting_started
+   quick/requirements
+   JavaDoc <https://idsia.github.io/crema/javadoc/>
 
 
 .. toctree::
    :includehidden:
    :maxdepth: 1
-   :caption: Guides
+   :caption: Notes
 
-   notes/modeldef
-   notes/guideinference
-   notes/bayesianinference
-   JavaDoc <https://idsia.github.io/crema/javadoc/>
+   notes/factors.rst
+   notes/models.rst
+   notes/inference.rst
 
 
 .. toctree::
@@ -58,10 +58,11 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
    :maxdepth: 1
    :caption: Tutorials
 
-   tutorials/factors.rst
    tutorials/domains.rst
    tutorials/iterators.rst
-   tutorials/networks.rst
+   tutorials/credal_models.rst
+   tutorials/credal_inference.rst
+   tutorials/bayesian_networks.rst
    tutorials/bayesian_inference.rst
 
 
@@ -70,7 +71,7 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
    :maxdepth: 1
    :caption: Other
 
-   notes/contact
+   contact
 
 
 .. Indices and tables
@@ -83,6 +84,7 @@ Crema (CREdal Models Algorithms) is an Java library for inference in credal netw
 
 .. role:: bash(code)
    :language: bash
+.. role:: java(code)
+   :language: java
 .. role:: python(code)
    :language: python3
-

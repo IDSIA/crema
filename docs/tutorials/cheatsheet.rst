@@ -31,7 +31,7 @@ Add code directly in the rst file:
 To add a code from a source file file:
 
 
-.. literalinclude:: ../../examples/CausalModel.java
+.. literalinclude:: ../../examples/BayesianFactors.java
    :language: java
    :lines: 4-10
 

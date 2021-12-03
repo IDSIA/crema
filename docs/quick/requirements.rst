@@ -1,18 +1,18 @@
 Requirements
-================
+============
 
 System
------------------
+------
 
-Crema requires Java 11 or higher and maven (`https://maven.apache.org <https://maven.apache.org>`_).
-Tests have been done under Linux Ubuntu and macOS with openjdk 11 and 12.
+Build the Crema library requires Java 11 or higher and Maven (`https://maven.apache.org <https://maven.apache.org>`_).
+
+Tests have been done under Linux Ubuntu, Windows 10, and macOS with openjdk 11, 12, and 16. Continuous integration tests
+are done using Ubuntu Latest and JDK 11 via `GitHub Actions <https://github.com/IDSIA/crema/actions>`_.
 
 Package Dependencies
--------------------------
+--------------------
 
-Crema contains the dependencies shown below which are transparently
-managed with maven.
-
+Crema contains the dependencies shown below which are managed using Maven.
 
 - ch.javasoft.polco:polco:jar:4.7.1:compile
 - colt:colt:jar:1.2.0:compile
@@ -53,3 +53,22 @@ managed with maven.
 - org.junit.platform:junit-platform-commons:jar:1.4.2:test
 - org.opentest4j:opentest4j:jar:1.1.1:test
 - org.slf4j:slf4j-api:jar:1.7.7:compile
+
+
+External Dipendencies
+-------------------------
+
+In order to compile Crema from source code, two dependencies not available in Maven repositories need to be installed
+manually.
+
+lpsolve
+
+.. code-block:: java
+
+    mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.2:get -DgroupId=net.sf.lpsolve -DartifactId=lp_solve -Dversion=5.5.2 -Dpackaging=jar -DremoteRepositories=https://raw.github.com/idsia/crema/mvn-repo/
+
+polco
+
+.. code-block:: java
+
+    mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.2:get -DgroupId=ch.javasoft.polco -DartifactId=polco -Dversion=4.7.1 -Dpackaging=jar -DremoteRepositories=https://raw.github.com/idsia/crema/mvn-repo/

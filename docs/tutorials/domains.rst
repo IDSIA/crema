@@ -9,7 +9,7 @@ Domains
 
 
 Domain interface
-=======
+================
 
 Domains in Crema are located in the :code:`ch.idsia.crema.model` package.
 They are all instances of the :code:`Domain` interface. 

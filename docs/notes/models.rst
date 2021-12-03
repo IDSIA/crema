@@ -1,9 +1,9 @@
 .. highlight:: java
 
 
-===============
+================
 Graphical Models
-===============
+================
 
 Crema includes a few packages to work with probabilistc graphical models. 
 These include support the network representations, algorithms and modifiers. 
@@ -15,6 +15,7 @@ As an exercise we will be creating a Bayesian Networks with 3 nodes connected in
 following picture.
 
 .. graphviz::
+   :align: center
 
     digraph example1 {
         A -> C;
@@ -33,7 +34,7 @@ DAG Models
 -----------
 
 The main implementation for directed acyclic graphs is the :code:`DAGModel` class. 
-Crema uses `JGraphT`_ SimpleGraph to store the actual graph.
+Crema uses `JGraphT`_ ``SimpleGraph`` object to store the actual graph.
 
 .. _JGraphT: https://jgrapht.org/
 
