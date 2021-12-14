@@ -24,3 +24,4 @@ target/
 */docs/_build/*
 
 .vscode/
+build/
