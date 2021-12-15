@@ -1,4 +1,5 @@
 #include "Domain.h"
+#include "ObservationBuilder.h"
 
 #include <vector>
 
@@ -21,7 +22,8 @@ namespace crema
         class Stride : public Domain
         {
         private:
-            int cardinality;
+            int combinations;
+            int size;
 
             vector<int> variables;
             vector<int> sizes;
@@ -37,6 +39,14 @@ namespace crema
              */
             Stride(const vector<int> &variables, const vector<int> &sizes);
 
+            /**
+             * @brief Creates a stride with a single variable excluded. Note that the variable must not be missing in the provided domain.
+             * 
+             * @param domain 
+             * @param offset 
+             */
+            Stride(Stride domain, int offset);
+
             int indexOf(int variable) override;
 
             int getCardinality(int variable) override;
@@ -50,6 +60,12 @@ namespace crema
             int getSizeAt(int index) override;
 
             void removed(int variable) override;
+
+            vector<int> *getStrides();
+
+            vector<int> statesOf(int offset);
+
+            ObservationBuilder observationOf(int offset);
         };
     }
 }
