@@ -1,0 +1,7 @@
+#ifndef IDSIA_CREMA_H
+#define IDSIA_CREMA_H
+
+#define Crema_VERSION_MAJOR @Crema_VERSION_MAJOR@
+#define Crema_VERSION_MINOR @Crema_VERSION_MINOR@
+
+#endif // IDSIA_CREMA_H
