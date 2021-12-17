@@ -125,3 +125,8 @@ vector<int> Stride::statesOf(int offset)
     }
     return result;
 }
+
+ObservationBuilder Stride::observationOf(int offset)
+{
+    return ObservationBuilder::observe(getVariables(), statesOf(offset));
+}

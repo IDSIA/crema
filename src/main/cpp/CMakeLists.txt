@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(Crema VERSION 0.3.0)
+project(
+    Crema 
+    VERSION 0.3.0
+    LANGUAGES CXX
+)
 
 # specify the C++17 standard
 set(CMAKE_CXX_STANDARD 17)
@@ -8,19 +12,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_CURRENT_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-# configure_file("${CMAKE_CURRENT_CMAKE_DIR}/crema.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/crema/crema.h")
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(BOOST_REQUESTED_VERSION "1.78.0")
+
+find_package(Boost COMPONENTS graph)
+
+file(GLOB_RECURSE SRC_FILES
+    "${PROJECT_SOURCE_DIR}/crema/*.h"
+    "${PROJECT_SOURCE_DIR}/crema/*.cpp"
+)
+
+include_directories(${BOOST_INCLUDE_DIRS})
+
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES})
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG "${PROJECT_BINARY_DIR}/bin/src/")
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PROJECT_BINARY_DIR}/bin/src/")
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 # target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}")
-
-set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
-set(Boost_USE_DEBUG_LIBS        OFF)  # ignore debug libs and
-set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
-set(Boost_USE_MULTITHREADED      ON)
-set(Boost_USE_STATIC_RUNTIME    OFF)
-find_package(Boost 1.78.0 COMPONENTS graph) # TODO: put as required
-
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS}) 
-    add_executable(progname file1.cxx file2.cxx) 
-    target_link_libraries(progname ${Boost_LIBRARIES})
-endif()

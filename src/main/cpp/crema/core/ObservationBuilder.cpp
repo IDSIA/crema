@@ -8,6 +8,14 @@
 using namespace crema::core;
 using namespace std;
 
+ObservationBuilder::ObservationBuilder(vector<int> keys) : vars(keys)
+{
+}
+
+ObservationBuilder::ObservationBuilder(vector<int> keys, vector<int> values)
+{
+}
+
 ObservationBuilder ObservationBuilder::observe(int var, int state)
 {
     return ObservationBuilder({var}, {state});

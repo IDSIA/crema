@@ -22,9 +22,9 @@ namespace crema
             // static vector<ObservationBuilder> observe(vector<string> vars, vector<vector<double>> data); TODO: remove this
             static vector<ObservationBuilder> observe(vector<int> vars, vector<vector<double>> data);
 
-            ObservationBuilder &and_(int var, int state); // TODO: and is a reserved keyword!
+            ObservationBuilder *and_(int var, int state); // TODO: and is a reserved keyword!
 
-            ObservationBuilder &states(int states...);
+            ObservationBuilder *states(int states...);
 
             static ObservationBuilder vars(int vars...);
 
