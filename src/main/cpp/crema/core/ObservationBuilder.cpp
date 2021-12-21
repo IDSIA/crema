@@ -1,5 +1,5 @@
 #include "ObservationBuilder.h"
-#include "ArraysUtil.h"
+#include "utils/ArraysUtil.h"
 
 #include <algorithm>
 #include <cmath>

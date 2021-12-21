@@ -1,5 +1,5 @@
 #include "Strides.h"
-#include "ArraysUtil.h"
+#include "utils/ArraysUtil.h"
 
 #include <algorithm>
 

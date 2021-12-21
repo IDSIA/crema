@@ -23,8 +23,6 @@ configure_file("${CMAKE_MODULE_PATH}/version.h.in" "${CREMA_SOURCE_DIR}/version.
 add_library(${PROJECT_NAME} SHARED)
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-    ${CREMA_MODULE_CORE}
-    ${CREMA_MODULE_UTILS}
     ${CREMA_SOURCE_DIR}
 )
 target_sources(${PROJECT_NAME}
