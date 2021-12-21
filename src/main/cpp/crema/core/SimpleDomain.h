@@ -1,3 +1,6 @@
+#ifndef IDSIA_CREMA_CORE_SIMPLEDOMAIN_H
+#define IDSIA_CREMA_CORE_SIMPLEDOMAIN_H
+
 #include "Domain.h"
 
 #include <vector>
@@ -40,3 +43,5 @@ namespace crema
         };
     }
 }
+
+#endif // IDSIA_CREMA_CORE_SIMPLEDOMAIN_H

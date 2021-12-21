@@ -1,3 +1,6 @@
+#ifndef IDSIA_CREMA_CORE_DOMAIN_H
+#define IDSIA_CREMA_CORE_DOMAIN_H
+
 #include <vector>
 
 using namespace std;
@@ -78,3 +81,5 @@ namespace crema
         };
     }
 }
+
+#endif // IDSIA_CREMA_CORE_DOMAIN_H

@@ -1,3 +1,6 @@
+#ifndef IDSIA_CREMA_UTILS_ARRAYSUTIL_H
+#define IDSIA_CREMA_UTILS_ARRAYSUTIL_H
+
 #include <vector>
 
 using namespace std;
@@ -17,7 +20,7 @@ namespace crema
          * @return int the position of the element in the vector if found, otherwise -1
          */
         template <typename T>
-        int indexOf(const vector<T> &vector, const T &element);
+        int indexOf(vector<T> &vector, T &element);
 
         template <typename T>
         vector<T> slice(vector<T> array, int idx...);
@@ -27,3 +30,5 @@ namespace crema
     } // namespace utils
 
 } // namespace crema
+
+#endif // IDSIA_CREMA_UTILS_ARRAYSUTIL_H

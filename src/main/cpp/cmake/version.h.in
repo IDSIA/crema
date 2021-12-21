@@ -3,5 +3,7 @@
 
 #define Crema_VERSION_MAJOR @Crema_VERSION_MAJOR@
 #define Crema_VERSION_MINOR @Crema_VERSION_MINOR@
+#define Crema_VERSION_PATCH @Crema_VERSION_PATCH@
+#define Crema_VERSION "@PROJECT_VERSION@"
 
 #endif // IDSIA_CREMA_H

@@ -1,9 +1,10 @@
 #include "ArraysUtil.h"
 
-template <typename T>
-int crema::utils::indexOf(const vector<T> &vector, const T &element)
-{
+#include <algorithm>
 
+template <typename T>
+int crema::utils::indexOf(vector<T> &vector, T &element)
+{
     auto it = std::find(vector.begin(), vector.end(), element);
 
     if (it != vector.end())
@@ -23,7 +24,7 @@ template <typename T>
 vector<T> crema::utils::slice(vector<T> array, vector<int> indices)
 {
     vector<T> result;
-    result.reserve(idx);
+    result.reserve(indices.size());
     for (int i = 0; i < indices.size(); i++)
     {
         result.push_back(array[indices[i]]);

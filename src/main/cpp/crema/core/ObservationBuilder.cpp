@@ -8,6 +8,7 @@
 using namespace crema::core;
 using namespace std;
 
+/*
 ObservationBuilder::ObservationBuilder(vector<int> keys) : vars(keys)
 {
 }
@@ -58,3 +59,4 @@ vector<ObservationBuilder> ObservationBuilder::observe(vector<int> vars, vector<
 
     return observations;
 }
+*/

@@ -1,5 +1,5 @@
 #include "SimpleDomain.h"
-#include "ArraysUtil.h"
+#include "utils/ArraysUtil.h"
 
 #include <algorithm>
 
@@ -22,7 +22,8 @@ SimpleDomain::SimpleDomain(vector<int> *variables, vector<int> *sizes, int size)
 
 int SimpleDomain::indexOf(int variable)
 {
-    return crema::utils::indexOf(variables, variable);
+    // return crema::utils::indexOf(this->variables, variable); TODO:
+    return 0;
 }
 
 int SimpleDomain::getCardinality(int variable)

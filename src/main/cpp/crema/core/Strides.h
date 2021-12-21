@@ -1,3 +1,6 @@
+#ifndef IDSIA_CREMA_CORE_STRIDES_H
+#define IDSIA_CREMA_CORE_STRIDES_H
+
 #include "Domain.h"
 #include "ObservationBuilder.h"
 
@@ -65,7 +68,9 @@ namespace crema
 
             vector<int> statesOf(int offset);
 
-            ObservationBuilder observationOf(int offset);
+            // ObservationBuilder observationOf(int offset);
         };
     }
 }
+
+#endif // IDSIA_CREMA_CORE_STRIDES_H
