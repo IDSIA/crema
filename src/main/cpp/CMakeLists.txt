@@ -56,9 +56,6 @@ target_sources(${PROJECT_NAME}
         ${CREMA_SOURCES_UTILS}/ArraysUtil.cpp
 )
 
-# set C++17
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-
 # target properties
 set_target_properties(${PROJECT_NAME}
     PROPERTIES

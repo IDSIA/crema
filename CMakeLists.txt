@@ -16,7 +16,9 @@ message(STATUS "PROJECT_SOURCE_DIR:  ${PROJECT_SOURCE_DIR}")
 
 # setup tests
 set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
-include(CTest)
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    include(CTest)
+endif()
 
 # building and testing options
 option(BUILD_CXX "Build C++ library" ON)
@@ -28,10 +30,16 @@ message(STATUS "Build C++ library:   ${TEST_CXX}")
 option(BUILD_JAVA "Build Java Library" OFF)
 message(STATUS "Build Java:          ${BUILD_JAVA}")
 
+option(TEST_JAVA "Test Java Library" OFF)
+message(STATUS "Build Java:          ${TEST_JAVA}")
+
 option(BUILD_PYTHON "Build Python Library" OFF)
 message(STATUS "Build Python:        ${BUILD_PYTHON}")
 
-# Include local modules
+option(TEST_PYTHON "Testing Python Library" OFF)
+message(STATUS "Build Python:        ${TEST_PYTHON}")
+
+# include local modules
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 message(STATUS "Module path:         ${CMAKE_MODULE_PATH}")
 

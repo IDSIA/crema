@@ -31,4 +31,7 @@ set(CREMA_SOURCE_DIR "${PROJECT_SOURCE_DIR}/src/main/cpp")
 set(CREMA_TEST_DIR "${PROJECT_SOURCE_DIR}/src/test/cpp")
 
 add_subdirectory("${CREMA_SOURCE_DIR}")
-add_subdirectory("${CREMA_TEST_DIR}")
+
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND ${TEST_CXX})
+    add_subdirectory("${CREMA_TEST_DIR}")
+endif()

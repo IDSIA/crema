@@ -1,18 +1,35 @@
 #include "crema/version.h"
+
+#include "gtest/gtest.h"
+
 #include <iostream>
 
-bool test_domain() 
+namespace crema
 {
-    // if something goes wrong => return false
-    return true;
-}
+    class ExampleTest : public ::testing::Test {
+        protected:
+        void SetUp() override {
+            std::cout << "Setting up!" << std::endl;
+        }
 
-bool test_another()
+        void TearDown() override {
+            std::cout << "Tearing down!" << std::endl;
+        }
+    };
+    
+    TEST_F(ExampleTest, TestIfItWorks) {
+        std::cout << "Crema version: " << Crema_VERSION << std::endl;
+        EXPECT_EQ(7, 7);
+    }
+
+    TEST_F(ExampleTest, TestIfItWorksAgain) {
+        EXPECT_EQ(2, 2);
+    }
+
+}; // namespace crema
+
+int main(int argc, char **argv) 
 {
-    return false;
-}
-
-int main(){
-    std::cout << "Crema version: " << Crema_VERSION << std::endl;
-    return 0;
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
