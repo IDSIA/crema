@@ -1,5 +1,5 @@
-#include "SimpleDomain.h"
-#include "utils/ArraysUtil.h"
+#include "crema/core/SimpleDomain.h"
+#include "crema/utils/ArraysUtil.h"
 
 #include <algorithm>
 

@@ -1,81 +1,67 @@
-cmake_minimum_required(VERSION 3.15)
+if (NOT BUILD_CXX)
+    return()
+endif()
 
-project(
-    crema 
-    VERSION 0.3.0
-    DESCRIPTION "Crema: A Toolbox for Credal Models Algorithms"
-    LANGUAGES CXX
-)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+# library in c++
+message("Building C++ version")
 
 # cmake files
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CREMA_SOURCE_DIR}/cmake")
 
 # crema source and header files
-set(CREMA_SOURCE_DIR "${CMAKE_SOURCE_DIR}/crema")
-set(CREMA_MODULE_CORE "${CREMA_SOURCE_DIR}/core")
-set(CREMA_MODULE_UTILS "${CREMA_SOURCE_DIR}/utils")
+set(CREMA_INLCUDE "${CREMA_SOURCE_DIR}/include")
+set(CREMA_SOURCES "${CREMA_SOURCE_DIR}/src")
 
-configure_file("${CMAKE_MODULE_PATH}/version.h.in" "${CREMA_SOURCE_DIR}/version.h")
+set(CREMA_INCLUDE_LIB "${CREMA_INLCUDE}/crema")
+set(CREMA_SOURCES_LIB "${CREMA_SOURCES}/crema")
+set(CREMA_INCLUDE_CORE "${CREMA_INCLUDE_LIB}/core")
+set(CREMA_SOURCES_CORE "${CREMA_SOURCES_LIB}/core")
+set(CREMA_INCLUDE_UTILS "${CREMA_INCLUDE_LIB}/utils")
+set(CREMA_SOURCES_UTILS "${CREMA_SOURCES_LIB}/utils")
 
+message(STATUS "CREMA_SOURCE_DIR:    ${CREMA_SOURCE_DIR}")
+
+message(STATUS "CREMA_INLCUDE:       ${CREMA_INLCUDE}")
+message(STATUS "CREMA_SOURCES:       ${CREMA_SOURCES}")
+
+message(STATUS "CREMA_MODULE_CORE:   ${CREMA_INCLUDE_CORE}")
+message(STATUS "                     ${CREMA_SOURCES_CORE}")
+message(STATUS "CREMA_MODULE_UTILS:  ${CREMA_INCLUDE_UTILS}")
+message(STATUS "                     ${CREMA_SOURCES_UTILS}")
+
+# generate files
+configure_file("cmake/version.h.in" "${CREMA_INCLUDE_LIB}/version.h")
+
+# add target for shared library
 add_library(${PROJECT_NAME} SHARED)
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-    ${CREMA_SOURCE_DIR}
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    # ${CREMA_INLCUDE}
 )
 target_sources(${PROJECT_NAME}
     PUBLIC
-        ${CREMA_MODULE_CORE}/Domain.h
-        ${CREMA_MODULE_CORE}/DomainBuilder.h
-        ${CREMA_MODULE_CORE}/ObservationBuilder.h
-        ${CREMA_MODULE_CORE}/SimpleDomain.h
-        ${CREMA_MODULE_CORE}/Strides.h
-        ${CREMA_MODULE_UTILS}/ArraysUtil.h
-        ${CREMA_SOURCE_DIR}/crema.h
-        ${CREMA_SOURCE_DIR}/version.h
+        ${CREMA_INCLUDE_CORE}/Domain.h
+        ${CREMA_INCLUDE_CORE}/DomainBuilder.h
+        ${CREMA_INCLUDE_CORE}/ObservationBuilder.h
+        ${CREMA_INCLUDE_CORE}/SimpleDomain.h
+        ${CREMA_INCLUDE_CORE}/Strides.h
+        ${CREMA_INCLUDE_UTILS}/ArraysUtil.h
+        ${CREMA_INCLUDE_LIB}/version.h
+        ${CREMA_INLCUDE}/crema.h
     PRIVATE
-        ${CREMA_MODULE_CORE}/ObservationBuilder.cpp
-        ${CREMA_MODULE_CORE}/SimpleDomain.cpp
-        ${CREMA_MODULE_CORE}/Strides.cpp
-        ${CREMA_MODULE_UTILS}/ArraysUtil.cpp
+        ${CREMA_SOURCES_CORE}/ObservationBuilder.cpp
+        ${CREMA_SOURCES_CORE}/SimpleDomain.cpp
+        ${CREMA_SOURCES_CORE}/Strides.cpp
+        ${CREMA_SOURCES_UTILS}/ArraysUtil.cpp
 )
 
-add_executable(main ${PROJECT_SOURCE_DIR}/main.cpp)
-target_link_libraries(main PRIVATE ${PROJECT_NAME})
+# set C++17
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
-# boost configuration
-# set(BOOST_REQUESTED_VERSION "1.78.0")
-# set(Boost_ROOT "${CMAKE_SOURCE_DIR}/lib/Boost")
-# set(Boost_USE_STATIC_LIBS OFF)
-# set(Boost_USE_MULTITHREADED ON)
-# set(Boost_USE_STATIC_RUNTIME OFF)
-
-# debug
-# message(STATUS "PROJECT_NAME:        ${PROJECT_NAME}")
-# message(STATUS "CMAKE_SOURCE_DIR:    ${CMAKE_SOURCE_DIR}")
-# message(STATUS "CMAKE_MODULE_PATH:   ${CMAKE_MODULE_PATH}")
-# message(STATUS "CREMA_SOURCE_DIR:    ${CREMA_SOURCE_DIR}")
-# message(STATUS "BOOST_ROOT:          ${Boost_ROOT}")
-
-# if (POLICY CMP0074)
-#   cmake_policy(SET CMP0074 NEW)
-# endif()
-
-# find_package(Boost "${BOOST_REQUESTED_VERSION}" REQUIRED COMPONENTS graph)
-# message(STATUS "Boost version: ${Boost_VERSION}")
-
-# if (Boost_FOUND)
-#     message(STATUS "Boost has been found!")
-#     include_directories(${Boost_INCLUDE_DIR})
-#     ADD_DEFINITIONS( "-DHAS_BOOST")
-# else()
-#     message(STATUS "Boost NOT found!")
-# endif()
-
-# if(NOT TARGET Boost::graph)
-#     add_library(Boost::graph IMPORTED INTERFACE)
-#     set_property(TARGET Boost::graph PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR})
-#     set_property(TARGET Boost::graph PROPERTY INTERFACE_LINK_LIBRARIES ${Boost_LIBRARIES})
-# endif()
+# target properties
+set_target_properties(${PROJECT_NAME}
+    PROPERTIES
+        VERSION ${PROJECT_VERSION}
+        PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/crema.h 
+)

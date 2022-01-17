@@ -1,5 +1,5 @@
-#include "Strides.h"
-#include "utils/ArraysUtil.h"
+#include "crema/core/Strides.h"
+#include "crema/utils/ArraysUtil.h"
 
 #include <algorithm>
 
