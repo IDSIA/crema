@@ -248,7 +248,7 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 
 	private F variableMarginal(int query) {
 		F v = model.getFactor(query);
-		if (!graph.edgeSet().isEmpty()) {
+		if (!graph.edgeSet().isEmpty() && !graph.edgesOf(query).isEmpty()) {
 			final F M = graph.edgesOf(query).stream()
 					.map(edge -> {
 						final Integer s = graph.getEdgeSource(edge);

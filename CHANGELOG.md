@@ -1,7 +1,8 @@
 0.2.2-SNAPSHOT
 ===========
 
-
+- Added new *logic* Bayesian factor `BayesianNoisyAndFactor`
+- Fixed an issue with LoopyBeliefPropagation and disjoint graphs.
 
 0.2.2
 ===========

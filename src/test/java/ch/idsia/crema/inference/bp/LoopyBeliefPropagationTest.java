@@ -6,10 +6,13 @@ import ch.idsia.crema.inference.BayesianNetworkContainer;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
+import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.bif.BIFParser;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -263,5 +266,49 @@ public class LoopyBeliefPropagationTest {
 		System.out.println(q);
 
 		assertEquals(1.0, q.getValue(0));
+	}
+
+	@Test
+	void testDisjointGraph() {
+		final DAGModel<BayesianFactor> m = new DAGModel<>();
+
+		final int s1 = m.addVariable(2);
+		final int s2 = m.addVariable(2);
+		final int q1 = m.addVariable(2);
+
+		m.addParent(q1, s1);
+
+		final BayesianFactor f1 = BayesianFactorFactory.factory()
+				.domain(m.getDomain(s1))
+				.set(0.5, 0)
+				.set(0.5, 1)
+				.get();
+		final BayesianFactor f2 = BayesianFactorFactory.factory()
+				.domain(m.getDomain(s2))
+				.set(0.5, 0)
+				.set(0.5, 1)
+				.get();
+		final BayesianFactor f3 = BayesianFactorFactory.factory()
+				.domain(m.getDomain(q1, s1))
+				.set(0.2, 0, 0)
+				.set(0.8, 1, 0)
+				.set(0.6, 0, 1)
+				.set(0.4, 1, 1)
+				.get();
+
+		m.setFactor(s1, f1);
+		m.setFactor(s2, f2);
+		m.setFactor(q1, f3);
+
+		final LoopyBeliefPropagation<BayesianFactor> inf = new LoopyBeliefPropagation<>();
+
+		final TIntIntMap obs = new TIntIntHashMap();
+		obs.put(q1, 1);
+
+		final List<BayesianFactor> queries = inf.query(m, obs, s1, s2);
+
+		System.out.println(queries);
+
+		// assert that no exception has been raised
 	}
 }
