@@ -865,4 +865,25 @@ public final class Strides implements Domain {
 		return reverseDomain(this);
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Strides strides = (Strides) o;
+
+		if (combinations != strides.combinations) return false;
+		if (size != strides.size) return false;
+		if (!Arrays.equals(variables, strides.variables)) return false;
+		return Arrays.equals(sizes, strides.sizes);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = combinations;
+		result = 31 * result + Arrays.hashCode(variables);
+		result = 31 * result + Arrays.hashCode(sizes);
+		result = 31 * result + size;
+		return result;
+	}
 }
