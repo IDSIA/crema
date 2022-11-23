@@ -18,6 +18,7 @@ import static ch.idsia.crema.inference.fe.FactorEliminationUtils.project;
  * Date:    06.02.2018 09:37
  */
 // TODO: this is the main FactorElimination since it works with a GraphicalModel
+@Deprecated
 public class FactorEliminationModel implements Inference<DAGModel<BayesianFactor>, BayesianFactor> {
 
 	/**

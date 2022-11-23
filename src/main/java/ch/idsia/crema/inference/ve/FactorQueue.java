@@ -1,23 +1,36 @@
 package ch.idsia.crema.inference.ve;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
 import ch.idsia.crema.factor.GenericFactor;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
-import java.util.*;
-
 public class FactorQueue<F extends GenericFactor> implements Iterator<ArrayList<F>> {
-
-	private final TIntObjectHashMap<ArrayList<F>> data;
+	
+	private TIntObjectHashMap<ArrayList<F>> data;
 	private int[] sequence;
+	private ArrayList<F> results;
 
 	public FactorQueue(int[] sequence) {
-		this.data = new TIntObjectHashMap<>();
+		this.data = new TIntObjectHashMap<ArrayList<F>>();
 		this.sequence = sequence;
+        this.results = new ArrayList<>();
+
 		for (int var : sequence) {
-			this.data.put(var, new ArrayList<>());
+			this.data.put(var, new ArrayList<F>());
 		}
 	}
-
+	
+    /** 
+     * Add a factor to the next variable in the queue. 
+     * Factors not associated to any further variable are added to the
+     * results list. 
+     */
 	public void add(F factor) {
 		for (int variable : sequence) {
 			if (factor.getDomain().contains(variable)) {
@@ -25,15 +38,15 @@ public class FactorQueue<F extends GenericFactor> implements Iterator<ArrayList<
 				return;
 			}
 		}
-
-		// do not include the factor as it is not covered by the remaining variables in the sequence
+		
+		results.add(factor);
 	}
-
-	public void addAll(List<F> factors) {
-		LinkedList<F> items = new LinkedList<>(factors);
+	
+	public void init(List<F> factors) {
+		LinkedList<F> items = new LinkedList<F>(factors);
 		for (int variable : sequence) {
 			ListIterator<F> iterator = items.listIterator();
-			while (iterator.hasNext()) {
+			while(iterator.hasNext()) {
 				F f = iterator.next();
 				if (f.getDomain().contains(variable)) {
 					data.get(variable).add(f);
@@ -42,16 +55,15 @@ public class FactorQueue<F extends GenericFactor> implements Iterator<ArrayList<
 			}
 		}
 	}
-
+	
 	public int getVariable() {
 		return sequence[0];
 	}
-
 	@Override
 	public boolean hasNext() {
 		return sequence.length > 0;
 	}
-
+	
 	@Override
 	public ArrayList<F> next() {
 		int next = sequence[0];
@@ -67,4 +79,8 @@ public class FactorQueue<F extends GenericFactor> implements Iterator<ArrayList<
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}
+
+    public Collection<F> getResults() {
+        return results;
+    }
 }
