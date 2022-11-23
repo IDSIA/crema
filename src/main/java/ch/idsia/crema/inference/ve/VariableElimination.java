@@ -91,6 +91,19 @@ public class VariableElimination<F extends OperableFactor<F>> implements Inferen
         this.instantiation = instantiation;
     }
 
+	/** Alias of setInstantiation */
+	public void setEvidence(TIntIntMap instantiation) {
+        setInstantiation(instantiation);
+    }
+
+    /**
+     * explicitly request normalization of the result
+     * @param normalize
+     */
+    public void setNormalize(boolean normalize) {
+        this.normalize = normalize;
+    }
+
     /**
      * Execute the variable elimination asking for the marginal or posterior of the specified
      * variables. If multiple variables are specified the joint over the query is computed.
@@ -135,7 +148,7 @@ public class VariableElimination<F extends OperableFactor<F>> implements Inferen
         if (this.normalize) {
             last = FactorUtil.normalize(operator, last);
         }
-
+        
         return last;
     }
 

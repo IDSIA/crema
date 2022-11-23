@@ -14,7 +14,7 @@ import ch.idsia.crema.factor.algebra.FactorAlgebra;
 public class FactorVariableElimination<F extends OperableFactor<F>> extends VariableElimination<F> {
 
 	public FactorVariableElimination(int[] seq) {
-		super(new FactorAlgebra<>(), seq);
+		super(seq);
 	}
 
 }

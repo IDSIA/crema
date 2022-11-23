@@ -18,13 +18,8 @@ public class ConditionalVariableElimination extends VariableElimination<Bayesian
 
 	private int[] conditioning = new int[0];
 
-	public ConditionalVariableElimination(int... conditioning) {
-		super(new FactorAlgebra<>());
-		setConditioning(conditioning);
-	}
-
 	public ConditionalVariableElimination(int[] sequence, int... conditioning) {
-		super(new FactorAlgebra<>(), sequence);
+		super(sequence);
 		setConditioning(conditioning);
 	}
 

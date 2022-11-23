@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VariableEliminationTest {
 
@@ -170,12 +171,11 @@ public class VariableEliminationTest {
 
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(seq);
 		ve.setFactors(f);
-
 		ve.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
 
 		BayesianFactor fa = ve.run(3);
-
 		assertArrayEquals(new double[]{0.2218896964518944, 0.7781103035492434}, fa.getData(), 0.00000000001);
+
 	}
 
 	@Test
@@ -196,4 +196,40 @@ public class VariableEliminationTest {
 		MOD serial = new MOD();
 		System.out.println(serial.serialize(f, 1, true));
 	}
+
+
+	@Test
+	public void testInferenceDisconnected() {
+		BayesianFactor[] f = new BayesianFactor[4];
+
+		f[0] = BayesianFactorFactory.factory().domain(DomainBuilder.var(0, 1).size(2, 2))
+				.data(new double[]{0.1, 0.9, 0.4, 0.6})
+				.get();
+		f[1] = BayesianFactorFactory.factory().domain(DomainBuilder.var(1).size(2))
+				.data(new double[]{0.4, 0.6})
+				.get();
+		f[2] = BayesianFactorFactory.factory().domain(DomainBuilder.var(2).size(2))
+				.data(new double[]{0.7, 0.3})
+				.get();
+
+		// f3 = P(3|2) initialized as 2,3
+		f[3] = BayesianFactorFactory.factory().domain(DomainBuilder.var( 3,2).size(2,2))
+				.set(0.1, 0, 0).set(0.9, 1, 0) // 3 | 2 = 0
+				.set(0.6, 0, 1).set(0.4, 1, 1) // 3 | 2 = 1
+				.get();
+				
+		int[] seq = new int[]{0, 1, 2, 3};
+
+		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(seq);
+		ve.setFactors(f);
+		ve.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
+
+		BayesianFactor fa = ve.run(3);
+		BayesianFactor fb = ve.run(0,3);
+		var fx = f[3].combine(f[2]).marginalize(2);
+		
+		assertArrayEquals(fa.getData(), fb.getData());
+		assertArrayEquals(fx.getData(), fa.getData());
+	}
+	
 }
