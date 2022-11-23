@@ -63,7 +63,7 @@ public class Posterior extends Manager {
 	public double eval(Solution from, Move doing) {
 		int free = doing.getFree();
 		int[] parents = model.getParents(free);
-		int pindex = Arrays.binarySearch(parents, x0);
+		int pindex = ArraysUtil.indexOf(x0, parents);
 
 		// long targetObs = Observations.make(targetVaribale, targetState);
 		// long dummyObs = Observations.make(dummy, 1);
@@ -75,33 +75,12 @@ public class Posterior extends Manager {
 		// binarized.
 
 		// parents of free contain the query and the free var is observed
-		if (pindex >= 0 && evidence.containsKey(free)) {
+		if (pindex >= 0) {
 			// x0 (the query) is among the parent of the free variable
 
 			// prepare the full domain by first adding the free var to its
 			// parents
-			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
-
-			BayesianFactor p_x0xexjpj = calcPosterior(from, xjpj, evidence);
-			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
-
-			BayesianFactor p_x0xe_xjpj = p_x0xexjpj.divide(p_xjpj);
-			BayesianFactor p_pj = p_xjpj.marginalize(free);
-			BayesianFactor p_num = p_x0xe_xjpj.combine(p_pj);
-
-			// we need to filter the target variable
-			numerator = p_num.filter(x0, x0state).combine(getX0factor()).getData();
-
-			// no need to filter (the sum will elimintate x0)
-			BayesianFactor p_denom = p_x0xexjpj.combine(p_pj);
-			denominator = p_denom.getData();
-
-		} else if (pindex >= 0) {
-			// x0 (the query) is among the parent of the free variable
-
-			// prepare the full domain by first adding the free var to its
-			// parents
-			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
+			int[] xjpj = ArraysUtil.add(parents, free);
 
 			BayesianFactor p_x0xexjpj = calcPosterior(from, xjpj, evidence);
 			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
@@ -119,7 +98,7 @@ public class Posterior extends Manager {
 
 		} else if (free == x0) {
 
-			int[] xjpj = ArraysUtil.addToSortedArray(parents, free); // == x0pj
+			int[] xjpj = ArraysUtil.add(parents, free); // == x0pj
 
 			BayesianFactor p_xexjpj = calcPosterior(from, xjpj, evidence);
 			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
@@ -133,30 +112,9 @@ public class Posterior extends Manager {
 			BayesianFactor p_denom = p_xexjpj.combine(p_pj);
 			denominator = p_denom.getData();
 
-		} else if (evidence.containsKey(free)) {
-			// xj is observed
-			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
-			int[] all = ArraysUtil.addToSortedArray(xjpj, x0);
-
-			// num = [P(x0xE|xj,pj) * P(xE|xj,pj) * P(pj)]
-
-			BayesianFactor p_x0xex0pj = calcPosterior(from, all, evidence);
-			BayesianFactor p_xjpj = calcMarginal(from, xjpj);
-			BayesianFactor p_pj = p_xjpj.marginalize(free);
-
-			BayesianFactor p_x0xe_xjpj = p_x0xex0pj.divide(p_xjpj);
-			BayesianFactor p_num = p_x0xe_xjpj.combine(p_pj).filter(x0, x0state);
-
-			numerator = p_num.getData();
-
-			// P(xE|xj,pj) * P(pj)
-			BayesianFactor p_denom = p_x0xe_xjpj.marginalize(x0).combine(p_pj);
-			denominator = p_denom.getData();
-
-
 		} else {
-			int[] xjpj = ArraysUtil.addToSortedArray(parents, free);
-			int[] all = ArraysUtil.addToSortedArray(xjpj, x0);
+			int[] xjpj = ArraysUtil.add(parents, free);
+			int[] all = ArraysUtil.add(xjpj, x0);
 
 			// num = [P(x0xE|xj,pj) * P(xE|xj,pj) * P(pj)]
 

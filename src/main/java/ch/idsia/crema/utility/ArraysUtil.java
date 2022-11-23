@@ -5,6 +5,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.set.TIntSet;
+import gnu.trove.set.hash.TIntHashSet;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.util.Precision;
@@ -16,7 +19,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class ArraysUtil {
+public class ArraysUtil extends ArrayUtils {
 
 	/**
 	 * Append element of second to the end of base and return the new array.
@@ -1201,6 +1204,15 @@ public class ArraysUtil {
 		}
 		return vector;
 
+	}
+
+    public static int[] removeValue(int[] array, int value) {
+		return Arrays.stream(array).filter(a -> a != value).toArray();
+    }
+
+	public static int[] removeAllValues(int[] all, int[] values) {
+		TIntSet other = new TIntHashSet(values);
+		return Arrays.stream(all).filter(a -> !other.contains(a)).toArray();
 	}
 
 }

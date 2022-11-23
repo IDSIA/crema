@@ -31,7 +31,7 @@ public class SimpleDomain implements Domain {
 
 	@Override
 	public int indexOf(int variable) {
-		return Arrays.binarySearch(variables, variable);
+		return Arrays.indexOf(variables, variable);
 	}
 
 	@Override

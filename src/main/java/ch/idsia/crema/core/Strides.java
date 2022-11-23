@@ -99,7 +99,6 @@ public final class Strides implements Domain {
 
 	@Override
 	public final int indexOf(int variable) {
-		//return Arrays.binarySearch(variables, variable);
 		return ArraysUtil.indexOf(variable, variables);
 	}
 
@@ -247,7 +246,7 @@ public final class Strides implements Domain {
 		final int[] target_strides = new int[over.length];
 
 		for (int vindex = 0; vindex < variables.length; ++vindex) {
-			int offset = Arrays.binarySearch(over, variables[vindex]);
+			int offset = ArraysUtil.indexOf(variables[vindex], over);
 			if (offset >= 0) {
 				target_strides[offset] = strides[vindex];
 			}
@@ -714,27 +713,24 @@ public final class Strides implements Domain {
 
 	/**
 	 * Helper to allow concatenation of var().add().add()
-	 * Insertion is sorted. Resulting domain is ordered!
+	 * Insertion is not sorted. Resulting domain is not ordered!
 	 * @param var
 	 * @param size
 	 * @return
 	 */
-	public Strides and(int var, int size) {
-		int pos = Arrays.binarySearch(variables, var);
+	public Strides and(int newvar, int size) {
+		int pos = ArraysUtil.indexOf(newvar, variables);
 		if (pos >= 0) return this; // no need to change anything
-		pos = -(pos + 1);
 
-		int[] newvar = new int[variables.length + 1];
-		System.arraycopy(variables, 0, newvar, 0, pos);
-		newvar[pos] = var;
-		System.arraycopy(variables, pos, newvar, pos + 1, variables.length - pos);
-
+		int[] newvars = new int[variables.length + 1];
+		System.arraycopy(variables, 0, newvars, 0, variables.length);
+		newvars[variables.length] = newvar;
+		
 		int[] newsize = new int[variables.length + 1];
-		System.arraycopy(sizes, 0, newsize, 0, pos);
-		newsize[pos] = size;
-		System.arraycopy(sizes, pos, newsize, pos + 1, sizes.length - pos);
+		System.arraycopy(sizes, 0, newsize, 0, variables.length);
+		newsize[variables.length] = size;
 
-		return new Strides(newvar, newsize);
+		return new Strides(newvars, newsize);
 	}
 
 	/**

@@ -134,16 +134,16 @@ public class SePolyController extends SearchOperation {
 		int[] tomarginalize;
 		if (from >= 0) { // not closing the query
 			int[] p = model.getParents(node);
-			if (Arrays.binarySearch(p, from) >= 0) { // node is child of from
-				tomarginalize = ArraysUtil.removeFromSortedArray(domain.getVariables(), from);
+			if (ArraysUtil.indexOf(from, p) >= 0) { // node is child of from
+				tomarginalize = ArraysUtil.removeValue(domain.getVariables(), from);
 			} else { // node is a parent of from
 
 				// No additional steps before we push the factor in from's queue
-				tomarginalize = ArraysUtil.removeFromSortedArray(domain.getVariables(), from);
-				tomarginalize = ArraysUtil.removeFromSortedArray(tomarginalize, node);
+				tomarginalize = ArraysUtil.removeValue(domain.getVariables(), from);
+				tomarginalize = ArraysUtil.removeValue(tomarginalize, node);
 			}
 		} else { // node query
-			tomarginalize = ArraysUtil.removeFromSortedArray(domain.getVariables(), node);
+			tomarginalize = ArraysUtil.removeValue(domain.getVariables(), node);
 		}
 
 		// inline convex hull

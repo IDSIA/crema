@@ -104,12 +104,12 @@ public class BayesianAlgebra implements Operation<BayesianFactor> {
 		final long[] reset = new long[length];
 
 		for (int vindex = 0; vindex < one.getDomain().getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), one.getDomain().getVariables()[vindex]);
+			int offset = ArraysUtil.indexOf(one.getDomain().getVariables()[vindex], target.getVariables());
 			stride[offset] = one.getDomain().getStrides()[vindex];
 		}
 
 		for (int vindex = 0; vindex < two.getDomain().getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), two.getDomain().getVariables()[vindex]);
+			int offset = ArraysUtil.indexOf(two.getDomain().getVariables()[vindex], target.getVariables());
 			stride[offset] += ((long) two.getDomain().getStrides()[vindex] << 32L);
 		}
 
@@ -220,12 +220,12 @@ public class BayesianAlgebra implements Operation<BayesianFactor> {
 		final long[] reset = new long[length];
 
 		for (int vindex = 0; vindex < length; ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), one.getDomain().getVariables()[vindex]);
+			int offset = ArraysUtil.indexOf(one.getDomain().getVariables()[vindex], target.getVariables());
 			stride[offset] = one.getDomain().getStrides()[vindex];
 		}
 
 		for (int vindex = 0; vindex < two.getDomain().getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), two.getDomain().getVariables()[vindex]);
+			int offset = ArraysUtil.indexOf(two.getDomain().getVariables()[vindex], target.getVariables());
 			stride[offset] += ((long) two.getDomain().getStrides()[vindex] << 32L);
 		}
 

@@ -55,7 +55,7 @@ public class FrequentistEM extends DiscreteEM {
 
 		for (TIntIntMap observation : observations) {
 			for (int var : trainableVars) {
-				int[] relevantVars = ArraysUtil.addToSortedArray(posteriorModel.getParents(var), var);
+				int[] relevantVars = ArraysUtil.add(posteriorModel.getParents(var), var);
 				int[] hidden = IntStream.of(relevantVars).filter(x -> !observation.containsKey(x)).toArray();
 				int[] obsVars = IntStream.of(relevantVars).filter(x -> observation.containsKey(x)).toArray();
 

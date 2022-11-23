@@ -13,6 +13,8 @@ import ch.idsia.crema.solver.LinearFractionalSolver;
 import ch.idsia.crema.solver.commons.FractionalSolver;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
@@ -57,7 +59,7 @@ public class Posterior extends Manager {
 	public double eval(Solution from, Move doing) {
 		int free = doing.getFree();
 		int[] parents = model.getParents(free);
-		int pindex = Arrays.binarySearch(parents, x0);
+		int pindex = ArraysUtil.indexOf(x0, parents);
 
 		// long targetObs = Observations.make(targetVaribale, targetState);
 		// long dummyObs = Observations.make(dummy, 1);
@@ -73,16 +75,16 @@ public class Posterior extends Manager {
 
 			// prepare the full domain by first adding the free var to its
 			// parents
-			int[] target = ArraysUtil.addToSortedArray(parents, free);
+			int[] target = ArrayUtils.add(parents, free);
 
 			// all includes evidence
-			int[] all = ArraysUtil.addToSortedArray(target, evidence);
+			int[] all = ArrayUtils.add(target, evidence);
 
 			BayesianFactor p_ep0 = tmp = calcMarginal(from, all);
 
 			// here we could use FactorUtils.marginal
 			BayesianFactor p_p = p_ep0;
-			for (int parent : ArraysUtil.removeAllFromSortedArray(all, parents)) {
+			for (int parent : ArraysUtil.removeAllValues(all, parents)) {
 				p_p = p_p.marginalize(parent);
 			}
 
@@ -103,14 +105,14 @@ public class Posterior extends Manager {
 			// denominator = p_ep0.filter(evidence, 1).getData();
 
 		} else if (free == x0) {
-			int[] target = ArraysUtil.addToSortedArray(parents, free);
-			int[] all = ArraysUtil.addToSortedArray(target, evidence);
+			int[] target = ArraysUtil.add(parents, free);
+			int[] all = ArraysUtil.add(target, evidence);
 
 			BayesianFactor p_ep0 = tmp = calcMarginal(from, all);
 
 			// here we could use FactorUtils.marginal
 			BayesianFactor p_p = p_ep0;
-			for (int parent : ArraysUtil.removeAllFromSortedArray(all, parents)) {
+			for (int parent : ArraysUtil.removeAllValues(all, parents)) {
 				p_p = p_p.marginalize(parent);
 			}
 
@@ -127,10 +129,10 @@ public class Posterior extends Manager {
 			numerator = p_ep0.getData();
 
 		} else {
-			int[] target = ArraysUtil.addToSortedArray(parents, free);
+			int[] target = ArraysUtil.add(parents, free);
 
-			int[] all = ArraysUtil.addToSortedArray(target, x0);
-			all = ArraysUtil.addToSortedArray(all, evidence);
+			int[] all = ArraysUtil.add(target, x0);
+			all = ArraysUtil.add(all, evidence);
 
 			// num = [P(x0|xE,xj,pj) * P(xE|xj,pj) * P(pj)]
 
@@ -138,7 +140,7 @@ public class Posterior extends Manager {
 
 			BayesianFactor p_p = p_0epj;
 			// here we could use FactorUtils.marginal
-			for (int parent : ArraysUtil.removeAllFromSortedArray(all, parents)) {
+			for (int parent : ArraysUtil.removeAllValues(all, parents)) {
 				p_p = p_p.marginalize(parent);
 			}
 

@@ -117,12 +117,12 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 		final long[] reset = new long[length];
 
 		for (int vindex = 0; vindex < getDomain().getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), getDomain().getVariables()[vindex]);
+			int offset = target.indexOf(getDomain().getVariables()[vindex]);
 			stride[offset] = getDomain().getStrides()[vindex];
 		}
 
 		for (int vindex = 0; vindex < factor.getDomain().getSize(); ++vindex) {
-			int offset = ArraysUtil.indexOf(factor.getDomain().getVariables()[vindex], target.getVariables());
+			int offset = target.indexOf(factor.getDomain().getVariables()[vindex]);
 			stride[offset] += ((long) factor.getDomain().getStrides()[vindex] << 32L);
 		}
 
@@ -170,15 +170,11 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 		final int[] limits = new int[length];
 		final int[] assign = new int[length];
 
-		final long[] stride = new long[length];
+		final long[] stride = Arrays.stream(domain.getStrides()).asLongStream().toArray();
 		final long[] reset = new long[length];
-
-		for (int vindex = 0; vindex < length; ++vindex) {
-			stride[vindex] = domain.getStrides()[vindex];
-		}
-
+		
 		for (int vindex = 0; vindex < factor.getDomain().getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(domain.getVariables(), factor.getDomain().getVariables()[vindex]);
+			int offset = domain.indexOf(factor.getDomain().getVariables()[vindex]);
 			stride[offset] += ((long) factor.getDomain().getStrides()[vindex] << 32L);
 		}
 

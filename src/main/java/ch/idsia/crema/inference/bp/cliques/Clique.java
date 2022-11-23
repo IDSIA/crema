@@ -70,7 +70,7 @@ public class Clique {
 			return false;
 
 		for (int v : other.variables) {
-			int b = Arrays.binarySearch(variables, v);
+			int b = ArraysUtil.indexOf(v, variables);
 			if (b < 0)
 				return false;
 		}
@@ -85,7 +85,7 @@ public class Clique {
 	 * @return true if the variable is found, otherwise false
 	 */
 	public boolean contains(int variable) {
-		int i = Arrays.binarySearch(variables, variable);
+		int i = ArraysUtil.indexOf(variable, variables);
 		return i >= 0;
 	}
 

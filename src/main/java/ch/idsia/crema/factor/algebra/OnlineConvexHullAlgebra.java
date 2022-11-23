@@ -11,6 +11,7 @@ import ch.idsia.crema.factor.algebra.vertex.VertexOperation;
 import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexDefaultFactor;
 import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexFactor;
 import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexLogFactor;
+import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,14 +50,14 @@ public abstract class OnlineConvexHullAlgebra implements Operation<ExtensiveVert
 		final long[] reset = new long[length];
 
 		for (int vindex = 0; vindex < one.getDomain().getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), one.getDomain().getVariables()[vindex]);
+			int offset = target.indexOf(one.getDomain().getVariables()[vindex]);
 			if (offset >= 0) {
 				stride[offset] = one.getDomain().getStrides()[vindex];
 			}
 		}
 
 		for (int vindex = 0; vindex < two.getDomain().getSize(); ++vindex) {
-			int offset = Arrays.binarySearch(target.getVariables(), two.getDomain().getVariables()[vindex]);
+			int offset = target.indexOf(two.getDomain().getVariables()[vindex]);
 			if (offset >= 0) {
 				stride[offset] += ((long) two.getDomain().getStrides()[vindex] << 32L);
 			}

@@ -59,7 +59,7 @@ public class Marginal extends Manager {
 		int[] parent = model.getParents(free);
 		double[] objective;
 		// BayesianFactor tmp = null;
-		// int i = Arrays.binarySearch(parent, x0);
+		// int i = ArraysUtil.indexOf(x0, parent);
 		// x0 is part of the parents of the free variable
 		//		if (i >= 0) {
 		//			// When performing a marginal query there is no evidence
@@ -82,18 +82,18 @@ public class Marginal extends Manager {
 			objective = f.getData();
 
 		} else {
-			int[] target = ArraysUtil.addToSortedArray(parent, free);
-			int[] all = ArraysUtil.addToSortedArray(target, x0);
+			int[] target = ArraysUtil.add(parent, free);
+			int[] all = ArraysUtil.add(target, x0);
 
 			BayesianFactor f = calcMarginal(from, all);
 
 			BayesianFactor p = f;
-			for (int aparent : ArraysUtil.removeAllFromSortedArray(all, parent)) {
+			for (int aparent : ArraysUtil.removeAllValues(all, parent)) {
 				p = p.marginalize(aparent);
 			}
 
 			BayesianFactor norm = f;
-			for (int atarget : ArraysUtil.removeAllFromSortedArray(all, target)) {
+			for (int atarget : ArraysUtil.removeAllValues(all, target)) {
 				norm = norm.marginalize(atarget);
 			}
 
