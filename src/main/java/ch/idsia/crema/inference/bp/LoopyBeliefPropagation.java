@@ -48,6 +48,7 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 	protected Boolean preprocess = true;
 
 	protected int iterations = 5;
+	protected double eps = 1e-3;
 
 	protected Map<Pair<Integer, Integer>, F> messages;
 	protected Map<Pair<Integer, Integer>, Neighbour> neighbours;
@@ -241,9 +242,20 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 			}
 
 			// update all messages and go to the next iteration
+			convergence(messages, new_messages);
+
 			messages.putAll(new_messages);
 			// TODO: add check to stop when we converged (new_messages are equal to old_messages)
 		}
+	}
+
+	private void convergence(Map<Pair<Integer, Integer>, F> old_messages, Map<Pair<Integer, Integer>, F> new_messages) {
+
+		for (Pair<Integer, Integer> pair : old_messages.keySet()) {
+			F old_f = old_messages.get(pair);
+			F new_f = new_messages.get(pair);
+		}
+
 	}
 
 	private F variableMarginal(int query) {

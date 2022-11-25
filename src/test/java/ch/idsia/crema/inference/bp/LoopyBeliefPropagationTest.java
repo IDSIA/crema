@@ -3,13 +3,19 @@ package ch.idsia.crema.inference.bp;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.inference.BayesianNetworkContainer;
+import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
+import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
+import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.io.bif.BIFParser;
+import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -311,4 +317,253 @@ public class LoopyBeliefPropagationTest {
 
 		// assert that no exception has been raised
 	}
+
+	private int addSkill(DAGModel<BayesianFactor> model, double p) {
+		final int v = model.addVariable(2);
+
+		model.setFactor(v, BayesianFactorFactory.factory()
+				.domain(model.getDomain(v))
+				.data(new double[]{1.0 - p, p})
+				.get()
+		);
+
+		return v;
+	}
+
+	private void addConstraint(DAGModel<BayesianFactor> model, int L2, int L1) {
+		int D = model.addVariable(2);
+
+		model.addParents(D, L1, L2);
+
+		model.setFactor(D, BayesianFactorFactory.factory()
+				.domain(model.getDomain(L1, L2, D))
+				//  p(D) L1 L2  D
+				.set(1.0, 0, 1, 1) // P(D=1|L1=0, L2=1)
+				.set(0.0, 0, 1, 0) // P(D=0|L1=0, L2=1)
+
+				.set(1.0, 0, 0, 1) // P(D=1|L1=0, L2=0)
+				.set(0.0, 0, 0, 0) // P(D=0|L1=0, L2=0)
+
+				.set(1.0, 1, 1, 1) // P(D=1|L1=1, L2=1)
+				.set(0.0, 1, 1, 0) // P(D=0|L1=1, L2=1)
+
+				.set(0.0, 1, 0, 1) // P(D=1|L1=1, L2=0)
+				.set(1.0, 1, 0, 0) // P(D=0|L1=1, L2=0)
+				.get()
+		);
+	}
+
+	private int addXiOr(DAGModel<BayesianFactor> model, int xi, double lambda_i) {
+		// add Xi' nodes for each parents...
+		final int xit = model.addVariable(2);
+		model.addParent(xit, xi);
+
+		/// ... and assign lambda
+		model.setFactor(xit, BayesianFactorFactory.factory()
+				.domain(model.getDomain(xit, xi))
+				.set(1.0 - lambda_i, 1, 1) // P(Xi'=1|Xi=1) = 1 - lambda_i
+				.set(lambda_i, 0, 1) // P(Xi'=0|Xi=1) = lambda_i
+				.set(0.0, 1, 0) // P(Xi'=1|Xi=0) = 0
+				.set(1.0, 0, 0) // P(Xi'=0|Xi=0) = 1
+				.get());
+
+		return xit;
+	}
+
+	private int addOrNode(DAGModel<BayesianFactor> model, int[] parents) {
+		final int or = model.addVariable(2);
+		model.addParents(or, parents);
+		final int[] vars = new int[parents.length + 1];
+		vars[0] = or;
+		System.arraycopy(parents, 0, vars, 1, parents.length);
+
+		model.setFactor(or, BayesianFactorFactory.factory()
+				.domain(model.getDomain(vars))
+				.or(parents)
+		);
+
+		return or;
+	}
+
+	private int addQuestion(DAGModel<BayesianFactor> model, int[] parents, double[] lambdas) {
+		if (parents.length == 0)
+			return -1;
+
+		if (parents.length == 1) {
+			final int p = parents[0];
+			final double l = lambdas[0];
+			return addXiOr(model, p, l);
+		}
+
+		final int[] xis = new int[parents.length];
+		for (int i = 0; i < parents.length; i++) {
+			final int p = parents[i];
+			final double l = lambdas[i];
+			final int xi = addXiOr(model, p, l);
+			xis[i] = xi;
+		}
+
+		return addOrNode(model, xis);
+	}
+
+	private static TIntIntMap observations(int leak, TIntIntMap qs, int[] answers) {
+		final TIntIntMap obs = new TIntIntHashMap();
+		obs.put(leak, 1);
+
+		int i = 0, skip = 0;
+		for (int qid = 1; qid <= 12; qid++) {
+			for (int sqid = 1; sqid <= 9; sqid++) {
+				int a = answers[i];
+				i++;
+				if (a == -1) {
+					skip++;
+					continue;
+				}
+				int q = qs.get(qid * 10 + sqid);
+				obs.put(q, a);
+			}
+		}
+
+		Assertions.assertEquals(answers.length, i);
+		Assertions.assertEquals(answers.length, obs.size() + skip - 1);
+
+		return obs;
+	}
+
+	@Test
+	void testAgainstVariableElimination() {
+
+		final DAGModel<BayesianFactor> model = new DAGModel<>();
+
+		final int x11 = addSkill(model, .5);
+		final int x12 = addSkill(model, .5);
+		final int x13 = addSkill(model, .5);
+		final int x21 = addSkill(model, .5);
+		final int x22 = addSkill(model, .5);
+		final int x23 = addSkill(model, .5);
+		final int x31 = addSkill(model, .5);
+		final int x32 = addSkill(model, .5);
+		final int x33 = addSkill(model, .5);
+		final int leak = addSkill(model, .5);
+
+		final int[] skills = {x11, x12, x13, x21, x22, x23, x31, x32, x33};
+
+		addConstraint(model, x11, x12);
+		addConstraint(model, x12, x13);
+		addConstraint(model, x21, x22);
+		addConstraint(model, x22, x23);
+		addConstraint(model, x31, x32);
+		addConstraint(model, x32, x33);
+		addConstraint(model, x11, x21);
+		addConstraint(model, x21, x31);
+		addConstraint(model, x12, x22);
+		addConstraint(model, x22, x32);
+		addConstraint(model, x13, x23);
+		addConstraint(model, x23, x33);
+
+		final double val = .8;
+		final double lam = 1 - val;
+
+		final TIntIntMap qs = new TIntIntHashMap();
+
+		for (int qid = 1; qid <= 12; qid++) {
+			qs.put(qid * 10 + 1, addQuestion(model, new int[]{x11, x12, x13, x21, x22, x23, x31, x32, x33, leak}, new double[]{lam, lam, lam, lam, lam, lam, lam, lam, lam, .1})); // 1
+			qs.put(qid * 10 + 2, addQuestion(model, new int[]{/**/ x12, x13, /**/ x22, x23, /**/ x32, x33, leak}, new double[]{/**/ lam, lam, /**/ lam, lam, /**/ lam, lam, .1})); // 2
+			qs.put(qid * 10 + 3, addQuestion(model, new int[]{/**/ /**/ x13, /**/ /**/ x23, /**/ /**/ x33, leak}, new double[]{/**/ /**/ lam, /**/ /**/ lam, /**/ /**/ lam, .1})); // 3
+			if (qid != 9) {
+				qs.put(qid * 10 + 4, addQuestion(model, new int[]{/**/ /**/ /**/ x21, x22, x23, x31, x32, x33, leak}, new double[]{/**/ /**/ /**/ lam, lam, lam, lam, lam, lam, .1})); // 4
+				qs.put(qid * 10 + 5, addQuestion(model, new int[]{/**/ /**/ /**/ /**/ x22, x23, /**/ x32, x33, leak}, new double[]{/**/ /**/ /**/ /**/ lam, lam, /**/ lam, lam, .1})); // 5
+				qs.put(qid * 10 + 6, addQuestion(model, new int[]{/**/ /**/ /**/ /**/ /**/ x23, /**/ /**/ x33, leak}, new double[]{/**/ /**/ /**/ /**/ /**/ lam, /**/ /**/ lam, .1})); // 6
+			}
+			if (qid != 12) {
+				qs.put(qid * 10 + 7, addQuestion(model, new int[]{/**/ /**/ /**/ /**/ /**/ /**/ x31, x32, x33, leak}, new double[]{/**/ /**/ /**/ /**/ /**/ /**/ lam, lam, lam, .1})); // 7
+				qs.put(qid * 10 + 8, addQuestion(model, new int[]{/**/ /**/ /**/ /**/ /**/ /**/ /**/ x32, x33, leak}, new double[]{/**/ /**/ /**/ /**/ /**/ /**/ /**/ lam, lam, .1})); // 8
+				qs.put(qid * 10 + 9, addQuestion(model, new int[]{/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ x33, leak}, new double[]{/**/ /**/ /**/ /**/ /**/ /**/ /**/ /**/ lam, .1})); // 9
+			}
+		}
+
+		// +1 is a yes, +0 is a no, -1 is a missing
+		final int[] answers6 = new int[]{           // student 6
+				//1  2   3   4   5   6   7   8   9
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 1
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 2
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 3
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 4
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 5
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 6
+				+1, +1, +1, -1, -1, +0, -1, -1, +0, // 7
+				+1, +1, +1, -1, -1, +0, -1, -1, +0, // 8
+				+1, +1, +1, -1, -1, -1, -1, -1, +0, // 9
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 10
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 11
+				+1, +1, +1, -1, -1, +0, -1, -1, -1, // 12
+		};
+
+		final int[] answers70 = new int[]{           // student 70
+				//1  2   3   4   5   6   7   8   9
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 1
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 2
+				+1, +1, -1, +1, +1, +0, -1, +0, +0, // 3
+				+1, +1, -1, +1, +1, +0, -1, +0, +0, // 4
+				+1, +1, -1, +1, +1, +0, -1, +0, +0, // 5
+				+1, +1, +1, +1, +1, +1, -1, -1, +0, // 6
+				+1, +1, +0, -1, +0, +0, -1, +0, +0, // 7
+				+1, +1, +0, -1, +0, +0, -1, +0, +0, // 8
+				+1, +1, +0, -1, -1, -1, -1, +0, +0, // 9
+				+1, +1, -1, +1, +1, -1, +1, +1, +0, // 10
+				+1, +1, -1, +1, +1, -1, +1, +1, +0, // 11
+				+1, +1, +0, -1, +0, +0, -1, -1, -1, // 12
+		};
+
+		System.out.println("Student 6");
+		final TIntIntMap obs6 = observations(leak, qs, answers6);
+		compare(model, obs6, skills);
+
+		System.out.println("Student 70");
+		final TIntIntMap obs70 = observations(leak, qs, answers70);
+		compare(model, obs70, skills);
+	}
+
+	private static void compare(DAGModel<BayesianFactor> model, TIntIntMap obs, int[] skills) {
+
+		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(50);
+		final InferenceJoined<GraphicalModel<BayesianFactor>, BayesianFactor> ve = new InferenceJoined<>() {
+			@Override
+			public BayesianFactor query(GraphicalModel<BayesianFactor> model, TIntIntMap evidence, int... queries) {
+				final CutObserved<BayesianFactor> co = new CutObserved<>();
+				final RemoveBarren<BayesianFactor> rb = new RemoveBarren<>();
+
+				final GraphicalModel<BayesianFactor> coModel = co.execute(model, evidence);
+				final GraphicalModel<BayesianFactor> infModel = rb.execute(coModel, evidence, queries);
+
+				final MinFillOrdering mf = new MinFillOrdering();
+				final int[] seq = mf.apply(infModel);
+
+				final FactorVariableElimination<BayesianFactor> fve = new FactorVariableElimination<>(seq);
+				fve.setNormalize(true);
+
+				return fve.query(infModel, evidence, queries);
+			}
+
+			@Override
+			public BayesianFactor query(GraphicalModel<BayesianFactor> model, TIntIntMap evidence, int query) {
+				return query(model, evidence, new int[]{query});
+			}
+		};
+
+		for (int s : skills) {
+			BayesianFactor rve = ve.query(model, obs, s);
+			BayesianFactor rlbp = lbp.query(model, obs, s);
+
+			System.out.printf(
+					"%2d %.8f %.8f%n   %.8f %.8f%n",
+					s,
+					rve.getValue(0),
+					rve.getValue(1),
+					rlbp.getValue(0),
+					rlbp.getValue(1)
+			);
+		}
+	}
+
 }
