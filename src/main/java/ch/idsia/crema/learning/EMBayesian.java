@@ -13,7 +13,6 @@ import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.Arrays;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 /**
@@ -22,6 +21,7 @@ import java.util.stream.IntStream;
 public class EMBayesian extends EMAlgorithm<BayesianFactor> {
 
 	private int[] ignoreVariables = new int[0];
+	private boolean smoothing = true;
 
 	public EMBayesian(InferenceJoined<GraphicalModel<BayesianFactor>, BayesianFactor> inference) {
 		super(inference);
@@ -30,6 +30,11 @@ public class EMBayesian extends EMAlgorithm<BayesianFactor> {
 	// TODO:
 	//  - add blocked states (state in variable will be copied from old factor)
 	//  - add block variable (whole factor will be copied)
+
+	public EMBayesian useBayesianSmoothing(boolean smoothing) {
+		this.smoothing = smoothing;
+		return this;
+	}
 
 	public EMBayesian setIgnoreVariables(TIntList ignoreVariables) {
 		this.ignoreVariables = ignoreVariables.toArray();
@@ -51,21 +56,25 @@ public class EMBayesian extends EMAlgorithm<BayesianFactor> {
 
 		for (int v : trainVariables) {
 			final int n = model.getFactor(v).getDomain().getCombinations();
-			final double[] data = DoubleStream.generate(() -> 1.0 / n).limit(n).toArray();
+			double[] data = new double[n];
+			if (smoothing)
+				Arrays.fill(data, 1.0 / n);
 			counts.put(v, data);
 		}
 		for (int v : trainVariables) {
 			factors.put(v, model.getFactor(v).copy());
 		}
 
+		int j =0 ;
 		for (TIntIntMap observation : observations) {
+			j++;
 			for (int v : trainVariables) {
-				final int[] parents = model.getParents(v);
-				long unknown = Arrays.stream(parents).filter(p -> !observation.containsKey(p)).count();
+				final int[] targets = model.getFactor(v).getDomain().getVariables();
+				long unknown = Arrays.stream(targets).filter(t -> !observation.containsKey(t)).count();
 
 				if (unknown > 0) {
 					// case with hidden data
-					BayesianFactor inf = inference.query(model, observation, v);
+					BayesianFactor inf = inference.query(model, observation, targets);
 
 					final double[] data = counts.get(v);
 					for (int i = 0; i < data.length; i++) {
@@ -74,7 +83,7 @@ public class EMBayesian extends EMAlgorithm<BayesianFactor> {
 
 				} else {
 					// fully-observed case
-					final Strides dom = model.getDomain(v);
+					final Strides dom = model.getFactor(v).getDomain();
 					final int[] states = Arrays.stream(dom.getVariables()).map(observation::get).toArray();
 					final int i = dom.getOffset(states);
 
@@ -92,12 +101,22 @@ public class EMBayesian extends EMAlgorithm<BayesianFactor> {
 	}
 
 	@Override
-	public GraphicalModel<BayesianFactor> maximization(GraphicalModel<BayesianFactor> model, TIntObjectMap<BayesianFactor> factors) {
+	public GraphicalModel<BayesianFactor> maximization(GraphicalModel<BayesianFactor> model, TIntObjectMap<BayesianFactor> counts) {
 		final GraphicalModel<BayesianFactor> copy = model.copy();
 
-		for (int v : factors.keys()) {
-			final BayesianFactor counts = factors.get(v);
-			final BayesianFactor f = counts.divide(counts.marginalize(v));
+		final int[] trainVariables = IntStream.of(model.getVariables())
+				.filter(v -> !ArraysUtil.contains(v, ignoreVariables))
+				.toArray();
+
+		for (int v : trainVariables) {
+			final int[] parents = model.getParents(v);
+
+			BayesianFactor f = counts.get(v);
+
+			for (int p: parents)
+				f = f.divide(counts.get(p));
+
+			f = f.marginalize(v);
 			copy.setFactor(v, f);
 		}
 

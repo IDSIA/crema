@@ -18,8 +18,11 @@ public abstract class EMAlgorithm<F extends OperableFactor<F>> {
 	protected final InferenceJoined<GraphicalModel<F>, F> inference;
 
 	private double scoreThreshold = 0.0;
-	private long iterations;
-	private List<Double> scores;
+
+	private List<Double> scores = new ArrayList<>();
+
+	private long maxIterations = 0L;
+	private long iterations = 0L;
 
 	/**
 	 * @param inference engine or algorithm to use for the inferences
@@ -38,6 +41,17 @@ public abstract class EMAlgorithm<F extends OperableFactor<F>> {
 	 */
 	public EMAlgorithm<F> setScoreThreshold(double scoreThreshold) {
 		this.scoreThreshold = scoreThreshold;
+		return this;
+	}
+
+	/**
+	 * If set to a value greater than 0, the algorithm does not check for score but run until the given value is reached.
+	 *
+	 * @param maxIterations num of iterations to do
+	 * @return
+	 */
+	public EMAlgorithm<F> setMaxIterations(long maxIterations) {
+		this.maxIterations = maxIterations;
 		return this;
 	}
 
@@ -97,22 +111,20 @@ public abstract class EMAlgorithm<F extends OperableFactor<F>> {
 	 * @return a model with the input structure but with updated factors
 	 */
 	public GraphicalModel<F> step(GraphicalModel<F> model, TIntIntMap[] observations) {
-
-		TIntObjectMap<F> factors = expectation(model, observations);
-		GraphicalModel<F> newModel = maximization(model, factors);
+		final TIntObjectMap<F> factors = expectation(model, observations);
+		final GraphicalModel<F> newModel = maximization(model, factors);
 
 		return newModel;
 	}
 
 	/**
-	 * Perform the Expectation-Maximization algorithm until convergence. The algorithm continues to run until the
-	 * improvement of the score, respect to the previous step, is greater than the {@link #scoreThreshold} parameter.
+	 * Use optimization approach based on score function.
 	 *
 	 * @param model        starting model, its structure will be copied
 	 * @param observations data to learn from
 	 * @return the learned model from the given data
 	 */
-	public GraphicalModel<F> run(GraphicalModel<F> model, TIntIntMap[] observations) {
+	private GraphicalModel<F> runWithScore(GraphicalModel<F> model, TIntIntMap[] observations) {
 		double lastModelScore;
 		double currentModelScore = score(model, observations);
 		iterations = 0;
@@ -125,9 +137,39 @@ public abstract class EMAlgorithm<F extends OperableFactor<F>> {
 			model = step(model, observations);
 			currentModelScore = score(model, observations);
 			scores.add(currentModelScore);
-		} while (currentModelScore - lastModelScore > scoreThreshold);
+		} while (Math.abs(currentModelScore - lastModelScore) > scoreThreshold);
 
 		return model;
+	}
+
+	/**
+	 * Use the iterative approach to the algorithm.
+	 *
+	 * @param model        starting model, its structure will be copied
+	 * @param observations data to learn from
+	 * @return the learned model from the given data
+	 */
+	private GraphicalModel<F> runWithIterations(GraphicalModel<F> model, TIntIntMap[] observations) {
+		for (iterations = 0; iterations < maxIterations; iterations++) {
+			model = step(model, observations);
+		}
+		return model;
+	}
+
+	/**
+	 * Perform the Expectation-Maximization algorithm until convergence. The algorithm continues to run until the
+	 * improvement of the score, respect to the previous step, is greater than the {@link #scoreThreshold} parameter.
+	 *
+	 * @param model        starting model, its structure will be copied
+	 * @param observations data to learn from
+	 * @return the learned model from the given data
+	 */
+	public GraphicalModel<F> run(GraphicalModel<F> model, TIntIntMap[] observations) {
+		if (maxIterations > 0) {
+			return runWithIterations(model, observations);
+		} else {
+			return runWithScore(model, observations);
+		}
 	}
 
 }
