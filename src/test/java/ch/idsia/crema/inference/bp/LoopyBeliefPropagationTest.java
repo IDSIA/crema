@@ -330,7 +330,7 @@ public class LoopyBeliefPropagationTest {
 		return v;
 	}
 
-	private void addConstraint(DAGModel<BayesianFactor> model, int L2, int L1) {
+	private int addConstraint(DAGModel<BayesianFactor> model, int L2, int L1) {
 		int D = model.addVariable(2);
 
 		model.addParents(D, L1, L2);
@@ -351,6 +351,8 @@ public class LoopyBeliefPropagationTest {
 				.set(1.0, 1, 0, 0) // P(D=0|L1=1, L2=0)
 				.get()
 		);
+
+		return D;
 	}
 
 	private int addXiOr(DAGModel<BayesianFactor> model, int xi, double lambda_i) {
@@ -406,9 +408,11 @@ public class LoopyBeliefPropagationTest {
 		return addOrNode(model, xis);
 	}
 
-	private static TIntIntMap observations(int leak, TIntIntMap qs, int[] answers) {
+	private static TIntIntMap observations(int[] constraints, TIntIntMap qs, int[] answers) {
 		final TIntIntMap obs = new TIntIntHashMap();
-		obs.put(leak, 1);
+		for (int c : constraints) {
+			obs.put(c, 1);
+		}
 
 		int i = 0, skip = 0;
 		for (int qid = 1; qid <= 12; qid++) {
@@ -425,7 +429,7 @@ public class LoopyBeliefPropagationTest {
 		}
 
 		Assertions.assertEquals(answers.length, i);
-		Assertions.assertEquals(answers.length, obs.size() + skip - 1);
+		Assertions.assertEquals(answers.length + constraints.length, obs.size() + skip);
 
 		return obs;
 	}
@@ -446,20 +450,24 @@ public class LoopyBeliefPropagationTest {
 		final int x33 = addSkill(model, .5);
 		final int leak = addSkill(model, .5);
 
+		final String[] skillNames = {"X11", "X12", "X13", "X21", "X22", "X23", "X31", "X32", "X33"};
 		final int[] skills = {x11, x12, x13, x21, x22, x23, x31, x32, x33};
 
-		addConstraint(model, x11, x12);
-		addConstraint(model, x12, x13);
-		addConstraint(model, x21, x22);
-		addConstraint(model, x22, x23);
-		addConstraint(model, x31, x32);
-		addConstraint(model, x32, x33);
-		addConstraint(model, x11, x21);
-		addConstraint(model, x21, x31);
-		addConstraint(model, x12, x22);
-		addConstraint(model, x22, x32);
-		addConstraint(model, x13, x23);
-		addConstraint(model, x23, x33);
+		final int[] constraints = {
+				leak,
+				addConstraint(model, x11, x12),
+				addConstraint(model, x12, x13),
+				addConstraint(model, x21, x22),
+				addConstraint(model, x22, x23),
+				addConstraint(model, x31, x32),
+				addConstraint(model, x32, x33),
+				addConstraint(model, x11, x21),
+				addConstraint(model, x21, x31),
+				addConstraint(model, x12, x22),
+				addConstraint(model, x22, x32),
+				addConstraint(model, x13, x23),
+				addConstraint(model, x23, x33),
+		};
 
 		final double val = .8;
 		final double lam = 1 - val;
@@ -516,15 +524,15 @@ public class LoopyBeliefPropagationTest {
 		};
 
 		System.out.println("Student 6");
-		final TIntIntMap obs6 = observations(leak, qs, answers6);
-		compare(model, obs6, skills);
+		final TIntIntMap obs6 = observations(constraints, qs, answers6);
+		compare(model, obs6, skills, skillNames);
 
 		System.out.println("Student 70");
-		final TIntIntMap obs70 = observations(leak, qs, answers70);
-		compare(model, obs70, skills);
+		final TIntIntMap obs70 = observations(constraints, qs, answers70);
+		compare(model, obs70, skills, skillNames);
 	}
 
-	private static void compare(DAGModel<BayesianFactor> model, TIntIntMap obs, int[] skills) {
+	private static void compare(DAGModel<BayesianFactor> model, TIntIntMap obs, int[] skills, String[] names) {
 
 		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>(50);
 		final InferenceJoined<GraphicalModel<BayesianFactor>, BayesianFactor> ve = new InferenceJoined<>() {
@@ -551,16 +559,16 @@ public class LoopyBeliefPropagationTest {
 			}
 		};
 
-		for (int s : skills) {
+		for (int i = 0; i < skills.length; i++) {
+			int s = skills[i];
+			String name = names[i];
 			BayesianFactor rve = ve.query(model, obs, s);
 			BayesianFactor rlbp = lbp.query(model, obs, s);
 
 			System.out.printf(
-					"%2d %.8f %.8f%n   %.8f %.8f%n",
-					s,
-					rve.getValue(0),
+					"P(%3s = 1) %.8f %.8f%n",
+					name,
 					rve.getValue(1),
-					rlbp.getValue(0),
 					rlbp.getValue(1)
 			);
 		}
