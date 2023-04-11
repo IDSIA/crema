@@ -1,6 +1,10 @@
 package ch.idsia.crema.factor.algebra.bayesian;
 
+import ch.idsia.crema.factor.algebra.OperationUtils;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+
+import java.util.Arrays;
+
 import org.apache.commons.math3.util.FastMath;
 
 /**
@@ -23,10 +27,15 @@ public class LogBayesianMarginal implements BayesianCollector {
 
 	@Override
 	public final double collect(BayesianFactor factor, final int source) {
-		double value = 0;
+		
+		return Arrays.stream(offsets)
+				.mapToDouble(factor::getLogValueAt)
+				.reduce(0, OperationUtils::logSum);
+		
+/** 		double value = 0;
 		for (int i = 0; i < size; ++i) {
 			value += factor.getValueAt(source + offsets[i]); // TODO: try with ch.idsia.crema.factor.algebra.OperationUtils.logSum()
 		}
-		return FastMath.log(value);
+		return FastMath.log(value);*/
 	}
 }

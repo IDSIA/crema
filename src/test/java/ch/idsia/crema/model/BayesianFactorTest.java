@@ -3,6 +3,8 @@ package ch.idsia.crema.model;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
+import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -240,4 +242,28 @@ public class BayesianFactorTest {
 		assertEquals(ibf, r);
 	}
 
+	@Test
+	public void testtime() {
+		int a = 0;
+		int b = 1;
+		int c = 2;
+
+		Strides d1 = new Strides(new int[]{a,b,c}, new int[]{2,3,2});
+
+
+		Strides d2 = new Strides(new int[]{b,c}, new int[]{3,2});
+
+		long nt = System.nanoTime();
+
+		double x = 0;
+		BayesianLogFactor pa = BayesianFactorFactory.factory().domain(d1).data(new double[]{0.15, 0.85, 0.25, 0.75, 0.95, 0.05, 0.5, 0.5, 0.4, 0.6, 0.7,0.3}).log();
+		BayesianLogFactor pb = BayesianFactorFactory.factory().domain(d2).data(new double[]{0.15, 0.05, 0.25,0.20, 0.25, 0.1}).log();
+		for (int i= 0; i < 100000; ++i) {
+			double[] data = pa.combine(pb).marginalize(b).marginalize(c).getData();
+			x += data[0];
+		}
+
+		double time = (System.nanoTime() - nt) / 1000000000.0;
+		System.out.println(time + "  " + x);
+	}
 }

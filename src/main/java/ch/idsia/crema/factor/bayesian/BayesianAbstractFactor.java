@@ -22,7 +22,7 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 
 	protected Strides domain;
 
-	public BayesianAbstractFactor(Domain domain) {
+	protected BayesianAbstractFactor(Domain domain) {
 		this.domain = Strides.fromDomain(domain);
 	}
 
