@@ -171,6 +171,13 @@
 			<artifactId>commons-math3</artifactId>
 			<version>3.6.1</version>
 		</dependency>
+
+		<!-- <dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math4-core</artifactId>
+			<version>4.0-beta1</version>
+		</dependency> -->
+
 		<dependency>
 			<groupId>net.sf.lpsolve</groupId>
 			<artifactId>lp_solve</artifactId>
@@ -186,6 +193,21 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.12.0</version>
 		</dependency>
+		<dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-rng-sampling</artifactId>
+            <version>1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-rng-core</artifactId>
+            <version>1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-rng-simple</artifactId>
+            <version>1.5</version>
+        </dependency>
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>org.eclipse.persistence.moxy</artifactId>

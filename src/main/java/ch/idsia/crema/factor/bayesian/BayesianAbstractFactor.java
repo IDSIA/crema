@@ -53,6 +53,18 @@ public abstract class BayesianAbstractFactor implements BayesianFactor {
 		return getLogValueAt(domain.getOffset(states));
 	}
 
+	/**
+	 * The collector method will collect data from this factor with the purpouse of eliminating the variable 
+	 * at the index specified in 'offset'. The method will use the builder to generate the final factor and the 
+	 * collector as the strategy to collect values of the removed variable.
+	 * 
+	 * @param <F> The type of factor. Mostly identified by the builder
+	 * @param offset the offset in the domain of the variable to be removed
+	 * @param builder the method to generate the new factor
+	 * @param collector the strategy to aggregate or filter the data related to the removed vsariable.
+	 * 
+	 * @return a new Bayesian Factor with a smaller domain. 
+	 */
 	protected <F extends BayesianAbstractFactor> F collect(int offset, BayesianFactorBuilder<F> builder, BayesianCollector collector) {
 		final int[] new_variables = new int[domain.getSize() - 1];
 		final int[] new_sizes = new int[domain.getSize() - 1];

@@ -8,12 +8,17 @@ public final class LogMarginal implements Collector {
 	private final int size;
 
 	@Override
-	public final double collect(final double[] data, final int source) {
-		double value = 0;
+	public final double collect(double[] data, int source) {
+		double value = data[source + offsets[0]];
 		for (int i = 0; i < size; ++i) {
-			value += FastMath.exp(data[source + offsets[i]]);
+			double v = data[source + offsets[i]]; 
+			if (v > value) {
+				value = v + Math.log1p(FastMath.exp(value - v));
+			} else {
+				value += Math.log1p(FastMath.exp(v - value));
+			}
 		}
-		return FastMath.log(value);
+		return value;
 	}
 
 	public LogMarginal(int size, int stride) {

@@ -9,7 +9,9 @@ public class OperationUtils {
 
 	
 	public static double logSum(double first, double second) {
-		final double min, max;
+		double min;
+		double max;
+
 		if (first < second) {
 			min = first;
 			max = second;
@@ -18,7 +20,10 @@ public class OperationUtils {
 			max = first;
 		}
 
-		return max + FastMath.log1p(FastMath.exp(min - max));
+		return max + Math.log1p(Math.exp(min - max));
 	}
-
+	
+	public static double logSumLowPrecision(double first, double second) {
+		return second + FastMath.log1p(FastMath.exp(first - second));
+	}
 }

@@ -22,8 +22,8 @@ public class SimpleBayesianMarginal implements BayesianCollector {
 
 	@Override
 	public final double collect(BayesianFactor factor, final int source) {
-		double value = 0;
-		for (int i = 0; i < size; ++i) {
+		double value = factor.getValueAt(source + offsets[0]);
+		for (int i = 1; i < size; ++i) {
 			value += factor.getValueAt(source + offsets[i]);
 		}
 		return value;

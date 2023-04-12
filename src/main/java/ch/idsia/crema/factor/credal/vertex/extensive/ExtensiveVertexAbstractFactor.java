@@ -3,6 +3,7 @@ package ch.idsia.crema.factor.credal.vertex.extensive;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.algebra.collectors.Collector;
 import ch.idsia.crema.factor.algebra.vertex.VertexOperation;
+
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;

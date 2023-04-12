@@ -8,7 +8,5 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
  * Date:    21.04.2021 21:14
  */
 public interface BayesianCollector {
-
 	double collect(BayesianFactor factor, int source);
-
 }

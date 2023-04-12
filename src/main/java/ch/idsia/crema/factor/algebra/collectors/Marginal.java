@@ -15,8 +15,8 @@ public final class Marginal implements Collector {
 
 	@Override
 	public final double collect(final double[] data, final int source) {
-		double value = 0;
-		for (int i = 0; i < size; ++i) {
+		double value = data[source + offsets[0]];
+		for (int i = 1; i < size; ++i) {
 			value += data[source + offsets[i]];
 		}
 		return value;
