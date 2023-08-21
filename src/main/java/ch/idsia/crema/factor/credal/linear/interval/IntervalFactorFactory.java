@@ -61,6 +61,16 @@ public class IntervalFactorFactory {
 		return this;
 	}
 
+	/*
+	* Method to set the lower and upper bounds with a matrix
+	* */
+	public IntervalFactorFactory setAll(double[][] lowers, double[][] uppers, int[][] states) {
+		for (int i = 0; i < lowers.length; i++) {
+			set(lowers[i], uppers[i], states[i]);
+		}
+		return this;
+	}
+
 	public IntervalFactorFactory lower(double[] lower, int... states) {
 		int offset = groupDomain.getOffset(states);
 		this.lowers.put(offset, lower);
