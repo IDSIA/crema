@@ -19,26 +19,26 @@ public class CreateCPTTest {
         double[] cutsBMI = new double[]{0.0, 15.0, 16, 18.5, 25.0, 30.0, 35.0, 40.0, 100.0};
 
         double[][] parents = new double[][]{cutsW, cutsH};
-        Op bmi = (w, h) -> w / h / h;
+        Op bmi = (double... num) -> num[0] / num[1] / num[1];
 
         IntervalFactor cpt = creator.create(2, new int[]{0, 1}, cutsBMI, parents, bmi);
         //System.out.println(cpt);
 
         // w1 and h1
-        assertArrayEquals(cpt.getLower(0, 0), new double[10]);
-        assertArrayEquals(cpt.getUpper(0, 0), creator.createUpper(new int[]{4}, 10));
+        assertArrayEquals(cpt.getLower(0, 0), new double[8]);
+        assertArrayEquals(cpt.getUpper(0, 0), creator.createUpper(new int[]{4}, 8));
 
         // w2 and h1
-        assertArrayEquals(cpt.getLower(1, 0), new double[10]);
-        assertArrayEquals(cpt.getUpper(1, 0), creator.createUpper(new int[]{4, 5}, 10));
+        assertArrayEquals(cpt.getLower(1, 0), new double[8]);
+        assertArrayEquals(cpt.getUpper(1, 0), creator.createUpper(new int[]{4, 5}, 8));
 
         // w5 and h6
-        assertArrayEquals(cpt.getLower(4, 5), new double[10]);
-        assertArrayEquals(cpt.getUpper(4, 5), creator.createUpper(new int[]{4}, 10));
+        assertArrayEquals(cpt.getLower(4, 5), new double[8]);
+        assertArrayEquals(cpt.getUpper(4, 5), creator.createUpper(new int[]{4}, 8));
 
         // w12 and h9
-        assertArrayEquals(cpt.getLower(11, 8), new double[10]);
-        assertArrayEquals(cpt.getUpper(11, 8), creator.createUpper(new int[]{5, 6}, 10));
+        assertArrayEquals(cpt.getLower(11, 8), new double[8]);
+        assertArrayEquals(cpt.getUpper(11, 8), creator.createUpper(new int[]{5, 6}, 8));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class CreateCPTTest {
         double[] parentIntervalLower = new double[]{55.0, 1.55};
         double[] parentIntervalUpper = new double[]{60.0, 1.60};
         //example of the BMI
-        Op bmi = (w, h) -> w / h / h;
+        Op bmi = (double... num) -> num[0] / num[1] / num[1];
 
         //bmi low = 21.48
         //bmi high = 24.97
