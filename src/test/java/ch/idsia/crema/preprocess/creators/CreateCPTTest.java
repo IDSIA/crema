@@ -25,20 +25,20 @@ public class CreateCPTTest {
         //System.out.println(cpt);
 
         // w1 and h1
-        assertArrayEquals(cpt.getLower(0, 0), new double[8]);
-        assertArrayEquals(cpt.getUpper(0, 0), creator.createUpper(new int[]{4}, 8));
+        assertArrayEquals(cpt.getLower(0, 0), creator.createArrayWithOneAtIndex(new int[]{4}, 8));
+        assertArrayEquals(cpt.getUpper(0, 0), creator.createArrayWithOneAtIndex(new int[]{4}, 8));
 
         // w2 and h1
         assertArrayEquals(cpt.getLower(1, 0), new double[8]);
-        assertArrayEquals(cpt.getUpper(1, 0), creator.createUpper(new int[]{4, 5}, 8));
+        assertArrayEquals(cpt.getUpper(1, 0), creator.createArrayWithOneAtIndex(new int[]{4, 5}, 8));
 
         // w5 and h6
-        assertArrayEquals(cpt.getLower(4, 5), new double[8]);
-        assertArrayEquals(cpt.getUpper(4, 5), creator.createUpper(new int[]{4}, 8));
+        assertArrayEquals(cpt.getLower(4, 5), creator.createArrayWithOneAtIndex(new int[]{4}, 8));
+        assertArrayEquals(cpt.getUpper(4, 5), creator.createArrayWithOneAtIndex(new int[]{4}, 8));
 
         // w12 and h9
         assertArrayEquals(cpt.getLower(11, 8), new double[8]);
-        assertArrayEquals(cpt.getUpper(11, 8), creator.createUpper(new int[]{5, 6}, 8));
+        assertArrayEquals(cpt.getUpper(11, 8), creator.createArrayWithOneAtIndex(new int[]{5, 6}, 8));
     }
 
     @Test
@@ -69,9 +69,9 @@ public class CreateCPTTest {
     }
 
     @Test
-    public void testCreateUpper() {
+    public void testCreateArrayWithOneAtIndex() {
         int[] interval = new int[]{3, 4};
-        double[] result = creator.createUpper(interval, 4);
+        double[] result = creator.createArrayWithOneAtIndex(interval, 4);
         double[] expected = new double[]{.0, .0, 1.0, 1.0};
 
         assertArrayEquals(result, expected);

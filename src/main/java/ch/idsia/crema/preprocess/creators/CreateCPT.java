@@ -89,8 +89,12 @@ public class CreateCPT {
             //map the integers of the position of the childCuts
             int[] intervalNumber = Arrays.stream(intervalBorders).mapToInt(val -> whichPosition(childCuts, val)).toArray();
 
-            // the lower is set to an array of zeroes the upper is set to 1 in the position of the interval number
-            factory.set(new double[dimChild], createUpper(intervalNumber, dimChild), comb);
+            boolean allEqual = intervalNumber.length == 1 || Arrays.stream(intervalNumber).allMatch(t -> t == intervalNumber[0]);
+            if(allEqual){
+                factory.set(createArrayWithOneAtIndex(intervalNumber, dimChild), createArrayWithOneAtIndex(intervalNumber, dimChild), comb);
+            }else{
+                factory.set(new double[dimChild], createArrayWithOneAtIndex(intervalNumber, dimChild), comb);
+            }
             iterator.next();
         }
         return factory.get();
@@ -101,7 +105,7 @@ public class CreateCPT {
      * @param dim      dimension of the array to be generated
      * @return double array with 1.0 set for every interval value
      */
-    public double[] createUpper(int[] interval, int dim) {
+    public double[] createArrayWithOneAtIndex(int[] interval, int dim) {
         double[] upper = new double[dim];
 
         // we set to 1.0 all the element relative to the interval
