@@ -5,6 +5,7 @@ import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.utility.IndexIterator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CreateCPT {
@@ -19,21 +20,29 @@ public class CreateCPT {
      */
     public double[] borders(double[] lower, double[] upper, Op operation) {
 
-        //shortcut in case the function is strictly monotone growing
-        //double[] extremes= new double[]{operation.execute(lower[0], upper[1]), operation.execute(upper[0], lower[1])};
-        //return Arrays.stream(extremes).sorted().toArray();
+        int DIM = (int) Math.pow(2, lower.length);
+        double[] results = new double[DIM];
 
-        double[] results = new double[2 * lower.length];
-        results[0] = operation.execute(lower[0], lower[1]);
-        results[1] = operation.execute(lower[0], upper[1]);
-        results[2] = operation.execute(upper[0], lower[1]);
-        results[3] = operation.execute(upper[0], upper[1]);
+        for (int i = 0; i < DIM; i++) {
+            StringBuilder binary = new StringBuilder(Integer.toBinaryString(i));
+            for(int j = binary.length(); j < lower.length; j++) {
+                binary.insert( 0, '0' );
+            }
+            ArrayList<Double> paramList = new ArrayList<>();
 
-        Arrays.sort(results);
-        double firstElement = results[0];
-        double lastElement = results[results.length - 1];
+            for(int j = 0; j < binary.length(); j++) {
+                if(binary.charAt(j) == '0') {
+                    paramList.add(lower[j]);
+                } else {
+                    paramList.add(upper[j]);
+                }
+            }
+            results[i] = operation.execute(paramList.stream().mapToDouble(Double::doubleValue).toArray());
+        }
 
-        return new double[]{firstElement, lastElement};
+        return new double[]{
+                Arrays.stream(results).min().isPresent()? Arrays.stream(results).min().getAsDouble(): 0.0,
+                Arrays.stream(results).max().isPresent()? Arrays.stream(results).max().getAsDouble(): 0.0};
     }
 
     /**
@@ -51,7 +60,7 @@ public class CreateCPT {
 
         // root nodes creation
         // add child node
-        int dimChild = childCuts.length + 1;
+        int dimChild = childCuts.length-1;
         Strides stridesChild = Strides.var(childVar, dimChild);
 
         // create domain
@@ -80,8 +89,12 @@ public class CreateCPT {
             //map the integers of the position of the childCuts
             int[] intervalNumber = Arrays.stream(intervalBorders).mapToInt(val -> whichPosition(childCuts, val)).toArray();
 
-            // the lower is set to an array of zeroes the upper is set to 1 in the position of the interval number
-            factory.set(new double[dimChild], createUpper(intervalNumber, dimChild), comb);
+            boolean allEqual = intervalNumber.length == 1 || Arrays.stream(intervalNumber).allMatch(t -> t == intervalNumber[0]);
+            if(allEqual){
+                factory.set(createArrayWithOneAtIndex(intervalNumber, dimChild), createArrayWithOneAtIndex(intervalNumber, dimChild), comb);
+            }else{
+                factory.set(new double[dimChild], createArrayWithOneAtIndex(intervalNumber, dimChild), comb);
+            }
             iterator.next();
         }
         return factory.get();
@@ -92,7 +105,7 @@ public class CreateCPT {
      * @param dim      dimension of the array to be generated
      * @return double array with 1.0 set for every interval value
      */
-    public double[] createUpper(int[] interval, int dim) {
+    public double[] createArrayWithOneAtIndex(int[] interval, int dim) {
         double[] upper = new double[dim];
 
         // we set to 1.0 all the element relative to the interval
