@@ -180,7 +180,7 @@ public abstract class VertexAbstractFactor implements VertexFactor {
 
 		Strides T = getSeparatingDomain().intersection(target);
 		Strides Lt = getSeparatingDomain().remove(target);
-		Strides Dl = getDataDomain().union(Lt);
+		Strides Dl = getDataDomain().union(Lt).sort();
 
 		// target data
 		double[][][] dest_data = new double[T.getCombinations()][][];

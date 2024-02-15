@@ -7,7 +7,7 @@ import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.graphical.MixedModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
-import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -18,7 +18,7 @@ public class CredalApproxLP<F extends FilterableFactor<F>> implements Inference<
 
 	protected GraphicalModel<F> getInferenceModel(GraphicalModel<F> model, TIntIntMap evidence, int target) {
 		// preprocessing
-		final CutObserved<F> cut = new CutObserved<>();
+		final Observe<F> cut = new Observe<>();
 		final GraphicalModel<F> cutted = cut.execute(model, evidence);
 
 		RemoveBarren<F> removeBarren = new RemoveBarren<>();

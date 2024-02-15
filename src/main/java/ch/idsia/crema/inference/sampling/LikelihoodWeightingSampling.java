@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.sampling;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.Observe;
 import gnu.trove.map.TIntDoubleMap;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.TIntObjectMap;
@@ -45,7 +45,7 @@ public class LikelihoodWeightingSampling extends StochasticSampling {
 
 		if (!preprocess) {
 			// this is mandatory
-			final CutObserved<BayesianFactor> co = new CutObserved<>();
+			final Observe<BayesianFactor> co = new Observe<>();
 			co.executeInPlace(model, evidence);
 		}
 

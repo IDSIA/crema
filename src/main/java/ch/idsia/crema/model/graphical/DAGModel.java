@@ -22,6 +22,7 @@ import org.jgrapht.graph.DirectedAcyclicGraph;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -225,10 +226,19 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		network.removeEdge(parent, variable);
 	}
 
+//	@Override
+//	public void removeParent(int variable, int parent, DomainChange<F> change) {
+//		F factor = factors.get(variable);
+//		F new_factor = change.remove(factor, parent);
+//		if (factor != new_factor)
+//			factors.put(variable, new_factor);
+//		network.removeEdge(parent, variable);
+//	}
+//	
 	@Override
-	public void removeParent(int variable, int parent, DomainChange<F> change) {
+	public void removeParent(int variable, int parent, Function<F,F> change) {
 		F factor = factors.get(variable);
-		F new_factor = change.remove(factor, parent);
+		F new_factor = change.apply(factor);
 		if (factor != new_factor)
 			factors.put(variable, new_factor);
 		network.removeEdge(parent, variable);
@@ -293,6 +303,15 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		return list.toArray();
 	}
 
+
+	@Override
+	public Strides getFullDomain(int variable) {
+		int[] vars = getParents(variable);
+		vars = ArraysUtil.append(vars, variable);
+		Arrays.sort(vars);
+		return new Strides(vars, getSizes(vars));
+	}
+	
 	@Override
 	public Strides getDomain(int... variables) {
 		return new Strides(variables, getSizes(variables));
@@ -304,6 +323,10 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		}
 	}
 
+	/**
+	 * Implemented as a sequence of addParent calls.
+	 */
+	@Override
 	public void addParents(int variable, int... parents) {
 		for (int parent : parents) {
 			addParent(variable, parent);
@@ -338,6 +361,7 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	}
 
 	public Collection<F> getFactors(int... variables) {
+		
 		return IntStream.of(variables).mapToObj(v -> factors.get(v)).collect(Collectors.toList());
 	}
 
@@ -363,7 +387,7 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	 *
 	 * @return
 	 */
-	public boolean correctFactorDomains() {
+	public boolean checkFactorsDAGConsistency() {
 		return IntStream.of(this.getVariables())
 				.allMatch(v -> Arrays.equals(
 						ArraysUtil.sort(this.getFactor(v).getDomain().getVariables()),

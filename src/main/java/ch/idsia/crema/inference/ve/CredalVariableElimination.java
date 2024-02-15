@@ -5,7 +5,7 @@ import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.hull.ConvexHull;
 import gnu.trove.map.TIntIntMap;
@@ -27,7 +27,7 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 	}
 
 	protected GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
-		CutObserved<VertexFactor> cutObserved = new CutObserved<>();
+		Observe<VertexFactor> cutObserved = new Observe<>();
 		// run making a copy of the model
 		GraphicalModel<VertexFactor> infModel = cutObserved.execute(model, evidence);
 

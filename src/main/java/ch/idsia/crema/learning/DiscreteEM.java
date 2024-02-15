@@ -4,7 +4,7 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 
@@ -14,7 +14,7 @@ public abstract class DiscreteEM extends ExpectationMaximization<BayesianFactor>
 		return new InferenceJoined<>() {
 			@Override
 			public BayesianFactor query(GraphicalModel<BayesianFactor> model, TIntIntMap evidence, int... queries) {
-				final CutObserved<BayesianFactor> co = new CutObserved<>();
+				final Observe<BayesianFactor> co = new Observe<>();
 				GraphicalModel<BayesianFactor> coModel = co.execute(model, evidence);
 
 				final RemoveBarren<BayesianFactor> rb = new RemoveBarren<>();

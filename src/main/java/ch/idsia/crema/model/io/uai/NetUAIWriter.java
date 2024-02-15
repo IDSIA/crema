@@ -15,7 +15,7 @@ public abstract class NetUAIWriter<T extends DAGModel<? extends OperableFactor<?
 	@Override
 	protected void sanityChecks() {
 		// Check model consistency
-		if (!target.correctFactorDomains())
+		if (!target.checkFactorsDAGConsistency())
 			throw new IllegalArgumentException("Inconsistent model");
 	}
 

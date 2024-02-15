@@ -8,14 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StridesTest {
 
-	@SuppressWarnings("deprecation")
-	public void testFilteredIterator() {
-		Strides domain = new Strides(new int[]{0, 1, 2, 3}, new int[]{2, 3, 4, 2});
-
-		IndexIterator iterator1 = domain.getFiteredIndexIterator(1, 2);
-		//int offset = domain.getPartialOffset(vars, states)
-		//IndexIterator iterator2 = domain.getIterator(filtered.getVariable()).offset(offset);
-	}
 
 	@Test
 	public void testEmpty() {
@@ -221,25 +213,29 @@ public class StridesTest {
 	}
 
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testRemoveAt() {
-		Strides s1 = new Strides(new int[]{0, 2, 3, 9}, new int[]{2, 2, 3, 7});
+		Strides s1 = new Strides(new int[]{ 0, 2, 3, 9 }, new int[]{2, 2, 3, 7});
 
-		Strides n1 = new Strides(s1, 1);
+		Strides n1 = s1.removeAt(1);
 		Strides n2 = s1.removeAt(1);
 
 		assertArrayEquals(n1.getVariables(), n2.getVariables());
 		assertArrayEquals(n1.getSizes(), n2.getSizes());
 
-		n1 = new Strides(s1, 1);
-		n1 = new Strides(n1, 2);
+		n1 = s1.removeAt(1);
+		n1 = n1.removeAt(2);
 		n2 = s1.removeAt(1, 3);
 
 		assertArrayEquals(n1.getVariables(), n2.getVariables());
 		assertArrayEquals(n1.getSizes(), n2.getSizes());
 
 		n2 = s1.removeAt(0, 1, 2, 3);
+		assertArrayEquals(new int[0], n2.getVariables());
+		assertArrayEquals(new int[0], n2.getSizes());
+		assertEquals(1, n2.getCombinations());
+		
+		n2 = s1.removeAt(3).removeAt(2).removeAt(0).removeAt(0);
 		assertArrayEquals(new int[0], n2.getVariables());
 		assertArrayEquals(new int[0], n2.getSizes());
 		assertEquals(1, n2.getCombinations());

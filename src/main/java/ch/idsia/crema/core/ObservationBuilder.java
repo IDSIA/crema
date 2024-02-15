@@ -75,7 +75,7 @@ public class ObservationBuilder extends TIntIntHashMap {
 	public static int[] getVariables(TIntIntMap[] obs) {
 		int[] variables = new int[]{};
 		for (TIntIntMap o : obs)
-			variables = ArraysUtil.unionSet(variables, o.keys());
+			variables = ArraysUtil.union_unsorted_set(variables, o.keys());
 		return variables;
 	}
 

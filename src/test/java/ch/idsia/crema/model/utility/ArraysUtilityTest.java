@@ -277,7 +277,7 @@ public class ArraysUtilityTest {
 	@ParameterizedTest
 	@CsvSource({"1&2,3&4,1&2&3&4",
 			"3&4, 3&4, 3&4",
-			"4&4, 3&4, 4&3",
+			"4&4, 3&4, 3&4",
 			"3&4, 3&3, 3&4",
 			"1&2, 3&4, 1&2&3&4",
 	})
@@ -286,7 +286,7 @@ public class ArraysUtilityTest {
 		int[] v2 = ArraysUtil.latexToIntVector(arr2);
 		int[] expected = ArraysUtil.latexToIntVector(res);
 
-		assertArrayEquals(expected, ArraysUtil.unionSet(v1, v2));
+		assertArrayEquals(expected, ArraysUtil.union_unsorted_set(v1, v2));
 
 	}
 
@@ -375,7 +375,7 @@ public class ArraysUtilityTest {
 	@ParameterizedTest
 	@CsvSource({"1&2&3&4,1&2&3&4",
 			"1&2&1&3&4,1&2&3&4",
-			"0&10&4&1&4,0&10&4&1"
+			"0&10&4&1&4,0&1&4&10"
 	})
 	void unique(String arr, String expected) {
 		int[] arr_ = ArraysUtil.latexToIntVector(arr);
@@ -389,7 +389,7 @@ public class ArraysUtilityTest {
 	@ParameterizedTest
 	@CsvSource({"1&2&3&4,1&2&3&4",
 			"1&2&1&3&4,1&2&3&4",
-			"0&10&4&1&4,0&10&4&1"
+			"0&10&4&1&4,0&1&4&10"
 	})
 	void uniqueDoubles(String arr, String expected) {
 		double[] arr_ = ArraysUtil.latexToDoubleVector(arr);

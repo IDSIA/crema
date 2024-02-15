@@ -46,7 +46,7 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 	 */
 	double getLogValueAt(int index);
 
-	// TODO: this method should only for internal use
+	// TODO: this method should only be for internal use
 	double[] getData();
 
 	@Override

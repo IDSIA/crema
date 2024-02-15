@@ -11,7 +11,7 @@ import gnu.trove.map.TIntIntMap;
  *
  * @author huber
  */
-public class CutObserved<F extends FilterableFactor<F>> implements TransformerEvidence<F, GraphicalModel<F>>,
+public class Observe<F extends FilterableFactor<F>> implements TransformerEvidence<F, GraphicalModel<F>>,
 		PreprocessorEvidence<F, GraphicalModel<F>> {
 
 	/**
@@ -34,12 +34,9 @@ public class CutObserved<F extends FilterableFactor<F>> implements TransformerEv
 			final int state = iterator.value();
 
 			for (int variable : model.getChildren(observed)) {
-				model.removeParent(variable, observed, new NullChange<>() {
-					@Override
-					public F remove(F factor, int variable) {
-						// probably need to check this earlier
-						return factor.filter(observed, state);
-					}
+				model.removeParent(variable, observed, (factor) ->  {
+					// probably need to check this earlier
+					return factor.filter(observed, state);
 				});
 			}
 		}

@@ -5,6 +5,11 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import gnu.trove.list.array.TIntArrayList;
+import gnu.trove.set.TDoubleSet;
+import gnu.trove.set.TIntSet;
+import gnu.trove.set.hash.TDoubleHashSet;
+import gnu.trove.set.hash.TIntHashSet;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.util.Precision;
@@ -121,6 +126,9 @@ public class ArraysUtil {
 		return copy;
 	}
 
+	/**
+	 * A helper class for the order functions
+	 */
 	private static class X {
 		public final int pos;
 		public final int val;
@@ -149,22 +157,45 @@ public class ArraysUtil {
 		return positions;
 	}
 
+	/**
+	 * get the ordering of the data. can be used to sort multiple arrays using a
+	 * reference one i.e. get variables order and sort sizes.
+	 * 
+	 * @param data
+	 * @return
+	 */
 	public static int[] order(int[] data) {
-		List<X> internal = new ArrayList<>(data.length);
+		X[] internal = new X[data.length];
 		for (int i = 0; i < data.length; ++i) {
-			internal.add(new X(i, data[i]));
+			internal[i] = new X(i, data[i]);
 		}
 
-		internal.sort(Comparator.comparingInt(o -> o.val));
+		Arrays.sort(internal, Comparator.comparingInt(o -> o.val));
 
 		int[] positions = new int[data.length];
 		for (int i = 0; i < data.length; ++i) {
-			X x = internal.get(i);
+			X x = internal[i];
 			positions[i] = x.pos;
 			data[i] = x.val;
 		}
 
 		return positions;
+	}
+
+	/**
+	 * Helper method to index multiple items in one shot.
+	 *
+	 * @param values
+	 * @param indices
+	 * @return
+	 */
+	public static int[] at(int[] from, int[] indices) {
+		// return IntStream.of(indices).map(v -> values[v]).toArray();
+		int[] x = new int[indices.length];
+		for (int i = 0; i < indices.length; ++i) {
+			x[i] = from[indices[i]];
+		}
+		return x;
 	}
 
 	public static double[][] deepClone(double[][] data) {
@@ -184,7 +215,8 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Convert an array in log-space using {@link FastMath#log(double)}. Creates a new array.
+	 * Convert an array in log-space using {@link FastMath#log(double)}. Creates a
+	 * new array.
 	 *
 	 * @param data input data
 	 * @return the input data in log-space.
@@ -198,7 +230,8 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Convert an array of array in log-space using {@link FastMath#log(double)}. Creates a new array.
+	 * Convert an array of array in log-space using {@link FastMath#log(double)}.
+	 * Creates a new array.
 	 *
 	 * @param data input data
 	 * @return the input data in log-space.
@@ -212,7 +245,8 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Convert an array in log-space using  {@link FastMath#log1p(double)}. Creates a new array.
+	 * Convert an array in log-space using {@link FastMath#log1p(double)}. Creates a
+	 * new array.
 	 *
 	 * @param data input data
 	 * @return the input data in log-space.
@@ -226,7 +260,8 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Convert an array from log-space to normal space using {@link FastMath#exp(double)}. Creates a new array.
+	 * Convert an array from log-space to normal space using
+	 * {@link FastMath#exp(double)}. Creates a new array.
 	 *
 	 * @param data input data
 	 * @return the input data in log-space.
@@ -240,7 +275,8 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Convert an array of array from log-space to normal space using {@link FastMath#exp(double)}. Creates a new array.
+	 * Convert an array of array from log-space to normal space using
+	 * {@link FastMath#exp(double)}. Creates a new array.
 	 *
 	 * @param data input data
 	 * @return the input data in log-space.
@@ -349,18 +385,19 @@ public class ArraysUtil {
 	 * containing the specified element. The original array is returned if the
 	 * element was already part of the array.
 	 * <p>
-	 * Expects a sorted array! Behaviours is rather unpredictable if array is not sorted.
+	 * Expects a sorted array! Behaviours is rather unpredictable if array is not
+	 * sorted.
 	 *
 	 * @param array   the sorted array
 	 * @param element the item to be added to the array
 	 * @return a new array containing the element or the original one if element is
-	 * already present
+	 *         already present
 	 */
 	public static int[] addToSortedArray(int[] array, int element) {
 		if (array == null || array.length == 0) {
 			// when no items in the array then return a new array with only the
 			// item
-			return new int[]{element};
+			return new int[] { element };
 		}
 
 		// look for existing links
@@ -472,15 +509,113 @@ public class ArraysUtil {
 		return arr_union;
 	}
 
+	public static int[] union_sorted_set(int[] arr1, int[] arr2) {
+		final int s1 = arr1.length;
+		final int s2 = arr2.length;
+
+		// size the target arrays assuming no overlap
+		final int max = s1 + s2;
+		int[] arr_union = new int[max];
+
+		// (pt1) c1 and c2 are the positions in the two domains
+		int c1 = 0;
+		int c2 = 0;
+
+		int t = 0;
+		int last = 0;
+		while (c1 < s1 && c2 < s2) {
+			int v1 = arr1[c1];
+			int v2 = arr2[c2];
+			if (t > 0) {
+				if (v1 == v2 && last == v1) {
+					++c1;
+					++c2;
+					continue;
+				} else if (v1 == last) {
+					++c1;
+					continue;
+				} else if (v2 == last) {
+					++c2;
+					continue;
+				}
+			}
+
+			if (v1 < v2) {
+				last = arr_union[t] = v1;
+				++c1;
+			} else if (v1 > v2) {
+				last = arr_union[t] = v2;
+				++c2;
+			} else {
+				last = arr_union[t] = v1;
+				++c1;
+				++c2;
+			}
+
+			++t;
+		}
+
+		// (pt2) check if there is one domain not completely copied that can be
+		// moved over in bulk.
+		for (; c1 < s1; ++c1) {
+			int a = arr1[c1];
+			if (t == 0 || a != last)
+				last = arr_union[t++] = a;
+		}
+		for (; c2 < s2; ++c2) {
+			int a = arr2[c2];
+			if (t == 0 || a != last)
+				last = arr_union[t++] = a;
+
+		}
+
+		// fix array sizes if there was overlap (we assumed no overlap while sizing)
+		if (t < max) {
+			arr_union = Arrays.copyOf(arr_union, t);
+		}
+		return arr_union;
+	}
+
 	/**
-	 * Find the sorted difference of two non-sorted integer arrays.
-	 *
+	 * Find the sorted difference of two non-sorted integer arrays. in arr1 but not
+	 * in arr2
+	 * 
 	 * @param arr1 the first array
 	 * @param arr2 the second array
 	 * @return an array intersection of the first two
 	 */
+//	public static int[] difference(int[] arr1, int[] arr2) {
+//		return IntStream.of(arr1).filter(y -> IntStream.of(arr2).noneMatch(x -> x == y)).toArray();
+//	}
 	public static int[] difference(int[] arr1, int[] arr2) {
-		return IntStream.of(arr1).filter(y -> IntStream.of(arr2).noneMatch(x -> x == y)).toArray();
+		TIntSet a2 = new TIntHashSet(arr2);
+
+		int[] tmp = new int[arr1.length];
+		int used = 0;
+
+		for (int o : arr1) {
+			if (!a2.contains(o))
+				tmp[used++] = o;
+		}
+
+		int[] target = new int[used];
+		System.arraycopy(tmp, 0, target, 0, used);
+		Arrays.sort(target);
+		return target;
+	}
+
+	public static int[] differenceSet(int[] arr1, int[] arr2) {
+		TIntSet a2 = new TIntHashSet(arr2);
+		TIntSet target = new TIntHashSet(arr1.length);
+		// target.removeAll(a2);
+		for (int o : arr1) {
+			if (!a2.contains(o))
+				target.add(o);
+		}
+
+		int[] ok = target.toArray();
+		Arrays.sort(ok);
+		return ok;
 	}
 
 	/**
@@ -491,17 +626,19 @@ public class ArraysUtil {
 	 * @return symetric difference of both arrays
 	 */
 	public static int[] symmetricDiff(int[] arr1, int[] arr2) {
-		return unionSet(difference(arr1, arr2), difference(arr2, arr1));
+		return union_sorted_set(difference(arr1, arr2), difference(arr2, arr1));
 	}
 
 	/**
 	 * @param arr1 first array
 	 * @param arr2 second array
-	 * @return an array which is the union of the two arrays without the common elements
+	 * @return an array which is the union of the two arrays without the common
+	 *         elements
 	 */
 	public static int[] outersection(int[] arr1, int[] arr2) {
 		final int[] intersection = intersection(arr1, arr2);
-		return unionSet(difference(arr1, intersection), difference(arr2, intersection));
+		// difference returns a sorted set
+		return union_sorted_set(difference(arr1, intersection), difference(arr2, intersection));
 	}
 
 	/**
@@ -513,6 +650,14 @@ public class ArraysUtil {
 	 */
 	public static int[] intersection(int[] arr1, int[] arr2) {
 		return IntStream.of(arr1).filter(y -> IntStream.of(arr2).anyMatch(x -> x == y)).toArray();
+	}
+
+	public static int[] intersection2(int[] arr1, int[] arr2) {
+		TIntSet a1 = new TIntHashSet(arr1);
+		a1.retainAll(arr2);
+		int[] a = a1.toArray();
+		Arrays.sort(a);
+		return a;
 	}
 
 	/**
@@ -564,8 +709,16 @@ public class ArraysUtil {
 	 * @param arr2
 	 * @return
 	 */
-	public static int[] unionSet(int[] arr1, int[] arr2) {
+	public static int[] unionSet2(int[] arr1, int[] arr2) {
 		return Ints.toArray(ImmutableSet.copyOf(Ints.asList(Ints.concat(arr1, arr2))));
+	}
+
+	public static int[] union_unsorted_set(int[] arr1, int[] arr2) {
+		TIntSet set = new TIntHashSet(arr1);
+		set.addAll(arr2);
+		int[] res = set.toArray();
+		Arrays.sort(res);
+		return res;
 	}
 
 	/**
@@ -627,7 +780,7 @@ public class ArraysUtil {
 	public static int[] getShape(double[][] matrix) {
 		if (Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
 			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
-		return new int[]{matrix.length, matrix[0].length};
+		return new int[] { matrix.length, matrix[0].length };
 	}
 
 	/**
@@ -640,7 +793,7 @@ public class ArraysUtil {
 	public static int[] getShape(int[][] matrix) {
 		if (Arrays.stream(matrix).map(v -> v.length).distinct().count() != 1)
 			throw new IllegalArgumentException("ERROR: nested vectors do not have the same length");
-		return new int[]{matrix.length, matrix[0].length};
+		return new int[] { matrix.length, matrix[0].length };
 	}
 
 	/**
@@ -685,7 +838,7 @@ public class ArraysUtil {
 	public static double[][] reshape2d(double[] vector, int... shape) {
 
 		if (shape.length == 1)
-			shape = new int[]{shape[0], vector.length / shape[0]};
+			shape = new int[] { shape[0], vector.length / shape[0] };
 
 		if (shape[0] * shape[1] != vector.length)
 			throw new IllegalArgumentException("ERROR: incompatible shapes");
@@ -776,7 +929,7 @@ public class ArraysUtil {
 	 * @return
 	 */
 	public static double[][] enumerate(double[] vect, int start) {
-		return IntStream.range(start, vect.length + start).mapToObj(i -> new double[]{i, vect[i - start]})
+		return IntStream.range(start, vect.length + start).mapToObj(i -> new double[] { i, vect[i - start] })
 				.toArray(double[][]::new);
 	}
 
@@ -797,8 +950,14 @@ public class ArraysUtil {
 	 * @param arr
 	 * @return
 	 */
+//	public static int[] unique(int[] arr) {
+//		return Ints.toArray(ImmutableSet.copyOf(Ints.asList(arr)));
+//	}
 	public static int[] unique(int[] arr) {
-		return Ints.toArray(ImmutableSet.copyOf(Ints.asList(arr)));
+		TIntSet set = new TIntHashSet(arr);
+		int[] a = set.toArray();
+		Arrays.sort(a);
+		return a;
 	}
 
 	/**
@@ -807,10 +966,15 @@ public class ArraysUtil {
 	 * @param arr
 	 * @return
 	 */
+//	public static double[] unique2(double[] arr) {
+//		return Doubles.toArray(ImmutableSet.copyOf(Doubles.asList(arr)));
+//	}
 	public static double[] unique(double[] arr) {
-		return Doubles.toArray(ImmutableSet.copyOf(Doubles.asList(arr)));
+		TDoubleSet set = new TDoubleHashSet(arr);
+		double[] a = set.toArray();
+		Arrays.sort(a);
+		return a;
 	}
-
 	/**
 	 * Round all the values in a vector with a number of decimals.
 	 *
@@ -1038,7 +1202,7 @@ public class ArraysUtil {
 	 * @param a
 	 * @return
 	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static double[] flattenDoubles(List a) {
 		int ndims = ArraysUtil.ndim(a.get(0));
 		if (ndims > 1) {
@@ -1071,7 +1235,7 @@ public class ArraysUtil {
 	 * @param a
 	 * @return
 	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static int[] flattenInts(List a) {
 		int ndims = ArraysUtil.ndim(a.get(0));
 		if (ndims > 1) {
@@ -1098,17 +1262,6 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Helper method to index multiple items in one shot.
-	 *
-	 * @param values
-	 * @param indices
-	 * @return
-	 */
-	public static int[] at(int[] values, int[] indices) {
-		return IntStream.of(indices).map(v -> values[v]).toArray();
-	}
-
-	/**
 	 * Non inline version of the Apache commons reverse methods
 	 *
 	 * @param is
@@ -1121,8 +1274,7 @@ public class ArraysUtil {
 	}
 
 	public static boolean isOneHot(double[] arr) {
-		return where(arr, x -> x == 1).length == 1 &&
-				where(arr, x -> x == 0).length == arr.length - 1;
+		return where(arr, x -> x == 1).length == 1 && where(arr, x -> x == 0).length == arr.length - 1;
 	}
 
 	public static double[] replace(double[] arr, Predicate<Double> pred, double replacement) {
@@ -1154,7 +1306,7 @@ public class ArraysUtil {
 			arr1 = unique(arr1);
 			arr2 = unique(arr2);
 		}
-		if (sort) {
+		if (sort && !unique) { // unique also sorts!
 			arr1 = sort(arr1);
 			arr2 = sort(arr2);
 		}
@@ -1185,18 +1337,22 @@ public class ArraysUtil {
 	}
 
 	/**
-	 * Function that transforms an array such that all the non-zero elements sum exactly 1.0
+	 * Function that transforms an array such that all the non-zero elements sum
+	 * exactly 1.0
+	 * 
 	 * @param vector
 	 * @return
 	 */
-	public static double[] normalizeNonZeros(double[] vector){
-		if(Arrays.stream(vector).sum()!=1.0) {
+	public static double[] normalizeNonZeros(double[] vector) {
+		if (Arrays.stream(vector).sum() != 1.0) {
 			// Find the last element different to zero
 			int idx = vector.length - 1;
-			while (idx > 0 && vector[idx] == 0.0) idx--;
+			while (idx > 0 && vector[idx] == 0.0)
+				idx--;
 
 			double sum = 0.0;
-			for (int i = 0; i < idx; i++) sum += vector[i];
+			for (int i = 0; i < idx; i++)
+				sum += vector[i];
 			vector[idx] = 1.0 - sum;
 		}
 		return vector;

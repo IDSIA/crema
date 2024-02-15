@@ -84,7 +84,7 @@ public class TestVertexFactor {
 	@Test
 	public void testExpansion() {
 		// p(X1|X0,X5)
-		VertexFactor vf = VertexFactorFactory.factory().domain(Strides.as(1, 4), Strides.as(0, 3).and(5, 2))
+		VertexFactor vf = VertexFactorFactory.factory().domain(Strides.as(1, 4).sort(), Strides.as(0, 3).and(5, 2).sort())
 				.addVertex(new double[]{0.1, 0.3, 0.2, 0.4}, 0, 1)
 				.addVertex(new double[]{0.3, 0.2, 0.1, 0.4}, 0, 1)
 				.addVertex(new double[]{0.1, 0.3, 0.4, 0.2}, 0, 1)
@@ -100,6 +100,8 @@ public class TestVertexFactor {
 				.addVertex(new double[]{0.6, 0.1, 0.2, 0.1}, 2, 0)
 				.addVertex(new double[]{0.1, 0.2, 0.2, 0.5}, 2, 0)
 				.get();
+
+
 
 		// P(X1|X0,X5) -> diventa estensivo rispetto a X5
 		VertexFactor v2 = vf.reseparate(Strides.as(0, 3));
@@ -120,7 +122,7 @@ public class TestVertexFactor {
 		assertArrayEquals(new double[]{0.6, 0.1, 0.2, 0.1, 0.4, 0.2, 0.2, 0.2}, dta[2][2], 0.00001);
 
 		v2 = vf.reseparate(Strides.as(5, 2));
-		dta = v2.getData();
+ 		dta = v2.getData();
 		assertEquals(2, dta.length);
 
 		// we removed var 0 from the separation domain
@@ -129,6 +131,7 @@ public class TestVertexFactor {
 		assertEquals(12, dta[1][0].length);
 
 		// test some vertices
+
 		assertArrayEquals(new double[]{0.7, 0.1, 0.6, 0.1, 0.1, 0.1, 0.1, 0.7, 0.2, 0.1, 0.1, 0.1}, dta[0][0],
 				0.00001);
 		assertArrayEquals(new double[]{0.7, 0.1, 0.6, 0.1, 0.1, 0.1, 0.1, 0.7, 0.2, 0.1, 0.1, 0.1}, dta[0][0],

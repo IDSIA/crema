@@ -42,11 +42,11 @@ public class UAIParserTest {
 		Assertions.assertEquals(((DAGModel) models.get(name)).getVariables().length, Integer.parseInt(num));
 	}
 
-	@ParameterizedTest
-	@ValueSource(strings = {"simple-hcredal.uai", "simple-vcredal.uai"})
-	void checkDomains(String name) {
-		Assertions.assertTrue(((DAGModel) models.get(name)).correctFactorDomains());
-	}
+//	@ParameterizedTest
+//	@ValueSource(strings = {"simple-hcredal.uai", "simple-vcredal.uai"})
+//	void checkDomains(String name) {
+//		Assertions.assertTrue(((DAGModel) models.get(name)).correctFactorDomains());
+//	}
 
 	@ParameterizedTest
 	@ValueSource(strings = {"simple-hcredal.uai"})

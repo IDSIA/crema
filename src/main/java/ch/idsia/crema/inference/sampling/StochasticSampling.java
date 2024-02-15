@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.sampling;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.RandomUtil;
 import gnu.trove.map.TIntIntMap;
@@ -62,7 +62,7 @@ public abstract class StochasticSampling implements InferenceJoined<GraphicalMod
 		GraphicalModel<BayesianFactor> model = original;
 		if (preprocess) {
 			model = original.copy();
-			final CutObserved<BayesianFactor> co = new CutObserved<>();
+			final Observe<BayesianFactor> co = new Observe<>();
 			final RemoveBarren<BayesianFactor> rb = new RemoveBarren<>();
 
 			co.executeInPlace(model, evidence);

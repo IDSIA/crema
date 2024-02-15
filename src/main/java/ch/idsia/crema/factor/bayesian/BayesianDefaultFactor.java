@@ -3,6 +3,7 @@ package ch.idsia.crema.factor.bayesian;
 import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.factor.algebra.GenericOperationFunction;
 import ch.idsia.crema.factor.algebra.bayesian.BayesianOperation;
 import ch.idsia.crema.factor.algebra.bayesian.SimpleBayesianFilter;
 import ch.idsia.crema.factor.algebra.bayesian.SimpleBayesianMarginal;
@@ -332,9 +333,59 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 			factor = ((BayesianLogFactor) factor).exp();
 
 		if (factor instanceof BayesianDefaultFactor)
-			return combine((BayesianDefaultFactor) factor, BayesianDefaultFactor::new, ops::combine);
+			return owncombine((BayesianDefaultFactor) factor, BayesianDefaultFactor::new, ops::combine);
 
 		return (BayesianDefaultFactor) super.combine(factor);
+	}
+
+	
+	protected <F extends BayesianDefaultFactor> F owncombine(F factor, BayesianFactorBuilder<F> builder, GenericOperationFunction<F> op) {
+		// domains should be sorted
+		//factor = (F) factor.copy();
+
+		final Strides target = getDomain().union(factor.getDomain());
+		final int length = target.getSize();
+
+		final int[] limits = new int[length];
+		final int[] assign = new int[length];
+
+		final long[] stride = new long[length];
+		final long[] reset = new long[length];
+
+		for (int vindex = 0; vindex < getDomain().getSize(); ++vindex) {
+			int offset = Arrays.binarySearch(target.getVariables(), getDomain().getVariables()[vindex]);
+			stride[offset] = getDomain().getStrides()[vindex];
+		}
+
+		for (int vindex = 0; vindex < factor.getDomain().getSize(); ++vindex) {
+			int offset = ArraysUtil.indexOf(factor.getDomain().getVariables()[vindex], target.getVariables());
+			stride[offset] += ((long) factor.getDomain().getStrides()[vindex] << 32L);
+		}
+
+		for (int i = 0; i < length; ++i) {
+			limits[i] = target.getSizes()[i] - 1;
+			reset[i] = limits[i] * stride[i];
+		}
+
+		long idx = 0;
+		double[] result = new double[target.getCombinations()];
+
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = this.data[ (int) (idx & 0xFFFFFFFF)] * factor.getValueAt((int) (idx >>> 32L));
+
+			for (int l = 0; l < length; ++l) {
+				if (assign[l] == limits[l]) {
+					assign[l] = 0;
+					idx -= reset[l];
+				} else {
+					++assign[l];
+					idx += stride[l];
+					break;
+				}
+			}
+		}
+
+		return builder.get(target, result);
 	}
 
 	/**
@@ -520,6 +571,140 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 		}
 
 		return logprob;
+	}
+	
+	
+	
+	
+	/**
+	 * BD      -> ABD      -> ABCD -> ABCDE
+	 * b0d0 0     a0b0d0 0  a0b0c0d0 0    0
+	 * b1d0 1     a1b0d0 0  a1b0c0d0 0    0
+	 * b0d1 2     a0b1d0 1  a0b1c0d0 1    1
+	 * b1d1 3     a1b1d0 1  a1b1c0d0 1    
+	 *            a0b0d1 2  a0b0d1 2    
+	 *            a1b0d1 2  a1b0d1 2    
+	 *            a0b1d1 3  a0b1d1 3    
+	 *            a0b1d1 3  a0b1d1 3    
+	 */
+	
+	
+	static class Side { 
+		int position; 
+		int[] sizes;
+		int[] variables;
+		int combinations;
+		int size;
+		
+		int stride; 
+		
+		Side(Strides d) {
+			this.position = 0;
+			this.stride = 1;
+			this.sizes = d.getSizes();
+			this.variables = d.getVariables();
+			this.size = variables.length;
+			this.combinations = d.getCombinations();
+		}
+		
+		boolean ok() {
+			return position < size;
+		}
+		int currentVar() {
+			return variables[position];
+		}
+		int currentSize() {
+			return sizes[position];
+		}
+		void move() {
+			++position;
+		}
+	}
+	
+	
+	/**
+	 * expectations:
+	 * <ul>
+	 * <li>Ordered domains/stride</li>
+	 * <li>$domain \subseteq target$</li>
+	 * </ul>
+	 * 
+	 * @param target
+	 * @return
+	 */
+	protected static double[] expand(Strides from_domain, double[] data, Strides to_domain) {
+		Side source = new Side(from_domain);
+		Side target = new Side(to_domain);
+		
+		double[] source_data = data;
+		
+		double[] cache1 = new double[target.combinations];
+		double[] target_data = cache1;
+		
+		// head insertions repeat single rows
+		int used = source_data.length;
+
+		
+		
+		
+		while (true) {
+			
+			// dato un set target e uno sorgetnte 
+			// trovare blocchi di differenze.
+			// due indicatori: posizione source e posizione target
+			// inizio differenza 
+			while (target.ok() && source.ok() && target.currentVar() == source.currentVar()) {
+				target.move();
+				source.move();
+			}
+			if (!target.ok()) return source_data; // no difference found
+		
+			// target's current variable is missing in source
+			int from = target.position;
+			int repeat = 1;
+			
+			while (target.ok() && (!source.ok() || target.currentVar() != source.currentVar())) {
+				repeat *= target.currentSize();
+				target.move();
+			}
+			
+			// the number of rows to repeat
+
+			// per ogni differenza devo sapere 
+			// quanti elementi ripetere, Prod size of left 
+			// quante volte ripetere, dimensioni delle variabili inserite
+			// quante volte rifare questa ripetizione
+
+			int rows = to_domain.getStrideAt(from);
+			int tpos = 0;
+			for (int r = 0; r < used; r += rows) {
+				for (int j = 0; j < repeat; ++j) {
+					System.arraycopy(source_data, r, target_data, tpos, rows);
+					tpos += rows;
+				}
+			}
+			used = tpos;
+			
+			if (!target.ok()) return target_data;
+			
+			if (source_data == data) {
+				source_data = target_data;
+				target_data = new double[target.combinations];
+			} else {
+				// swap buffers
+				double[] tmp= source_data;
+				source_data = target_data;
+				target_data = source_data;
+			}
+		}
+	}
+	public static void main(String[] args) {
+		double[] data = new double[] { 0, 1, 2, 3};
+		Strides from = Strides.var(2, 2).and(4, 2);
+		Strides to = Strides.var(1,2).and(2, 2).and(3,2).and(4, 2).and(5, 2);
+		double[] target = expand(from, data, to);
+		System.out.println(Arrays.toString(target));
+		
 	}
 
 }

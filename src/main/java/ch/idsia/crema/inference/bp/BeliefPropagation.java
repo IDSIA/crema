@@ -5,7 +5,7 @@ import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.bp.cliques.Clique;
 import ch.idsia.crema.inference.bp.junction.JunctionTree;
 import ch.idsia.crema.model.graphical.DAGModel;
-import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
@@ -61,7 +61,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	}
 
 	/**
-	 * If {@link #preprocess} is true, then pre-process the model with {@link CutObserved} and {@link RemoveBarren}.
+	 * If {@link #preprocess} is true, then pre-process the model with {@link Observe} and {@link RemoveBarren}.
 	 *
 	 * @param original the model to use for inference
 	 * @param evidence the observed variable as a map of variable-states
@@ -72,7 +72,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 		DAGModel<F> model = original;
 		if (preprocess) {
 			model = original.copy();
-			final CutObserved<F> co = new CutObserved<>();
+			final Observe<F> co = new Observe<>();
 			final RemoveBarren<F> rb = new RemoveBarren<>();
 
 			co.executeInPlace(model, evidence);
@@ -172,7 +172,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	}
 
 	/**
-	 * Pre-process the model with {@link CutObserved} and {@link RemoveBarren}, then performs the
+	 * Pre-process the model with {@link Observe} and {@link RemoveBarren}, then performs the
 	 * {@link #collectingEvidence(int)} step.
 	 *
 	 * @param model the model to use for inference
@@ -185,7 +185,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	}
 
 	/**
-	 * Pre-process the model with {@link CutObserved} and {@link RemoveBarren}, then performs the
+	 * Pre-process the model with {@link Observe} and {@link RemoveBarren}, then performs the
 	 * {@link #collectingEvidence(int)} step.
 	 *
 	 * @param original the model to use for inference
@@ -204,7 +204,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	}
 
 	/**
-	 * Pre-process the model with {@link CutObserved} and {@link RemoveBarren}, then performs the
+	 * Pre-process the model with {@link Observe} and {@link RemoveBarren}, then performs the
 	 * {@link #collectingEvidence(int)} and {@link #distributingEvidence()} steps.
 	 * <p>
 	 * Use the {@link #queryFullPropagated(int)} method for query multiple variables over the same evidence and model.

@@ -27,6 +27,7 @@ public interface Model<F extends GenericFactor> {
 	 */
 	Strides getDomain(int... variables);
 
+
 	/**
 	 * remove a specific state from a variable
 	 *

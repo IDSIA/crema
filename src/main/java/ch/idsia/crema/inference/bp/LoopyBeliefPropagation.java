@@ -3,7 +3,7 @@ package ch.idsia.crema.inference.bp;
 import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.DAGModel;
-import ch.idsia.crema.preprocess.CutObserved;
+import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
 import gnu.trove.map.TIntIntMap;
@@ -83,7 +83,7 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 		DAGModel<F> model = original;
 		if (preprocess) {
 			model = original.copy();
-			final CutObserved<F> co = new CutObserved<>();
+			final Observe<F> co = new Observe<>();
 			final RemoveBarren<F> rb = new RemoveBarren<>();
 
 			co.executeInPlace(model, evidence);

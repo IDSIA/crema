@@ -257,7 +257,7 @@ public class BayesianFactorTest {
 		assertEquals(ibf, r);
 	}
 
-	@Test
+//	@Test
 	public void testtime() {
 		int a = 0;
 		int b = 1;
@@ -347,7 +347,7 @@ public class BayesianFactorTest {
 
 
 
-	@Test
+//	@Test
 	public void testLogSpeed() {
 		
 		int[] vars = new int[]{0, 1, 2};
