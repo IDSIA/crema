@@ -1,7 +1,6 @@
 package ch.idsia.crema.core;
 
 import ch.idsia.crema.utility.ArraysMath;
-import ch.idsia.crema.utility.ArraysRandom;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Ints;
