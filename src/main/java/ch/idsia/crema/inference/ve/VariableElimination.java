@@ -8,10 +8,12 @@ import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.order.OrderingStrategy;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntCollection;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,11 +23,11 @@ import java.util.List;
 public class VariableElimination<F extends OperableFactor<F>> implements InferenceJoined<GraphicalModel<F>, F> {
 
     private int[] sequence;
-    private TIntIntMap order;
+    private Int2IntMap order;
 
     private List<F> factors;
 
-    private TIntIntMap instantiation;
+    private Int2IntMap instantiation;
 
     private Operation<F> operator;
 
@@ -53,7 +55,7 @@ public class VariableElimination<F extends OperableFactor<F>> implements Inferen
      * @param sequence
      */
     public void setSequence(int[] sequence) {
-        order = new TIntIntHashMap();
+        order = new Int2IntOpenHashMap();
         for (int i = 0; i < sequence.length; ++i) {
             order.put(sequence[i], i);
         }
@@ -87,12 +89,12 @@ public class VariableElimination<F extends OperableFactor<F>> implements Inferen
      *
      * @param instantiation
      */
-    public void setInstantiation(TIntIntMap instantiation) {
+    public void setInstantiation(Int2IntMap instantiation) {
         this.instantiation = instantiation;
     }
 
 	/** Alias of setInstantiation */
-	public void setEvidence(TIntIntMap instantiation) {
+	public void setEvidence(Int2IntMap instantiation) {
         setInstantiation(instantiation);
     }
 
@@ -152,16 +154,16 @@ public class VariableElimination<F extends OperableFactor<F>> implements Inferen
         return last;
     }
 
-
-    private int[] union(int[] first, int[]... others) {
-        TIntSet set = new TIntHashSet(first);
-        for (int[] other : others) {
-            set.addAll(other);
-        }
-        int[] data = set.toArray();
-        Arrays.sort(data);
-        return data;
-    }
+//
+//    private int[] union(int[] first, int[]... others) {
+//        IntSet set = new IntOpenHashSet(first);
+//        for (int[] other : others) {
+//            set.addAll(other);
+//        }
+//        int[] data = set.toArray();
+//        Arrays.sort(data);
+//        return data;
+//    }
 
 
     
@@ -176,12 +178,12 @@ public class VariableElimination<F extends OperableFactor<F>> implements Inferen
  
 
 	@Override
-	public F query(GraphicalModel<F> model, TIntIntMap evidence, int query) {
+	public F query(GraphicalModel<F> model, Int2IntMap evidence, int query) {
 		return query(model, evidence, new int[]{ query });
 	}
 
 	@Override
-	public F query(GraphicalModel<F> model, TIntIntMap observations, int... queries) {
+	public F query(GraphicalModel<F> model, Int2IntMap observations, int... queries) {
 		setInstantiation(observations);
 		setFactors(model.getFactors());
 		return run(queries);

@@ -3,8 +3,10 @@ package ch.idsia.crema.inference.bp.moralization;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.inference.Algorithm;
 import ch.idsia.crema.model.graphical.DAGModel;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.SimpleGraph;
@@ -54,15 +56,15 @@ public class Moralize<F extends GenericFactor> implements Algorithm<DAGModel<F>,
 		}
 
 		// build up from leaves
-		TIntSet nodes = new TIntHashSet(model.getLeaves());
+		IntSet nodes = new IntOpenHashSet(model.getLeaves());
 
 		// apply moralization
 		do {
-			final TIntSet slack = new TIntHashSet();
+			final IntSet slack = new IntOpenHashSet();
 
-			for (int v : nodes.toArray()) {
+			for (int v : nodes) {
 				final int[] parents = model.getParents(v);
-				slack.addAll(parents);
+				slack.addAll(new IntArrayList(parents));
 
 				// add existing edges
 				for (int p : parents)

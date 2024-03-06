@@ -1,20 +1,24 @@
 package ch.idsia.crema.utility;
 
 import ch.idsia.crema.core.Strides;
-import gnu.trove.iterator.TIntIntIterator;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap.Entry;
+import it.unimi.dsi.fastutil.ints.Int2IntMaps;
+import it.unimi.dsi.fastutil.objects.ObjectIterator;
+
 
 /**
  * Iterator over two separate strides/
  *
  * @author david
  */
-public class SeparateIndexIterator implements TIntIntIterator {
+public class SeparateIndexIterator implements ObjectIterator<Entry> {
 
 	private final IndexIterator conditioningIterator;
 	private final IndexIterator dataIterator;
 	private int key;
 	private int value;
-
+	
 	/**
 	 * Iterate the two domains
 	 *
@@ -36,11 +40,6 @@ public class SeparateIndexIterator implements TIntIntIterator {
 		this.value = -1;
 	}
 
-	@Override
-	public void advance() {
-		key = conditioningIterator.next();
-		value = dataIterator.next();
-	}
 
 	@Override
 	public boolean hasNext() {
@@ -54,26 +53,38 @@ public class SeparateIndexIterator implements TIntIntIterator {
 	}
 
 	public int getConditioningIndex() {
-		return key();
-	}
-
-	public int getDataIndex() {
-		return value();
-	}
-
-	@Override
-	public int key() {
 		return key;
 	}
 
-	@Override
-	public int value() {
+	public int getDataIndex() {
 		return value;
 	}
 
+
 	@Override
-	public int setValue(int val) {
-		return value;
+	public Entry next() {
+		key = conditioningIterator.nextInt();
+		value = dataIterator.nextInt();
+		
+		return new Entry() {
+			int value = SeparateIndexIterator.this.value;
+			int key = SeparateIndexIterator.this.key;
+			
+			@Override
+			public int setValue(int value) {
+				return 0;
+			}
+			
+			@Override
+			public int getIntValue() {
+				return value;
+			}
+			
+			@Override
+			public int getIntKey() {
+				return key;
+			}
+		};
 	}
 
 }

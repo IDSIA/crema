@@ -17,7 +17,7 @@ import ch.idsia.crema.inference.sampling.LikelihoodWeightingSampling;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -159,7 +159,7 @@ public class ApproxLP0<F extends GenericFactor> implements Inference<GraphicalMo
 	 * @return an {@link IntervalFactor} of the query node
 	 */
 	@Override
-	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
+	public IntervalFactor query(GraphicalModel<F> originalModel, Int2IntMap evidence, int query) {
 		final GraphicalModel<F> model;
 		if (preprocess) {
 			RemoveBarren<F> remove = new RemoveBarren<>();

@@ -7,6 +7,7 @@ import ch.idsia.crema.factor.algebra.collectors.LogMarginal;
 import ch.idsia.crema.factor.algebra.vertex.LogVertexOperation;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
+import ch.idsia.crema.utility.ArraysMath;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class ExtensiveVertexLogFactor extends ExtensiveVertexDefaultFactor {
 	}
 
 	protected void addVertex(double[] data) {
-		super.addVertex(ArraysUtil.log(data));
+		super.addVertex(ArraysMath.log(data));
 	}
 
 	@Override

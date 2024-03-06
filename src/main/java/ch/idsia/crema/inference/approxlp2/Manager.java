@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.approxlp2;
 
 import ch.idsia.crema.factor.GenericFactor;
+
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.convert.SeparateLinearToExtensiveHalfspaceFactor;
@@ -9,7 +10,9 @@ import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.ObjectiveFunction;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 abstract class Manager implements ObjectiveFunction<Move, Solution> {
@@ -82,18 +85,18 @@ abstract class Manager implements ObjectiveFunction<Move, Solution> {
 		// barren.execute(model, query);
 
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(sequence);
-		ve.setFactors(sol.getData().valueCollection());
+		ve.setFactors(sol.getData().values());
 		ve.setNormalize(false);
 		return ve.run(query);
 	}
 
-	protected BayesianFactor calcPosterior(Solution sol, int[] query, TIntIntMap ev) {
+	protected BayesianFactor calcPosterior(Solution sol, int[] query, Int2IntMap ev) {
 		// DAGModel<? extends GenericFactor> model = new DupModel().execute(this.model);
 		// RemoveBarren barren = new RemoveBarren();
 		// barren.execute(model, query, ev);
 
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(sequence);
-		ve.setFactors(sol.getData().valueCollection());
+		ve.setFactors(sol.getData().values());
 		ve.setEvidence(ev);
 		ve.setNormalize(false);
 		return ve.run(query);

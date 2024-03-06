@@ -1,7 +1,7 @@
 package ch.idsia.crema.factor;
 
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -40,9 +40,9 @@ public interface FilterableFactor<F extends FilterableFactor<F>> extends Generic
 	 * @return a new factor where the given variable in the given state has been filtered out
 	 */
 	@SuppressWarnings("unchecked")
-	default F filter(TIntIntMap obs) {
+	default F filter(Int2IntMap obs) {
 		F f = (F) this.copy();
-		for (int v : obs.keys()) {
+		for (int v : obs.keySet()) {
 			if (ArraysUtil.contains(v, f.getDomain().getVariables()))
 				f = f.filter(v, obs.get(v));
 		}

@@ -2,7 +2,8 @@ package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,12 +18,12 @@ import java.util.stream.Collectors;
 @Deprecated
 public class FactorElimination {
 
-	private TIntIntMap evidence;
+	private Int2IntMap evidence;
 	private EliminationTree tree;
 
 	private int root;
 
-	public void setEvidence(TIntIntMap evidence) {
+	public void setEvidence(Int2IntMap evidence) {
 		this.evidence = evidence;
 	}
 
@@ -56,7 +57,7 @@ public class FactorElimination {
 		return FE(query);
 	}
 
-	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query, TIntIntMap observations) {
+	public Collection<BayesianFactor> apply(GraphicalModel<BayesianFactor> model, int[] query, Int2IntMap observations) {
 		setEvidence(observations);
 		return FE(query);
 	}

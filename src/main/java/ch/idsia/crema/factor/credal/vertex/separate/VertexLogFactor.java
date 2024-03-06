@@ -2,6 +2,7 @@ package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.LogSpace;
+import ch.idsia.crema.utility.ArraysMath;
 import ch.idsia.crema.utility.ArraysUtil;
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -24,7 +25,7 @@ public class VertexLogFactor extends VertexDefaultFactor {
 		for (int i = 0; i < factor.data.length; i++) {
 			data[i] = new double[factor.data[i].length][];
 			for (int j = 0; j < factor.data[i].length; j++) {
-				data[i][j] = ArraysUtil.log(factor.data[i][j]);
+				data[i][j] = ArraysMath.log(factor.data[i][j]);
 			}
 		}
 	}

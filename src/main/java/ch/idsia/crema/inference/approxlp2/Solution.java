@@ -1,12 +1,14 @@
 package ch.idsia.crema.inference.approxlp2;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 
 public class Solution {
 
-	private final TIntObjectHashMap<BayesianFactor> data;
+	private final Int2ObjectMap<BayesianFactor> data;
 	private final int free;
 
 	private double scorecache;
@@ -17,7 +19,7 @@ public class Solution {
 	 * @param data
 	 * @param score
 	 */
-	Solution(TIntObjectHashMap<BayesianFactor> data, double score) {
+	Solution(Int2ObjectMap<BayesianFactor> data, double score) {
 		this.scorecache = score;
 		this.data = data;
 		this.free = -1;
@@ -25,7 +27,7 @@ public class Solution {
 
 	Solution(Solution source, Move move) {
 		// shallow copy
-		this.data = new TIntObjectHashMap<>(source.data);
+		this.data = new Int2ObjectOpenHashMap<>(source.data);
 
 		if (move.getValues() == null)
 			throw new IllegalArgumentException("The provided move has never been evaluated");
@@ -44,7 +46,7 @@ public class Solution {
 	 *
 	 * @return
 	 */
-	TIntObjectHashMap<BayesianFactor> getData() {
+	Int2ObjectMap<BayesianFactor> getData() {
 		return data;
 	}
 

@@ -2,7 +2,8 @@ package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -23,7 +24,7 @@ public interface TransformerQuery<F extends GenericFactor, M extends GraphicalMo
 	 * @return a new modified model
 	 */
 	@Override
-	default M execute(M model, TIntIntMap evidence, int query) {
+	default M execute(M model, Int2IntMap evidence, int query) {
 		return execute(model, evidence, new int[]{query});
 	}
 
@@ -36,6 +37,6 @@ public interface TransformerQuery<F extends GenericFactor, M extends GraphicalMo
 	 * @return a new modified model
 	 */
 	@Override
-	M execute(M model, TIntIntMap evidence, int... query);
+	M execute(M model, Int2IntMap evidence, int... query);
 
 }

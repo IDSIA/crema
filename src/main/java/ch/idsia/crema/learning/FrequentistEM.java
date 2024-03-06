@@ -8,9 +8,10 @@ import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 import java.util.Collection;
 import java.util.stream.IntStream;
@@ -36,24 +37,24 @@ public class FrequentistEM extends DiscreteEM {
 	}
 
 	@Override
-	protected void stepPrivate(Collection<TIntIntMap> stepArgs) {
+	protected void stepPrivate(Collection<Int2IntMap> stepArgs) {
 		// E-stage
-		TIntObjectMap<BayesianDefaultFactor> counts = expectation(stepArgs.toArray(TIntIntMap[]::new));
+		Int2ObjectMap<BayesianDefaultFactor> counts = expectation(stepArgs.toArray(Int2IntMap[]::new));
 		// M-stage
 		maximization(counts);
 	}
 
-	private TIntObjectMap<BayesianDefaultFactor> expectation(TIntIntMap[] observations) {
-		TIntObjectMap<BayesianDefaultFactor> factors = new TIntObjectHashMap<>();
-		TIntObjectMap<double[]> counts = new TIntObjectHashMap<>();
-		TIntObjectMap<Strides> domains = new TIntObjectHashMap<>();
+	private Int2ObjectMap<BayesianDefaultFactor> expectation(Int2IntMap[] observations) {
+		Int2ObjectMap<BayesianDefaultFactor> factors = new Int2ObjectOpenHashMap<>();
+		Int2ObjectMap<double[]> counts = new Int2ObjectOpenHashMap<>();
+		Int2ObjectMap<Strides> domains = new Int2ObjectOpenHashMap<>();
 		for (int variable : posteriorModel.getVariables()) {
 			final Strides domain = posteriorModel.getFactor(variable).getDomain();
 			domains.put(variable, domain);
 			counts.put(variable, new double[domain.getCombinations()]);
 		}
 
-		for (TIntIntMap observation : observations) {
+		for (Int2IntMap observation : observations) {
 			for (int var : trainableVars) {
 				int[] relevantVars = ArraysUtil.addToSortedArray(posteriorModel.getParents(var), var);
 				int[] hidden = IntStream.of(relevantVars).filter(x -> !observation.containsKey(x)).toArray();
@@ -87,14 +88,14 @@ public class FrequentistEM extends DiscreteEM {
 		}
 
 		// build output factors
-		for (int v : domains.keys()) {
+		for (int v : domains.keySet()) {
 			factors.put(v, new BayesianDefaultFactor(domains.get(v), counts.get(v)));
 		}
 
 		return factors;
 	}
 
-	private void maximization(TIntObjectMap<BayesianDefaultFactor> counts) {
+	private void maximization(Int2ObjectMap<BayesianDefaultFactor> counts) {
 		updated = false;
 
 		for (int var : trainableVars) {

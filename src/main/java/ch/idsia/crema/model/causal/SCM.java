@@ -12,9 +12,10 @@ import java.util.NoSuchElementException;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
-import gnu.trove.iterator.TIntIterator;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.IntIterator;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 public class SCM extends DAGModel<BayesianFactor> {
 
@@ -30,15 +31,52 @@ public class SCM extends DAGModel<BayesianFactor> {
 	}
 	
 	private int nextId;
-	private TreeMap<VariableType, TIntSet> varSets;
+	private TreeMap<VariableType, IntSet> varSets;
 
-	
+	private TreeMap<String, Object> metadata;
+
 	public SCM() {
-		varSets = new TreeMap<SCM.VariableType, TIntSet>();
+		varSets = new TreeMap<SCM.VariableType, IntSet>();
 		
-		varSets.put(VariableType.ENDOGENOUS, new TIntHashSet());
-		varSets.put(VariableType.EXOGENOUS, new TIntHashSet());
-		varSets.put(VariableType.EXTRA, new TIntHashSet());
+		varSets.put(VariableType.ENDOGENOUS, new IntOpenHashSet());
+		varSets.put(VariableType.EXOGENOUS, new IntOpenHashSet());
+		varSets.put(VariableType.EXTRA, new IntOpenHashSet());
+		
+		metadata = new TreeMap<String, Object>();
+	}
+	
+	public SCM(SCM copy) {
+		super(copy);
+		metadata = new TreeMap<String, Object>(copy.metadata);
+		
+		varSets = new TreeMap<SCM.VariableType, IntSet>();
+
+		varSets.put(VariableType.ENDOGENOUS, new IntOpenHashSet(copy.varSets.get(VariableType.ENDOGENOUS)));
+		varSets.put(VariableType.EXOGENOUS, new IntOpenHashSet(copy.varSets.get(VariableType.EXOGENOUS)));
+		varSets.put(VariableType.EXTRA, new IntOpenHashSet(copy.varSets.get(VariableType.EXTRA)));
+		
+	}
+	
+	
+	public void setMetadata(String key, Object value) {
+		metadata.put(key, value);
+	}
+	
+	public Object getMetadata(String key) {
+		return metadata.get(key);
+	}
+	
+	public void copyMetadataTo(SCM target) {
+		target.metadata.putAll(metadata);
+	}
+	
+	
+	public SCM clone() {
+		return new SCM(this);
+	}
+	
+	public SCM copy() {
+		return new SCM(this);
 	}
 	
 	private int nextId() { 
@@ -107,6 +145,22 @@ public class SCM extends DAGModel<BayesianFactor> {
 		return varSets.get(VariableType.EXTRA).contains(variable);
 	}
 
+	public VariableType getVariableType(int v) {
+		for (var set : varSets.entrySet()) { 
+			if (set.getValue().contains(v)) return set.getKey();
+		}
+		return null;
+	}
+	
+	public void setVariableType(int v, VariableType newtype) {
+		VariableType type = getVariableType(v);
+		// remove
+		varSets.get(type).remove(v);
+		// add
+		varSets.get(newtype).add(v);
+	}
+
+	
 	public boolean has(int variable) {
 		return this.cardinalities.containsKey(variable);
 	}
@@ -118,16 +172,37 @@ public class SCM extends DAGModel<BayesianFactor> {
 		return null;
 	}
 	
-	public int[] getEndogenousVars() {
-		return varSets.get(VariableType.ENDOGENOUS).toArray();
+	public int[] getVariables(VariableType... types) {
+		IntSet vars = new IntOpenHashSet();
+		for (var type : types) {
+			vars.addAll(varSets.get(type));
+		}
+		return vars.toIntArray();
+	}
+	
+	
+	public IntSet getEndogenousSet() {
+		return varSets.get(VariableType.ENDOGENOUS);
+	}
+	
+	public IntSet getExogenousSet() {
+		return varSets.get(VariableType.EXOGENOUS);
+	}
+	
+	public IntSet getExtraSet() {
+		return varSets.get(VariableType.EXTRA);
+	}
+	
+	public int[] getEndogenous() {
+		return getEndogenousSet().toIntArray();
 	}
 
-	public int[] getExogenousVars() {
-		return varSets.get(VariableType.EXOGENOUS).toArray();
+	public int[] getExogenous() {
+		return getExogenousSet().toIntArray();
 	}
 
-	public int[] getExtraVars() {
-		return varSets.get(VariableType.EXOGENOUS).toArray();
+	public int[] getExtra() {
+		return getExtraSet().toIntArray();
 	}
 
 	public void addParent(int variable, int parent) {
@@ -142,14 +217,14 @@ public class SCM extends DAGModel<BayesianFactor> {
 
 		super.addParent(variable, parent);
 	}
-	
+
 	public Iterable<TypedVariable> variables() {
 		return () -> {
 			return new Iterator<TypedVariable>() {
 				int type_index = 0;
 				VariableType[] types = Arrays.stream(VariableType.values()).filter(x -> varSets.get(x).size() > 0).toArray(VariableType[]::new);
 			
-				TIntIterator setIterator = varSets.get(types[0]).iterator();
+				IntIterator setIterator = varSets.get(types[0]).intIterator();
 				
 				@Override
 				public TypedVariable next() {
@@ -161,7 +236,7 @@ public class SCM extends DAGModel<BayesianFactor> {
 							throw new NoSuchElementException();
 						}
 					}
-					int id = setIterator.next();
+					int id = setIterator.nextInt();
 					int size = cardinalities.get(id);
 					return new TypedVariable(id, size, types[type_index]);
 				}
@@ -187,6 +262,7 @@ public class SCM extends DAGModel<BayesianFactor> {
 				|| this.varSets.get(VariableType.EXOGENOUS).remove(variable)
 				|| this.varSets.get(VariableType.EXTRA).remove(variable);
 	}
+
 	
 	
 	

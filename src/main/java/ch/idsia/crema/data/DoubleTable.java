@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 public class DoubleTable extends DataTable<Double, Double> {
 
@@ -34,13 +34,13 @@ public class DoubleTable extends DataTable<Double, Double> {
 	 * @param unit
 	 * @param add
 	 */
-	public DoubleTable(TIntIntMap[] data) {
+	public DoubleTable(Int2IntMap[] data) {
 		this(TIntMapConverter.cols(data));
 
 		if (data.length == 0)
 			throw new IllegalArgumentException("Need data");
 
-		for (TIntIntMap inst : data) {
+		for (Int2IntMap inst : data) {
 			add(inst);
 		}
 	}
@@ -86,7 +86,7 @@ public class DoubleTable extends DataTable<Double, Double> {
 		// cumulative size
 		int cumsize = 1;
 
-		TIntIntMap strides = new TIntIntHashMap();
+		Int2IntMap strides = new Int2IntOpenHashMap();
 		for (int i = 0; i < vars.length; ++i) {
 			strides.put(vars[i], cumsize);
 			cumsize = cumsize * sizes[i];
@@ -114,18 +114,18 @@ public class DoubleTable extends DataTable<Double, Double> {
 		return results;
 	}
 
-	TIntIntMap getKeyMap(int[] index) {
-		TIntIntMap map = new TIntIntHashMap();
+	Int2IntMap getKeyMap(int[] index) {
+		Int2IntMap map = new Int2IntOpenHashMap();
 		for (int i = 0; i < index.length; ++i) {
 			map.put(columns[i], index[i]);
 		}
 		return map;
 	}
 
-	public TIntIntMap[] toMap(boolean roundup) {
+	public Int2IntMap[] toMap(boolean roundup) {
 		return dataTable.entrySet().stream().flatMap(row -> IntStream
 				.range(0, (int) (row.getValue() + (roundup ? 0.5 : 0))).mapToObj(i -> this.getKeyMap(row.getKey())))
-				.toArray(TIntIntHashMap[]::new);
+				.toArray(Int2IntMap[]::new);
 
 	}
 

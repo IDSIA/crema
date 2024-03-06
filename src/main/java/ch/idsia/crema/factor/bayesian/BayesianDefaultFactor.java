@@ -11,7 +11,9 @@ import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
 import com.google.common.primitives.Doubles;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
 
@@ -536,7 +538,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 	}
 
 	@Override
-	public double logProb(TIntIntMap[] data, int leftVar) {
+	public double logProb(Int2IntMap[] data, int leftVar) {
 		double logprob = 0;
 
 		int[] datavars = ObservationBuilder.getVariables(data);
@@ -556,7 +558,7 @@ public class BayesianDefaultFactor extends BayesianAbstractFactor {
 			BayesianDefaultFactor[] factors = getMarginalFactors(leftVar);
 
 			for (int i = 0; i < rightDomain.getCombinations(); i++) {
-				TIntIntMap[] data_i = ObservationBuilder.filter(data, rightDomain.getVariables(), rightDomain.statesOf(i));
+				Int2IntMap[] data_i = ObservationBuilder.filter(data, rightDomain.getVariables(), rightDomain.statesOf(i));
 				logprob += factors[i].logProb(data_i, leftVar);
 			}
 

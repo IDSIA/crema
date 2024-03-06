@@ -2,18 +2,18 @@ package ch.idsia.crema.search.impl;
 
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 public class DepthFirst {
 
 	private final GraphicalModel<?> model;
 	private SearchOperation controller;
 
-	private final TIntSet open;
+	private final IntSet open;
 
 	public DepthFirst(GraphicalModel<?> model) {
-		this.open = new TIntHashSet();
+		this.open = new IntOpenHashSet();
 		this.model = model;
 	}
 

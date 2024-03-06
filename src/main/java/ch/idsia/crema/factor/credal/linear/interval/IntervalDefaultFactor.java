@@ -2,6 +2,7 @@ package ch.idsia.crema.factor.credal.linear.interval;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import ch.idsia.crema.utility.ArraysMath;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import com.google.common.primitives.Doubles;
@@ -59,22 +60,22 @@ public class IntervalDefaultFactor extends IntervalAbstractFactor {
 
 	@Override
 	public double[] getLogLower(int... states) {
-		return ArraysUtil.log(getLower(states));
+		return ArraysMath.log(getLower(states));
 	}
 
 	@Override
 	public double[] getLogUpper(int... states) {
-		return ArraysUtil.log(getUpper(states));
+		return ArraysMath.log(getUpper(states));
 	}
 
 	@Override
 	public double[] getLogLowerAt(int group_offset) {
-		return ArraysUtil.log(getLowerAt(group_offset));
+		return ArraysMath.log(getLowerAt(group_offset));
 	}
 
 	@Override
 	public double[] getLogUpperAt(int group_offset) {
-		return ArraysUtil.log(getUpperAt(group_offset));
+		return ArraysMath.log(getUpperAt(group_offset));
 	}
 
 	@Override

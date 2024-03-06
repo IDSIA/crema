@@ -7,7 +7,9 @@ import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -127,7 +129,7 @@ public class SePolyVETest {
 				.get();
 		model.setFactor(sixth, f6);
 
-		final TIntIntHashMap evidence = new TIntIntHashMap();
+		final Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(fourth, 1);
 
 		SePolyVE polu = new SePolyVE(0.0001);

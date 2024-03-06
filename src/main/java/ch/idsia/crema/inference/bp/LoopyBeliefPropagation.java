@@ -6,8 +6,9 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jgrapht.graph.DefaultEdge;
@@ -79,7 +80,7 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 		this.preprocess = preprocess;
 	}
 
-	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {
+	protected DAGModel<F> preprocess(DAGModel<F> original, Int2IntMap evidence, int... query) {
 		DAGModel<F> model = original;
 		if (preprocess) {
 			model = original.copy();
@@ -167,7 +168,7 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 	 */
 	@Override
 	public F query(DAGModel<F> model, int query) {
-		return query(model, new TIntIntHashMap(), query);
+		return query(model, new Int2IntOpenHashMap(), query);
 	}
 
 	/**
@@ -177,11 +178,11 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 	 * @return the marginal probability of the given query
 	 */
 	@Override
-	public F query(DAGModel<F> original, TIntIntMap evidence, int query) {
+	public F query(DAGModel<F> original, Int2IntMap evidence, int query) {
 		return query(original, evidence, new int[]{query}).get(0);
 	}
 
-	public List<F> query(DAGModel<F> original, TIntIntMap evidence, int... queries) {
+	public List<F> query(DAGModel<F> original, Int2IntMap evidence, int... queries) {
 		final DAGModel<F> model = preprocess(original, evidence, queries);
 
 		initModel(model);
@@ -192,7 +193,7 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 				.collect(Collectors.toList());
 	}
 
-	protected void sendMessage(int i, int j, DAGModel<F> model, TIntIntMap evidence, Map<Pair<Integer, Integer>, F> new_messages) {
+	protected void sendMessage(int i, int j, DAGModel<F> model, Int2IntMap evidence, Map<Pair<Integer, Integer>, F> new_messages) {
 		// send message from i to j
 		final Pair<Integer, Integer> key = new ImmutablePair<>(i, j); // (i, j)
 		final Neighbour neighbour = neighbours.get(key);
@@ -225,7 +226,7 @@ public class LoopyBeliefPropagation<F extends OperableFactor<F>> implements Infe
 		new_messages.put(key, Mij);
 	}
 
-	protected void messagePassing(TIntIntMap evidence) {
+	protected void messagePassing(Int2IntMap evidence) {
 		// iterate and update messages
 		for (int it = 0; it < iterations; it++) {
 			final Map<Pair<Integer, Integer>, F> new_messages = new HashMap<>();

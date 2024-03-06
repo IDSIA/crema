@@ -2,18 +2,20 @@ package ch.idsia.crema.inference.ve.order;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.list.array.TIntArrayList;
+
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 public class TopologicalOrder implements OrderingStrategy {
 
 	public static int[] findOrder(int n_var, GraphicalModel<GenericFactor> model, int[][] l_parent_var) {
-		TIntArrayList[] E = new TIntArrayList[n_var]; // Container for the edges
+		IntArrayList[] E = new IntArrayList[n_var]; // Container for the edges
 		for (int i = 0; i < n_var; i++) {
-			E[i] = new TIntArrayList();
+			E[i] = new IntArrayList();
 		}
-		TIntArrayList P = new TIntArrayList(n_var); // Parent set dom_size residual for each node
-		TIntArrayList L = new TIntArrayList(); // Empty list that will contain the sorted elements
-		TIntArrayList S = new TIntArrayList(); // Set of all nodes with no
+		IntList P = new IntArrayList(n_var); // Parent set dom_size residual for each node
+		IntList L = new IntArrayList(); // Empty list that will contain the sorted elements
+		IntList S = new IntArrayList(); // Set of all nodes with no
 
 		// incoming edges
 		for (int i : model.getVariables()) {
@@ -43,7 +45,7 @@ public class TopologicalOrder implements OrderingStrategy {
 				P.set(c, s);
 			}
 		}
-		return L.toArray();
+		return L.toIntArray();
 	}
 
 	@Override

@@ -4,8 +4,10 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.ConstraintsUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+
 import org.apache.commons.math3.optim.PointValuePair;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
@@ -27,17 +29,17 @@ import static ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFact
  */
 public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFactor {
 
-	private final TIntObjectMap<List<LinearConstraint>> data;
+	private final Int2ObjectMap<List<LinearConstraint>> data;
 
 	SeparateHalfspaceDefaultFactor(Strides content, Strides separation) {
 		super(content, separation);
-		data = new TIntObjectHashMap<>(separation.getCombinations());
+		data = new Int2ObjectOpenHashMap<>(separation.getCombinations());
 		for (int i = 0; i < separation.getCombinations(); i++) {
 			data.put(i, new ArrayList<>());
 		}
 	}
 
-	public SeparateHalfspaceDefaultFactor(Strides content, Strides separation, TIntObjectMap<List<LinearConstraint>> data) {
+	public SeparateHalfspaceDefaultFactor(Strides content, Strides separation, Int2ObjectMap<List<LinearConstraint>> data) {
 		this(content, separation);
 
 		for (int i = 0; i < data.size(); i++) {
@@ -89,11 +91,11 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 	public SeparateHalfspaceDefaultFactor filter(int variable, int state) {
 		int var_offset = groupDomain.indexOf(variable);
 
-		TIntObjectMap<List<LinearConstraint>> newConstraints = new TIntObjectHashMap<>();
+		Int2ObjectMap<List<LinearConstraint>> newConstraints = new Int2ObjectOpenHashMap<>();
 		Strides newDataDomain = dataDomain;
 		Strides newGroupDomain = groupDomain;
 
-		TIntObjectMap<List<LinearConstraint>> data = getData();
+		Int2ObjectMap<List<LinearConstraint>> data = getData();
 
 
 		// TODO: consider case with more than one variable on the left
@@ -145,10 +147,10 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 	}
 
 	@Override
-	public TIntObjectMap<List<LinearConstraint>> getData() {
-		final TIntObjectMap<List<LinearConstraint>> newData = new TIntObjectHashMap<>();
+	public Int2ObjectMap<List<LinearConstraint>> getData() {
+		final Int2ObjectMap<List<LinearConstraint>> newData = new Int2ObjectOpenHashMap<>();
 
-		for (int key : data.keys()) {
+		for (int key : data.keySet()) {
 			newData.put(key, new ArrayList<>());
 
 			for (LinearConstraint original : data.get(key)) {
@@ -160,10 +162,10 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 		return newData;
 	}
 
-	public TIntObjectMap<List<LinearConstraint>> getDataStructure() {
-		final TIntObjectMap<List<LinearConstraint>> newData = new TIntObjectHashMap<>();
+	public Int2ObjectMap<List<LinearConstraint>> getDataStructure() {
+		final Int2ObjectMap<List<LinearConstraint>> newData = new Int2ObjectOpenHashMap<>();
 
-		for (int key : data.keys()) {
+		for (int key : data.keySet()) {
 			newData.put(key, new ArrayList<>());
 		}
 
@@ -172,9 +174,9 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 	@Override
 	public SeparateHalfspaceDefaultFactor getPerturbedZeroConstraints(double eps) {
-		final TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
+		final Int2ObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
-		for (int i : data.keys()) {
+		for (int i : data.keySet()) {
 			constraints.get(i).addAll(ConstraintsUtil.perturbZeroConstraints(getLinearProblem(i).getConstraints(), eps));
 		}
 
@@ -183,9 +185,9 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 	@Override
 	public SeparateHalfspaceDefaultFactor removeNormConstraints() {
-		final TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
+		final Int2ObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
-		for (int i : data.keys()) {
+		for (int i : data.keySet()) {
 			constraints.get(i).addAll(ConstraintsUtil.removeNormalization(getLinearProblemAt(i).getConstraints()));
 		}
 		return new SeparateHalfspaceDefaultFactor(getDataDomain(), getSeparatingDomain(), constraints);
@@ -193,9 +195,9 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 	@Override
 	public SeparateHalfspaceDefaultFactor removeNonNegativeConstraints() {
-		final TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
+		final Int2ObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
-		for (int i : data.keys()) {
+		for (int i : data.keySet()) {
 			constraints.get(i).addAll(ConstraintsUtil.removeNonNegative(getLinearProblemAt(i).getConstraints()));
 		}
 		return new SeparateHalfspaceDefaultFactor(getDataDomain(), getSeparatingDomain(), constraints);
@@ -203,9 +205,9 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 
 	@Override
 	public SeparateHalfspaceDefaultFactor mergeCompatible() {
-		final TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
+		final Int2ObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
-		for (int i : data.keys()) {
+		for (int i : data.keySet()) {
 			constraints.get(i).addAll(i, ConstraintsUtil.mergeCompatible(getLinearProblemAt(i).getConstraints()));
 		}
 		return new SeparateHalfspaceDefaultFactor(getDataDomain(), getSeparatingDomain(), constraints);
@@ -223,7 +225,7 @@ public class SeparateHalfspaceDefaultFactor extends SeparateHalfspaceAbstractFac
 		IndexIterator it = oldLeft.getReorderedIterator(newLeft.getVariables());
 		int j;
 
-		TIntObjectMap<List<LinearConstraint>> constraints = getDataStructure();
+		Int2ObjectMap<List<LinearConstraint>> constraints = getDataStructure();
 
 		// i -> j
 		for (int i = 0; i < parentComb; i++) {

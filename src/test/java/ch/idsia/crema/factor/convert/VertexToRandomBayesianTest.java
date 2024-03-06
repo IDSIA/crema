@@ -5,7 +5,9 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.list.array.TIntArrayList;
+
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -30,7 +32,7 @@ class VertexToRandomBayesianTest {
 						new double[]{.3, .5, .2},
 						new double[]{.4, .5, .1}
 				),
-				new TIntArrayList(new int[]{0, 0, 1, 1})
+				new IntArrayList(new int[]{0, 0, 1, 1})
 		);
 
 		final BayesianFactor b = new VertexToRandomBayesian().apply(v, 0);

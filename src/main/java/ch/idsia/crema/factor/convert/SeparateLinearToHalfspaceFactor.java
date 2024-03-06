@@ -4,8 +4,10 @@ import ch.idsia.crema.factor.Converter;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceDefaultFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
@@ -18,7 +20,7 @@ public class SeparateLinearToHalfspaceFactor implements Converter<SeparateLinear
 
 	@Override
 	public SeparateHalfspaceFactor apply(SeparateLinearFactor s, Integer var) {
-		TIntObjectMap<List<LinearConstraint>> data = new TIntObjectHashMap<>(s.getSeparatingDomain().getCombinations());
+		Int2ObjectMap<List<LinearConstraint>> data = new Int2ObjectOpenHashMap<>(s.getSeparatingDomain().getCombinations());
 
 		for (int offset = 0; offset < s.getSeparatingDomain().getCombinations(); ++offset) {
 			LinearConstraintSet set = s.getLinearProblemAt(offset);

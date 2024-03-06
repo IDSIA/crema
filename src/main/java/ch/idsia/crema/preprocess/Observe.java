@@ -3,8 +3,8 @@ package ch.idsia.crema.preprocess;
 import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.model.change.NullChange;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.iterator.TIntIntIterator;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 /**
  * A Network alteration step that cuts outbound arcs of observed nodes and filter the children's factors.
@@ -24,14 +24,14 @@ public class Observe<F extends FilterableFactor<F>> implements TransformerEviden
 	 */
 	// TODO: remove this method in favor of #execute (below)
 	@Override
-	public void executeInPlace(GraphicalModel<F> model, TIntIntMap evidence) {
+	public void executeInPlace(GraphicalModel<F> model, Int2IntMap evidence) {
 		final int size = evidence.size();
 
-		final TIntIntIterator iterator = evidence.iterator();
+		final var iterator = evidence.int2IntEntrySet().iterator();
 		for (int o = 0; o < size; ++o) {
-			iterator.advance();
-			final int observed = iterator.key();
-			final int state = iterator.value();
+			var entry = iterator.next();
+			final int observed = entry.getIntKey();
+			final int state = entry.getIntValue();
 
 			for (int variable : model.getChildren(observed)) {
 				model.removeParent(variable, observed, (factor) ->  {
@@ -51,7 +51,7 @@ public class Observe<F extends FilterableFactor<F>> implements TransformerEviden
 	 *                 pairs
 	 */
 	@Override
-	public GraphicalModel<F> execute(GraphicalModel<F> model, TIntIntMap evidence) {
+	public GraphicalModel<F> execute(GraphicalModel<F> model, Int2IntMap evidence) {
 		GraphicalModel<F> copy = model.copy();
 		executeInPlace(copy, evidence);
 		return copy;

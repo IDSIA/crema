@@ -8,6 +8,7 @@ import ch.idsia.crema.factor.algebra.OperationUtils;
 import ch.idsia.crema.factor.algebra.bayesian.BayesianOperation;
 import ch.idsia.crema.factor.algebra.bayesian.LogBayesianMarginal;
 import ch.idsia.crema.factor.algebra.bayesian.SimpleBayesianFilter;
+import ch.idsia.crema.utility.ArraysMath;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.RandomUtil;
@@ -52,7 +53,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 * @param data   ordered by the given domain
 	 */
 	public BayesianLogFactor(Domain domain, double[] data) {
-		super(domain, ArraysUtil.log(data));
+		super(domain, ArraysMath.log(data));
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 * @param data   ordered by the given stride
 	 */
 	public BayesianLogFactor(Strides stride, double[] data) {
-		super(stride, ArraysUtil.log(data));
+		super(stride, ArraysMath.log(data));
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 * @param data   ordered by the given domain
 	 */
 	public BayesianLogFactor(int[] domain, int[] sizes, double[] data) {
-		super(domain, sizes, ArraysUtil.log(data));
+		super(domain, sizes, ArraysMath.log(data));
 	}
 
 	/**
@@ -84,7 +85,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 * @param data       ordered by the given dataDomain
 	 */
 	public BayesianLogFactor(Strides stride, int[] dataDomain, double[] data) {
-		super(stride, dataDomain, ArraysUtil.log(data));
+		super(stride, dataDomain, ArraysMath.log(data));
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 * @param isLog  if true, the data array will be used as is, otherwise it will be logged by the constructor
 	 */
 	BayesianLogFactor(Strides stride, double[] data, boolean isLog) {
-		super(stride, isLog ? data : ArraysUtil.log(data));
+		super(stride, isLog ? data : ArraysMath.log(data));
 	}
 
 	/**
@@ -106,7 +107,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 * @param factor factor to construct this new factor from
 	 */
 	public BayesianLogFactor(BayesianDefaultFactor factor) {
-		super(factor.domain, ArraysUtil.log(factor.data));
+		super(factor.domain, ArraysMath.log(factor.data));
 	}
 
 	/**
@@ -144,7 +145,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 */
 	@Override
 	public double[] getData() {
-		return ArraysUtil.exp(ArrayUtils.clone(this.data));
+		return ArraysMath.exp(ArrayUtils.clone(this.data));
 	}
 
 	public double[] getLogData() {
@@ -157,7 +158,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 	 * @return this same factor but not in log-space
 	 */
 	public BayesianDefaultFactor exp() {
-		return new BayesianDefaultFactor(domain, ArraysUtil.exp(data));
+		return new BayesianDefaultFactor(domain, ArraysMath.exp(data));
 	}
 
 	/**
@@ -339,7 +340,7 @@ public class BayesianLogFactor extends BayesianDefaultFactor {
 
 	@Override
 	public ObservationBuilder sample() {
-		double[] probs = ArraysUtil.exp(this.data);
+		double[] probs = ArraysMath.exp(this.data);
 		if (this.getDomain().getVariables().length > 1) {
 			double sum = DoubleStream.of(probs).sum();
 			probs = DoubleStream.of(probs).map(p -> p / sum).toArray();

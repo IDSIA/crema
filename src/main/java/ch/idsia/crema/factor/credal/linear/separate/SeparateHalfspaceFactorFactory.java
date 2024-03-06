@@ -1,8 +1,9 @@
 package ch.idsia.crema.factor.credal.linear.separate;
 
 import ch.idsia.crema.core.Strides;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.LinearConstraintSet;
 import org.apache.commons.math3.optim.linear.Relationship;
@@ -23,7 +24,7 @@ public class SeparateHalfspaceFactorFactory {
 	private Strides dataDomain = Strides.empty();
 	private Strides groupDomain = Strides.empty();
 
-	private final TIntObjectMap<List<LinearConstraint>> data = new TIntObjectHashMap<>();
+	private final Int2ObjectMap<List<LinearConstraint>> data = new Int2ObjectOpenHashMap<>();
 
 	private SeparateHalfspaceFactorFactory() {
 	}

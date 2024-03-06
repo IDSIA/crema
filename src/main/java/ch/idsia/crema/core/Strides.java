@@ -3,18 +3,19 @@ package ch.idsia.crema.core;
 import ch.idsia.crema.utility.ArraysMath;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import com.google.common.primitives.Ints;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntShortHashMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.random.RandomDataGenerator;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -111,6 +112,12 @@ public final class Strides implements StridedDomain {
 		return variables;
 	}
 
+
+	@Override
+	public IntSet getVariablesSet() {
+		return new IntArraySet(variables);
+	}
+	
 	@Override
 	public int[] getSizes() {
 		return sizes;
@@ -515,7 +522,8 @@ public final class Strides implements StridedDomain {
 		int[] vars = ArraysUtil.append(variables, domain2.variables);
 		int[] sz = ArraysUtil.append(sizes, domain2.sizes);
 
-		TIntSet un = new TIntHashSet(vars);
+		IntSet un = new IntOpenHashSet(vars);
+		
 		// Set<Integer> un = Arrays.stream(vars).boxed().collect(Collectors.toSet());
 
 		int[] union_vars = new int[un.size()];
@@ -916,10 +924,10 @@ public final class Strides implements StridedDomain {
 		return new Strides(variables, sizes);
 	}
 
-	public IndexIterator getIterator(Strides domain, TIntIntMap observation) {
+	public IndexIterator getIterator(Strides domain, Int2IntMap observation) {
 		int[] states = new int[size];
 
-		for (int var : observation.keys()) {
+		for (int var : observation.keySet()) {
 			int index = indexOf(var);
 			if (index >= 0) {
 				states[index] = observation.get(var);
@@ -927,7 +935,7 @@ public final class Strides implements StridedDomain {
 		}
 
 		int offset = getOffset(states);
-		IndexIterator it = getIterator(domain, ArraysUtil.sort(observation.keys()));
+		IndexIterator it = getIterator(domain, ArraysUtil.sort(observation.keySet().toIntArray()));
 		it.offset(offset);
 
 		return it;
@@ -969,7 +977,7 @@ public final class Strides implements StridedDomain {
 	 * @param obs
 	 * @return
 	 */
-	public boolean isCompatible(int index, TIntIntMap obs) {
+	public boolean isCompatible(int index, Int2IntMap obs) {
 		int[] obsfiltered = IntStream.of(this.getVariables()).sorted().map(x -> {
 			if (obs.containsKey(x))
 				return obs.get(x);
@@ -996,7 +1004,7 @@ public final class Strides implements StridedDomain {
 	 * @param obs
 	 * @return
 	 */
-	public int[] getCompatibleIndexes(TIntIntMap obs) {
+	public int[] getCompatibleIndexes(Int2IntMap obs) {
 		return IntStream.range(0, this.getCombinations()).filter(i -> this.isCompatible(i, obs)).toArray();
 	}
 

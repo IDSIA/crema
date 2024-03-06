@@ -2,7 +2,7 @@ package ch.idsia.crema.model.graphical;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorUtilities;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -29,11 +29,11 @@ public class BayesianNetwork extends DAGModel<BayesianFactor> {
 		return new BayesianNetwork(this);
 	}
 
-	public double[] logProb(TIntIntMap[] data) {
+	public double[] logProb(Int2IntMap[] data) {
 		return IntStream.of(this.getVariables()).mapToDouble(v -> this.getFactor(v).logProb(data, v)).toArray();
 	}
 
-	public double sumLogProb(TIntIntMap[] data) {
+	public double sumLogProb(Int2IntMap[] data) {
 		return DoubleStream.of(this.logProb(data)).sum();
 	}
 

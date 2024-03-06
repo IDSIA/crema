@@ -7,8 +7,9 @@ import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,11 +44,11 @@ public class LogicSamplingTest {
 		final VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
 		ls.setIterations(10000);
 
-		TIntIntMap evidence;
+		Int2IntMap evidence;
 		BayesianFactor Qls;
 		BayesianFactor Qve;
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		Qls = ls.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LS: P(Rain) =                                     " + Qls);
@@ -57,7 +58,7 @@ public class LogicSamplingTest {
 
 /*
 		// TODO this does not work and I don't know why...
-		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1});
+		evidence = new Int2IntOpenHashMap(new int[]{3, 4}, new int[]{0, 1});
 		Qls = ls.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LS: P(Rain|Wet Grass = false, Slippery = true) =  " + Qls);
@@ -76,7 +77,7 @@ public class LogicSamplingTest {
 
 		assertEquals(Qls.getValue(0), Qve.getValue(0), delta);
 
-		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0});
+		evidence = new Int2IntOpenHashMap(new int[]{3, 4}, new int[]{0, 0});
 		Qls = ls.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LS: P(Rain|Wet Grass = false, Slippery = false) = " + Qls);
@@ -86,7 +87,7 @@ public class LogicSamplingTest {
 
 */
 
-		evidence = new TIntIntHashMap(new int[]{0}, new int[]{1});
+		evidence = new Int2IntOpenHashMap(new int[]{0}, new int[]{1});
 		Qls = ls.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LS: P(Rain|Winter = true) =                       " + Qls);
@@ -94,7 +95,7 @@ public class LogicSamplingTest {
 
 		assertEquals(Qls.getValue(0), Qve.getValue(0), delta);
 
-		evidence = new TIntIntHashMap(new int[]{0}, new int[]{0});
+		evidence = new Int2IntOpenHashMap(new int[]{0}, new int[]{0});
 		Qls = ls.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LS: P(Rain|Winter = false) =                      " + Qls);
@@ -129,7 +130,7 @@ public class LogicSamplingTest {
 
 		int[] its = {1, 10, 100, 1000, 10000, 100000};
 
-		final TIntIntMap ev = new TIntIntHashMap();
+		final Int2IntMap ev = new Int2IntOpenHashMap();
 		ev.put(B, 0);
 
 		for (int it : its) {

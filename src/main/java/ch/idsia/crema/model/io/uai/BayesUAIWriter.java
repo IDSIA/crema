@@ -31,7 +31,7 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 
 				final int[] vars = ArraysUtil.append(
 						new int[]{v},
-						ArraysUtil.reverse(target.getParents(v))
+						ArraysUtil.reversed(target.getParents(v))
 				);
 
 				// TODO: verify this
@@ -91,7 +91,7 @@ public class BayesUAIWriter extends NetUAIWriter<BayesianNetwork> {
 
 		// add the factor domains with children at the end
 		for (int v : target.getVariables()) {
-			int[] parents = ArraysUtil.reverse(target.getParents(v));
+			int[] parents = ArraysUtil.reversed(target.getParents(v));
 			if (parents.length == 0)
 				append("1", str(v));
 			else

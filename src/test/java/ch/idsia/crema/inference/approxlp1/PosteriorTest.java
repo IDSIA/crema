@@ -12,8 +12,9 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.graphical.MixedModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.RemoveBarren;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -47,7 +48,7 @@ public class PosteriorTest {
 		//.upper(new double[] { .2, .9 });
 		model.setFactor(X0, fx0);
 
-		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
+		Int2IntMap observation = ObservationBuilder.observe(E, 1);
 		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		GraphicalModel<GenericFactor> bmodel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
@@ -103,7 +104,7 @@ public class PosteriorTest {
 				.get();
 		model.setFactor(Xj, fj);
 
-		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
+		Int2IntMap observation = ObservationBuilder.observe(E, 1);
 		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
@@ -140,7 +141,7 @@ public class PosteriorTest {
 
 		model.setFactor(X0, fx0);
 
-		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
+		Int2IntMap observation = ObservationBuilder.observe(E, 1);
 		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
@@ -183,7 +184,7 @@ public class PosteriorTest {
 				.get();
 		model.setFactor(Xj, fj);
 
-		TIntIntHashMap observation = ObservationBuilder.observe(E, 1);
+		Int2IntMap observation = ObservationBuilder.observe(E, 1);
 		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
 		MixedModel mixedModel = be.execute(model, observation);
 		int evidence = be.getEvidenceNode();
@@ -231,7 +232,7 @@ public class PosteriorTest {
 				.get();
 		model.setFactor(n2, f2);
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(n0, 0);
 
 		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
@@ -287,7 +288,7 @@ public class PosteriorTest {
 				.get();
 		model.setFactor(n2, f2);
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(n0, 0);
 
 		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
@@ -376,7 +377,7 @@ public class PosteriorTest {
 				.get();
 		model.setFactor(n2, f2);
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(n0, 0);
 
 		BinarizeEvidence<GenericFactor> be = new BinarizeEvidence<>(2);
@@ -482,7 +483,7 @@ public class PosteriorTest {
 				.get();
 		model.setFactor(n2, f2);
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(n0, 0);
 
 		RemoveBarren<GenericFactor> barren = new RemoveBarren<>();

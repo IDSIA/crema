@@ -4,8 +4,9 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ class BayesianNetworkSamplingTest {
 
 		final BayesianNetworkSampling bns = new BayesianNetworkSampling();
 
-		TIntIntMap sample;
+		Int2IntMap sample;
 		sample = bns.sample(model);
 
 		Assertions.assertEquals(3, sample.size());
@@ -81,7 +82,7 @@ class BayesianNetworkSamplingTest {
 
 		final BayesianNetworkSampling bns = new BayesianNetworkSampling();
 
-		TIntIntMap sample;
+		Int2IntMap sample;
 		sample = bns.sample(model);
 
 		Assertions.assertEquals(4, sample.size());
@@ -119,14 +120,14 @@ class BayesianNetworkSamplingTest {
 
 		final BayesianNetworkSampling bns = new BayesianNetworkSampling();
 
-		final TIntIntMap obs = new TIntIntHashMap();
+		final Int2IntMap obs = new Int2IntOpenHashMap();
 		obs.put(A, 0);
 
 		double pA = 0;
 		double pB = 0;
 		double pC = 0;
 		for (int i = 0; i < 100; i++) {
-			final TIntIntMap sample = bns.sample(model, obs);
+			final Int2IntMap sample = bns.sample(model, obs);
 
 			pA += sample.get(A) / 100.0;
 			pB += sample.get(B) / 100.0;

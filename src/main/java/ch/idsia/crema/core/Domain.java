@@ -1,5 +1,7 @@
 package ch.idsia.crema.core;
 
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 public interface Domain {
 
@@ -44,6 +46,15 @@ public interface Domain {
 	 */
 	int[] getVariables();
 
+	
+	/**
+	 * The vector of variables in this domain.
+	 * Please read-only!
+	 *
+	 * @return
+	 */
+	default IntSet getVariablesSet() { return new IntArraySet(getVariables()); }
+	
 	/**
 	 * Get all the cardinalities of the variables in the domain.
 	 *

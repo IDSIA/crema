@@ -11,10 +11,13 @@ import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateLinearFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.NeighbourhoodFunction;
-import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,7 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 
 	public Neighbourhood(GraphicalModel<? extends GenericFactor> model, int... locked) {
 		this.model = model;
-		initialize(new TIntHashSet(locked));
+		initialize(new IntOpenHashSet(locked));
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 
 	@Override
 	public Solution random() {
-		TIntObjectHashMap<BayesianFactor> factors = new TIntObjectHashMap<>();
+		Int2ObjectMap<BayesianFactor> factors = new Int2ObjectOpenHashMap<>();
 		for (int var : model.getVariables()) {
 			// lets assume the model has factors for all variables!
 			BayesianFactor r = random(model.getFactor(var));
@@ -73,8 +76,8 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 		throw new IllegalArgumentException("Unsupported class for random generation: " + factor.getClass());
 	}
 
-	private void initialize(TIntSet locked) {
-		TIntArrayList freeableVariable = new TIntArrayList();
+	private void initialize(IntSet locked) {
+		IntList freeableVariable = new IntArrayList();
 		for (int var : model.getVariables()) {
 			// locked variables are not to be freed
 			if (locked.contains(var)) continue;
@@ -91,6 +94,6 @@ public class Neighbourhood implements NeighbourhoodFunction<Move, Solution> {
 			}
 		}
 
-		freeable = freeableVariable.toArray();
+		freeable = freeableVariable.toIntArray();
 	}
 }

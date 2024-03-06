@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.credal.linear.separate;
 
-import gnu.trove.map.TIntObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface SeparateHalfspaceFactor extends SeparateLinearFactor<SeparateHa
 
 	double[] getRandomVertex(int... states);
 
-	TIntObjectMap<List<LinearConstraint>> getData();
+	Int2ObjectMap<List<LinearConstraint>> getData();
 
 	SeparateHalfspaceDefaultFactor getPerturbedZeroConstraints(double eps);
 

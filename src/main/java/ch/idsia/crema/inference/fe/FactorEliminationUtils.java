@@ -1,8 +1,9 @@
 package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -21,12 +22,12 @@ public class FactorEliminationUtils {
 	 */
 	public static BayesianFactor project(BayesianFactor phi, int... Q) {
 
-		TIntSet variables = new TIntHashSet(phi.getDomain().getVariables());
+		IntSet variables = new IntOpenHashSet(phi.getDomain().getVariables());
 		for (int q : Q) {
 			variables.remove(q);
 		}
 
-		for (int v : variables.toArray())
+		for (int v : variables)
 			phi = phi.marginalize(v);
 
 		return phi;

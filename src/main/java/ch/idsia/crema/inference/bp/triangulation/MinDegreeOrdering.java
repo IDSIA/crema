@@ -1,8 +1,9 @@
 package ch.idsia.crema.inference.bp.triangulation;
 
 import ch.idsia.crema.utility.GraphUtil;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.graph.SimpleGraph;
@@ -44,7 +45,7 @@ public class MinDegreeOrdering extends Triangulate {
 		GraphUtil.copy(network, copy);
 
 		triangulated = new TriangulatedGraph();
-		final TIntList eliminationSequence = new TIntArrayList();
+		final IntList eliminationSequence = new IntArrayList();
 		hasPerfectEliminationSequence = true;
 
 		// loop until we remove all the nodes from the graph
@@ -96,7 +97,7 @@ public class MinDegreeOrdering extends Triangulate {
 			updateModels(copy, triangulated, v, edges);
 		}
 
-		triangulated.setEliminationSequence(eliminationSequence.toArray());
+		triangulated.setEliminationSequence(eliminationSequence.toIntArray());
 
 		return triangulated;
 	}

@@ -5,8 +5,9 @@ import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -147,7 +148,7 @@ public class MarginalTest {
 				.get();
 		model.setFactor(n1, f1);
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(n0, 0);
 
 		ApproxLP2<GenericFactor> inference = new ApproxLP2<>();

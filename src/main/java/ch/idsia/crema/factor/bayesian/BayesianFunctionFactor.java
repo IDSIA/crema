@@ -2,7 +2,9 @@ package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.utility.IndexIterator;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.math3.util.FastMath;
 
@@ -67,7 +69,7 @@ public abstract class BayesianFunctionFactor extends BayesianAbstractFactor {
 	}
 
 	@Override
-	public double logProb(TIntIntMap[] data, int leftVar) {
+	public double logProb(Int2IntMap[] data, int leftVar) {
 		// TODO
 		throw new NotImplementedException();
 	}

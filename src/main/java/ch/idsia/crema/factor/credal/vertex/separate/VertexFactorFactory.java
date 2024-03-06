@@ -2,8 +2,10 @@ package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.credal.linear.separate.SeparateHalfspaceFactor;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
+
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.List;
  */
 public class VertexFactorFactory {
 
-	private final TIntList combinations = new TIntArrayList();
+	private final IntList combinations = new IntArrayList();
 	private final List<double[]> vertices = new ArrayList<>();
 
 	private Strides separatedDomain = Strides.empty();
@@ -55,7 +57,7 @@ public class VertexFactorFactory {
 		return this;
 	}
 
-	public VertexFactorFactory addVertices(List<double[]> vertices, TIntList combinations) {
+	public VertexFactorFactory addVertices(List<double[]> vertices, IntList combinations) {
 		final int n = vertices.size();
 		if (n != combinations.size())
 			throw new IllegalArgumentException("Different numbers of vertices and combinations: got " + n + " vertices and " + combinations.size() + " combinations");

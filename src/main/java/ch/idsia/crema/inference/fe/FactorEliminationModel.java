@@ -3,9 +3,10 @@ package ch.idsia.crema.inference.fe;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.DAGModel;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +43,10 @@ public class FactorEliminationModel implements Inference<DAGModel<BayesianFactor
 			if (fi == null)
 				continue;
 
-			TIntSet V = variablesInFiNotInS(fi, S);
+			IntSet V = variablesInFiNotInS(fi, S);
 			BayesianFactor fj = S.remove(S.size() - 1);
 
-			for (int v : V.toArray()) fi = fi.marginalize(v);
+			for (int v : V) fi = fi.marginalize(v);
 
 			BayesianFactor combine = fj.combine(fi);
 			S.add(combine);
@@ -101,12 +102,12 @@ public class FactorEliminationModel implements Inference<DAGModel<BayesianFactor
 	 * @param S  the list of factors
 	 * @return a set of all the variables in Fi and not in S.
 	 */
-	private TIntSet variablesInFiNotInS(BayesianFactor Fi, List<BayesianFactor> S) {
-		TIntSet fiVariables = new TIntHashSet(Fi.getDomain().getVariables());
-		TIntSet sVariables = new TIntHashSet();
+	private IntSet variablesInFiNotInS(BayesianFactor Fi, List<BayesianFactor> S) {
+		IntSet fiVariables = new IntOpenHashSet(Fi.getDomain().getVariables());
+		IntSet sVariables = new IntOpenHashSet();
 
 		for (BayesianFactor f : S) {
-			sVariables.addAll(f.getDomain().getVariables());
+			sVariables.addAll(f.getDomain().getVariablesSet());
 		}
 
 		fiVariables.removeAll(sVariables);
@@ -115,7 +116,7 @@ public class FactorEliminationModel implements Inference<DAGModel<BayesianFactor
 	}
 
 	@Override
-	public BayesianFactor query(DAGModel<BayesianFactor> model, TIntIntMap evidence, int query) {
+	public BayesianFactor query(DAGModel<BayesianFactor> model, Int2IntMap evidence, int query) {
 		throw new IllegalArgumentException(this.getClass().getName() + " doesn't support evidence");
 	}
 }

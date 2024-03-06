@@ -8,7 +8,9 @@ import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.mergers.MergeFactorsBayesian;
 import ch.idsia.crema.preprocess.mergers.MergeFactorsInterval;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +48,7 @@ class MergeObservedTest {
 		model.setFactor(x1, fx1);
 		model.setFactor(x2, fx2);
 
-		final TIntIntHashMap obs = new TIntIntHashMap();
+		final Int2IntMap obs = new Int2IntOpenHashMap();
 		obs.put(x1, 0);
 		obs.put(x2, 0);
 
@@ -102,7 +104,7 @@ class MergeObservedTest {
 		model.setFactor(x1, fx1);
 		model.setFactor(x2, fx2);
 
-		final TIntIntHashMap obs = new TIntIntHashMap();
+		final Int2IntMap obs = new Int2IntOpenHashMap();
 		obs.put(x1, 0);
 		obs.put(x2, 0);
 
@@ -173,7 +175,7 @@ class MergeObservedTest {
 		model.setFactor(x2, fx2);
 		model.setFactor(x3, fx3);
 
-		final TIntIntHashMap obs = new TIntIntHashMap();
+		final Int2IntMap obs = new Int2IntOpenHashMap();
 		obs.put(x1, 0);
 		obs.put(x2, 0);
 

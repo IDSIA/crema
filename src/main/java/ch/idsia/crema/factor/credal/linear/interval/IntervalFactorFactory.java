@@ -1,8 +1,9 @@
 package ch.idsia.crema.factor.credal.linear.interval;
 
 import ch.idsia.crema.core.Strides;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 import java.util.Arrays;
 
@@ -16,8 +17,8 @@ public class IntervalFactorFactory {
 	private Strides dataDomain = Strides.empty(); // content, left
 	private Strides groupDomain = Strides.empty(); // separation, right
 
-	private final TIntObjectMap<double[]> lowers = new TIntObjectHashMap<>();
-	private final TIntObjectMap<double[]> uppers = new TIntObjectHashMap<>();
+	private final Int2ObjectMap<double[]> lowers = new Int2ObjectOpenHashMap<>();
+	private final Int2ObjectMap<double[]> uppers = new Int2ObjectOpenHashMap<>();
 
 	private IntervalFactorFactory() {
 	}
@@ -94,9 +95,9 @@ public class IntervalFactorFactory {
 		for (int i = 0; i < groupDomain.getCombinations(); ++i)
 			Arrays.fill(upper[i], 1.0);
 
-		for (int v : lowers.keys())
+		for (int v : lowers.keySet())
 			lower[v] = lowers.get(v);
-		for (int v : uppers.keys())
+		for (int v : uppers.keySet())
 			upper[v] = uppers.get(v);
 
 		return new IntervalDefaultFactor(dataDomain, groupDomain, lower, upper);

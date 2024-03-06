@@ -5,9 +5,15 @@ import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.utility.ArraysUtil;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import com.google.common.primitives.Ints;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -16,7 +22,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
  */
 public class ConditionalVariableElimination extends VariableElimination<BayesianFactor> {
 
-	private int[] conditioning = new int[0];
+	private IntSet conditioning = new IntOpenHashSet();
 
 	public ConditionalVariableElimination(int[] sequence, int... conditioning) {
 		super(sequence);
@@ -24,24 +30,27 @@ public class ConditionalVariableElimination extends VariableElimination<Bayesian
 	}
 
 	public void setConditioning(int... conditioning) {
-		this.conditioning = conditioning;
+		this.conditioning.addAll(new IntArrayList(conditioning));
 	}
 
 	@Override
-	public BayesianFactor query(GraphicalModel<BayesianFactor> model, TIntIntMap evidence, int query) {
+	public BayesianFactor query(GraphicalModel<BayesianFactor> model, Int2IntMap evidence, int query) {
 		return query(model, evidence, new int[]{query});
 	}
 
 	@Override
-	public BayesianFactor query(GraphicalModel<BayesianFactor> model, TIntIntMap observations, int... target) {
-		conditioning = ArraysUtil.unique(Ints.concat(conditioning, observations.keys()));
+	public BayesianFactor query(GraphicalModel<BayesianFactor> model, Int2IntMap observations, int... target) {
+		conditioning.addAll(observations.keySet());
 
+		IntSet t = new IntOpenHashSet(target);
+		t.addAll(conditioning);
+		
 		// Computes the join
-		BayesianFactor numerator = run(Ints.concat(target, conditioning));
+		BayesianFactor numerator = run(t.toIntArray());
 
 		BayesianFactor denomintor = numerator;
 		for (int v : target) {
-			if (ArraysUtil.contains(v, conditioning))
+			if (conditioning.contains(v))
 				throw new IllegalArgumentException("Variable " + v + " cannot be in target and conditioning set");
 			denomintor = denomintor.marginalize(v);
 		}
@@ -50,7 +59,7 @@ public class ConditionalVariableElimination extends VariableElimination<Bayesian
 		BayesianFactor cond = numerator.divide(denomintor);
 
 		// Sets evidence
-		for (int v : observations.keys())
+		for (int v : observations.keySet())
 			cond = cond.filter(v, observations.get(v));
 
 		if (cond instanceof BayesianDefaultFactor)
@@ -60,7 +69,7 @@ public class ConditionalVariableElimination extends VariableElimination<Bayesian
 	}
 
 	public BayesianFactor query(GraphicalModel<BayesianFactor> model, int... target) {
-		return this.query(model, new TIntIntHashMap(), target);
+		return this.query(model, new Int2IntOpenHashMap(), target);
 	}
 
 }

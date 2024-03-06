@@ -2,8 +2,9 @@ package ch.idsia.crema.factor.credal.vertex.separate;
 
 import ch.idsia.crema.core.Strides;
 import com.google.common.primitives.Ints;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
+
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class VertexDeterministicFactor extends VertexDefaultFactor {
 
-	public VertexDeterministicFactor(Strides separatedDomain, Strides vertexDomain, List<double[]> vertices, TIntList combinations) {
+	public VertexDeterministicFactor(Strides separatedDomain, Strides vertexDomain, List<double[]> vertices, IntList combinations) {
 		super(separatedDomain, vertexDomain, vertices, combinations);
 	}
 
@@ -36,7 +37,7 @@ public class VertexDeterministicFactor extends VertexDefaultFactor {
 		if (Ints.min(assignments) < 0 || Ints.max(assignments) >= left.getCombinations())
 			throw new IllegalArgumentException("ERROR: assignments of deterministic function should be in the inteval [0," + left.getCombinations() + ")");
 
-		TIntList combinations = new TIntArrayList();
+		IntList combinations = new IntArrayList();
 		List<double[]> vertices = new ArrayList<>();
 
 		for (int i = 0; i < right.getCombinations(); i++) {

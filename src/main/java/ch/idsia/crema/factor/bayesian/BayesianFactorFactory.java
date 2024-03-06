@@ -291,6 +291,10 @@ public class BayesianFactorFactory {
 		return new BayesianDefaultFactor(new Strides(vars, sizes), d);
 	}
 
+	public BayesianFactor get(boolean log) {
+		return log ? log() : get();
+	}
+	
 	/**
 	 * Requires a pre-defined Domain.
 	 *

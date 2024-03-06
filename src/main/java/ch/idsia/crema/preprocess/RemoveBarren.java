@@ -4,20 +4,22 @@ import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.search.SearchOperation;
 import ch.idsia.crema.search.impl.DepthFirst;
-import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 public class RemoveBarren<F extends GenericFactor> implements PreprocessorQuery<F, GraphicalModel<F>>, TransformerQuery<F, GraphicalModel<F>> {
 
-	private int[] deleted;
+	private IntList deleted;
 
 	/**
 	 * @return Returns a copy of the array with the deleted variables.
 	 */
 	public int[] getDeleted() {
-		return deleted;
+		return deleted.toIntArray();
 	}
 
 	/**
@@ -28,22 +30,21 @@ public class RemoveBarren<F extends GenericFactor> implements PreprocessorQuery<
 	 * @param evidence the observed variable as a map of variable-states
 	 */
 	@Override
-	public void executeInPlace(GraphicalModel<F> model, TIntIntMap evidence, int... query) {
-		TIntSet retain = cutIndependent(model, query, evidence.keys());
-		TIntArrayList toDelete = new TIntArrayList();
+	public void executeInPlace(GraphicalModel<F> model, Int2IntMap evidence, int... query) {
+		IntSet retain = cutIndependent(model, query, evidence.keySet());
+		deleted = new IntArrayList();
 
 		for (int var : model.getVariables()) {
 			if (retain.contains(var)) continue;
-			toDelete.add(var);
+			deleted.add(var);
 			model.removeVariable(var);
 		}
 
-		deleted = toDelete.toArray();
 		// deleted is already sorted (as model.getVariables is sorted)
 	}
 
 	@Override
-	public GraphicalModel<F> execute(GraphicalModel<F> model, TIntIntMap evidence, int... query) {
+	public GraphicalModel<F> execute(GraphicalModel<F> model, Int2IntMap evidence, int... query) {
 		final GraphicalModel<F> copy = model.copy();
 		executeInPlace(copy, evidence, query);
 		return copy;
@@ -53,16 +54,16 @@ public class RemoveBarren<F extends GenericFactor> implements PreprocessorQuery<
 	 * Update the evidence removing variable that where eliminated by the barren variables removal.
 	 * This operation is done inplace
 	 *
-	 * @param evidence {@link TIntIntMap} the map of evidences to be updated
+	 * @param evidence {@link Int2IntMap} the map of evidences to be updated
 	 */
-	public void filter(TIntIntMap evidence) {
+	public void filter(Int2IntMap evidence) {
 		for (int var : deleted) evidence.remove(var);
 	}
 
 	public int[] filter(int[] variables) {
-		TIntArrayList x = new TIntArrayList(variables);
+		IntList x = new IntArrayList(variables);
 		x.removeAll(deleted);
-		return x.toArray();
+		return x.toIntArray();
 	}
 
 	/**
@@ -73,15 +74,15 @@ public class RemoveBarren<F extends GenericFactor> implements PreprocessorQuery<
 	 * @param evidence may be null
 	 * @return a {@link TIntSet} of visited variables
 	 */
-	private TIntSet cutIndependent(final GraphicalModel<F> model, int[] query, int[] evidence) {
-		final TIntSet locked = new TIntHashSet();
-		final TIntSet visited = new TIntHashSet();
+	private IntSet cutIndependent(final GraphicalModel<F> model, int[] query, IntSet evidence) {
+		final IntSet locked = new IntOpenHashSet();
+		final IntSet visited = new IntOpenHashSet();
 
 		for (int node : query) locked.add(node);
 		if (evidence != null) locked.addAll(evidence);
 
 		DepthFirst independence_pass = new DepthFirst(model);
-		final TIntSet todelete = new TIntHashSet();
+		final IntSet todelete = new IntOpenHashSet();
 
 		independence_pass.setController(new SearchOperation() {
 

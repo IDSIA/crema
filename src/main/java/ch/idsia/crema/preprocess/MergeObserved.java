@@ -4,11 +4,14 @@ import ch.idsia.crema.factor.FilterableFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.mergers.MergeFactors;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.list.linked.TIntLinkedList;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -24,14 +27,14 @@ public class MergeObserved<F extends FilterableFactor<F>> implements ConverterEv
 	}
 
 	@Override
-	public GraphicalModel<F> execute(GraphicalModel<F> original, TIntIntMap evidence) {
+	public GraphicalModel<F> execute(GraphicalModel<F> original, Int2IntMap evidence) {
 		final GraphicalModel<F> model = original.copy();
 
 		// consider the observed nodes (that are now leaf and binary) which have only one parent.
-		final TIntObjectMap<TIntLinkedList> valid = new TIntObjectHashMap<>();
-		final TIntHashSet evToRemove = new TIntHashSet();
+		final Int2ObjectMap<IntList> valid = new Int2ObjectOpenHashMap<>();
+		final IntSet evToRemove = new IntOpenHashSet();
 
-		for (int key : evidence.keys()) {
+		for (int key : evidence.keySet()) {
 			if (!ArraysUtil.contains(key, model.getVariables())) {
 				evToRemove.add(key);
 				continue;
@@ -45,17 +48,17 @@ public class MergeObserved<F extends FilterableFactor<F>> implements ConverterEv
 			final int parent = parents[0];
 
 			if (!valid.containsKey(parent))
-				valid.put(parent, new TIntLinkedList());
+				valid.put(parent, new IntArrayList());
 
 			valid.get(parent).add(key);
 		}
 
-		for (int v : evToRemove.toArray())
+		for (int v : evToRemove)
 			evidence.remove(v);
 
 		// if between these nodes there are two that have the same parent, we replace them with a unique binary node
-		for (int y : valid.keys()) {
-			final TIntLinkedList children = valid.get(y);
+		for (int y : valid.keySet()) {
+			final IntList children = valid.get(y);
 			if (children.size() < 2)
 				continue;
 

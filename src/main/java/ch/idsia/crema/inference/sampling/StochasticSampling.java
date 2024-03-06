@@ -6,10 +6,12 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMaps;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 import java.util.Collection;
 
@@ -58,7 +60,7 @@ public abstract class StochasticSampling implements InferenceJoined<GraphicalMod
 		return this;
 	}
 
-	protected GraphicalModel<BayesianFactor> preprocess(GraphicalModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
+	protected GraphicalModel<BayesianFactor> preprocess(GraphicalModel<BayesianFactor> original, Int2IntMap evidence, int... query) {
 		GraphicalModel<BayesianFactor> model = original;
 		if (preprocess) {
 			model = original.copy();
@@ -77,9 +79,9 @@ public abstract class StochasticSampling implements InferenceJoined<GraphicalMod
 	 *
 	 * @return a map with the computed sampled states over all the variables.
 	 */
-	protected TIntIntMap simulateBN(GraphicalModel<BayesianFactor> model, TIntIntMap evidence) {
-		final TIntIntMap map = new TIntIntHashMap();
-		TIntSet nodes = new TIntHashSet();
+	protected Int2IntMap simulateBN(GraphicalModel<BayesianFactor> model, Int2IntMap evidence) {
+		final Int2IntMap map = new Int2IntOpenHashMap();
+		IntSet nodes = new IntOpenHashSet();
 
 		// sample root nodes
 		for (int root : model.getRoots()) {
@@ -93,15 +95,15 @@ public abstract class StochasticSampling implements InferenceJoined<GraphicalMod
 
 			map.put(root, state);
 
-			int[] children = model.getChildren(root);
+			IntSet children = model.getChildrenSet(root);
 			nodes.addAll(children);
 		}
 
 		// sample child nodes
 		do {
-			final TIntSet slack = new TIntHashSet();
+			final IntSet slack = new IntOpenHashSet();
 
-			for (int node : nodes.toArray()) {
+			for (int node : nodes) {
 				// check if all parents have already been sampled...
 				final int[] parents = model.getParents(node);
 
@@ -125,14 +127,14 @@ public abstract class StochasticSampling implements InferenceJoined<GraphicalMod
 					map.put(node, evidence.get(node));
 				} else {
 					// check for parent state in this child node
-					final TIntIntMap obs = new TIntIntHashMap();
+					final Int2IntMap obs = new Int2IntOpenHashMap();
 					for (int p : parents)
 						obs.put(p, map.get(p));
 
 					map.put(node, sample(model.getFactor(node), obs));
 				}
 
-				final int[] children = model.getChildren(node);
+				final var children = model.getChildrenSet(node);
 				slack.addAll(children);
 			}
 
@@ -142,7 +144,7 @@ public abstract class StochasticSampling implements InferenceJoined<GraphicalMod
 		return map;
 	}
 
-	protected abstract Collection<BayesianFactor> run(GraphicalModel<BayesianFactor> model, TIntIntMap evidence, int... query);
+	protected abstract Collection<BayesianFactor> run(GraphicalModel<BayesianFactor> model, Int2IntMap evidence, int... query);
 
 	/**
 	 * Sample the distribution of a {@link BayesianFactor} with not parent nodes.
@@ -175,18 +177,18 @@ public abstract class StochasticSampling implements InferenceJoined<GraphicalMod
 	 * @param obs    map of the states of the parent nodes
 	 * @return the index of sampled state
 	 */
-	protected int sample(BayesianFactor factor, TIntIntMap obs) {
+	protected int sample(BayesianFactor factor, Int2IntMap obs) {
 		final BayesianFactor f = factor.filter(obs);
 		return sample(f);
 	}
 
 	@Override
 	public BayesianFactor query(GraphicalModel<BayesianFactor> model, int query) {
-		return query(model, new TIntIntHashMap(), new int[]{query});
+		return query(model, Int2IntMaps.EMPTY_MAP, new int[]{query});
 	}
 
 	@Override
-	public BayesianFactor query(GraphicalModel<BayesianFactor> model, TIntIntMap evidence, int... query) {
+	public BayesianFactor query(GraphicalModel<BayesianFactor> model, Int2IntMap evidence, int... query) {
 		return run(model, evidence, query).stream()
 				.reduce(BayesianFactor::combine)
 				.orElseThrow(() -> new IllegalStateException("Could not produce a joint probability"))
@@ -195,11 +197,11 @@ public abstract class StochasticSampling implements InferenceJoined<GraphicalMod
 
 	@Override
 	public BayesianFactor query(GraphicalModel<BayesianFactor> model, int... queries) {
-		return query(model, new TIntIntHashMap(), queries);
+		return query(model, Int2IntMaps.EMPTY_MAP, queries);
 	}
 
 	@Override
-	public BayesianFactor query(GraphicalModel<BayesianFactor> model, TIntIntMap evidence, int query) {
+	public BayesianFactor query(GraphicalModel<BayesianFactor> model, Int2IntMap evidence, int query) {
 		return query(model, evidence, new int[]{query});
 	}
 

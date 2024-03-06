@@ -5,7 +5,9 @@ import ch.idsia.crema.inference.ve.FactorVariableElimination;
 import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.IndexIterator;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -55,9 +57,9 @@ class BayesianOrFactorTest {
 
 		final VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{A, B, O});
 
-		final BayesianFactor q_a1 = ve.query(m, new TIntIntHashMap(new int[]{A}, new int[]{1}), O);
-		final BayesianFactor q_b1 = ve.query(m, new TIntIntHashMap(new int[]{B}, new int[]{1}), O);
-		final BayesianFactor q_ab0 = ve.query(m, new TIntIntHashMap(new int[]{A, B}, new int[]{0, 0}), O);
+		final BayesianFactor q_a1 = ve.query(m, new Int2IntOpenHashMap(new int[]{A}, new int[]{1}), O);
+		final BayesianFactor q_b1 = ve.query(m, new Int2IntOpenHashMap(new int[]{B}, new int[]{1}), O);
+		final BayesianFactor q_ab0 = ve.query(m, new Int2IntOpenHashMap(new int[]{A, B}, new int[]{0, 0}), O);
 
 		Assertions.assertEquals(one, q_a1);
 		Assertions.assertEquals(one, q_b1);

@@ -2,8 +2,9 @@ package ch.idsia.crema.inference;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -31,7 +32,7 @@ public interface InferenceCascade<M extends GraphicalModel<?>, F extends Generic
 	 * @param model the model to use for inference
 	 */
 	default void setModel(M model) {
-		setModel(model, new TIntIntHashMap());
+		setModel(model, new Int2IntOpenHashMap());
 	}
 
 	/**
@@ -41,13 +42,13 @@ public interface InferenceCascade<M extends GraphicalModel<?>, F extends Generic
 	 * @param model    the model to use for inference
 	 * @param evidence the observed variable as a map of variable-states
 	 */
-	void setModel(M model, TIntIntMap evidence);
+	void setModel(M model, Int2IntMap evidence);
 
 	/**
 	 * Set the evidence to use in the next queries.
 	 *
 	 * @param evidence the observed variable as a map of variable-states
 	 */
-	void setEvidence(TIntIntMap evidence);
+	void setEvidence(Int2IntMap evidence);
 
 }

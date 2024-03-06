@@ -3,8 +3,10 @@ package ch.idsia.crema.factor.bayesian;
 
 import ch.idsia.crema.core.Domain;
 import ch.idsia.crema.core.Strides;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 import com.google.common.primitives.Ints;
-import gnu.trove.map.TIntIntMap;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -48,7 +50,7 @@ public class BayesianDeterministicFactor extends BayesianDefaultFactor {
 		}
 	}
 
-	public static BayesianDefaultFactor getJoinDeterministic(Strides left_vars, TIntIntMap obs) {
+	public static BayesianDefaultFactor getJoinDeterministic(Strides left_vars, Int2IntMap obs) {
 		final double[] data = new double[left_vars.getCombinations()];
 
 		for (int index : left_vars.getCompatibleIndexes(obs))

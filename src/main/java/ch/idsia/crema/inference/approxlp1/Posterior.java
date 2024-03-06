@@ -12,7 +12,8 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearFractionalSolver;
 import ch.idsia.crema.solver.commons.FractionalSolver;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
@@ -193,7 +194,7 @@ public class Posterior extends Manager {
 		if (!Double.isNaN(solution.getScore()))
 			return solution.getScore();
 
-		TIntIntMap ev = ObservationBuilder.observe(evidence, 1);
+		Int2IntMap ev = ObservationBuilder.observe(evidence, 1);
 
 		BayesianFactor marg = calcPosterior(solution, new int[]{x0}, ev);
 		marg = marg.normalize();

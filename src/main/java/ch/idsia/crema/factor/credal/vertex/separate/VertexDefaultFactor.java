@@ -8,7 +8,9 @@ import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
 import ch.idsia.crema.utility.hull.ConvexHull;
 import com.google.common.primitives.Doubles;
-import gnu.trove.list.TIntList;
+
+import it.unimi.dsi.fastutil.ints.IntList;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
@@ -33,7 +35,7 @@ public class VertexDefaultFactor extends VertexAbstractFactor {
 		this.data = data;
 	}
 
-	public VertexDefaultFactor(Strides vertexDomain, Strides separatedDomain, List<double[]> vertices, TIntList combinations) {
+	public VertexDefaultFactor(Strides vertexDomain, Strides separatedDomain, List<double[]> vertices, IntList combinations) {
 		super(vertexDomain, separatedDomain);
 		final int n = separatedDomain.getCombinations();
 		data = new double[n][][];

@@ -4,10 +4,10 @@ import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.list.TDoubleList;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TDoubleArrayList;
-import gnu.trove.list.array.TIntArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -158,7 +158,7 @@ public class BayesianNetworkContainer {
 		BayesianNetwork model = new BayesianNetwork();
 		BayesianFactor[] f = new BayesianFactor[n];
 
-		TIntList vars = new TIntArrayList();
+		IntList vars = new IntArrayList();
 
 		double d = random.nextDouble();
 
@@ -173,8 +173,8 @@ public class BayesianNetworkContainer {
 			int v = model.addVariable(2);
 			vars.add(v);
 
-			TDoubleList doubles = new TDoubleArrayList();
-			TIntList ints = new TIntArrayList();
+			DoubleList doubles = new DoubleArrayList();
+			IntList ints = new IntArrayList();
 			ints.add(v);
 			for (int j = 0, a = 0; j < i - 1 && a < p; j++) {
 				if (random.nextDouble() < 0.5) {
@@ -190,10 +190,10 @@ public class BayesianNetworkContainer {
 				doubles.add(1 - y);
 			}
 
-			int[] parents = ints.toArray();
-			ints.sort();
-			f[v] = BayesianFactorFactory.factory().domain(model.getDomain(ints.toArray()))
-					.data(parents, doubles.toArray())
+			int[] parents = ints.toIntArray();
+			ints.sort(null);
+			f[v] = BayesianFactorFactory.factory().domain(model.getDomain(ints.toIntArray()))
+					.data(parents, doubles.toDoubleArray())
 					.get();
 
 			System.out.println(v + " " + f[v] + ": " + Arrays.toString(f[v].getData()));
@@ -201,7 +201,7 @@ public class BayesianNetworkContainer {
 
 		model.setFactors(f);
 
-		return new BayesianNetworkContainer(model, f, vars.toArray());
+		return new BayesianNetworkContainer(model, f, vars.toIntArray());
 	}
 
 	public static BayesianNetworkContainer junctionTreeTheoryExample() {

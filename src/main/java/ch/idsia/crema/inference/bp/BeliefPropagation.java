@@ -7,8 +7,10 @@ import ch.idsia.crema.inference.bp.junction.JunctionTree;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jgrapht.graph.DefaultEdge;
@@ -36,7 +38,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 
 	protected Clique root;
 
-	protected TIntIntMap evidence;
+	protected Int2IntMap evidence;
 
 	protected final Map<Clique, Set<F>> potentialsPerClique = new HashMap<>();
 	protected final Map<Pair<Clique, Clique>, F> messages = new HashMap<>();
@@ -68,7 +70,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	 * @param query    the variable that will be queried
 	 * @return the pre-processed model
 	 */
-	protected DAGModel<F> preprocess(DAGModel<F> original, TIntIntMap evidence, int... query) {
+	protected DAGModel<F> preprocess(DAGModel<F> original, Int2IntMap evidence, int... query) {
 		DAGModel<F> model = original;
 		if (preprocess) {
 			model = original.copy();
@@ -181,7 +183,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	 */
 	@Override
 	public F query(DAGModel<F> model, int query) {
-		return query(model, new TIntIntHashMap(), query);
+		return query(model, new Int2IntOpenHashMap(), query);
 	}
 
 	/**
@@ -194,7 +196,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	 * @return the marginal probability of the query variable
 	 */
 	@Override
-	public F query(DAGModel<F> original, TIntIntMap evidence, int query) {
+	public F query(DAGModel<F> original, Int2IntMap evidence, int query) {
 		model = preprocess(original, evidence, query);
 
 		this.evidence = evidence;
@@ -214,7 +216,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	 * @return the marginal probability of the query variable
 	 */
 	public F fullPropagation(DAGModel<F> model, int query) {
-		return fullPropagation(model, new TIntIntHashMap(), query);
+		return fullPropagation(model, new Int2IntOpenHashMap(), query);
 	}
 
 	/**
@@ -228,7 +230,7 @@ public class BeliefPropagation<F extends OperableFactor<F>> implements Inference
 	 * @param query    the variable that will be queried
 	 * @return the marginal probability of the query variable
 	 */
-	public F fullPropagation(DAGModel<F> model, TIntIntMap evidence, int query) {
+	public F fullPropagation(DAGModel<F> model, Int2IntMap evidence, int query) {
 		setPreprocess(false);
 		F f = query(model, evidence, query);
 		distributingEvidence();

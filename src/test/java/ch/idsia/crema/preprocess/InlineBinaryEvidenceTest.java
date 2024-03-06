@@ -5,8 +5,9 @@ import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.MixedModel;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +27,7 @@ public class InlineBinaryEvidenceTest {
 					.get();
 			model.setFactor(n0, f0);
 
-			TIntIntMap evidence = new TIntIntHashMap();
+			Int2IntMap evidence = new Int2IntOpenHashMap();
 			evidence.put(n0, i);
 
 			BinarizeEvidence<IntervalFactor> bin = new BinarizeEvidence<>();
@@ -51,7 +52,7 @@ public class InlineBinaryEvidenceTest {
 	public void test2() {
 		DAGModel<IntervalFactor> model = new DAGModel<>();
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 
 		for (int i = 0; i < 2; ++i) {
 			int n = model.addVariable(3);
@@ -84,7 +85,7 @@ public class InlineBinaryEvidenceTest {
 	public void test2_1() {
 		DAGModel<IntervalFactor> model = new DAGModel<>();
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 
 		for (int i = 0; i < 2; ++i) {
 			int n = model.addVariable(3);
@@ -117,7 +118,7 @@ public class InlineBinaryEvidenceTest {
 	public void test3() {
 		DAGModel<IntervalFactor> model = new DAGModel<>();
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 
 		for (int i = 0; i < 3; ++i) {
 			int n = model.addVariable(2);

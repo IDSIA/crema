@@ -21,8 +21,8 @@ import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.preprocess.LimitVertices;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.search.ISearch;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -76,7 +76,7 @@ public class RandomNetworks {
 	}
 
 	private static long processSePolyVE(String modelname, DAGModel<VertexFactor> vmodel2, int query,
-	                                    TIntIntMap evidence, Writer ve_output, Writer summary_output, Writer stats_output) throws IOException {
+	                                    Int2IntMap evidence, Writer ve_output, Writer summary_output, Writer stats_output) throws IOException {
 		SePolyVE ve = new SePolyVE();
 		ve.init(new HashMap<String, Long>() {
 			{
@@ -143,9 +143,9 @@ public class RandomNetworks {
 		return duration;
 	}
 
-	private static String evidenceToString(TIntIntMap evidence) {
+	private static String evidenceToString(Int2IntMap evidence) {
 		if (evidence != null) {
-			int[] keys = evidence.keys();
+			int[] keys = evidence.keySet().toIntArray();
 			Arrays.sort(keys);
 			return Arrays.stream(keys).mapToObj(x -> x + "=" + evidence.get(x)).collect(Collectors.joining(INNER_SEP));
 		}
@@ -184,7 +184,7 @@ public class RandomNetworks {
 		output.flush();
 	}
 
-	private static void processApproxLP(String modelname, DAGModel<VertexFactor> vmodel2, int query, TIntIntMap evidence, long duration, FileWriter summary_output) throws IOException {
+	private static void processApproxLP(String modelname, DAGModel<VertexFactor> vmodel2, int query, Int2IntMap evidence, long duration, FileWriter summary_output) throws IOException {
 		String error = "";
 		double state_time = duration / (vmodel2.getSize(query) * 2.0 * 1000.0 /* in seconds */);
 
@@ -242,7 +242,7 @@ public class RandomNetworks {
 		System.out.println("K_VE(" + query + ")");
 		// remove disconnected stuff
 		final RemoveBarren<VertexFactor> removeBarren = new RemoveBarren<>();
-		DAGModel<VertexFactor> vmodel2 = (DAGModel<VertexFactor>) removeBarren.execute(vmodel, new TIntIntHashMap() , query);
+		DAGModel<VertexFactor> vmodel2 = (DAGModel<VertexFactor>) removeBarren.execute(vmodel, new Int2IntOpenHashMap() , query);
 
 		// run polyve
 		long duration = processSePolyVE(modelname, vmodel2, query, null, ve_output, summary_output, stats_output);
@@ -254,7 +254,7 @@ public class RandomNetworks {
 
 	private static void processRoot(String modelname, DAGModel<VertexFactor> vmodel, int query,
 	                                FileWriter inference_output, FileWriter summary_output, FileWriter stats_output) throws IOException {
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 		for (int var : vmodel.getVariables()) {
 			if (vmodel.getChildren(var).length == 0) {
 				evidence.put(var, 0);

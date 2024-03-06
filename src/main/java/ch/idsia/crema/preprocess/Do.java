@@ -2,7 +2,9 @@ package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
+
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 /**
  * Network surgery for do operations.
@@ -13,11 +15,11 @@ import gnu.trove.map.TIntIntMap;
 public class Do <F extends OperableFactor<F>, M extends GraphicalModel<F>> 
 implements ConverterEvidence<F, F, M, M> {
 	
-	public M execute(M model, TIntIntMap dos) {
+	public M execute(M model, Int2IntMap dos) {
 		M copy = (M) model.copy();
 		
-		int[] keys = dos.keys();
-		for (int key : keys) {
+
+		for (int key : dos.keySet()) {
 			
 			// select the correct part of the factors by removing a child
 			// via domain changer

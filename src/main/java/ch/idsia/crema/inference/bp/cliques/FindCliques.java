@@ -4,8 +4,10 @@ import ch.idsia.crema.inference.Algorithm;
 import ch.idsia.crema.inference.bp.triangulation.TriangulatedGraph;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.GraphUtil;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import org.jgrapht.graph.DefaultEdge;
 
 import java.util.Optional;
@@ -64,7 +66,7 @@ public class FindCliques implements Algorithm<TriangulatedGraph, CliqueSet> {
 
 		// follow the elimination sequence
 		for (int v : sequence) {
-			final TIntSet c = new TIntHashSet();
+			final IntSet c = new IntOpenHashSet();
 			c.add(v);
 
 			// creates a clique composed by the current node and all the nodes in the neighbourhood
@@ -76,7 +78,7 @@ public class FindCliques implements Algorithm<TriangulatedGraph, CliqueSet> {
 			copy.removeVertex(v);
 
 			// build the new clique and check if we already have a clique that contains this one
-			Clique clique = new Clique(v, ArraysUtil.sort(c.toArray()));
+			Clique clique = new Clique(v, ArraysUtil.sort(c.toIntArray()));
 
 			final Optional<Clique> container = checkIfContains(cliques, clique);
 			if (container.isPresent()) {

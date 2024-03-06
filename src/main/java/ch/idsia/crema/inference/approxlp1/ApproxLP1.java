@@ -7,7 +7,9 @@ import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.search.impl.GreedyWithRandomRestart;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
 import java.util.HashMap;
@@ -89,7 +91,7 @@ public class ApproxLP1<F extends GenericFactor> implements Inference<GraphicalMo
 	 * @return
 	 */
 	@Override
-	public IntervalFactor query(GraphicalModel<F> originalModel, TIntIntMap evidence, int query) {
+	public IntervalFactor query(GraphicalModel<F> originalModel, Int2IntMap evidence, int query) {
 		GraphicalModel<F> model = originalModel;
 		if (preprocess) {
 			final RemoveBarren<F> remove = new RemoveBarren<>();

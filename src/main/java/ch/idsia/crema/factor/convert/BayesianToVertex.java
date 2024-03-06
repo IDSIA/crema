@@ -7,8 +7,9 @@ import ch.idsia.crema.factor.credal.vertex.separate.VertexDefaultFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.IndexIterator;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
+
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class BayesianToVertex implements Converter<BayesianFactor, VertexFactor>
 		final int states = factor.getDomain().getCardinality(var);
 
 		final List<double[]> vertices = new ArrayList<>();
-		final TIntList combinations = new TIntArrayList();
+		final IntList combinations = new IntArrayList();
 
 		for (int i = 0; i < right.getCombinations(); i++) {
 			final double[] v = new double[states];

@@ -4,7 +4,7 @@ import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.inference.Inference;
 import ch.idsia.crema.inference.InferenceJoined;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,16 +40,16 @@ public abstract class ExpectationMaximization<F extends OperableFactor<F>> {
 
 	protected double klthreshold = 0.0;
 
-	protected abstract void stepPrivate(Collection<TIntIntMap> stepArgs) throws InterruptedException;
+	protected abstract void stepPrivate(Collection<Int2IntMap> stepArgs) throws InterruptedException;
 
-	public void step(Collection<TIntIntMap> stepArgs) throws InterruptedException {
+	public void step(Collection<Int2IntMap> stepArgs) throws InterruptedException {
 		stepPrivate(stepArgs);
 		performedIterations++;
 		if (recordIntermediate)
 			addIntermediateModels(posteriorModel);
 	}
 
-	public void run(Collection<TIntIntMap> stepArgs, int iterations) throws InterruptedException {
+	public void run(Collection<Int2IntMap> stepArgs, int iterations) throws InterruptedException {
 		init();
 		for (int i = 1; i <= iterations; i++) {
 			if (verbose) {

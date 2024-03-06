@@ -1,22 +1,24 @@
 package ch.idsia.crema.inference.ve.order;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 // TODO: this is very similar to TopologicalOrder, remove one of the two?
 public class TopologicalOrder2  implements OrderingStrategy {
 	
 	@Override
 	public int[] apply(GraphicalModel<?> model) {
-        TIntObjectMap<TIntArrayList> E = new TIntObjectHashMap<>(model.getVariablesCount()); // Container for the edges
+        Int2ObjectMap<IntList> E = new Int2ObjectOpenHashMap<>(model.getVariablesCount()); // Container for the edges
         for (int i : model.getVariables()) {
-            E.put(i, new TIntArrayList());
+            E.put(i, new IntArrayList());
         }
         
-        TIntArrayList P = new TIntArrayList(model.getVariablesCount()); // Parent set dom_size residual for each node
-        TIntArrayList L = new TIntArrayList(); // Empty list that will contain the sorted elements
-        TIntArrayList S = new TIntArrayList(); // Set of all nodes with no incoming edges
+        IntList P = new IntArrayList(model.getVariablesCount()); // Parent set dom_size residual for each node
+        IntList L = new IntArrayList(); // Empty list that will contain the sorted elements
+        IntList S = new IntArrayList(); // Set of all nodes with no incoming edges
         for (int i : model.getVariables()) {
             int[] parents = model.getParents(i);
             // Add root notes
@@ -41,7 +43,7 @@ public class TopologicalOrder2  implements OrderingStrategy {
                 P.set(c, s);
             }
         }
-        return L.toArray();
+        return L.toIntArray();
     }
 
 }

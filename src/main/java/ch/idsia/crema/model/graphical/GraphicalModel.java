@@ -1,14 +1,13 @@
 package ch.idsia.crema.model.graphical;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.Model;
-import ch.idsia.crema.model.change.DomainChange;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 // FIXME: #removeParent should accept a lambda
 public interface GraphicalModel<F extends GenericFactor> extends Model<F> {
@@ -47,8 +46,10 @@ public interface GraphicalModel<F extends GenericFactor> extends Model<F> {
 	 * @return
 	 */
 	int[] getParents(int variable);
+	IntSet getParentsSet(int variable);
 
 	int[] getChildren(int variable);
+	IntSet getChildrenSet(int variable);
 
 	int[] getRoots();
 
@@ -56,8 +57,8 @@ public interface GraphicalModel<F extends GenericFactor> extends Model<F> {
 
 	F getFactor(int variable);
 
-	default TIntObjectMap<F> getFactorsMap() {
-		TIntObjectMap<F> map = new TIntObjectHashMap<>();
+	default Int2ObjectMap<F> getFactorsMap() {
+		Int2ObjectMap<F> map = new Int2ObjectOpenHashMap<>();
 		for (int v : getVariables()) {
 			map.put(v, getFactor(v));
 		}

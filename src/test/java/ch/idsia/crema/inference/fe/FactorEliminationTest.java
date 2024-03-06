@@ -2,7 +2,10 @@ package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.inference.BayesianNetworkContainer;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,7 +19,7 @@ public class FactorEliminationTest {
 
 	private EliminationTree T;
 
-	TIntIntHashMap evidence;
+	Int2IntMap evidence;
 	int Q;
 
 	@BeforeEach
@@ -32,7 +35,7 @@ public class FactorEliminationTest {
 
 		Q = C;
 
-		evidence = new TIntIntHashMap(new int[]{B, E}, new int[]{1, 0});
+		evidence = new Int2IntOpenHashMap(new int[]{B, E}, new int[]{1, 0});
 
 		// tree
 		T = new EliminationTree();

@@ -1,11 +1,12 @@
 package ch.idsia.crema.data;
 
 import java.util.Arrays;
+
 import java.util.function.Function;
 
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 class TIntMapConverter {
 
@@ -17,7 +18,7 @@ class TIntMapConverter {
 	 * @param columns the order of the columns
 	 * @return the converted integer array
 	 */
-	public static int[] from(TIntIntMap map, int[] columns) {
+	public static int[] from(Int2IntMap map, int[] columns) {
 		return Arrays.stream(columns).map(map::get).toArray();
 	}
 
@@ -28,7 +29,7 @@ class TIntMapConverter {
 	 * @param columns the order to be fixed
 	 * @return the function
 	 */
-	public static Function<TIntIntMap, int[]> curriedFrom(int[] columns) {
+	public static Function<Int2IntMap, int[]> curriedFrom(int[] columns) {
 		return map -> Arrays.stream(columns).map(map::get).toArray();
 	}
 
@@ -40,7 +41,7 @@ class TIntMapConverter {
 	 * 
 	 * @return the output data
 	 */
-	public static int[][] from(TIntIntMap[] map, int[] columns) {
+	public static int[][] from(Int2IntMap[] map, int[] columns) {
 		return Arrays.stream(map).map(curriedFrom(columns)).toArray(int[][]::new);
 	}
 
@@ -50,11 +51,11 @@ class TIntMapConverter {
 	 * @param data
 	 * @return
 	 */
-	protected static int[] cols(TIntIntMap[] data) {
-		TIntSet columns = new TIntHashSet();
-		for (TIntIntMap row : data) {
-			columns.addAll(row.keys());
+	protected static int[] cols(Int2IntMap[] data) {
+		IntSet columns = new IntOpenHashSet();
+		for (Int2IntMap row : data) {
+			columns.addAll(row.keySet());
 		}
-		return columns.toArray();
+		return columns.toIntArray();
 	}	
 }

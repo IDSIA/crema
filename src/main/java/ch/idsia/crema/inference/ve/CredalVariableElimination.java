@@ -8,8 +8,9 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.Observe;
 import ch.idsia.crema.preprocess.RemoveBarren;
 import ch.idsia.crema.utility.hull.ConvexHull;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 
@@ -26,7 +27,7 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 		return this;
 	}
 
-	protected GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int target) {
+	protected GraphicalModel<VertexFactor> getInferenceModel(GraphicalModel<VertexFactor> model, Int2IntMap evidence, int target) {
 		Observe<VertexFactor> cutObserved = new Observe<>();
 		// run making a copy of the model
 		GraphicalModel<VertexFactor> infModel = cutObserved.execute(model, evidence);
@@ -46,13 +47,13 @@ public class CredalVariableElimination implements Inference<GraphicalModel<Verte
 	 * @return the result of the query
 	 */
 	@Override
-	public VertexFactor query(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int query) {
+	public VertexFactor query(GraphicalModel<VertexFactor> model, Int2IntMap evidence, int query) {
 		GraphicalModel<VertexFactor> infModel = getInferenceModel(model, evidence, query);
 
-		TIntIntMap filteredEvidence = new TIntIntHashMap(evidence);
+		Int2IntMap filteredEvidence = new Int2IntOpenHashMap(evidence);
 
 		// update the evidence
-		for (int v : evidence.keys()) {
+		for (int v : evidence.keySet()) {
 			if (ArrayUtils.contains(infModel.getVariables(), v)) {
 				filteredEvidence.put(v, evidence.get(v));
 			}

@@ -4,11 +4,13 @@ import ch.idsia.crema.core.Strides;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
-import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.set.TDoubleSet;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TDoubleHashSet;
-import gnu.trove.set.hash.TIntHashSet;
+
+import it.unimi.dsi.fastutil.doubles.DoubleOpenHashSet;
+import it.unimi.dsi.fastutil.doubles.DoubleSet;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.util.FastMath;
@@ -214,80 +216,8 @@ public class ArraysUtil {
 		return result;
 	}
 
-	/**
-	 * Convert an array in log-space using {@link FastMath#log(double)}. Creates a
-	 * new array.
-	 *
-	 * @param data input data
-	 * @return the input data in log-space.
-	 */
-	public static double[] log(double[] data) {
-		double[] logged = new double[data.length];
-		for (int i = 0; i < data.length; i++) {
-			logged[i] = FastMath.log(data[i]);
-		}
-		return logged;
-	}
+	
 
-	/**
-	 * Convert an array of array in log-space using {@link FastMath#log(double)}.
-	 * Creates a new array.
-	 *
-	 * @param data input data
-	 * @return the input data in log-space.
-	 */
-	public static double[][] log(double[][] data) {
-		double[][] logged = new double[data.length][];
-		for (int i = 0; i < data.length; i++) {
-			logged[i] = log(data[i]);
-		}
-		return logged;
-	}
-
-	/**
-	 * Convert an array in log-space using {@link FastMath#log1p(double)}. Creates a
-	 * new array.
-	 *
-	 * @param data input data
-	 * @return the input data in log-space.
-	 */
-	public static double[] log1p(double[] data) {
-		double[] logged = new double[data.length];
-		for (int i = 0; i < data.length; i++) {
-			logged[i] = FastMath.log1p(data[i]);
-		}
-		return logged;
-	}
-
-	/**
-	 * Convert an array from log-space to normal space using
-	 * {@link FastMath#exp(double)}. Creates a new array.
-	 *
-	 * @param data input data
-	 * @return the input data in log-space.
-	 */
-	public static double[] exp(double[] data) {
-		double[] normal = new double[data.length];
-		for (int i = 0; i < data.length; i++) {
-			normal[i] = FastMath.exp(data[i]);
-		}
-		return normal;
-	}
-
-	/**
-	 * Convert an array of array from log-space to normal space using
-	 * {@link FastMath#exp(double)}. Creates a new array.
-	 *
-	 * @param data input data
-	 * @return the input data in log-space.
-	 */
-	public static double[][] exp(double[][] data) {
-		double[][] normal = new double[data.length][];
-		for (int i = 0; i < data.length; i++) {
-			normal[i] = exp(data[i]);
-		}
-		return normal;
-	}
 
 	/**
 	 * Compare two float arrays for almost equality. To be equal, each pair of items
@@ -431,7 +361,7 @@ public class ArraysUtil {
 		if (array.length == 0 || elements.length == 0)
 			return array;
 
-		TIntArrayList target = new TIntArrayList(Math.max(0, array.length - elements.length));
+		IntList target = new IntArrayList(Math.max(0, array.length - elements.length));
 		int array_index = 0;
 		int elements_index = 0;
 
@@ -451,7 +381,7 @@ public class ArraysUtil {
 			target.add(array[array_index]);
 		}
 
-		return target.toArray();
+		return target.toIntArray();
 	}
 
 	/**
@@ -588,7 +518,7 @@ public class ArraysUtil {
 //		return IntStream.of(arr1).filter(y -> IntStream.of(arr2).noneMatch(x -> x == y)).toArray();
 //	}
 	public static int[] difference(int[] arr1, int[] arr2) {
-		TIntSet a2 = new TIntHashSet(arr2);
+		IntSet a2 = new IntOpenHashSet(arr2);
 
 		int[] tmp = new int[arr1.length];
 		int used = 0;
@@ -605,15 +535,15 @@ public class ArraysUtil {
 	}
 
 	public static int[] differenceSet(int[] arr1, int[] arr2) {
-		TIntSet a2 = new TIntHashSet(arr2);
-		TIntSet target = new TIntHashSet(arr1.length);
+		IntSet a2 = new IntOpenHashSet(arr2);
+		IntSet target = new IntOpenHashSet(arr1.length);
 		// target.removeAll(a2);
 		for (int o : arr1) {
 			if (!a2.contains(o))
 				target.add(o);
 		}
 
-		int[] ok = target.toArray();
+		int[] ok = target.toIntArray();
 		Arrays.sort(ok);
 		return ok;
 	}
@@ -653,9 +583,9 @@ public class ArraysUtil {
 	}
 
 	public static int[] intersection2(int[] arr1, int[] arr2) {
-		TIntSet a1 = new TIntHashSet(arr1);
-		a1.retainAll(arr2);
-		int[] a = a1.toArray();
+		IntSet a1 = new IntOpenHashSet(arr1);
+		a1.retainAll(new IntArrayList(arr2));
+		int[] a = a1.toIntArray();
 		Arrays.sort(a);
 		return a;
 	}
@@ -714,9 +644,9 @@ public class ArraysUtil {
 	}
 
 	public static int[] union_unsorted_set(int[] arr1, int[] arr2) {
-		TIntSet set = new TIntHashSet(arr1);
-		set.addAll(arr2);
-		int[] res = set.toArray();
+		IntSet set = new IntOpenHashSet(arr1);
+		set.addAll(new IntArrayList(arr2));
+		int[] res = set.toIntArray();
 		Arrays.sort(res);
 		return res;
 	}
@@ -954,8 +884,8 @@ public class ArraysUtil {
 //		return Ints.toArray(ImmutableSet.copyOf(Ints.asList(arr)));
 //	}
 	public static int[] unique(int[] arr) {
-		TIntSet set = new TIntHashSet(arr);
-		int[] a = set.toArray();
+		IntSet set = new IntOpenHashSet(arr);
+		int[] a = set.toIntArray();
 		Arrays.sort(a);
 		return a;
 	}
@@ -970,11 +900,12 @@ public class ArraysUtil {
 //		return Doubles.toArray(ImmutableSet.copyOf(Doubles.asList(arr)));
 //	}
 	public static double[] unique(double[] arr) {
-		TDoubleSet set = new TDoubleHashSet(arr);
-		double[] a = set.toArray();
+		DoubleSet set = new DoubleOpenHashSet(arr);
+		double[] a = set.toDoubleArray();
 		Arrays.sort(a);
 		return a;
 	}
+	
 	/**
 	 * Round all the values in a vector with a number of decimals.
 	 *
@@ -1267,7 +1198,7 @@ public class ArraysUtil {
 	 * @param is
 	 * @return
 	 */
-	public static int[] reverse(int[] is) {
+	public static int[] reversed(int[] is) {
 		int[] rev = ArrayUtils.clone(is);
 		ArrayUtils.reverse(rev);
 		return rev;
@@ -1278,7 +1209,7 @@ public class ArraysUtil {
 	}
 
 	public static double[] replace(double[] arr, Predicate<Double> pred, double replacement) {
-		double[] out = Arrays.copyOf(arr, arr.length);
+		double[] out = arr.clone(); //Arrays.copyOf(arr, arr.length);
 		for (int i : where(out, pred))
 			out[i] = replacement;
 		return out;
@@ -1312,28 +1243,6 @@ public class ArraysUtil {
 		}
 
 		return Arrays.equals(arr1, arr2);
-	}
-
-	public static void shuffle(double[] array) {
-		int index;
-		double temp;
-		for (int i = array.length - 1; i > 0; i--) {
-			index = RandomUtil.getRandom().nextInt(i + 1);
-			temp = array[index];
-			array[index] = array[i];
-			array[i] = temp;
-		}
-	}
-
-	public static void shuffle(int[] array) {
-		int index;
-		int temp;
-		for (int i = array.length - 1; i > 0; i--) {
-			index = RandomUtil.getRandom().nextInt(i + 1);
-			temp = array[index];
-			array[index] = array[i];
-			array[i] = temp;
-		}
 	}
 
 	/**

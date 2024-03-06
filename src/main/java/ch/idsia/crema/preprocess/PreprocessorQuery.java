@@ -2,7 +2,8 @@ package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -23,7 +24,7 @@ public interface PreprocessorQuery<F extends GenericFactor, M extends GraphicalM
 	 * @param evidence the observed variable as a map of variable-states
 	 * @param query    the variable that will be queried
 	 */
-	default void executeInPlace(M model, TIntIntMap evidence, int query) {
+	default void executeInPlace(M model, Int2IntMap evidence, int query) {
 		executeInPlace(model, evidence, new int[]{query});
 	}
 
@@ -34,6 +35,6 @@ public interface PreprocessorQuery<F extends GenericFactor, M extends GraphicalM
 	 * @param evidence the observed variable as a map of variable-states
 	 * @param query    the variables that will be queried
 	 */
-	void executeInPlace(M model, TIntIntMap evidence, int... query);
+	void executeInPlace(M model, Int2IntMap evidence, int... query);
 
 }

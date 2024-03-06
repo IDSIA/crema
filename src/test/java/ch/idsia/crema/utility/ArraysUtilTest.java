@@ -37,7 +37,7 @@ class ArraysUtilTest {
 
 	@Test
 	void testReverse() {
-		assertArrayEquals(new int[]{4, 3, 2, 1}, ArraysUtil.reverse(new int[]{1, 2, 3, 4}));
-		assertArrayEquals(new int[]{}, ArraysUtil.reverse(new int[]{}));
+		assertArrayEquals(new int[]{4, 3, 2, 1}, ArraysUtil.reversed(new int[]{1, 2, 3, 4}));
+		assertArrayEquals(new int[]{}, ArraysUtil.reversed(new int[]{}));
 	}
 }

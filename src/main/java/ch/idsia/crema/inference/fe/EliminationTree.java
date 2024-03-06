@@ -5,14 +5,15 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
-import gnu.trove.stack.TIntStack;
-import gnu.trove.stack.array.TIntArrayStack;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.ints.IntStack;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.*;
@@ -43,9 +44,9 @@ public class EliminationTree {
 	private Map<Integer, List<Integer>> edgesOut = new HashMap<>();
 	private Map<Integer, List<Integer>> edgesIn = new HashMap<>();
 
-	private final TIntSet vars = new TIntHashSet();
+	private final IntSet vars = new IntOpenHashSet();
 
-	private TIntIntMap evidence = new TIntIntHashMap();
+	private Int2IntMap evidence = new Int2IntOpenHashMap();
 
 	private int root;
 
@@ -91,8 +92,8 @@ public class EliminationTree {
 		edgesOut = new HashMap<>();
 		edgesIn = new HashMap<>();
 
-		TIntStack stack = new TIntArrayStack();
-		TIntSet visited = new TIntHashSet();
+		IntArrayList stack = new IntArrayList();
+		IntSet visited = new IntOpenHashSet();
 
 		stack.push(root);
 
@@ -130,10 +131,10 @@ public class EliminationTree {
 	/**
 	 * @return an array with all the indices of the nodes
 	 */
-	public int[] getNodes() {
-		TIntSet ids = new TIntHashSet();
+	public IntSet getNodes() {
+		IntSet ids = new IntOpenHashSet();
 		ids.addAll(neighbour.keySet());
-		return ids.toArray();
+		return ids;
 	}
 
 	/**
@@ -180,13 +181,13 @@ public class EliminationTree {
 	/**
 	 * @return the currents variables covered by this tree
 	 */
-	public int[] vars() {
-		TIntSet vars = new TIntHashSet();
+	public IntSet vars() {
+		IntSet vars = new IntOpenHashSet();
 		for (BayesianFactor factor : factors.values()) {
-			vars.addAll(factor.getDomain().getVariables());
+			vars.addAll(factor.getDomain().getVariablesSet());
 		}
 
-		return vars.toArray();
+		return vars;
 	}
 
 	/**
@@ -196,24 +197,24 @@ public class EliminationTree {
 	 * @param variables variables to search
 	 * @return an array with the variables that are NOT covered by this tree.
 	 */
-	public int[] missingVariables(int[] variables) {
-		TIntList vs = new TIntArrayList();
-		int[] t = vars();
+	public IntList missingVariables(int[] variables) {
+		IntList vs = new IntArrayList();
+		IntSet t = vars();
 
 		for (int v : variables) {
-			if (!ArraysUtil.contains(v, t))
+			if (!t.contains(v))
 				vs.add(v);
 		}
 
-		return vs.toArray();
+		return vs;
 	}
 
 	/**
 	 * @param i node to visit
 	 * @return the variables covered by node i
 	 */
-	public int[] vars(int i) {
-		return factors.get(i).getDomain().getVariables();
+	public IntSet vars(int i) {
+		return factors.get(i).getDomain().getVariablesSet();
 	}
 
 	/**
@@ -233,26 +234,26 @@ public class EliminationTree {
 	}
 
 	private int[] exploreSeparator(int i, int j) {
-		TIntSet separator = new TIntHashSet();
+		IntSet separator = new IntOpenHashSet();
 
-		TIntStack nodeToVisit = new TIntArrayStack();
-		TIntSet nodeVisited = new TIntHashSet();
+		IntArrayList nodeToVisit = new IntArrayList();
+		IntSet nodeVisited = new IntOpenHashSet();
 
 		nodeToVisit.push(i);
 
 		while (nodeToVisit.size() > 0) {
-			int n = nodeToVisit.pop();
+			int n = nodeToVisit.popInt();
 
 			separator.addAll(vars(n));
 			nodeVisited.add(n);
 
-			for (Integer x : neighbour.get(n)) {
+			for (int x : neighbour.get(n)) {
 				if (!nodeVisited.contains(x) && x != j)
 					nodeToVisit.push(x);
 			}
 		}
 
-		return ArraysUtil.sort(separator.toArray());
+		return ArraysUtil.sort(separator.toIntArray());
 	}
 
 	/**
@@ -263,14 +264,14 @@ public class EliminationTree {
 	 */
 	public int[] cluster(int i) {
 
-		TIntSet cluster = new TIntHashSet();
+		IntSet cluster = new IntOpenHashSet();
 
 		cluster.addAll(vars(i));
 		for (Integer j : neighbour.get(i)) {
-			cluster.addAll(separator(i, j));
+			cluster.addAll(new IntArrayList(separator(i, j)));
 		}
 
-		return ArraysUtil.sort(cluster.toArray());
+		return ArraysUtil.sort(cluster.toIntArray());
 	}
 
 	private BayesianFactor phi(int i) {
@@ -417,12 +418,12 @@ public class EliminationTree {
 
 	private BayesianFactor project(BayesianFactor phi, int... Q) {
 
-		TIntSet variables = new TIntHashSet(phi.getDomain().getVariables());
+		IntSet variables = new IntOpenHashSet(phi.getDomain().getVariables());
 		for (int q : Q) {
 			variables.remove(q);
 		}
 
-		for (int v : variables.toArray())
+		for (int v : variables)
 			phi = phi.marginalize(v);
 
 		return phi;
@@ -446,7 +447,7 @@ public class EliminationTree {
 		return phi;
 	}
 
-	public void setEvidence(TIntIntMap evidence) {
+	public void setEvidence(Int2IntMap evidence) {
 		this.evidence = evidence;
 	}
 }

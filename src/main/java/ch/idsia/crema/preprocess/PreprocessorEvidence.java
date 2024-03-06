@@ -2,7 +2,8 @@ package ch.idsia.crema.preprocess;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -20,6 +21,6 @@ public interface PreprocessorEvidence<F extends GenericFactor, M extends Graphic
 	 * @param model    the model to be processed
 	 * @param evidence the observed variable as a map of variable-states
 	 */
-	void executeInPlace(M model, TIntIntMap evidence);
+	void executeInPlace(M model, Int2IntMap evidence);
 
 }

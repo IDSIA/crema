@@ -8,16 +8,18 @@ import java.util.List;
 import java.util.ListIterator;
 
 import ch.idsia.crema.factor.GenericFactor;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class FactorQueue<F extends GenericFactor> implements Iterator<ArrayList<F>> {
 	
-	private TIntObjectHashMap<ArrayList<F>> data;
+	private Int2ObjectMap<ArrayList<F>> data;
 	private int[] sequence;
 	private ArrayList<F> results;
 
 	public FactorQueue(int[] sequence) {
-		this.data = new TIntObjectHashMap<ArrayList<F>>();
+		this.data = new Int2ObjectOpenHashMap<ArrayList<F>>();
 		this.sequence = sequence;
         this.results = new ArrayList<>();
 

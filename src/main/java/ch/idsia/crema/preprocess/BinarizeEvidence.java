@@ -8,7 +8,7 @@ import ch.idsia.crema.model.graphical.MixedModel;
 import ch.idsia.crema.preprocess.creators.CreateFactor;
 import ch.idsia.crema.preprocess.creators.CreateFactorBayesian;
 import ch.idsia.crema.preprocess.creators.Instance;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.util.ArrayList;
 
@@ -74,16 +74,15 @@ public class BinarizeEvidence<F extends GenericFactor> implements ConverterEvide
 	 * @return a mixed model where a new node of type {@link BayesianFactor} is added to collect all the evidence
 	 */
 	@Override
-	public MixedModel execute(GraphicalModel<F> original, TIntIntMap evidence) {
+	public MixedModel execute(GraphicalModel<F> original, Int2IntMap evidence) {
 		MixedModel model = new MixedModel((DAGModel<GenericFactor>) original.copy());
-		int[] keys = evidence.keys();
 
 		// TODO: do we need to sort the keys????
 
 		int new_var = -1;
 
 		ArrayList<Instance> parents = new ArrayList<>();
-		for (int var : keys) {
+		for (int var : evidence.keySet()) {
 			int var_size = model.getSize(var);
 			int var_obs = evidence.get(var);
 

@@ -1,6 +1,7 @@
 package ch.idsia.crema.factor.credal.linear.interval;
 
 import ch.idsia.crema.core.Strides;
+import ch.idsia.crema.utility.ArraysMath;
 import ch.idsia.crema.utility.ArraysUtil;
 
 /**
@@ -11,11 +12,11 @@ import ch.idsia.crema.utility.ArraysUtil;
 public class IntervalLogFactor extends IntervalDefaultFactor {
 
 	public IntervalLogFactor(Strides content, Strides separation, double[][] lower, double[][] upper) {
-		super(content, separation, ArraysUtil.log(lower), ArraysUtil.log(upper));
+		super(content, separation, ArraysMath.log(lower), ArraysMath.log(upper));
 	}
 
 	public IntervalLogFactor(IntervalDefaultFactor factor) {
-		this(factor.dataDomain, factor.groupDomain, ArraysUtil.log(factor.lower), ArraysUtil.log(factor.upper));
+		this(factor.dataDomain, factor.groupDomain, ArraysMath.log(factor.lower), ArraysMath.log(factor.upper));
 	}
 
 	IntervalLogFactor(Strides content, Strides separation, double[][] lower, double[][] upper, boolean isLog) {
@@ -29,22 +30,22 @@ public class IntervalLogFactor extends IntervalDefaultFactor {
 
 	@Override
 	public double[] getLower(int... states) {
-		return ArraysUtil.exp(getLogLower(states));
+		return ArraysMath.exp(getLogLower(states));
 	}
 
 	@Override
 	public double[] getUpper(int... states) {
-		return ArraysUtil.exp(getLogUpper(states));
+		return ArraysMath.exp(getLogUpper(states));
 	}
 
 	@Override
 	public double[] getLowerAt(int group_offset) {
-		return ArraysUtil.exp(getLogLowerAt(group_offset));
+		return ArraysMath.exp(getLogLowerAt(group_offset));
 	}
 
 	@Override
 	public double[] getUpperAt(int group_offset) {
-		return ArraysUtil.exp(getLogUpperAt(group_offset));
+		return ArraysMath.exp(getLogUpperAt(group_offset));
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class IntervalLogFactor extends IntervalDefaultFactor {
 	}
 
 	public IntervalDefaultFactor exp() {
-		return new IntervalDefaultFactor(dataDomain, groupDomain, ArraysUtil.exp(lower), ArraysUtil.exp(upper));
+		return new IntervalDefaultFactor(dataDomain, groupDomain, ArraysMath.exp(lower), ArraysMath.exp(upper));
 	}
 
 	@Override

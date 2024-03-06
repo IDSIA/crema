@@ -1,8 +1,9 @@
 package ch.idsia.crema.entropy;
 
-import gnu.trove.iterator.TIntIterator;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+import it.unimi.dsi.fastutil.ints.IntIterator;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 public class MaximumEntropy {
@@ -13,14 +14,14 @@ public class MaximumEntropy {
 		int size = lowers.length;
 		double[] lower_copy = ArrayUtils.clone(lowers);
 
-		TIntSet indices = new TIntHashSet();
+		IntSet indices = new IntOpenHashSet();
 		for (int i = 0; i < size; ++i) indices.add(i);
 
 		maxEntropy(lower_copy, uppers, indices);
 		return lower_copy;
 	}
 
-	private void maxEntropy(double[] l, double[] u, TIntSet S) {
+	private void maxEntropy(double[] l, double[] u, IntSet S) {
 		int len = l.length;
 
 		if (sum(l) < 1) {
@@ -32,7 +33,7 @@ public class MaximumEntropy {
 
 			double s = sum(l);
 
-			TIntIterator S_iter = S.iterator();
+			IntIterator S_iter = S.iterator();
 			int r = min(l, S_iter);
 			int f = sig(l, S_iter);
 			int m = nmin(l, S_iter);
@@ -53,7 +54,7 @@ public class MaximumEntropy {
 		}
 	}
 
-	private int sig(double[] l, TIntIterator S) {
+	private int sig(double[] l, IntIterator S) {
 		double min = 1;
 		int mig = -1;
 		double smin = 1;
@@ -76,7 +77,7 @@ public class MaximumEntropy {
 		return sig;
 	}
 
-	private int nmin(double[] l, TIntIterator S) {
+	private int nmin(double[] l, IntIterator S) {
 		double min = 1;
 		int nmin = 0;
 
@@ -92,7 +93,7 @@ public class MaximumEntropy {
 		return nmin;
 	}
 
-	private int min(double[] l, TIntIterator S) {
+	private int min(double[] l, IntIterator S) {
 		double min = 1;
 		int mig = -1;
 

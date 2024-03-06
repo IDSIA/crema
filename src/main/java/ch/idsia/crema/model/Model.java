@@ -3,6 +3,8 @@ package ch.idsia.crema.model;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.GenericFactor;
 
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import java.util.Collection;
 
 public interface Model<F extends GenericFactor> {
@@ -63,6 +65,9 @@ public interface Model<F extends GenericFactor> {
 	// TODO is the sorting of the result needed. RemoveBarren does need it to be sorted!
 	int[] getVariables();
 
+	
+	IntSet getVariablesSet();
+	
 	/**
 	 * Get the cardinality of a variable in the model.
 	 * <p>

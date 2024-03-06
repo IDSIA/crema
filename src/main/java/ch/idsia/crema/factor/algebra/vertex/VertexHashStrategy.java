@@ -1,14 +1,14 @@
 package ch.idsia.crema.factor.algebra.vertex;
 
-import gnu.trove.strategy.HashingStrategy;
+import it.unimi.dsi.fastutil.Hash;
 
-public class VertexHashStrategy implements HashingStrategy<double[]> {
+public class VertexHashStrategy implements Hash.Strategy<double[]> {
 	private static final long serialVersionUID = -8829559491624233597L;
 
 	private final double eps = 0.000000000001;
 
 	@Override
-	public int computeHashCode(double[] a) {
+	public int hashCode(double[] a) {
 		if (a == null)
 			return 0;
 

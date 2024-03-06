@@ -13,7 +13,8 @@ import ch.idsia.crema.factor.credal.vertex.extensive.ExtensiveVertexFactorFactor
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.idsia.crema.factor.credal.vertex.separate.VertexFactorFactory;
 import ch.idsia.crema.model.graphical.DAGModel;
-import gnu.trove.set.hash.TCustomHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -114,7 +115,7 @@ public class TestSimpleExtensiveFactor {
 		double[] b = new double[]{0.1, 0.1, 0.8};
 		double[] c = new double[]{0.10001, 0.1, 0.79999};
 
-		TCustomHashSet<double[]> seen = new TCustomHashSet<>(new VertexHashStrategy());
+		ObjectOpenCustomHashSet<double[]> seen = new ObjectOpenCustomHashSet<>(new VertexHashStrategy());
 		seen.add(a);
 		System.out.println(seen.contains(a));
 		System.out.println(seen.contains(b));
@@ -143,7 +144,7 @@ public class TestSimpleExtensiveFactor {
 				.get();
 
 		Operation<ExtensiveVertexFactor> algebra = new OnlineConvexHullAlgebra() {
-			final TCustomHashSet<double[]> seen = new TCustomHashSet<>(new VertexHashStrategy());
+			final ObjectOpenCustomHashSet<double[]> seen = new ObjectOpenCustomHashSet<>(new VertexHashStrategy());
 
 			@Override
 			protected boolean canAddVector(List<double[]> vertex, double[] vector) {

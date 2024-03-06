@@ -4,6 +4,7 @@ import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianLogFactor;
+import ch.idsia.crema.utility.ArraysMath;
 import ch.idsia.crema.utility.ArraysUtil;
 
 import java.util.ArrayList;
@@ -75,8 +76,8 @@ public class ExtensiveVertexFactorFactory {
 	public ExtensiveVertexFactor log() {
 		final List<double[]> data = new ArrayList<>();
 
-		vertices.forEach(ArraysUtil::log);
-		factors.forEach(f -> ArraysUtil.log(f.getData()));
+		vertices.forEach(ArraysMath::log);
+		factors.forEach(f -> ArraysMath.log(f.getData()));
 		logFactors.forEach(f -> data.add(f.getLogData()));
 
 		return new ExtensiveVertexLogFactor(domain, data, true);
@@ -86,7 +87,7 @@ public class ExtensiveVertexFactorFactory {
 		final List<double[]> data = new ArrayList<>(vertices);
 
 		factors.forEach(f -> data.add(f.getData()));
-		logFactors.forEach(f -> ArraysUtil.exp(f.getData()));
+		logFactors.forEach(f -> ArraysMath.exp(f.getData()));
 
 		return new ExtensiveVertexDefaultFactor(domain, data);
 	}

@@ -8,8 +8,10 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.graphical.MixedModel;
 import ch.idsia.crema.preprocess.BinarizeEvidence;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -168,7 +170,7 @@ public class MarginalTest {
 				.get();
 		model.setFactor(n1, f1);
 
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(n0, 0);
 
 		BinarizeEvidence<GenericFactor> bin = new BinarizeEvidence<>();

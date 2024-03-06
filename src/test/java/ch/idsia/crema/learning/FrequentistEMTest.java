@@ -3,8 +3,10 @@ package ch.idsia.crema.learning;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactorFactory;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -42,9 +44,9 @@ public class FrequentistEMTest {
 				{1, -1, 1}
 		};
 
-		TIntIntMap[] observations = new TIntIntMap[dataX.length];
+		Int2IntMap[] observations = new Int2IntMap[dataX.length];
 		for (int i = 0; i < observations.length; i++) {
-			observations[i] = new TIntIntHashMap();
+			observations[i] = new Int2IntOpenHashMap();
 			for (int j = 0; j < dataX[i].length; j++) {
 				if (dataX[i][j] >= 0)
 					observations[i].put(X[j], dataX[i][j]);

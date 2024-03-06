@@ -8,8 +8,10 @@ import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.io.uai.UAIParser;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -64,7 +66,7 @@ class ApproxLP0Test {
 
 		final GraphicalModel<SeparateHalfspaceFactor> model = UAIParser.read("./models/hmodel-mult_n5_mID2_mD6_mV4_nV2-1.uai");
 		final int query = 0;
-		final TIntIntMap obs = new TIntIntHashMap();
+		final Int2IntMap obs = new Int2IntOpenHashMap();
 		obs.put(2, 0);
 		obs.put(1, 0);
 
@@ -142,7 +144,7 @@ class ApproxLP0Test {
 		final ApproxLP0<VertexFactor> alp0 = new ApproxLP0<>(false);
 
 		// P(A|B1=0, ..., Bn=0)
-		final TIntIntHashMap obs = new TIntIntHashMap();
+		final Int2IntMap obs = new Int2IntOpenHashMap();
 		for (int i = 0; i < n; i++)
 			obs.put(B[i], 0);
 

@@ -1,8 +1,9 @@
 package ch.idsia.crema.inference.bp.cliques;
 
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
+
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 import java.util.Arrays;
 
@@ -20,7 +21,7 @@ public class Clique {
 	/**
 	 * Variable that created the {@link Clique}. This should be the potential assigned to this clique.
 	 */
-	private final TIntList v = new TIntArrayList();
+	private final IntList v = new IntArrayList();
 
 	protected Clique() {
 
@@ -51,12 +52,12 @@ public class Clique {
 		return variables;
 	}
 
-	public TIntList getV() {
+	public IntList getV() {
 		return v;
 	}
 
 	public int[] getVArray() {
-		return v.toArray();
+		return v.toIntArray();
 	}
 
 	/**

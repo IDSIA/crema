@@ -1,6 +1,7 @@
 package ch.idsia.crema.inference.fe;
 
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 import static ch.idsia.crema.inference.fe.FactorEliminationUtils.project;
 
@@ -36,7 +37,7 @@ public class FactorElimination2 {
 			BayesianFactor phi = i.phi();
 
 			int[] Vi = i.vars();
-			int[] V = T.missingVariables(Vi);
+			IntList V = T.missingVariables(Vi);
 
 			// variables appearing in phi_i but not in remaining tree T
 			for (int v : V) {

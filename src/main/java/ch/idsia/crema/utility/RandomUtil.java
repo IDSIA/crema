@@ -3,6 +3,8 @@ package ch.idsia.crema.utility;
 import java.util.Random;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 
 public class RandomUtil {
 
@@ -32,7 +34,7 @@ public class RandomUtil {
 		}
 
 		probs[size - 1] = 1.0 - norm;
-		ArraysUtil.shuffle(probs);
+		ArrayUtils.shuffle(probs);
 
 		return probs;
 	}

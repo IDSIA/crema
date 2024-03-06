@@ -124,5 +124,80 @@ public class ArraysMath {
 		}
 		return FastMath.sqrt(s / ((double)array.length - ddof));
 	}
+
 	
+	
+
+	/**
+	 * Convert an array of array in log-space using {@link FastMath#log(double)}.
+	 * Creates a new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[][] log(double[][] data) {
+		double[][] logged = new double[data.length][];
+		for (int i = 0; i < data.length; i++) {
+			logged[i] = log(data[i]);
+		}
+		return logged;
+	}
+	/**
+	 * Convert an array in log-space using {@link FastMath#log(double)}. Creates a
+	 * new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] log(double[] data) {
+		double[] logged = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			logged[i] = FastMath.log(data[i]);
+		}
+		return logged;
+	}
+	/**
+	 * Convert an array in log-space using {@link FastMath#log1p(double)}. Creates a
+	 * new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] log1p(double[] data) {
+		double[] logged = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			logged[i] = FastMath.log1p(data[i]);
+		}
+		return logged;
+	}
+
+	/**
+	 * Convert an array from log-space to normal space using
+	 * {@link FastMath#exp(double)}. Creates a new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[] exp(double[] data) {
+		double[] normal = new double[data.length];
+		for (int i = 0; i < data.length; i++) {
+			normal[i] = FastMath.exp(data[i]);
+		}
+		return normal;
+	}
+
+	/**
+	 * Convert an array of array from log-space to normal space using
+	 * {@link FastMath#exp(double)}. Creates a new array.
+	 *
+	 * @param data input data
+	 * @return the input data in log-space.
+	 */
+	public static double[][] exp(double[][] data) {
+		double[][] normal = new double[data.length][];
+		for (int i = 0; i < data.length; i++) {
+			normal[i] = exp(data[i]);
+		}
+		return normal;
+	}
 }

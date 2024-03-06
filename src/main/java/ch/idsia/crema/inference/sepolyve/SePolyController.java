@@ -11,16 +11,17 @@ import ch.idsia.crema.search.SearchOperation;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.CombinationsIterator;
 import ch.idsia.crema.utility.hull.LPConvexHull;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 import java.util.*;
 
 public class SePolyController extends SearchOperation {
 
-	private final TIntObjectMap<List<VertexFactor>> queue;
-	private final TIntIntMap evidence;
+	private final Int2ObjectMap<List<VertexFactor>> queue;
+	private final Int2IntMap evidence;
 	private final GraphicalModel<VertexFactor> model;
 	private SeparateDefaultAlgebra algebra = null;
 	private final ArrayList<NodeInfo> nodeStats;
@@ -40,18 +41,18 @@ public class SePolyController extends SearchOperation {
 	 * @param maxTime
 	 * @param maxMem
 	 */
-	public SePolyController(GraphicalModel<VertexFactor> model, TIntIntMap evidence, SeparateDefaultAlgebra rounding, long maxTime, long maxMem) {
+	public SePolyController(GraphicalModel<VertexFactor> model, Int2IntMap evidence, SeparateDefaultAlgebra rounding, long maxTime, long maxMem) {
 		this(model, evidence);
 		this.algebra = rounding;
 		this.maxSize = maxMem;
 		this.maxTime = maxTime;
 	}
 
-	public SePolyController(GraphicalModel<VertexFactor> model, TIntIntMap evidence) {
+	public SePolyController(GraphicalModel<VertexFactor> model, Int2IntMap evidence) {
 		this.evidence = evidence;
 		this.model = model;
 
-		this.queue = new TIntObjectHashMap<>();
+		this.queue = new Int2ObjectOpenHashMap<>();
 		this.queue.put(-1, new ArrayList<VertexFactor>());
 
 		this.nodeStats = new ArrayList<>();

@@ -15,10 +15,11 @@ import java.util.stream.IntStream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.set.TIntSet;
-import gnu.trove.set.hash.TIntHashSet;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 
 public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 	protected final int[] columns;
@@ -79,8 +80,8 @@ public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 		return ret;
 	}
 	
-	public TIntSet[] getStates() {
-		TIntSet[] accum = IntStream.range(0, columns.length).mapToObj(TIntHashSet::new).toArray(TIntSet[]::new);
+	public IntSet[] getStates() {
+		IntSet[] accum = IntStream.range(0, columns.length).mapToObj(IntOpenHashSet::new).toArray(IntSet[]::new);
 		
 		for(var entry : dataTable.entrySet()) {
 			var v = entry.getKey();
@@ -106,7 +107,7 @@ public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 	 * @param map
 	 * @return int[] of the values for the table columns
 	 */
-	private int[] getIndex(TIntIntMap map) {
+	private int[] getIndex(Int2IntMap map) {
 		return Arrays.stream(columns).map(map::get).toArray();
 	}
 
@@ -116,7 +117,7 @@ public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 	 * @param index
 	 * @return
 	 */
-	public T getWeight(TIntIntMap index) {
+	public T getWeight(Int2IntMap index) {
 		return dataTable.get(getIndex(index));
 	}
 
@@ -150,7 +151,7 @@ public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 		// cumulative size
 		int cumsize = 1;
 
-		TIntIntMap strides = new TIntIntHashMap();
+		Int2IntMap strides = new Int2IntOpenHashMap();
 		for (int i = 0; i < vars.length; ++i) {
 			strides.put(vars[i], cumsize);
 			cumsize = cumsize * sizes[i];
@@ -225,7 +226,7 @@ public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 	 * @param inst  {@link TIntIntMap} - the row to be added
 	 * @param count <T> the number of rows being added.
 	 */
-	public void add(TIntIntMap inst, T count) {
+	public void add(Int2IntMap inst, T count) {
 		int[] row = Arrays.stream(columns).map(inst::get).toArray();
 		dataTable.compute(row, (k, v) -> (v == null) ? count : add.apply(v, count));
 	}
@@ -237,7 +238,7 @@ public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 	 * @param inst  {@link TIntIntMap} - the row to be added
 	 * @param count <T> the number of rows being added.
 	 */
-	public void add(TIntIntMap inst) {
+	public void add(Int2IntMap inst) {
 		add(inst, unit);
 	}
 
@@ -289,14 +290,14 @@ public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 	}
 
 	
-	public Iterable<Pair<TIntIntMap, T>> mapIterable() {
-		return new Iterable<Pair<TIntIntMap, T>>() {
+	public Iterable<Pair<Int2IntMap, T>> mapIterable() {
+		return new Iterable<Pair<Int2IntMap, T>>() {
 
 			@Override
-			public Iterator<Pair<TIntIntMap, T>> iterator() {
+			public Iterator<Pair<Int2IntMap, T>> iterator() {
 
 				var iter = dataTable.entrySet().iterator();
-				return new Iterator<Pair<TIntIntMap, T>>() {
+				return new Iterator<Pair<Int2IntMap, T>>() {
 
 					@Override
 					public boolean hasNext() {
@@ -304,9 +305,9 @@ public class DataTable<T, O> implements Iterable<Map.Entry<int[], T>> {
 					}
 
 					@Override
-					public Pair<TIntIntMap, T> next() {
+					public Pair<Int2IntMap, T> next() {
 						var nextVal = iter.next();
-						TIntIntMap ret = new TIntIntHashMap(columns, nextVal.getKey());
+						Int2IntMap ret = new Int2IntOpenHashMap(columns, nextVal.getKey());
 						return Pair.of(ret, nextVal.getValue());
 					}
 				};

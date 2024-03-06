@@ -12,8 +12,9 @@ import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.bif.BIFParser;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -89,7 +90,7 @@ public class BeliefPropagationTest {
 		BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>();
 
 		// P(A):
-		TIntIntHashMap obs = new TIntIntHashMap();
+		Int2IntMap obs = new Int2IntOpenHashMap();
 		BayesianFactor q = bp.query(model, obs, A);
 		System.out.println("P(A):              " + q);
 		assertArrayEquals(new double[]{.4, .6}, q.getData(), 1e-6);
@@ -183,7 +184,7 @@ public class BeliefPropagationTest {
 		assertArrayEquals(new int[]{A}, bn.getParents(C));
 		assertArrayEquals(new int[]{A}, bn.getParents(B));
 
-		TIntIntMap obs = new TIntIntHashMap();
+		Int2IntMap obs = new Int2IntOpenHashMap();
 		BayesianFactor q;
 
 		final BeliefPropagation<BayesianFactor> inf = new BeliefPropagation<>();
@@ -202,7 +203,7 @@ public class BeliefPropagationTest {
 		System.out.println(q + " " + obs);
 		assertArrayEquals(new double[]{.6, .4}, q.getData(), 1e-6);
 
-		obs = new TIntIntHashMap();
+		obs = new Int2IntOpenHashMap();
 
 		obs.put(B, 0);
 		q = inf.query(bn, obs, A);
@@ -279,7 +280,7 @@ public class BeliefPropagationTest {
 		// computation using Belief Propagation
 		final BeliefPropagation<BayesianFactor> inf = new BeliefPropagation<>();
 
-		final TIntIntMap obs = new TIntIntHashMap();
+		final Int2IntMap obs = new Int2IntOpenHashMap();
 		obs.put(D, 0);
 		final BayesianFactor q = inf.query(bn, obs, A);
 		System.out.println("query=" + q);
@@ -318,11 +319,11 @@ public class BeliefPropagationTest {
 		final VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
 		final BeliefPropagation<BayesianFactor> bp = new BeliefPropagation<>(false);
 
-		TIntIntMap evidence;
+		Int2IntMap evidence;
 		BayesianFactor Qlbp;
 		BayesianFactor Qve;
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		Qlbp = bp.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("BP: P(Rain) =                                     " + Qlbp);
@@ -330,7 +331,7 @@ public class BeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		evidence.put(3, 0);
 		evidence.put(4, 1);
 		Qlbp = bp.query(model, evidence, 2);
@@ -340,7 +341,7 @@ public class BeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.05);
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		evidence.put(3, 0);
 		evidence.put(4, 0);
 		Qlbp = bp.query(model, evidence, 2);
@@ -350,7 +351,7 @@ public class BeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		evidence.put(0, 1);
 		Qlbp = bp.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
@@ -359,7 +360,7 @@ public class BeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		evidence.put(0, 0);
 		Qlbp = bp.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);

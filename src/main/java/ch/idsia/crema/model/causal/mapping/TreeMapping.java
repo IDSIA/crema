@@ -13,10 +13,11 @@ import ch.idsia.crema.model.causal.SCM;
 import ch.idsia.crema.model.causal.SCM.VariableType;
 import ch.idsia.crema.model.causal.WorldModel;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class TreeMapping implements WorldModel {
 	
@@ -24,18 +25,18 @@ public class TreeMapping implements WorldModel {
 	 * Mapping from source to target for each world id
 	 * Key is world id, value is mapping between source and global id
 	 */
-	private TIntObjectMap<TIntIntMap> toGlobal;
+	private Int2ObjectMap<Int2IntMap> toGlobal;
 	
 	/**
 	 * A map from a global id to a pair <world id, node id>
 	 */
-	private TIntObjectMap<Pair<Integer, Integer>> fromGlobal;
+	private Int2ObjectMap<Pair<Integer, Integer>> fromGlobal;
 	
 	/**
 	 * A map from global exogenous id to local exogenous id
 	 */
-	private TIntIntMap globalToLocalExogenous;
-	private TIntIntMap localToGlobalExogenous;
+	private Int2IntMap globalToLocalExogenous;
+	private Int2IntMap localToGlobalExogenous;
 	
 	/**
 	 * the global model, initialized at the first add.
@@ -51,10 +52,10 @@ public class TreeMapping implements WorldModel {
 	 * Create a new Tree Mapping object.
 	 */
 	public TreeMapping() {
-		this.toGlobal = new TIntObjectHashMap<TIntIntMap>();
-		this.fromGlobal = new TIntObjectHashMap<Pair<Integer,Integer>>();
-		this.globalToLocalExogenous = new TIntIntHashMap();
-		this.localToGlobalExogenous= new TIntIntHashMap();
+		this.toGlobal = new Int2ObjectOpenHashMap<Int2IntMap>();
+		this.fromGlobal = new Int2ObjectOpenHashMap<Pair<Integer,Integer>>();
+		this.globalToLocalExogenous = new Int2IntOpenHashMap();
+		this.localToGlobalExogenous= new Int2IntOpenHashMap();
 		this.worlds = new ArrayList<SCM>();
 	}
 	
@@ -69,15 +70,15 @@ public class TreeMapping implements WorldModel {
 	 * @param wid world id
 	 * @param translate a map from local to global
 	 */
-	protected void saveMapping(int wid, TIntIntMap translate) {
+	protected void saveMapping(int wid, Int2IntMap translate) {
 		
 		toGlobal.put(wid, translate);
 		
-		var iter = translate.iterator();
+		var iter = translate.int2IntEntrySet().iterator();
 		while(iter.hasNext()) {
-			iter.advance();
-			var source = iter.key();
-			var target = iter.value();
+			var entry = iter.next();
+			var source = entry.getIntKey();
+			var target = entry.getIntValue();
 			if (localToGlobalExogenous.containsKey(source)) continue;
 			
 			fromGlobal.put(target, Pair.of(wid, source));
@@ -90,7 +91,7 @@ public class TreeMapping implements WorldModel {
 	 * @param translate
 	 * @return
 	 */
-	private int[] rename(int[] ids, TIntIntMap translate) {
+	private int[] rename(int[] ids, Int2IntMap translate) {
 		int[] target = new int[ids.length];
 		for (int i = 0; i < ids.length; ++i) {
 			target[i] = translate.get(ids[i]);
@@ -105,7 +106,7 @@ public class TreeMapping implements WorldModel {
 	 * @param translate
 	 * @return
 	 */
-	private BayesianFactor rename(BayesianFactor factor, TIntIntMap translate) {
+	private BayesianFactor rename(BayesianFactor factor, Int2IntMap translate) {
 		Strides domain = factor.getDomain();
 		int[] newvars = Arrays.stream(domain.getVariables()).map(translate::get).toArray();
 		
@@ -142,7 +143,7 @@ public class TreeMapping implements WorldModel {
 			global = new SCM();
 		}
 		
-		TIntIntMap translate = new TIntIntHashMap();
+		Int2IntMap translate = new Int2IntOpenHashMap();
 		for (var source : model.variables()) {
 			if (source.getType() == VariableType.EXOGENOUS) {
 				if (!localToGlobalExogenous.containsKey(source.getLabel())) {

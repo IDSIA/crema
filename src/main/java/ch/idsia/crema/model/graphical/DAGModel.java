@@ -9,12 +9,16 @@ import ch.idsia.crema.model.change.NullChange;
 import ch.idsia.crema.utility.ArraysUtil;
 import ch.idsia.crema.utility.GraphUtil;
 import com.google.common.primitives.Ints;
-import gnu.trove.iterator.TIntObjectIterator;
-import gnu.trove.list.array.TIntArrayList;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
@@ -50,20 +54,20 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	/**
 	 * The number of states/cardinalities of a variable
 	 */
-	protected TIntIntMap cardinalities;
+	protected Int2IntMap cardinalities;
 
 	/**
 	 * The factor associated to a variable
 	 */
-	protected TIntObjectMap<F> factors;
+	protected Int2ObjectMap<F> factors;
 
 	/**
 	 * Create the directed model using the specified network implementation.
 	 */
 	public DAGModel() {
 		network = new DirectedAcyclicGraph<>(DefaultEdge.class);
-		cardinalities = new TIntIntHashMap();
-		factors = new TIntObjectHashMap<>();
+		cardinalities = new Int2IntOpenHashMap();
+		factors = new Int2ObjectOpenHashMap<>();
 
 		NullChange<F> changer = new NullChange<>();
 
@@ -74,8 +78,8 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	@SuppressWarnings("unchecked")
 	public DAGModel(DAGModel<F> original) {
 		network = new DirectedAcyclicGraph<>(DefaultEdge.class);
-		cardinalities = new TIntIntHashMap();
-		factors = new TIntObjectHashMap<>();
+		cardinalities = new Int2IntOpenHashMap();
+		factors = new Int2ObjectOpenHashMap<>();
 
 		domainChanger = original.domainChanger;
 		cardinalityChanger = original.cardinalityChanger;
@@ -120,15 +124,15 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		newModel.domainChanger = changer;
 		newModel.cardinalityChanger = changer;
 
-		newModel.cardinalities = new TIntIntHashMap(this.cardinalities);
-		newModel.factors = new TIntObjectHashMap<>(factors.size());
+		newModel.cardinalities = new Int2IntOpenHashMap(this.cardinalities);
+		newModel.factors = new Int2ObjectOpenHashMap<>(factors.size());
 		newModel.max = this.max;
 
-		TIntObjectIterator<F> iterator = this.factors.iterator();
+		var iterator = this.factors.int2ObjectEntrySet().iterator();
 		while (iterator.hasNext()) {
-			iterator.advance();
-			R newFactor = converter.apply(iterator.value(), iterator.key());
-			newModel.factors.put(iterator.key(), newFactor);
+			var entry = iterator.next();
+			R newFactor = converter.apply(entry.getValue(), entry.getIntKey());
+			newModel.factors.put(entry.getIntKey(), newFactor);
 		}
 
 		return newModel;
@@ -261,6 +265,17 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 				.mapToInt(x -> x)
 				.toArray();
 	}
+	
+	
+	@Override
+	public IntSet getParentsSet(int variable) {
+		var edges = network.incomingEdgesOf(variable);
+		IntSet target = new IntOpenHashSet(edges.size());
+		for (var edge : edges) {
+			target.add(network.getEdgeSource(edge));
+		}
+		return target;
+	}
 
 	@Override
 	public int[] getChildren(int variable) {
@@ -270,6 +285,15 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 				.mapToInt(x -> x)
 				.toArray();
 	}
+	
+	public IntSet getChildrenSet(int variable) {
+		var edges = network.outgoingEdgesOf(variable);
+		IntSet target = new IntOpenHashSet(edges.size());
+		for (var edge : edges) {
+			target.add((int)network.getEdgeTarget(edge));
+		}
+		return target;
+	}
 
 	@Override
 	public int[] getRoots() {
@@ -278,13 +302,13 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		// TODO: stream or TIntArray?
 		// Arrays.stream(variables).filter(v -> getParents(v).length == 0).toArray()
 
-		TIntArrayList list = new TIntArrayList();
+		IntList list = new IntArrayList();
 		for (int variable : variables) {
 			if (getParents(variable).length == 0)
 				list.add(variable);
 		}
 
-		return list.toArray();
+		return list.toIntArray();
 	}
 
 	@Override
@@ -294,13 +318,13 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 		// TODO: see TODO in method getRoots()
 		// Arrays.stream(variables).filter(v -> getChildren(v).length == 0).toArray()
 
-		TIntArrayList list = new TIntArrayList();
+		IntList list = new IntArrayList();
 		for (int variable : variables) {
 			if (getChildren(variable).length == 0)
 				list.add(variable);
 		}
 
-		return list.toArray();
+		return list.toIntArray();
 	}
 
 
@@ -349,15 +373,20 @@ public class DAGModel<F extends GenericFactor> implements GraphicalModel<F> {
 	}
 
 	@Override
+	public IntSet getVariablesSet() {
+		return cardinalities.keySet();
+	}
+	
+	@Override
 	public int[] getVariables() {
-		int[] vars = cardinalities.keys();
+		int[] vars = cardinalities.keySet().toIntArray();
 		Arrays.sort(vars);
 		return vars;
 	}
 
 	@Override
 	public Collection<F> getFactors() {
-		return factors.valueCollection();
+		return factors.values();
 	}
 
 	public Collection<F> getFactors(int... variables) {

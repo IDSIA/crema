@@ -4,11 +4,12 @@ import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.Observe;
-import gnu.trove.map.TIntDoubleMap;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntDoubleHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2DoubleMap;
+import it.unimi.dsi.fastutil.ints.Int2DoubleOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,7 +41,7 @@ public class LikelihoodWeightingSampling extends StochasticSampling {
 	 * Algorithm 46 from "Modeling and Reasoning with BN", Dawiche, p.380
 	 */
 	@Override
-	public Collection<BayesianFactor> run(GraphicalModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
+	public Collection<BayesianFactor> run(GraphicalModel<BayesianFactor> original, Int2IntMap evidence, int... query) {
 		final GraphicalModel<BayesianFactor> model = preprocess(original, evidence, query);
 
 		if (!preprocess) {
@@ -50,7 +51,7 @@ public class LikelihoodWeightingSampling extends StochasticSampling {
 		}
 
 		// P[x] <- 0 for each value x of variable X in network N {estimate for Pr(x,e)}}
-		final TIntObjectMap<double[]> Px = new TIntObjectHashMap<>();
+		final Int2ObjectMap<double[]> Px = new Int2ObjectOpenHashMap<>();
 
 		for (int variable : model.getVariables()) {
 			int states = model.getSize(variable);
@@ -59,11 +60,11 @@ public class LikelihoodWeightingSampling extends StochasticSampling {
 
 		// for each round of simulations
 		for (int it = 0; it < iterations; it++) {
-			final TIntIntMap x = simulateBN(model, evidence);
-			final TIntDoubleMap likelihoods = new TIntDoubleHashMap();
+			final Int2IntMap x = simulateBN(model, evidence);
+			final Int2DoubleMap likelihoods = new Int2DoubleOpenHashMap();
 
 			// collect likelihood of evidence
-			for (int key : evidence.keys()) {
+			for (int key : evidence.keySet()) {
 				if (model.getSize(key) == 0)
 					continue;
 
@@ -81,13 +82,13 @@ public class LikelihoodWeightingSampling extends StochasticSampling {
 				}
 			}
 
-			final double L = Arrays.stream(likelihoods.keys())
-					.mapToDouble(likelihoods::get)
+			final double L = likelihoods.values().doubleStream()
+//					.mapToDouble(likelihoods::get)
 					.reduce((a, b) -> a * b)
 					.orElse(1.0);
 
 			// update the counts
-			for (int key : x.keys()) {
+			for (int key : x.keySet()) {
 				final int state = x.get(key);
 				Px.get(key)[state] += L;
 			}

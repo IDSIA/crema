@@ -11,7 +11,9 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.solver.LinearFractionalSolver;
 import ch.idsia.crema.solver.commons.FractionalSolver;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 
@@ -22,9 +24,9 @@ public class Posterior extends Manager {
 	//private static final double BAD = Double.NaN;
 	private final SeparateLinearToExtensiveHalfspaceFactor sep2ext = new SeparateLinearToExtensiveHalfspaceFactor();
 
-	private final TIntIntMap evidence;
+	private final Int2IntMap evidence;
 
-	public Posterior(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state, TIntIntMap evidence) {
+	public Posterior(GraphicalModel<? extends GenericFactor> model, GoalType dir, int x0, int x0state, Int2IntMap evidence) {
 		super(model, dir, x0, x0state);
 		this.evidence = evidence;
 	}

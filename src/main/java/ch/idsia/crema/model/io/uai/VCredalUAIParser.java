@@ -79,7 +79,7 @@ public class VCredalUAIParser extends NetUAIParser<GraphicalModel<VertexFactor>>
 			int parentComb = IntStream.of(parents[i]).map(p -> cardinalities[p]).reduce((a, b) -> a * b).orElse(1);
 			vertices[i] = new double[parentComb][][];
 
-			int[] parent_list = ArraysUtil.reverse(parents[i]);
+			int[] parent_list = ArraysUtil.reversed(parents[i]);
 			int[] sizes = ArraysUtil.at(cardinalities, parent_list);
 
 			Strides dataDomain = new Strides(parent_list, sizes);

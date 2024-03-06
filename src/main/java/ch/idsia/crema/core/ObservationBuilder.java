@@ -1,15 +1,22 @@
 package ch.idsia.crema.core;
 
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntRBTreeSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.ints.IntSortedSet;
 
 import java.util.Arrays;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class ObservationBuilder extends TIntIntHashMap {
+import org.eclipse.persistence.descriptors.changetracking.MapChangeEvent;
+
+public class ObservationBuilder extends Int2IntOpenHashMap implements Int2IntMap {
 
 	private int[] vars;
 
@@ -59,7 +66,7 @@ public class ObservationBuilder extends TIntIntHashMap {
 	}
 
 	public ObservationBuilder states(int... states) {
-		putAll(new TIntIntHashMap(vars, states));
+		putAll(new Int2IntOpenHashMap(vars, states));
 		return this;
 	}
 
@@ -72,14 +79,14 @@ public class ObservationBuilder extends TIntIntHashMap {
 		super(keys, values);
 	}
 
-	public static int[] getVariables(TIntIntMap[] obs) {
-		int[] variables = new int[]{};
-		for (TIntIntMap o : obs)
-			variables = ArraysUtil.union_unsorted_set(variables, o.keys());
-		return variables;
+	public static int[] getVariables(Int2IntMap[] obs) {
+		IntSortedSet variables = new IntRBTreeSet();
+		for (Int2IntMap o : obs)
+			variables.addAll(o.keySet());
+		return variables.toIntArray();
 	}
 
-	public static double[][] toDoubles(TIntIntMap[] obs, int... variables) {
+	public static double[][] toDoubles(Int2IntMap[] obs, int... variables) {
 		if (variables.length == 0)
 			variables = getVariables(obs);
 		double[][] dataOut = new double[obs.length][variables.length];
@@ -94,14 +101,14 @@ public class ObservationBuilder extends TIntIntHashMap {
 		return dataOut;
 	}
 
-	public static ObservationBuilder[] filter(TIntIntMap[] obs, int... variables) {
+	public static ObservationBuilder[] filter(Int2IntMap[] obs, int... variables) {
 		return ObservationBuilder.observe(variables, ObservationBuilder.toDoubles(obs, variables));
 	}
 
-	public static TIntIntMap[] filter(TIntIntMap[] data, int[] keys, int[] vals) {
+	public static Int2IntMap[] filter(Int2IntMap[] data, int[] keys, int[] vals) {
 		return Stream.of(data)
 				.filter(d -> Arrays.equals(IntStream.of(keys).map(d::get).toArray(), vals))
-				.toArray(TIntIntMap[]::new);
+				.toArray(Int2IntMap[]::new);
 	}
 
 }

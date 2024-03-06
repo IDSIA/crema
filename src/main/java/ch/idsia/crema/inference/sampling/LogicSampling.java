@@ -3,9 +3,10 @@ package ch.idsia.crema.inference.sampling;
 import ch.idsia.crema.factor.bayesian.BayesianDefaultFactor;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,9 +44,9 @@ public class LogicSampling extends StochasticSampling {
 	 * @return the distribution of probability on the query
 	 */
 	@Override
-	public Collection<BayesianFactor> run(GraphicalModel<BayesianFactor> original, TIntIntMap evidence, int... query) {
+	public Collection<BayesianFactor> run(GraphicalModel<BayesianFactor> original, Int2IntMap evidence, int... query) {
 		final GraphicalModel<BayesianFactor> model = preprocess(original, evidence, query);
-		final TIntObjectMap<double[]> Px = new TIntObjectHashMap<>();
+		final Int2ObjectMap<double[]> Px = new Int2ObjectOpenHashMap<>();
 
 		for (int variable : model.getVariables()) {
 			final int states = model.getSize(variable);
@@ -53,9 +54,9 @@ public class LogicSampling extends StochasticSampling {
 		}
 
 		for (int it = 0; it < iterations; it++) {
-			final TIntIntMap x = simulateBN(model, evidence);
+			final Int2IntMap x = simulateBN(model, evidence);
 
-			for (int variable : x.keys()) {
+			for (int variable : x.keySet()) {
 				final int state = x.get(variable);
 				Px.get(variable)[state] += 1.;
 			}

@@ -1,9 +1,11 @@
 package ch.idsia.crema.preprocess.mergers;
 
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactor;
+
 import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -13,7 +15,7 @@ import gnu.trove.map.TIntIntMap;
 public class MergeFactorsInterval implements MergeFactors<IntervalFactor> {
 
 	@Override
-	public IntervalFactor merge(GraphicalModel<IntervalFactor> model, TIntIntMap evidence, int x1, int x2, int x, int y) {
+	public IntervalFactor merge(GraphicalModel<IntervalFactor> model, Int2IntMap evidence, int x1, int x2, int x, int y) {
 		final IntervalFactor f1 = model.getFactor(x1);
 		final IntervalFactor f2 = model.getFactor(x2);
 

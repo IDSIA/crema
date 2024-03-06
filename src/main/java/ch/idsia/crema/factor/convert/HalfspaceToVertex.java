@@ -8,8 +8,9 @@ import ch.idsia.crema.factor.credal.vertex.separate.VertexFactor;
 import ch.javasoft.polco.adapter.Options;
 import ch.javasoft.polco.adapter.PolcoAdapter;
 import ch.javasoft.xml.config.XmlConfigException;
-import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
+
 import org.apache.commons.math3.optim.linear.LinearConstraint;
 import org.apache.commons.math3.optim.linear.NoFeasibleSolutionException;
 import org.apache.commons.math3.optim.linear.Relationship;
@@ -33,7 +34,7 @@ public class HalfspaceToVertex implements Converter<SeparateHalfspaceFactor, Ver
 	public VertexFactor apply(SeparateHalfspaceFactor s, Integer var) {
 		// polco will convert to VCredalSet
 		final List<double[]> vertList = new ArrayList<>();
-		final TIntList combinations = new TIntArrayList();
+		final IntList combinations = new IntArrayList();
 
 		for (int comb = 0; comb < s.getSeparatingDomain().getCombinations(); ++comb) {
 			Collection<LinearConstraint> set = s.getLinearProblemAt(comb).getConstraints();

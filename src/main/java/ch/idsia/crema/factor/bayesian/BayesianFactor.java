@@ -4,7 +4,8 @@ import ch.idsia.crema.core.ObservationBuilder;
 import ch.idsia.crema.core.Strides;
 import ch.idsia.crema.factor.OperableFactor;
 import ch.idsia.crema.factor.credal.SeparatelySpecified;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+
 
 /**
  * Author:  Claudio "Dna" Bonesana
@@ -65,8 +66,11 @@ public interface BayesianFactor extends OperableFactor<BayesianFactor>, Separate
 	BayesianFactor divide(BayesianFactor factor);
 
 	// TODO: these methods below need more consideration on what to do with them and where to put them
+	
+	// TODO: MOVE THIS METHOD TO own data generator
 	ObservationBuilder sample();
 
-	double logProb(TIntIntMap[] data, int leftVar);
+	// TODO: explain what the method does
+	double logProb(Int2IntMap[] data, int leftVar);
 
 }

@@ -9,7 +9,8 @@ import ch.idsia.crema.factor.credal.linear.interval.IntervalFactorFactory;
 import ch.idsia.crema.factor.symbolic.PriorFactor;
 import ch.idsia.crema.factor.symbolic.SymbolicFactor;
 import ch.idsia.crema.factor.symbolic.serialize.MOD;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.apache.commons.math3.util.MathArrays;
 import org.junit.jupiter.api.Test;
 
@@ -171,7 +172,7 @@ public class VariableEliminationTest {
 
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(seq);
 		ve.setFactors(f);
-		ve.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
+		ve.setEvidence(new Int2IntOpenHashMap(new int[]{0}, new int[]{0}));
 
 		BayesianFactor fa = ve.run(3);
 		assertArrayEquals(new double[]{0.2218896964518944, 0.7781103035492434}, fa.getData(), 0.00000000001);
@@ -190,7 +191,7 @@ public class VariableEliminationTest {
 
 		FactorVariableElimination<SymbolicFactor> ve = new FactorVariableElimination<>(new int[]{1, 3, 2});
 		ve.setFactors(Arrays.asList(fa, fb, fc));
-		ve.setEvidence(new TIntIntHashMap(new int[]{1}, new int[]{1}));
+		ve.setEvidence(new Int2IntOpenHashMap(new int[]{1}, new int[]{1}));
 
 		SymbolicFactor f = ve.run(1);
 		MOD serial = new MOD();
@@ -222,7 +223,7 @@ public class VariableEliminationTest {
 
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(seq);
 		ve.setFactors(f);
-		ve.setEvidence(new TIntIntHashMap(new int[]{0}, new int[]{0}));
+		ve.setEvidence(new Int2IntOpenHashMap(new int[]{0}, new int[]{0}));
 
 		BayesianFactor fa = ve.run(3);
 		BayesianFactor fb = ve.run(0,3);

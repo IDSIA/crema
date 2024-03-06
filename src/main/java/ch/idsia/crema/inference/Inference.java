@@ -2,8 +2,9 @@ package ch.idsia.crema.inference;
 
 import ch.idsia.crema.factor.GenericFactor;
 import ch.idsia.crema.model.graphical.GraphicalModel;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 /**
  * Common interface of inference algorithm. Any model preprocessing requirements of the final
@@ -23,7 +24,7 @@ public interface Inference<M extends GraphicalModel<?>, F extends GenericFactor>
 	 * @param query    the variable that will be queried
 	 * @return the result of the inference
 	 */
-	F query(M model, TIntIntMap evidence, int query);
+	F query(M model, Int2IntMap evidence, int query);
 
 	/**
 	 * Perform an inference.
@@ -33,7 +34,7 @@ public interface Inference<M extends GraphicalModel<?>, F extends GenericFactor>
 	 * @return the result of the inference
 	 */
 	default F query(M model, int query) {
-		return query(model, new TIntIntHashMap(), query);
+		return query(model, new Int2IntOpenHashMap(), query);
 	}
 
 }

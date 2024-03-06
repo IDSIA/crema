@@ -1,11 +1,14 @@
 package ch.idsia.crema.utility;
 
 import ch.idsia.crema.core.Strides;
-import gnu.trove.iterator.TIntIterator;
-import gnu.trove.list.array.TIntArrayList;
+
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntIterator;
+import it.unimi.dsi.fastutil.ints.IntList;
+
 import org.apache.commons.lang3.ArrayUtils;
 
-public class IndexIterator implements TIntIterator {
+public class IndexIterator implements IntIterator {
 
 	// "constant" parts
 	final private int[] strides;
@@ -80,7 +83,7 @@ public class IndexIterator implements TIntIterator {
 	}
 
 	@Override
-	public int next() {
+	public int nextInt() {
 		final int result = current_index;
 
 		for (int index = 0; index < sizes.length; ++index) {
@@ -117,9 +120,9 @@ public class IndexIterator implements TIntIterator {
 	}
 
 	public int[] toArray() {
-		TIntArrayList result = new TIntArrayList();
+		IntList result = new IntArrayList();
 		while (hasNext())
 			result.add(next());
-		return result.toArray();
+		return result.toIntArray();
 	}
 }

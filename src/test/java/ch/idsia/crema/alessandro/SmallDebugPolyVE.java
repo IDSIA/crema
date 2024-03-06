@@ -7,8 +7,10 @@ import ch.idsia.crema.inference.sepolyve.SePolyVE;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.preprocess.RemoveBarren;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 import java.util.Arrays;
 
@@ -48,7 +50,7 @@ public class SmallDebugPolyVE {
 		for (int i = 0; i < 2; i++) {
 			model.setFactor(nodes[i], K[i]);
 		}
-		TIntIntMap evidence = new TIntIntHashMap();
+		Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(nodes[1], 0);
 		final RemoveBarren<VertexFactor> removeBarren = new RemoveBarren<>();
 		GraphicalModel<VertexFactor> model2 = removeBarren.execute(model, evidence, nodes[0]);

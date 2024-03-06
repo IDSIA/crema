@@ -7,8 +7,9 @@ import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.inference.ve.order.MinFillOrdering;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.utility.RandomUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ public class LikelihoodWeightingSamplingTest {
 	public void vsVariableElimination1() {
 		BayesianNetwork model = BayesianNetworkContainer.mix5Variables().network;
 
-		TIntIntMap evidence = new TIntIntHashMap(new int[]{3}, new int[]{0});
+		Int2IntMap evidence = new Int2IntOpenHashMap(new int[]{3}, new int[]{0});
 
 		for (int query = 0; query < 5; query++) {
 			BayesianFactor resLWS = lws.query(model, evidence, query);
@@ -63,11 +64,11 @@ public class LikelihoodWeightingSamplingTest {
 
 		VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
 
-		TIntIntMap evidence;
+		Int2IntMap evidence;
 		BayesianFactor Qlws;
 		BayesianFactor Qve;
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("P(Rain) =                                     " + Qlws);
@@ -75,7 +76,7 @@ public class LikelihoodWeightingSamplingTest {
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 1});
+		evidence = new Int2IntOpenHashMap(new int[]{3, 4}, new int[]{0, 1});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LWS: P(Rain|Wet Grass = false, Slippery = true) =  " + Qlws);
@@ -83,7 +84,7 @@ public class LikelihoodWeightingSamplingTest {
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap(new int[]{3, 4}, new int[]{0, 0});
+		evidence = new Int2IntOpenHashMap(new int[]{3, 4}, new int[]{0, 0});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LWS: P(Rain|Wet Grass = false, Slippery = false) = " + Qlws);
@@ -91,7 +92,7 @@ public class LikelihoodWeightingSamplingTest {
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap(new int[]{0}, new int[]{1});
+		evidence = new Int2IntOpenHashMap(new int[]{0}, new int[]{1});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LWS: P(Rain|Winter = true) =                       " + Qlws);
@@ -99,7 +100,7 @@ public class LikelihoodWeightingSamplingTest {
 
 		assertEquals(Qlws.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap(new int[]{0}, new int[]{0});
+		evidence = new Int2IntOpenHashMap(new int[]{0}, new int[]{0});
 		Qlws = lws.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LWS: P(Rain|Winter = false) =                      " + Qlws);
@@ -128,7 +129,7 @@ public class LikelihoodWeightingSamplingTest {
 		double avg = 0.0;
 
 		for (int q = 0; q < m; q++) {
-			TIntIntMap evidence = new TIntIntHashMap(new int[]{3}, new int[]{0});
+			Int2IntMap evidence = new Int2IntOpenHashMap(new int[]{3}, new int[]{0});
 
 			int query = random.nextInt(n);
 

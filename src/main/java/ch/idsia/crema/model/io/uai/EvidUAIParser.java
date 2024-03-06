@@ -1,7 +1,8 @@
 package ch.idsia.crema.model.io.uai;
 
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author Rafael Cabañas
  */
-public class EvidUAIParser extends UAIParser<TIntIntMap[]> {
+public class EvidUAIParser extends UAIParser<Int2IntMap[]> {
 
 	private int[][][] evid;
 
@@ -41,10 +42,10 @@ public class EvidUAIParser extends UAIParser<TIntIntMap[]> {
 	}
 
 	@Override
-	protected TIntIntMap[] build() {
-		TIntIntMap[] parsedObject = new TIntIntMap[evid.length];
+	protected Int2IntMap[] build() {
+		Int2IntMap[] parsedObject = new Int2IntMap[evid.length];
 		for (int i = 0; i < evid.length; i++) {
-			parsedObject[i] = new TIntIntHashMap();
+			parsedObject[i] = new Int2IntOpenHashMap();
 			for (int j = 0; j < evid[i].length; j++) {
 				parsedObject[i].put(evid[i][j][0], evid[i][j][1]);
 			}

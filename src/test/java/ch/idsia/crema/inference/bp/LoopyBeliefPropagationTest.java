@@ -8,8 +8,9 @@ import ch.idsia.crema.inference.ve.VariableElimination;
 import ch.idsia.crema.model.graphical.BayesianNetwork;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.model.io.bif.BIFParser;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -99,7 +100,7 @@ public class LoopyBeliefPropagationTest {
 		LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
 
 		// P(A):
-		TIntIntHashMap obs = new TIntIntHashMap();
+		Int2IntMap obs = new Int2IntOpenHashMap();
 		BayesianFactor q = lbp.query(model, obs, A);
 		System.out.println("P(A):              " + q);
 		assertArrayEquals(new double[]{.4, .6}, q.getData(), 1e-6);
@@ -171,7 +172,7 @@ public class LoopyBeliefPropagationTest {
 		// computation using Belief Propagation
 		LoopyBeliefPropagation<BayesianFactor> inf = new LoopyBeliefPropagation<>();
 
-		TIntIntMap obs = new TIntIntHashMap();
+		Int2IntMap obs = new Int2IntOpenHashMap();
 		obs.put(D, 0);
 		final BayesianFactor q = inf.query(bn, obs, A);
 		System.out.println("query=" + q);
@@ -202,11 +203,11 @@ public class LoopyBeliefPropagationTest {
 		final VariableElimination<BayesianFactor> ve = new FactorVariableElimination<>(new int[]{4, 3, 1, 0, 2});
 		final LoopyBeliefPropagation<BayesianFactor> lbp = new LoopyBeliefPropagation<>();
 
-		TIntIntMap evidence;
+		Int2IntMap evidence;
 		BayesianFactor Qlbp;
 		BayesianFactor Qve;
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		Qlbp = lbp.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
 		System.out.println("LBP: P(Rain) =                                     " + Qlbp);
@@ -214,7 +215,7 @@ public class LoopyBeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		evidence.put(3, 0);
 		evidence.put(4, 1);
 		Qlbp = lbp.query(model, evidence, 2);
@@ -224,7 +225,7 @@ public class LoopyBeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.05);
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		evidence.put(3, 0);
 		evidence.put(4, 0);
 		Qlbp = lbp.query(model, evidence, 2);
@@ -234,7 +235,7 @@ public class LoopyBeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		evidence.put(0, 1);
 		Qlbp = lbp.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
@@ -243,7 +244,7 @@ public class LoopyBeliefPropagationTest {
 
 		assertEquals(Qlbp.getValue(0), Qve.getValue(0), 0.01);
 
-		evidence = new TIntIntHashMap();
+		evidence = new Int2IntOpenHashMap();
 		evidence.put(0, 0);
 		Qlbp = lbp.query(model, evidence, 2);
 		Qve = ve.query(model, evidence, 2);
@@ -259,7 +260,7 @@ public class LoopyBeliefPropagationTest {
 
 		final BeliefPropagation<BayesianFactor> lbp = new BeliefPropagation<>();
 
-		final TIntIntMap evidence = new TIntIntHashMap();
+		final Int2IntMap evidence = new Int2IntOpenHashMap();
 		evidence.put(0, 1);
 
 		final BayesianFactor q = lbp.query(model, evidence, 0);
@@ -302,7 +303,7 @@ public class LoopyBeliefPropagationTest {
 
 		final LoopyBeliefPropagation<BayesianFactor> inf = new LoopyBeliefPropagation<>();
 
-		final TIntIntMap obs = new TIntIntHashMap();
+		final Int2IntMap obs = new Int2IntOpenHashMap();
 		obs.put(q1, 1);
 
 		final List<BayesianFactor> queries = inf.query(m, obs, s1, s2);

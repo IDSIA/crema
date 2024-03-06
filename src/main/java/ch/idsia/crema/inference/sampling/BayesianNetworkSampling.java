@@ -3,8 +3,8 @@ package ch.idsia.crema.inference.sampling;
 import ch.idsia.crema.factor.bayesian.BayesianFactor;
 import ch.idsia.crema.model.graphical.DAGModel;
 import ch.idsia.crema.utility.ArraysUtil;
-import gnu.trove.map.TIntIntMap;
-import gnu.trove.map.hash.TIntIntHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 
 import java.util.stream.IntStream;
 
@@ -23,11 +23,11 @@ public class BayesianNetworkSampling {
 	 * @param vars  variables to return
 	 * @return a {@link TIntIntMap} of states sampled from the model with the given evidence
 	 */
-	public TIntIntMap sample(DAGModel<BayesianFactor> model, TIntIntMap obs, int... vars) {
-		final TIntIntMap s = new TIntIntHashMap(obs);
+	public Int2IntMap sample(DAGModel<BayesianFactor> model, Int2IntMap obs, int... vars) {
+		final Int2IntMap s = new Int2IntOpenHashMap(obs);
 
 		// follow DAG in topological order
-		for (Integer v : model.getNetwork()) {
+		for (int v : model.getNetwork()) {
 			if (s.containsKey(v))
 				continue;
 			BayesianFactor f = model.getFactor(v).copy();
@@ -40,7 +40,7 @@ public class BayesianNetworkSampling {
 		if (vars.length == 0)
 			vars = model.getVariables();
 
-		for (int v : s.keys())
+		for (int v : s.keySet())
 			if (!ArraysUtil.contains(v, vars))
 				s.remove(v);
 
@@ -52,8 +52,8 @@ public class BayesianNetworkSampling {
 	 * @param vars  variables to return
 	 * @return a {@link TIntIntMap} of states sampled from the model without prior evidence
 	 */
-	public TIntIntMap sample(DAGModel<BayesianFactor> model, int... vars) {
-		return sample(model, new TIntIntHashMap(), vars);
+	public Int2IntMap sample(DAGModel<BayesianFactor> model, int... vars) {
+		return sample(model, new Int2IntOpenHashMap(), vars);
 	}
 
 
@@ -64,8 +64,8 @@ public class BayesianNetworkSampling {
 	 * @param vars  variables to return
 	 * @return the specified number of {@link TIntIntMap} of states sampled from the model with the given evidence
 	 */
-	public TIntIntMap[] samples(DAGModel<BayesianFactor> model, TIntIntMap obs, int N, int... vars) {
-		return IntStream.range(0, N).mapToObj(i -> sample(model, obs, vars)).toArray(TIntIntMap[]::new);
+	public Int2IntMap[] samples(DAGModel<BayesianFactor> model, Int2IntMap obs, int N, int... vars) {
+		return IntStream.range(0, N).<Int2IntMap>mapToObj(i -> sample(model, obs, vars)).toArray(Int2IntMap[]::new);
 	}
 
 
@@ -75,8 +75,8 @@ public class BayesianNetworkSampling {
 	 * @param vars  variables to return
 	 * @return the specified number of {@link TIntIntMap} of states sampled from the model without prior evidence
 	 */
-	public TIntIntMap[] samples(DAGModel<BayesianFactor> model, int N, int... vars) {
-		return IntStream.range(0, N).mapToObj(i -> sample(model, vars)).toArray(TIntIntMap[]::new);
+	public Int2IntMap[] samples(DAGModel<BayesianFactor> model, int N, int... vars) {
+		return IntStream.range(0, N).<Int2IntMap>mapToObj(i -> sample(model, vars)).toArray(Int2IntMap[]::new);
 	}
 
 }

@@ -7,7 +7,7 @@ import ch.idsia.crema.model.graphical.GraphicalModel;
 import ch.idsia.crema.model.precondition.NetworkReduction;
 import ch.idsia.crema.search.impl.DepthFirst;
 import ch.idsia.crema.search.impl.Utils;
-import gnu.trove.map.TIntIntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -93,7 +93,7 @@ public class SePolyVE implements Inference<GraphicalModel<VertexFactor>, VertexF
 	 * @throws MaxMemoryException - when maximum memory usage is reached
 	 */
 	@Override
-	public VertexFactor query(GraphicalModel<VertexFactor> model, TIntIntMap evidence, int query) {
+	public VertexFactor query(GraphicalModel<VertexFactor> model, Int2IntMap evidence, int query) {
 		collector = new SePolyController(model, evidence, algebra, maxTime, maxMem);
 
 		DepthFirst ndf = new DepthFirst(model);
